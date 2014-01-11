@@ -1,3 +1,0 @@
-#GlassFish 3
-#Fri Jan 10 09:08:38 MST 2014
-org.eclipse.jst.jee.server\:Test=/home/billy/glassfish4/glassfish/domains/domain1/eclipseApps/Test
