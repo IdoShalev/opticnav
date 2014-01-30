@@ -6,11 +6,11 @@ Directory hierarchy:
 
 	Contains sources for Android ARDS (MOD Live, Nexus 5)
 
-/ard-management
+/ard-daemon
 	Jave SE, Desktop
 	Eclipse workspace
 
-	Contains sources for ARD management software
+	Contains sources for ARD daemon software
 	Communicates over network with ARDs and Glassfish, and maintains
 	state required for networked ARD interaction.
 
