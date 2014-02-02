@@ -12,7 +12,7 @@ DROP TABLE RESOURCE;
 CREATE TABLE ACCOUNT
 (
     account_id          INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    user                VARCHAR(25) NOT NULL,
+    user                VARCHAR(25) NOT NULL UNIQUE,
     pass                BINARY(20)  NOT NULL
 );
 
