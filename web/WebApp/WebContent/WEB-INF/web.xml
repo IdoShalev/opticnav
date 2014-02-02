@@ -7,21 +7,8 @@
       <include-prelude>/WEB-INF/jspf/prelude.jspf</include-prelude>
     </jsp-property-group>
   </jsp-config>
-  <filter>
-    <filter-name>Auth</filter-name>
-    <filter-class>opticnav.web.test.filters.Authenticate</filter-class>
-    <init-param>
-      <description>If user is not logged in or is unauthorized, boot them to a page</description>
-      <param-name>bootPage</param-name>
-      <param-value>/</param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>Auth</filter-name>
-    <url-pattern>/auth/*</url-pattern>
-  </filter-mapping>
   <context-param>
     <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
-    <param-value>opticnav.web.test.i18n.Messages</param-value>
+    <param-value>opticnav.web.i18n.Messages</param-value>
   </context-param>
 </web-app>

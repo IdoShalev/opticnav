@@ -1,0 +1,18 @@
+body {
+	font-family: Helvetica, Arial, sans;
+	
+	background: #bbf;
+}
+
+.message {
+	border: 2px solid;
+	border-color: #844;
+	padding: 1em;
+	margin: 1em;
+	background: #faa;
+	border-radius: 10px;
+}
+
+.invisible {
+	display: none;
+}
