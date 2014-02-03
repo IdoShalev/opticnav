@@ -1,10 +1,6 @@
 /* *********************************************************************
-**	File:  		    checkAccountName.sql
-**	Author:  	    Kay Bernhardt
-**	Created:	    Feburary 1, 2014
-**	Description:	will check if the provided account name exists.
+**	Description:	Will check if the provided account name exists.
 **  Returns:        a BOOLEAN. TRUE if the name exsits FALSE is it does not.
-**	Update History:
 ********************************************************************* */
 
 DROP FUNCTION IF EXISTS checkAccountName;

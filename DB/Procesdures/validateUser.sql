@@ -1,12 +1,8 @@
 /* *********************************************************************
-**	File:  		    validateUser.sql
-**	Author:  	    Kay Bernhardt
-**	Created:	    Feburary 1, 2014
 **	Description:	Will check if the provided account name and password
 **                  match a row in the database.
 **  Returns:        0 if no match is found
 **                  The account id if a match is found
-**	Update History:
 ********************************************************************* */
 
 DROP FUNCTION IF EXISTS validateUser;

@@ -1,20 +1,20 @@
 /* *********************************************************************
-**	Description:	Will add a new row to the ACCOUNT table conating
+**	Description:	Will add a new row to the ARD table belonging to
 **                  the provided account name, the provided password 
 **                  in a hashed binary form, and an auto incementing
-**                  account id.
+**                  ARD id.
 ********************************************************************* */
 
-DROP PROCEDURE IF EXISTS registerAccount;
+DROP PROCEDURE IF EXISTS createARD;
 
 DELIMITER //
 
-CREATE PROCEDURE registerAccount 
-(p_accountName VARCHAR(25), p_password VARCHAR(20))
+CREATE PROCEDURE createARD 
+(p_accountID INT, p_password VARCHAR(20))
 BEGIN
-    INSERT INTO ACCOUNT
-    (user, pass)
-    VALUES (p_accountName, UNHEX(SHA1(p_password)));
+    INSERT INTO ARD
+    (account_id, passcode)
+    VALUES (p_accountID, UNHEX(SHA1(p_password)));
 END//
 
 DELIMITER ;

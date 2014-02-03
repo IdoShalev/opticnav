@@ -19,8 +19,8 @@ CREATE TABLE ACCOUNT
 CREATE TABLE ARD
 (
     ARD_id              INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    account_id          INT(4)      NOT NULL,
-    passcode            BINARY(20)  NOT NULL,
+    account_id          INT(4)      NOT NULL UNIQUE,
+    passcode            BINARY(20)  NOT NULL UNIQUE,
     CONSTRAINT          fk_ard_account FOREIGN KEY (account_id) REFERENCES ACCOUNT(account_id)
 );
 
