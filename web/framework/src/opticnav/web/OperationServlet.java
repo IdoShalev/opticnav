@@ -36,7 +36,10 @@ public abstract class OperationServlet extends HttpServlet {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         
-        ResourceBundle bundle = ResourceBundle.getBundle("opticnav.web.test.i18n.Messages", req.getLocale());
+        /* FIXME: Make another context parameter not associated with JSTL */
+        String bundlePath = getServletContext().getInitParameter("javax.servlet.jsp.jstl.fmt.localizationContext");
+        
+        ResourceBundle bundle = ResourceBundle.getBundle(bundlePath, req.getLocale());
         String forward = req.getParameter("forward");
         boolean doRedirect = InputUtil.isEntered(forward);
         ResponseObject responseParameters = new ResponseObject();
