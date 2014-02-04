@@ -4,13 +4,21 @@ body {
 	background: #bbf;
 }
 
-.message {
+.errorMessage, .successMessage {
 	border: 2px solid;
-	border-color: #844;
 	padding: 1em;
 	margin: 1em;
-	background: #faa;
 	border-radius: 10px;
+}
+
+.errorMessage {
+	background: #faa;
+	border-color: #844;
+}
+
+.successMessage {
+	background: #7CFC00;
+	border-color: #008000;
 }
 
 .invisible {
