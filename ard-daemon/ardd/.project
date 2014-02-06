@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>ardd</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>ardd</name>
+			<type>2</type>
+			<locationURI>Common/ardd</locationURI>
+		</link>
+	</linkedResources>
+	<variableList>
+		<variable>
+			<name>Common</name>
+			<value>$%7BPARENT-1-WORKSPACE_LOC%7D/common</value>
+		</variable>
+	</variableList>
+</projectDescription>
