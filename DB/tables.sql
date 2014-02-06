@@ -1,37 +1,38 @@
 
+DROP TABLE WEB_ACCOUNT_OWNED_MAPS;
 DROP TABLE INVITE;
 DROP TABLE MESSAGE;
 DROP TABLE MARKER;
 DROP TABLE MAP;
 DROP TABLE NOTIFICATION;
+DROP TABLE WEB_ACCOUNT;
 DROP TABLE ARD;
-DROP TABLE ACCOUNT;
 DROP TABLE RESOURCE;
-
-
-CREATE TABLE ACCOUNT
-(
-    account_id          INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    user                VARCHAR(25) NOT NULL UNIQUE,
-    pass                BINARY(20)  NOT NULL
-);
 
 CREATE TABLE ARD
 (
     ARD_id              INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    account_id          INT(4)      NOT NULL UNIQUE,
     passcode            BINARY(20)  NOT NULL UNIQUE,
-    CONSTRAINT          fk_ard_account FOREIGN KEY (account_id) REFERENCES ACCOUNT(account_id)
+    name                VARCHAR(32)
+);
+
+CREATE TABLE WEB_ACCOUNT
+(
+    web_account_id      INT(4)      AUTO_INCREMENT PRIMARY KEY,
+    ard_id              INT(4)      NOT NULL,
+    user                VARCHAR(25) NOT NULL UNIQUE,
+    pass                BINARY(20)  NOT NULL,
+    CONSTRAINT          fk_web_account_ard FOREIGN KEY (ard_id) REFERENCES ARD(ard_id)
 );
 
 CREATE TABLE NOTIFICATION
 (
     notification_id     INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    account_id          INT(4)      NOT NULL,
+    web_account_id      INT(4)      NOT NULL,
     viewed              BOOLEAN     NOT NULL,
     type                VARCHAR(16) NOT NULL,
     payload_id          INT(4)      NOT NULL,
-    CONSTRAINT          fk_notification_account FOREIGN KEY (account_id) REFERENCES ACCOUNT(account_id)
+    CONSTRAINT          fk_notification_account FOREIGN KEY (web_account_id) REFERENCES WEB_ACCOUNT(web_account_id)
 );
 
 CREATE TABLE RESOURCE
@@ -44,11 +45,18 @@ CREATE TABLE RESOURCE
 CREATE TABLE MAP
 (
     map_id              INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    account_id          INT(4)      NOT NULL,
     name                VARCHAR(64) NOT NULL,
     resource_id         INT(4)      NOT NULL,
-    CONSTRAINT          fk_map_account FOREIGN KEY (account_id) REFERENCES ACCOUNT(account_id),
     CONSTRAINT          fk_map_resource FOREIGN KEY (resource_id) REFERENCES RESOURCE(resource_id)
+);
+
+CREATE TABLE WEB_ACCOUNT_OWNED_MAPS
+(
+    web_account_id      INT(4),
+    map_id              INT(4),
+    PRIMARY KEY(web_account_id, map_id),
+    CONSTRAINT          fk_web_account_owned_maps_web_account FOREIGN KEY (web_account_id) REFERENCES WEB_ACCOUNT(web_account_id),
+    CONSTRAINT          fk_web_account_owned_maps_map FOREIGN KEY (map_id) REFERENCES MAP(map_id)
 );
 
 CREATE TABLE MARKER
