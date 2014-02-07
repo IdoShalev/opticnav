@@ -1,4 +1,4 @@
-package opticnav.ardd.net;
+package opticnav.ardd.protocol;
 
 import java.io.Flushable;
 import java.io.IOException;

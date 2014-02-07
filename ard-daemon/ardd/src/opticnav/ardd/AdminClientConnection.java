@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import opticnav.ardd.net.PrimitiveReader;
-import opticnav.ardd.net.PrimitiveWriter;
+import opticnav.ardd.protocol.PrimitiveReader;
+import opticnav.ardd.protocol.PrimitiveWriter;
 
 public class AdminClientConnection implements Runnable {
     private Closeable closeableStream;

@@ -1,4 +1,4 @@
-package opticnav.ardd.net;
+package opticnav.ardd.protocol;
 
 public final class Protocol {
     public static final int DEFAULT_ADMIN_PORT = 8888;

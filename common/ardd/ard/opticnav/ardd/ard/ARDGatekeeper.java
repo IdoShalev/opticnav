@@ -1,4 +1,4 @@
-package opticnav.ardd;
+package opticnav.ardd.ard;
 
 public interface ARDGatekeeper {
     public interface RequestPassConfCode {
