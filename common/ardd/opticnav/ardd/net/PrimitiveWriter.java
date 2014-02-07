@@ -28,6 +28,10 @@ public class PrimitiveWriter implements Flushable {
         this.out.write(buf);
     }
     
+    public void writeUInt8(int value) throws IOException {
+        this.out.write(value);
+    }
+    
     public void writeUInt16(int value) throws IOException {
         writeUInt(value, 2);
     }

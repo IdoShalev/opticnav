@@ -1,10 +1,8 @@
 package opticnav.ardd.net;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.ServerSocket;
 
@@ -39,8 +37,8 @@ public class NetAdminServer implements Runnable {
     private void dispatchClient(Socket client)
             throws InterruptedException, IOException
     {
-        BufferedReader input = new BufferedReader(new InputStreamReader(client.getInputStream(), "UTF-8"));
-        BufferedWriter output = new BufferedWriter(new OutputStreamWriter(client.getOutputStream(), "UTF-8"));
+        InputStream input = client.getInputStream();
+        OutputStream output = client.getOutputStream();
         AdminClientConnection conn = new AdminClientConnection(client, input, output);
         new Thread(conn).start();
     }

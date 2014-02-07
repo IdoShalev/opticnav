@@ -34,6 +34,10 @@ public final class PrimitiveReader {
         return new String(buf, "UTF-8");
     }
     
+    public int readUInt8() throws IOException {
+        return this.in.read();
+    }
+    
     public int readUInt16() throws IOException {
         return (int)readUInt(2);
     }

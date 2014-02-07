@@ -1,8 +1,5 @@
 package opticnav.ardd;
 
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-
 /**
  * The Console Driver opens an admin client connection that is bound to
  * standard input/output streams. This class is primarily for testing purposes.
@@ -10,11 +7,8 @@ import java.io.OutputStreamWriter;
  */
 public class AdminConsoleDriver {
     public static void main(String[] args) {
-        InputStreamReader input = new InputStreamReader(System.in);
-        OutputStreamWriter output = new OutputStreamWriter(System.out);
-        
         AdminClientConnection conn;
-        conn = new AdminClientConnection(System.in, input, output);
+        conn = new AdminClientConnection(System.in, System.in, System.out);
         
         // run on the same thread
         conn.run();

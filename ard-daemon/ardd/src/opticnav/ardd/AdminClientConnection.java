@@ -1,49 +1,30 @@
 package opticnav.ardd;
 
-import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.EOFException;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import opticnav.ardd.net.PrimitiveReader;
+import opticnav.ardd.net.PrimitiveWriter;
 
 public class AdminClientConnection implements Runnable {
     private Closeable closeableStream;
-    private BufferedReader input;
-    private Writer output;
+    private PrimitiveReader input;
+    private PrimitiveWriter output;
     
     public AdminClientConnection(Closeable closeable,
-                Reader input, Writer output) {
+                InputStream input, OutputStream output) {
         this.closeableStream = closeable;
-        this.input = new BufferedReader(input);
-        this.output = output;
-    }
-    
-    private String readLine() throws IOException {
-        String header = input.readLine();
-        if (header == null) {
-            throw new EOFException();
-        } else {
-            return header.trim();
-        }
+        this.input = new PrimitiveReader(input);
+        this.output = new PrimitiveWriter(output);
     }
     
     @Override
     public void run() {
         try {
-            boolean running = true;
-            
-            while (running) {
-                String header = readLine();
-                
-                if (header.equals("q")) {
-                    running = false;
-                } else {
-                    output.write(header);
-                    output.write("\n");
-                    output.flush();
-                }
-            }
+            int code = input.readUInt8();
         } catch (EOFException e) {
             // The stream has ended. Quietly catch.
         } catch (IOException e) {
