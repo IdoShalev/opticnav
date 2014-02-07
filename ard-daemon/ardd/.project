@@ -18,7 +18,7 @@
 		<link>
 			<name>ardd</name>
 			<type>2</type>
-			<location>/cs/trunk/common/ardd</location>
+			<locationURI>Common/ardd</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>
