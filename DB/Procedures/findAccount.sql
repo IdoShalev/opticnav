@@ -17,8 +17,8 @@ BEGIN
     DECLARE id INT;
     SET id = 0;
 
-    SELECT account_id INTO id
-    FROM ACCOUNT
+    SELECT web_account_id INTO id
+    FROM WEB_ACCOUNT
     WHERE user = p_accountName;   
 
     RETURN id;

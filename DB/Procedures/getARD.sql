@@ -19,7 +19,9 @@ BEGIN
     
     SELECT ARD_id INTO id
         FROM ARD
-        WHERE p_accountID = account_id;
+        WHERE ARD_id = (SELECT ARD_id
+                        FROM WEB_ACCOUNT
+                        WHERE web_account_id = p_accountID);
 
     RETURN id;
 END//

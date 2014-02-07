@@ -17,8 +17,8 @@ BEGIN
     SET id = 0;
     SET flag = true;
 
-    SELECT account_id INTO id
-    FROM ACCOUNT
+    SELECT web_account_id INTO id
+    FROM WEB_ACCOUNT
     WHERE user = p_accountName;
 
     IF (id = 0) THEN

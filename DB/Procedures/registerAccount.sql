@@ -12,7 +12,7 @@ DELIMITER //
 CREATE PROCEDURE registerAccount 
 (p_accountName VARCHAR(25), p_password VARCHAR(20))
 BEGIN
-    INSERT INTO ACCOUNT
+    INSERT INTO WEB_ACCOUNT
     (user, pass)
     VALUES (p_accountName, UNHEX(SHA1(p_password)));
 END//

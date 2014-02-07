@@ -10,11 +10,11 @@ DROP PROCEDURE IF EXISTS createARD;
 DELIMITER //
 
 CREATE PROCEDURE createARD 
-(p_accountID INT, p_password VARCHAR(20))
+(p_ard_name VARCHAR(32), p_password VARCHAR(20))
 BEGIN
     INSERT INTO ARD
-    (account_id, passcode)
-    VALUES (p_accountID, UNHEX(SHA1(p_password)));
+    (name, passcode)
+    VALUES (p_ard_name, UNHEX(SHA1(p_password)));
 END//
 
 DELIMITER ;
