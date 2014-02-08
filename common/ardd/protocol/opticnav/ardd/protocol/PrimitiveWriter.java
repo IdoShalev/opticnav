@@ -22,6 +22,10 @@ public class PrimitiveWriter implements Flushable {
         this.out.write(buf);
     }
     
+    public void writeFixedBlob(byte[] buf) throws IOException {
+        this.out.write(buf);
+    }
+    
     public void writeString(String s) throws IOException {
         byte[] buf = s.getBytes("UTF-8");
         writeUInt16(buf.length);
@@ -34,6 +38,14 @@ public class PrimitiveWriter implements Flushable {
     
     public void writeUInt16(int value) throws IOException {
         writeUInt(value, 2);
+    }
+    
+    public void writeUInt31(int value) throws IOException {
+        if (value >= 0) {
+            writeUInt(value, 2);
+        } else {
+            throw new IOException("Out of range: " + value);
+        }
     }
 
     public void writeSInt32(int value) throws IOException {

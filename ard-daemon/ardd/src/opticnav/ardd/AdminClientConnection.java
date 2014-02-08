@@ -5,8 +5,10 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import opticnav.ardd.protocol.HexCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 
@@ -28,13 +30,13 @@ public class AdminClientConnection implements Runnable {
     @Override
     public void run() {
         try {
-            int code = input.readUInt8();
-            System.out.println(code);
+            HexCode hc = new HexCode(input.readFixedBlob(4));
+            System.out.println(hc);
+            output.flush();
         } catch (EOFException e) {
             // The stream has ended. Quietly catch.
         } catch (IOException e) {
-            // TODO - log somewhere
-            e.printStackTrace();
+            this.logger.log(Level.SEVERE, "IO Exception", e);
         } finally {
             // in all cases, close the stream if available
             

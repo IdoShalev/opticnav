@@ -4,5 +4,5 @@
 # connect to localhost:8888, the AdminClient port
 # convert output binary to hex
 
-./hexin.py | nc localhost 8888 # | ./hexout.py
+./hexin.py | nc localhost 8888 | ./hexout.py
 

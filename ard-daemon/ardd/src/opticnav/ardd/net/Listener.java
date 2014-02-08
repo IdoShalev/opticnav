@@ -1,5 +1,6 @@
 package opticnav.ardd.net;
 
+import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +29,6 @@ public final class Listener implements Runnable {
 
     @Override
     public void run() {
-        this.logger.info("Lol");
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
@@ -48,10 +48,20 @@ public final class Listener implements Runnable {
     private void dispatchClient(Socket client)
             throws InterruptedException, IOException
     {
-        InputStream input = client.getInputStream();
-        OutputStream output = client.getOutputStream();
-        Runnable conn = this.cs.create(client, input, output);
+        InputStream input;
+        OutputStream output;
+        
+        // Ensure the connection doesn't die
+        client.setKeepAlive(true);
+        // BlockingInputStream will not read incomplete buffers
+        input = new BlockingInputStream(client.getInputStream());
+        // BufferedOutputStream avoids sending small buffers over a network
+        // (the payload should be as big as it makes sense)
+        output = new BufferedOutputStream(client.getOutputStream());
+        
+        Thread connThread = new Thread(this.cs.create(client, input, output));
+        connThread.start();
+        
         this.logger.info("Client connection accepted: " + client.getInetAddress());
-        new Thread(conn).start();
     }
 }

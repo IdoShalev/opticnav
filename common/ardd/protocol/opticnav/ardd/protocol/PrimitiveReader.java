@@ -25,6 +25,15 @@ public final class PrimitiveReader {
         return buf;
     }
     
+    public byte[] readFixedBlob(int length) throws IOException {
+        assert length > 0;
+        
+        byte[] buf = new byte[length];
+        this.in.read(buf);
+        this.in.read
+        return buf;
+    }
+    
     public String readString() throws IOException {
         int length = readUInt16();
         assert length > 0;
@@ -40,6 +49,15 @@ public final class PrimitiveReader {
     
     public int readUInt16() throws IOException {
         return (int)readUInt(2);
+    }
+    
+    public int readUInt31() throws IOException {
+        int value = (int)readUInt(4);
+        if (value >= 0) {
+            return value;
+        } else {
+            throw new IOException("Out of range: " + value);
+        }
     }
     
     public int readSInt32() throws IOException {
