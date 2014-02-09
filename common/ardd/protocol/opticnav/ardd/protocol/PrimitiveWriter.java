@@ -42,7 +42,7 @@ public class PrimitiveWriter implements Flushable {
     
     public void writeUInt31(int value) throws IOException {
         if (value >= 0) {
-            writeUInt(value, 2);
+            writeUInt(value, 4);
         } else {
             throw new IOException("Out of range: " + value);
         }

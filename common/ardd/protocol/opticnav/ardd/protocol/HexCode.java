@@ -3,25 +3,21 @@ package opticnav.ardd.protocol;
 import java.util.Arrays;
 
 public class HexCode {
-    public class InvalidStringCodeException extends Exception {
-        private static final long serialVersionUID = 1L;
-    }
-
     private byte[] code;
     
-    public HexCode(String stringCode) throws InvalidStringCodeException {
+    public HexCode(String stringCode) {
         if (!isStringCodeValid(stringCode)) {
-            throw new InvalidStringCodeException();
+            throw new IllegalArgumentException("String code is not valid");
         }
         
         int len = stringCode.length();
         
         this.code = new byte[len/2];
         
-        for (int i = 0; i < len;) {
+        for (int i = 0; i < len; i += 2) {
             int val = 0;
-            for (int j = 0; j < 2; j++, i++) {
-                char c = stringCode.charAt(i);
+            for (int j = 0; j < 2; j++) {
+                char c = stringCode.charAt(i+j);
                 int digit = charToHexDigit(c);
                 
                 val = (val << 4) | digit;
@@ -32,7 +28,7 @@ public class HexCode {
     
     public HexCode(byte[] code) {
         if (code.length <= 0) {
-            throw new IllegalStateException();
+            throw new IllegalArgumentException();
         }
         
         this.code = new byte[code.length];
@@ -84,6 +80,27 @@ public class HexCode {
         return true;
     }
 
+    /**
+     * String must only include hexadecimal digits, and must have an even number
+     * of digits
+     */
+    public static boolean isStringCodeValid(String stringCode) {
+        if (stringCode.length() > 0 && stringCode.length() % 2 == 0) {
+            // string has non-empty, even length
+            for (int i = 0; i < stringCode.length(); i++) {
+                char c = stringCode.charAt(i);
+                if (charToHexDigit(c) < 0) {
+                    // not a hex digit - invalid
+                    return false;
+                }
+            }
+            // didn't complain - valid
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private static int charToHexDigit(char c) {
         if (c >= '0' && c <= '9') {
             return c - '0';
@@ -103,27 +120,6 @@ public class HexCode {
             return (char)('A' + digit - 0x0A);
         } else {
             throw new IllegalStateException();
-        }
-    }
-
-    /**
-     * String must only include hexadecimal digits, and must have an even number
-     * of digits
-     */
-    private static boolean isStringCodeValid(String stringCode) {
-        if (stringCode.length() > 0 && stringCode.length() % 2 == 0) {
-            // string has non-empty, even length
-            for (int i = 0; i < stringCode.length(); i++) {
-                char c = stringCode.charAt(i);
-                if (charToHexDigit(c) < 0) {
-                    // not a hex digit - invalid
-                    return false;
-                }
-            }
-            // didn't complain - valid
-            return true;
-        } else {
-            return false;
         }
     }
 }

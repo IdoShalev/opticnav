@@ -30,7 +30,6 @@ public final class PrimitiveReader {
         
         byte[] buf = new byte[length];
         this.in.read(buf);
-        this.in.read
         return buf;
     }
     
@@ -70,10 +69,10 @@ public final class PrimitiveReader {
         byte[] buf = new byte[bytes];
         this.in.read(buf);
         
-        int value = buf[0];
+        long value = (int)buf[0] & 0xFF;
         
         for (int i = 1; i < bytes; i++) {
-            value |= buf[i] >> (i*8);
+            value |= ((int)buf[i] & 0xFF) << (i*8);
         }
         
         return value;
