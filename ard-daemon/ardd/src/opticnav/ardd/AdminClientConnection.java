@@ -41,7 +41,7 @@ public class AdminClientConnection implements Runnable {
             // in all cases, close the stream if available
             
             if (this.closeableStream != null) {
-                // silently close
+                // quietly close
                 try { this.closeableStream.close(); } catch (IOException e) {}
             }
             

@@ -1,6 +1,5 @@
 package opticnav.web.opservlets;
 
-import java.io.IOException;
 import java.util.ResourceBundle;
 
 import javax.servlet.annotation.WebServlet;

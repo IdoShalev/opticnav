@@ -37,7 +37,7 @@
 		<link>
 			<name>ardd</name>
 			<type>2</type>
-			<locationURI>Common/ardd/</locationURI>
+			<locationURI>Common/ardd</locationURI>
 		</link>
 		<link>
 			<name>framework</name>

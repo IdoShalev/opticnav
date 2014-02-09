@@ -10,7 +10,7 @@ import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.Protocol;
 
-public class AdminBroker implements AdminConnection, AutoCloseable {
+public class AdminBroker implements AdminConnection {
     private Closeable closeable;
     private PrimitiveReader input;
     private PrimitiveWriter output;
@@ -43,7 +43,7 @@ public class AdminBroker implements AdminConnection, AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() throws IOException {
         this.closeable.close();
     }
 }

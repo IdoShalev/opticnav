@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import opticnav.web.arddbrokerpool.ARDdAdminPool;
 import opticnav.web.util.InputUtil;
 
 /**
@@ -27,7 +28,8 @@ import opticnav.web.util.InputUtil;
 public abstract class OperationServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    public abstract void operation(ResourceBundle text, HttpServletRequest req, ResponseObject response);
+    public abstract void operation(ResourceBundle text, HttpServletRequest req, ResponseObject response)
+            throws IOException;
 
     private void processOperation(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException
@@ -69,5 +71,16 @@ public abstract class OperationServlet extends HttpServlet {
     public final void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         processOperation(req, resp);
+    }
+    
+    public final ARDdAdminPool getARDdAdminPool() {
+        ARDdAdminPool pool;
+        pool = (ARDdAdminPool)getServletContext().getAttribute("ARDdAdminPool");
+        
+        if (pool == null) {
+            throw new IllegalStateException("ardd Admin Pool must be defined");
+        }
+        
+        return pool;
     }
 }

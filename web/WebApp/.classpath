@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="ardd/brokers/admin"/>
 	<classpathentry kind="src" path="ardd/admin"/>
 	<classpathentry kind="src" path="ardd/protocol"/>
 	<classpathentry kind="src" path="framework/src"/>

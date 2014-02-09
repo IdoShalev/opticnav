@@ -1,6 +1,8 @@
 package opticnav.ardd.admin;
 
-public class AdminConnectionException extends Exception {
+import java.io.IOException;
+
+public class AdminConnectionException extends IOException {
     private static final long serialVersionUID = 1L;
 
     public AdminConnectionException(String message) {

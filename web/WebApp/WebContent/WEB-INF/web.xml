@@ -11,4 +11,17 @@
     <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
     <param-value>opticnav.web.i18n.Messages</param-value>
   </context-param>
+  
+  <context-param>
+    <param-name>ARDdAdminHost</param-name>
+    <param-value>localhost</param-value>
+  </context-param>
+  <context-param>
+    <param-name>ARDdAdminPort</param-name>
+    <param-value>8888</param-value>
+  </context-param>
+  
+  <listener>
+    <listener-class>opticnav.web.listeners.ARDdAdminServletContextListener</listener-class>
+  </listener>
 </web-app>

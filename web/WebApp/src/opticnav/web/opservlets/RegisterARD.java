@@ -1,10 +1,13 @@
 package opticnav.web.opservlets;
 
+import java.io.IOException;
 import java.util.ResourceBundle;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 
+import opticnav.ardd.admin.AdminConnection;
+import opticnav.ardd.protocol.HexCode;
 import opticnav.web.OperationServlet;
 import opticnav.web.ResponseObject;
 import opticnav.web.util.InputUtil;
@@ -15,19 +18,27 @@ public class RegisterARD extends OperationServlet {
 
     @Override
     public void operation(ResourceBundle text, HttpServletRequest req,
-            ResponseObject response)
+            ResponseObject response) throws IOException
     {
         String confirmationCode = req.getParameter("code");
         boolean successful = false;
         String message;
         
         if (InputUtil.isEntered(confirmationCode)) {
-            successful = confirmationCode.equalsIgnoreCase("wXXyZ");
-            
-            if (successful) {
-                message = "registerard.successful";
+            if (HexCode.isStringCodeValid(confirmationCode)) {
+                HexCode code = new HexCode(confirmationCode);
+                
+                try (AdminConnection b = getARDdAdminPool().getAdminBroker()) {
+                    successful = b.registerARDWithConfCode(code) != 0;
+                    
+                    if (successful) {
+                        message = "registerard.successful";
+                    } else {
+                        message = "registerard.nomatch";
+                    }
+                }
             } else {
-                message = "registerard.nomatch";
+                message = "registerard.badcode";
             }
         } else {
             message = "registerard.nocode";

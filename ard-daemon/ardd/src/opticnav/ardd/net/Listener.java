@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import opticnav.ardd.protocol.BlockingInputStream;
+
 public final class Listener implements Runnable {
     public interface ConnectionSpawner {
         public Runnable create(Closeable closeable, InputStream input, OutputStream output);
