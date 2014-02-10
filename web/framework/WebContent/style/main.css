@@ -11,6 +11,12 @@ body {
 	border-radius: 10px;
 }
 
+.ard {
+	border-style:solid; 
+	border-color:grey; 
+	background-color:light-grey;
+}
+
 .errorMessage {
 	background: #faa;
 	border-color: #844;
