@@ -19,12 +19,7 @@ public class BlockingInputStream extends InputStream {
 
     @Override
     public int read() throws IOException {
-        int val;
-        do {
-            val = this.in.read();
-        } while (val == 0);
-        
-        return val;
+        return this.in.read();
     }
     
     @Override

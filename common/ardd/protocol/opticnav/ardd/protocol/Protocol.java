@@ -5,6 +5,9 @@ public final class Protocol {
     public static final int DEFAULT_ARD_PORT = 4444;
     
     public static final class AdminClient {
+        public static final int CONFCODE_BYTES = 4;
+        public static final int PASSCODE_BYTES = 16;
+        
         public enum Commands {
             REGISTER(0, "registerARDWithConfCode"),
             ARDINFO(1, "ardInfo");

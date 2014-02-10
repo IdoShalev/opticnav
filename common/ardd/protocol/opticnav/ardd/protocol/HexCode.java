@@ -100,6 +100,10 @@ public class HexCode {
             return false;
         }
     }
+    
+    public static boolean isStringCodeValid(String stringCode, int bytes) {
+        return stringCode.length() == bytes*2 && isStringCodeValid(stringCode);
+    }
 
     private static int charToHexDigit(char c) {
         if (c >= '0' && c <= '9') {

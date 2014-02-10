@@ -64,7 +64,7 @@ public final class PrimitiveReader {
     }
     
     private long readUInt(int bytes) throws IOException {
-        assert bytes < 8;
+        assert bytes > 0 && bytes < 8;
         
         byte[] buf = new byte[bytes];
         this.in.read(buf);

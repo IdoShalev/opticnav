@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.protocol.HexCode;
+import opticnav.ardd.protocol.Protocol;
 import opticnav.web.OperationServlet;
 import opticnav.web.ResponseObject;
 import opticnav.web.util.InputUtil;
@@ -25,7 +26,7 @@ public class RegisterARD extends OperationServlet {
         String message;
         
         if (InputUtil.isEntered(confirmationCode)) {
-            if (HexCode.isStringCodeValid(confirmationCode)) {
+            if (HexCode.isStringCodeValid(confirmationCode, Protocol.AdminClient.CONFCODE_BYTES)) {
                 HexCode code = new HexCode(confirmationCode);
                 
                 try (AdminConnection b = getARDdAdminPool().getAdminBroker()) {

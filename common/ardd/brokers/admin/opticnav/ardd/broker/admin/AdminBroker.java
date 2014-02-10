@@ -28,8 +28,8 @@ public class AdminBroker implements AdminConnection {
     @Override
     public int registerARDWithConfCode(HexCode code)
             throws AdminConnectionException {
-        if (code.getByteCount() != 4) {
-            throw new IllegalArgumentException("Code must be 4 bytes");
+        if (code.getByteCount() != Protocol.AdminClient.CONFCODE_BYTES) {
+            throw new IllegalArgumentException("Code is wrong size: " + code.getByteCount());
         }
         
         try {

@@ -1,4 +1,4 @@
-package opticnav.ardd;
+package opticnav.ardd.connections;
 
 import java.io.Closeable;
 import java.io.EOFException;
@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 import opticnav.ardd.protocol.HexCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
+import opticnav.ardd.protocol.Protocol;
+import opticnav.ardd.protocol.Protocol.AdminClient.Commands;
 
 public class AdminClientConnection implements Runnable {
     private Closeable closeableStream;
@@ -30,9 +32,19 @@ public class AdminClientConnection implements Runnable {
     @Override
     public void run() {
         try {
-            HexCode hc = new HexCode(input.readFixedBlob(4));
-            System.out.println(hc);
-            output.flush();
+            int code = this.input.readUInt8();
+            
+            // XXX - proper handling of commands
+            
+            if (code == Protocol.AdminClient.Commands.REGISTER.getCode()) {
+                byte[] hexCode = this.input.readFixedBlob(Protocol.AdminClient.CONFCODE_BYTES);
+                HexCode hc = new HexCode(hexCode);
+                boolean match = hc.equals(new HexCode("AABBCCDD"));
+
+                this.output.writeUInt31(match?44:0);
+                output.flush();
+            }
+            
         } catch (EOFException e) {
             // The stream has ended. Quietly catch.
         } catch (IOException e) {

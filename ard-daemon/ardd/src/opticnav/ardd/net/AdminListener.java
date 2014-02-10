@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Logger;
 
-import opticnav.ardd.AdminClientConnection;
+import opticnav.ardd.connections.AdminClientConnection;
 
 public class AdminListener implements Runnable {
     private final class Spawner implements Listener.ConnectionSpawner {
