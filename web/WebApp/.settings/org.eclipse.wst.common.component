@@ -2,11 +2,10 @@
     <wb-module deploy-name="WebApp">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/framework/src"/>
-        <wb-resource deploy-path="/" source-path="/framework/WebContent"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/ardd/admin"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/ardd/protocol"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/ardd/brokers/admin"/>
+        <wb-resource deploy-path="/WEB-INF" source-path="/WEB-INF"/>
         <property name="context-root" value="WebApp"/>
         <property name="java-output-path" value="/WebApp/build/classes"/>
     </wb-module>
