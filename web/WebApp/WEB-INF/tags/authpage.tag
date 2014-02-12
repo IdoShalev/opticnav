@@ -7,5 +7,11 @@
 <div class="body">
 <jsp:doBody />
 </div>
-<div class="footer"></div>
+<div class="footer"><ul>
+    <li>About Us</li>
+    <li>Contact Us</li>
+    <li>Help</li>
+    <li>Get Application</li>
+    <li>Copyright © 2014, OpticNav</li>
+</ul></div>
 </t:page>
