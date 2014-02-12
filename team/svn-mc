@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Mark changes by adding unversioned and removing missing.
+# It's much like "git add -A" in git.
+
+# svn-mc                    Marks changes in current directory
+# svn-mc some/other/path    Marks changes in specified path
+
+if [ -n "$1" ]; then
+    cd "$1"
+fi
+
+UNVERSIONED=$(svn st | grep ^? | sed 's/?    //')
+MISSING=$(svn st | grep ^! | sed 's/!    //')
+
+# add unversioned
+if [ -n "$UNVERSIONED"  ]; then
+    echo $UNVERSIONED | xargs svn add
+fi
+
+# remove missing
+if [ -n "$MISSING" ]; then
+    echo $MISSING | xargs svn rm
+fi
+
