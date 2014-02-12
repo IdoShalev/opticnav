@@ -8,25 +8,30 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import opticnav.ardd.protocol.HexCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
-import opticnav.ardd.protocol.Protocol;
-import opticnav.ardd.protocol.Protocol.AdminClient.Commands;
 
-public class AdminClientConnection implements Runnable {
+public final class ClientConnection implements Runnable {
+    public interface CommandHandler {
+        public void command(int code, PrimitiveReader in, PrimitiveWriter out)
+                throws IOException;
+    }
+    
     private Closeable closeableStream;
     private PrimitiveReader input;
     private PrimitiveWriter output;
+    private CommandHandler cmd;
     private Logger logger;
     
-    public AdminClientConnection(Closeable closeable,
-                InputStream input, OutputStream output) {
+    public ClientConnection(Closeable closeable,
+                InputStream input, OutputStream output,
+                CommandHandler cmd) {
         this.closeableStream = closeable;
         this.input = new PrimitiveReader(input);
         this.output = new PrimitiveWriter(output);
         // XXX
         this.logger = Logger.getAnonymousLogger();
+        this.cmd = cmd;
     }
     
     @Override
@@ -34,17 +39,7 @@ public class AdminClientConnection implements Runnable {
         try {
             int code = this.input.readUInt8();
             
-            // XXX - proper handling of commands
-            
-            if (code == Protocol.AdminClient.Commands.REGISTER.getCode()) {
-                byte[] hexCode = this.input.readFixedBlob(Protocol.AdminClient.CONFCODE_BYTES);
-                HexCode hc = new HexCode(hexCode);
-                boolean match = hc.equals(new HexCode("AABBCCDD"));
-
-                this.output.writeUInt31(match?44:0);
-                output.flush();
-            }
-            
+            this.cmd.command(code, this.input, this.output);
         } catch (EOFException e) {
             // The stream has ended. Quietly catch.
         } catch (IOException e) {

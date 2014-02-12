@@ -6,14 +6,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Logger;
 
-import opticnav.ardd.connections.AdminClientConnection;
+import opticnav.ardd.connections.AdminClientCommandHandler;
+import opticnav.ardd.connections.ClientConnection;
 
 public class AdminListener implements Runnable {
     private final class Spawner implements Listener.ConnectionSpawner {
         @Override
         public Runnable create(Closeable closeable, InputStream input,
                 OutputStream output) {
-            return new AdminClientConnection(closeable, input, output);
+            return new ClientConnection(closeable, input, output,
+                    new AdminClientCommandHandler());
         }
     }
 
