@@ -1,15 +1,11 @@
 package opticnav.web.arddbrokerpool;
 
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
 import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.admin.AdminConnectionException;
 import opticnav.ardd.broker.admin.AdminBroker;
-import opticnav.ardd.protocol.BlockingInputStream;
-import opticnav.ardd.protocol.PrimitiveReader;
-import opticnav.ardd.protocol.PrimitiveWriter;
 
 public class ARDdAdminPool implements AutoCloseable {
     public static class BrokerNotAvailableException extends AdminConnectionException {
@@ -31,19 +27,9 @@ public class ARDdAdminPool implements AutoCloseable {
     public AdminConnection getAdminBroker()
             throws BrokerNotAvailableException {
         try {
-            Socket sock = new Socket(host, port);
+            Socket socket = new Socket(host, port);
             
-            BlockingInputStream blocking_in;
-            BufferedOutputStream buffered_out;
-            blocking_in = new BlockingInputStream(sock.getInputStream());
-            buffered_out = new BufferedOutputStream(sock.getOutputStream());
-            
-            PrimitiveReader in;
-            PrimitiveWriter out;
-            in = new PrimitiveReader(blocking_in);
-            out = new PrimitiveWriter(buffered_out);
-            
-            return new AdminBroker(sock, in, out);
+            return AdminBroker.fromSocket(socket);
         } catch (IOException e) {
             throw new BrokerNotAvailableException(e);
         }

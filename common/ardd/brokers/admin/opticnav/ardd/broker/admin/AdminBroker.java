@@ -1,10 +1,13 @@
 package opticnav.ardd.broker.admin;
 
+import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
+import java.net.Socket;
 
 import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.admin.AdminConnectionException;
+import opticnav.ardd.protocol.BlockingInputStream;
 import opticnav.ardd.protocol.HexCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
@@ -45,5 +48,19 @@ public class AdminBroker implements AdminConnection {
     @Override
     public void close() throws IOException {
         this.closeable.close();
+    }
+    
+    public static AdminBroker fromSocket(Socket sock) throws IOException {
+        BlockingInputStream blocking_in;
+        BufferedOutputStream buffered_out;
+        blocking_in = new BlockingInputStream(sock.getInputStream());
+        buffered_out = new BufferedOutputStream(sock.getOutputStream());
+        
+        PrimitiveReader in;
+        PrimitiveWriter out;
+        in = new PrimitiveReader(blocking_in);
+        out = new PrimitiveWriter(buffered_out);
+        
+        return new AdminBroker(sock, in, out);
     }
 }
