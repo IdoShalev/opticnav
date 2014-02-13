@@ -36,7 +36,7 @@ public class AdminBroker implements AdminConnection {
         }
         
         try {
-            this.output.writeUInt8(Protocol.AdminClient.Commands.REGISTER.getCode());
+            this.output.writeUInt8(Protocol.AdminClient.Commands.REGARD.getCode());
             this.output.writeFixedBlob(code.getByteArray());
             this.output.flush();
             return this.input.readUInt31();
@@ -47,6 +47,7 @@ public class AdminBroker implements AdminConnection {
 
     @Override
     public void close() throws IOException {
+        this.output.flush();
         this.closeable.close();
     }
     
@@ -61,6 +62,7 @@ public class AdminBroker implements AdminConnection {
         in = new PrimitiveReader(blocking_in);
         out = new PrimitiveWriter(buffered_out);
         
+        sock.setKeepAlive(true);
         return new AdminBroker(sock, in, out);
     }
 }

@@ -2,6 +2,8 @@ package opticnav.ardd.test;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -23,6 +25,28 @@ public class PrimitiveReaderWriterTests {
         
         in = new PrimitiveReader(pipedInput);
         out = new PrimitiveWriter(pipedOutput);
+    }
+    
+    @Test
+    public void writeTest() throws IOException {
+        // Just in case there are doubts about the piped streams
+        ByteArrayOutputStream bout = new ByteArrayOutputStream(4);
+        PrimitiveWriter w = new PrimitiveWriter(bout);
+        w.writeUInt8(100);
+        w.flush();
+        
+        assertEquals(bout.toByteArray()[0], 100);
+    }
+    
+    @Test
+    public void readWriteTest() throws IOException {
+        ByteArrayOutputStream bout = new ByteArrayOutputStream(4);
+        PrimitiveWriter w = new PrimitiveWriter(bout);
+        w.writeUInt8(100);
+        w.flush();
+        ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
+        PrimitiveReader r = new PrimitiveReader(bin);
+        assertEquals(100, r.readUInt8());
     }
 
     @Test

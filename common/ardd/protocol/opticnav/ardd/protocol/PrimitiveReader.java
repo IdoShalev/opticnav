@@ -43,7 +43,7 @@ public final class PrimitiveReader {
     }
     
     public int readUInt8() throws IOException {
-        return this.in.read();
+        return (int)readUInt(1);
     }
     
     public int readUInt16() throws IOException {

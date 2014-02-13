@@ -9,8 +9,8 @@ public final class Protocol {
         public static final int PASSCODE_BYTES = 16;
         
         public enum Commands {
-            REGISTER(0, "registerARDWithConfCode"),
-            ARDINFO(1, "ardInfo");
+            REGARD(0, "regard"),
+            ARDINFO(1, "ardinfo");
             
             private int code;
             private String command;

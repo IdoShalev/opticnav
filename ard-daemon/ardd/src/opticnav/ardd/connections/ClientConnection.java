@@ -37,9 +37,11 @@ public final class ClientConnection implements Runnable {
     @Override
     public void run() {
         try {
-            int code = this.input.readUInt8();
-            
-            this.cmd.command(code, this.input, this.output);
+            while (true) {
+                int code = this.input.readUInt8();
+                
+                this.cmd.command(code, this.input, this.output);
+            }
         } catch (EOFException e) {
             // The stream has ended. Quietly catch.
         } catch (IOException e) {

@@ -1,5 +1,6 @@
 package opticnav.ardd.protocol;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -19,7 +20,11 @@ public class BlockingInputStream extends InputStream {
 
     @Override
     public int read() throws IOException {
-        return this.in.read();
+        int bytes = this.in.read();
+        if (bytes < 0) {
+            throw new EOFException();
+        }
+        return bytes;
     }
     
     @Override
@@ -41,7 +46,7 @@ public class BlockingInputStream extends InputStream {
         while (sz < len) {
             int ret = this.in.read(b, sz+off, b.length-sz);
             if (ret < 0) {
-                return ret;
+                throw new EOFException();
             } else {
                 sz += ret;
             }
