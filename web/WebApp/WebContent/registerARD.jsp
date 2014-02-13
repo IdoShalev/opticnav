@@ -1,4 +1,4 @@
-<t:page title="Register Device" js="registerARD.js">
+<t:authpage title="Register Device" js="registerARD.js">
     <h1>Register Device</h1>
     Current Registered Device:<br/>
     <p id="ard">None</p>
@@ -7,4 +7,4 @@
     <input type="submit" value="Register" id="register" />
     <t:message name="message" />
     </form>
-</t:page>
+</t:authpage>

@@ -3,15 +3,15 @@
 <%@attribute name="title" required="true" %>
 <%@attribute name="js" required="false" %>
 <t:page title="${title}" js="${js}">
-<div class="logo"></div><div class="menu"></div><div class="messages"></div>
+<div class="logo"></div><div id="cssmenu"><ul><li><span>Menu</span><ul><li><span>Start Session</span></li><li><span>Maps</span></li><li><span>Register Device</span></li><li><span>Logout</span></li></ul></li></ul></div><div class="messages"></div>
 <div class="body">
 <jsp:doBody />
 </div>
-<div class="footer"><ul>
-    <li>About Us</li>
-    <li>Contact Us</li>
-    <li>Help</li>
-    <li>Get Application</li>
-    <li>Copyright © 2014, OpticNav</li>
+<div><ul class="footer">
+    <li class="footer">About Us</li>
+    <li class="footer">Contact Us</li>
+    <li class="footer">Help</li>
+    <li class="footer">Get Application</li>
+    <li class="footer">Copyright © 2014, OpticNav</li>
 </ul></div>
 </t:page>
