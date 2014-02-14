@@ -4,13 +4,12 @@ $(function() {
 		
 		var credentials = {code: code};
 		
-		$.post("op/RegisterARD", credentials,function(data) {
-			if (data.successful){
-				showSuccessMessage("message", data.message);
-				updateARDS();
-			}
-			showErrorMessage("message", data.message);
-		}, "json");
+		performOpWithMessage("op/RegisterARD", credentials, "message",
+			function(success) {
+				if (success) {
+					updateARDs();
+				}
+			});
 		
 		event.preventDefault();
 	});
@@ -19,8 +18,10 @@ $(function() {
         $.post("op/ARDInfo",function(data) {
         	var id = data.id;
         	var name = data.name;
-        	$('#ard').html(id+" "+name);
+        	$('#ard_id').text(id);
+        	$('#ard_name').text(name);
         }, "json");
 	}
-	$("#ARDInfo").ready(updateARDs);
+	
+	updateARDs();
 });

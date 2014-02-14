@@ -1,7 +1,27 @@
 body {
 	font-family: Helvetica, Arial, sans;
 	
-	background: #bbf;
+	background: #fff;
+    margin: 0;
+}
+
+#header, #footer {
+	margin: 0;
+	padding: 1em;
+	background: #ccc;
+}
+
+#content {
+	margin: 2em;
+}
+
+.registeredARD {
+    border: 0px solid;
+    border-radius: 4px;
+    padding: 1em;
+    margin: 1em;
+    background-color: #88f;
+    width: 200px;
 }
 
 .errorMessage, .successMessage {

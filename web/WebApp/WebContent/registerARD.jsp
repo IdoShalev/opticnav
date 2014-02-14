@@ -1,9 +1,8 @@
 <t:authpage title="Register Device" js="registerARD.js">
-    <h1>Register Device</h1>
-    Current Registered Device:<br/>
-    <p id="ard">None</p>
+    Currently Registered Device
+    <div class="registeredARD"><span id="ard_id"></span><span id="ard_name"></span></div>
     <form id="RegisterARD" action="op/RegisterARD">
-    Confirmation Code:<br/> <input type="text" name="code" id="code" />
+    <input type="text" name="code" id="code" placeholder="Confirmation code" autocomplete="off" />
     <input type="submit" value="Register" id="register" />
     <t:message name="message" />
     </form>
