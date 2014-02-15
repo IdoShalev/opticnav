@@ -101,7 +101,7 @@ public class PrimitiveReaderWriterTests {
         byte[] buf_clone = buf.clone();
         
         out.writeBlob(buf);
-        assertArrayEquals(buf_clone, in.readBlob());
+        assertArrayEquals(buf_clone, in.readBlob(6));
     }
     
     @Test

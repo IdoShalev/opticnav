@@ -16,9 +16,11 @@ public final class PrimitiveReader {
         this.in = input;
     }
     
-    public byte[] readBlob() throws IOException {
+    public byte[] readBlob(int max_length) throws IOException {
         int length = readSInt32();
-        assert length > 0;
+        if (length <= 0 || length > max_length) {
+            throw new IOException("Illegal length: " + length);
+        }
         
         byte[] buf = new byte[length];
         this.in.read(buf);
@@ -26,7 +28,9 @@ public final class PrimitiveReader {
     }
     
     public byte[] readFixedBlob(int length) throws IOException {
-        assert length > 0;
+        if (length <= 0) {
+            throw new IOException("Illegal length: " + length);
+        }
         
         byte[] buf = new byte[length];
         this.in.read(buf);
@@ -35,7 +39,6 @@ public final class PrimitiveReader {
     
     public String readString() throws IOException {
         int length = readUInt16();
-        assert length > 0;
         
         byte[] buf = new byte[length];
         this.in.read(buf);
