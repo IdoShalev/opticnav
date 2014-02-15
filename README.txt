@@ -17,6 +17,12 @@ Directory hierarchy:
 /common
 	Contains sources shared among multiple projects
 
+/DB
+	Database intialization and test scripts
+
+/team
+	All files and scripts used to ensure team progress.
+
 /web
 	Java EE, Glassfish
 
