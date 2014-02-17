@@ -4,7 +4,20 @@ body {
 	background: #fff;
     margin: 0;
 }
-
+/*index centering*/
+#center
+{
+    width: 50%; margin-left: auto; margin-right: auto;min-width: 60px; min-height: 60px;
+}
+#leftContent
+{
+    overflow: auto;
+    float: left ; height: 100%;width:50%;min-width: 1px; min-height: 1px;
+}
+#rightLogin
+{
+  float: left ; height: 100%;width:50%; min-height: 1px;
+}
 #header, #footer {
 	margin: 0;
 	padding: 1em;
@@ -71,6 +84,7 @@ ul li.footer{
   padding: 0;
   margin: 0;
   line-height: 1;
+  list-style-type: none;
 }
 /*
     give the menu an area, it will disappear if the cursor is not in that area
@@ -79,6 +93,7 @@ ul li.footer{
   display: block;
   padding: 15px 44px;
   position: relative;
+  list-style-type: none;
 }
 /*
     hides the menu
@@ -87,6 +102,7 @@ ul li.footer{
   opacity: 0;
   visibility: hidden;
   position: absolute;
+  list-style-type: none;
 }
 /*
     shows the menu
@@ -95,6 +111,7 @@ ul li.footer{
   opacity: 1;
   visibility: visible;
   position: absolute;
+  list-style-type: none;
 }
 /*
     menu area for the drop down menu
@@ -102,4 +119,5 @@ ul li.footer{
 #cssmenu > ul > li > ul {
   width: 200px;
   position: absolute;
+  list-style-type: none;
 }
