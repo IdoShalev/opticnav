@@ -9,3 +9,7 @@ bless \
 wireshark \
 aptitude \
 
+# Gradle is needed for building the project
+# If gradle-1.11 is not available (returns error), install the PPA repo
+sudo apt-get install gradle-1.11 || sudo add-apt-repository ppa:cwchien/gradle
+
