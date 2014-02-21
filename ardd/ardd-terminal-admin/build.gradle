@@ -1,0 +1,14 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.7
+
+dependencies {
+    compile project(':ardd-admin-broker')
+}
+
+repositories {
+    mavenCentral()
+}
+
+mainClassName = "opticnav.ardd.terminal.admin.AdminTerminalDriver"

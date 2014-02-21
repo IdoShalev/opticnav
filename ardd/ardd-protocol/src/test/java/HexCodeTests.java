@@ -1,5 +1,3 @@
-package opticnav.ardd.test;
-
 import static org.junit.Assert.*;
 import opticnav.ardd.protocol.HexCode;
 
