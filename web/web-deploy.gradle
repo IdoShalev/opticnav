@@ -1,0 +1,11 @@
+// This is an ugly workaround for deploying the .war to Glassfish.
+// If there's a faster/better way (NOT cargo), I'd love to know...
+
+task deploy(type:Exec) {
+    workingDir "$System.env.HOME/glassfish4/glassfish"
+    
+    commandLine "bin/asadmin", 'deploy', '--contextroot', 'OpticNav', '--name', 'OpticNav', '--force', war.archivePath
+}
+
+deploy.dependsOn war
+
