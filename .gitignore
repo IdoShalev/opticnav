@@ -1,4 +1,10 @@
 *.class
 bin/
+build/
+.gradle/
 .metadata/
 
+# Eclipse metadata is ignored, as Gradle generates them
+.classpath
+.project
+.settings/
