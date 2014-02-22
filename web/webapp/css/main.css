@@ -1,3 +1,5 @@
+@import "menu.css";
+
 body {
 	font-family: Helvetica, Arial, sans;
 	
@@ -18,7 +20,7 @@ body {
 {
   float: left ; height: 100%;width:50%; min-height: 1px;
 }
-#header, #footer {
+header, footer {
 	margin: 0;
 	padding: 1em;
 	background: #ccc;
@@ -28,19 +30,13 @@ body {
 	margin: 2em;
 }
 
-.registeredARD {
+.registered_ard {
     border: 0px solid;
     border-radius: 4px;
     padding: 1em;
     margin: 1em;
     background-color: #88f;
     width: 200px;
-}
-
-.ard {
-	border-style:solid; 
-	border-color:grey; 
-	background-color:light-grey;
 }
 
 .message {
@@ -64,64 +60,4 @@ body {
 .message_ok {
     background-color: #dfd;
     border-color: #4b4;
-}
-
-ul.footer{
- list-style-type: none;
- display: inline;
- margin: 0px;
- padding: 0px;
-}
-ul li.footer{
- margin: 0px;
- padding: 5px;
- float:left;
-}
-/* header menu stuff*/
-/*
-    unindent it to look like a drop down menu http://jsfiddle.net/q7gFR/1/
-*/
-#cssmenu,
-#cssmenu ul,
-#cssmenu ul li,
-#cssmenu ul li a {
-  padding: 0;
-  margin: 0;
-  line-height: 1;
-  list-style-type: none;
-}
-/*
-    give the menu an area, it will disappear if the cursor is not in that area
-*/
-#cssmenu ul > li > a {
-  display: block;
-  padding: 15px 44px;
-  position: relative;
-  list-style-type: none;
-}
-/*
-    hides the menu
-*/
-#cssmenu > ul > li > ul {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
-  list-style-type: none;
-}
-/*
-    shows the menu
-*/
-#cssmenu > ul > li:hover > ul {
-  opacity: 1;
-  visibility: visible;
-  position: absolute;
-  list-style-type: none;
-}
-/*
-    menu area for the drop down menu
-*/
-#cssmenu > ul > li > ul {
-  width: 200px;
-  position: absolute;
-  list-style-type: none;
 }

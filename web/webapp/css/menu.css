@@ -1,0 +1,59 @@
+ul.footer{
+ list-style-type: none;
+ display: inline;
+ margin: 0px;
+ padding: 0px;
+}
+ul li.footer{
+ margin: 0px;
+ padding: 5px;
+ float:left;
+}
+/* header menu stuff*/
+/*
+    unindent it to look like a drop down menu http://jsfiddle.net/q7gFR/1/
+*/
+#cssmenu,
+#cssmenu ul,
+#cssmenu ul li,
+#cssmenu ul li a {
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  list-style-type: none;
+}
+/*
+    give the menu an area, it will disappear if the cursor is not in that area
+*/
+#cssmenu ul > li > a {
+  display: block;
+  padding: 15px 44px;
+  position: relative;
+  list-style-type: none;
+}
+/*
+    hides the menu
+*/
+#cssmenu > ul > li > ul {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  list-style-type: none;
+}
+/*
+    shows the menu
+*/
+#cssmenu > ul > li:hover > ul {
+  opacity: 1;
+  visibility: visible;
+  position: absolute;
+  list-style-type: none;
+}
+/*
+    menu area for the drop down menu
+*/
+#cssmenu > ul > li > ul {
+  width: 200px;
+  position: absolute;
+  list-style-type: none;
+}
