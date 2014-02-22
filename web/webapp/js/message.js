@@ -1,29 +1,30 @@
-function performOpWithMessage(url, obj, message_id, callback) {
-	$.post(url, obj, function(data) {
-		if (data.successful){
-			showSuccessMessage(message_id, data.message);
-		} else {
-			showErrorMessage(message_id, data.message);
-		}
+function showMessage(elem, ok, message) {
+	if (ok) {
+		showOkMessage(elem, message);
+	} else {
+		showErrorMessage(elem, message);
+	}
+}
+
+function showErrorMessage(elem, message) {
+	elem.text(message);
+	elem.fadeIn();
+    elem.removeClass("message_ok");
+    elem.addClass("message_error");
+}
+
+function showOkMessage(elem, message) {
+	elem.text(message);
+	elem.fadeIn();
+    elem.removeClass("message_error");
+    elem.addClass("message_ok");
+}
+
+function ajaxMessageClosure(elem) {
+	return function(data) {
+		var ok = data.status >= 200 && data.status <= 299;
+		var json = data.responseJSON;
 		
-		if (typeof(callback) !== 'undefined') {
-			callback(data.successful);
-		}
-	}, "json").error(function() {
-		showErrorMessage(message_id, "There was an internal server error");
-	});
-}
-
-function showErrorMessage(id, message) {
-	var elem = $("#" + id);
-	elem.text(message);
-	elem.fadeIn();
-	elem.attr('class', 'errorMessage');
-}
-
-function showSuccessMessage(id, message) {
-	var elem = $("#" + id);
-	elem.text(message);
-	elem.fadeIn();
-	elem.attr('class', 'successMessage');
+		showMessage(elem, ok, json.message);
+	}
 }

@@ -9,13 +9,4 @@
 <div id="content" class="body">
 <jsp:doBody />
 </div>
-<%--
-<div id="footer"><ul class="footer">
-    <li class="footer">About Us</li>
-    <li class="footer">Contact Us</li>
-    <li class="footer">Help</li>
-    <li class="footer">Get Application</li>
-    <li class="footer">Copyright © 2014, OpticNav</li>
-</ul></div>
- --%>
 </t:page>

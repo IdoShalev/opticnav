@@ -12,16 +12,15 @@
     <param-value>Messages</param-value>
   </context-param>
   
-  <context-param>
-    <param-name>ARDdAdminHost</param-name>
-    <param-value>localhost</param-value>
-  </context-param>
-  <context-param>
-    <param-name>ARDdAdminPort</param-name>
-    <param-value>8888</param-value>
-  </context-param>
-  
-  <listener>
-    <listener-class>opticnav.web.listeners.ARDdAdminServletContextListener</listener-class>
-  </listener>
+    <!-- Need to declare this for spring controllers to work -->
+    <servlet>
+        <servlet-name>spring</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>spring</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 </web-app>

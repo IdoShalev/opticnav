@@ -37,28 +37,35 @@ body {
     width: 200px;
 }
 
-.errorMessage, .successMessage {
-	border: 2px solid;
-	padding: 1em;
-	margin: 1em;
-	border-radius: 10px;
-}
-
 .ard {
 	border-style:solid; 
 	border-color:grey; 
 	background-color:light-grey;
 }
 
-.errorMessage {
-	background: #faa;
-	border-color: #844;
+.message {
+	display: none;
+    transition: background-color 0.5s, border-color 0.5s;
+    /* subtle gradient */
+    background-image: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.05));
+    border-radius: 4px;
+    border: 1px solid;
+    padding: 1em;
+    margin: 1em;
+    min-width: 200px;
+    width: 200px;
 }
 
-.successMessage {
-	background: #7CFC00;
-	border-color: #008000;
+.message_error {
+    background-color: #fdd;
+    border-color: #f66;
 }
+
+.message_ok {
+    background-color: #dfd;
+    border-color: #4b4;
+}
+
 ul.footer{
  list-style-type: none;
  display: inline;
@@ -69,9 +76,6 @@ ul li.footer{
  margin: 0px;
  padding: 5px;
  float:left;
-}
-.invisible {
-	display: none;
 }
 /* header menu stuff*/
 /*

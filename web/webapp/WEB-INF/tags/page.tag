@@ -8,13 +8,14 @@
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title><c:out value="${title}" /></title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/style/main.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" />
   <script src="${pageContext.request.contextPath}/js/jquery-2.1.0.min.js"></script>
   <script src="${pageContext.request.contextPath}/js/message.js"></script>
   <c:forTokens items="${js}" delims="," var="jscript">
   <script src="${pageContext.request.contextPath}/js/${jscript}"></script></c:forTokens>
 </head>
 
+<body>
 <div id="header">
 <div class="logo"></div>
 <div id="cssmenu"><ul>
@@ -39,8 +40,6 @@
     <li class="footer">Get Application</li>
     <li class="footer">Copyright © 2014, OpticNav</li>
 </ul></div>
- 
-<%-- <body><jsp:doBody /></body> --%>
-
+</body>
 
 </html>

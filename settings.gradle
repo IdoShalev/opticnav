@@ -1,3 +1,4 @@
+rootProject.name='opticnav'
 // All subprojects to build
 include 'ardd'
 include 'ardd-protocol'

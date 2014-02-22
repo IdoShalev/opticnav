@@ -2,20 +2,19 @@ $(function() {
 	$("#RegisterARD").submit(function(event) {
 		var code = $("#code").val();
 		
-		var credentials = {code: code};
-		
-		performOpWithMessage("op/RegisterARD", credentials, "message",
-			function(success) {
-				if (success) {
-					updateARDs();
-				}
-			});
+		$.ajax({
+			type: "POST",
+			url: "rest/ard",
+			data: code,
+			contentType: "text/plain",
+			complete: ajaxMessageClosure($("#message"))
+		});
 		
 		event.preventDefault();
 	});
 	
-	function updateARDs() {
-        $.post("op/ARDInfo",function(data) {
+	function updateARD() {
+        $.get("rest/ard",function(data) {
         	var id = data.id;
         	var name = data.name;
         	$('#ard_id').text(id);
@@ -23,5 +22,5 @@ $(function() {
         }, "json");
 	}
 	
-	updateARDs();
+	updateARD();
 });
