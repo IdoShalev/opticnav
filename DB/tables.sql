@@ -1,17 +1,8 @@
-CREATE TABLE ARD
-(
-    ARD_id              INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    passcode            BINARY(20)  NOT NULL UNIQUE,
-    name                VARCHAR(32)
-);
-
 CREATE TABLE WEB_ACCOUNT
 (
     web_account_id      INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    ard_id              INT(4)      NULL,
     user                VARCHAR(25) NOT NULL UNIQUE,
-    pass                BINARY(20)  NOT NULL,
-    CONSTRAINT          fk_web_account_ard FOREIGN KEY (ard_id) REFERENCES ARD(ard_id)
+    pass                BINARY(20)  NOT NULL
 );
 
 CREATE TABLE NOTIFICATION
