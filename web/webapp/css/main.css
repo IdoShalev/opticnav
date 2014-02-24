@@ -61,3 +61,7 @@ header, footer {
     background-color: #dfd;
     border-color: #4b4;
 }
+
+#logo{
+	background-image: url(OpticNavLogo.png);
+}

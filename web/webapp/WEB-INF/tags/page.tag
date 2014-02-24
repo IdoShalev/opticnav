@@ -8,17 +8,15 @@
     css="main.css,${css}"
     js="jquery-2.1.0.min.js,message.js,${js}">
 <header>
-<div id="cssmenu">
+<div id="nav">
 <ul>
-    <li>
-    <span><a href="index.jsp">Home Page</a></span>
-    <ul>
-        <li><span><a href="registerAccount.jsp">New Account</a></span></li>
-        <li><span><a href="contact.jsp">Contact Us</a></span></li>
-        <li><span><a href="about.jsp">About</a></span></li>
-        <li><span><a href="help.jsp">Help</a></span></li>
-    </ul>
-    </li>
+    <li><a href="index.jsp"><span>Home Page</span></a></li>
+    <li><a href="registerAccount.jsp"><span>New Account</span></a></li>
+    <li><a href="download.jsp"><span>Download</span></a></li>
+    <%--DO NOT DELETE thank you.<li><div id="logo"><a href="index.jsp"><span></span></a></div></li> --%>
+    <li><a href="contact.jsp"><span>Contact Us</span></a></li>
+    <li><a href="about.jsp"><span>About</span></a></li>
+    <li><a href="help.jsp"><span>Help</span></a></li>
 </ul>
 </div>
 </header>
@@ -29,11 +27,11 @@
 
 <footer>
 <ul class="footer">
-    <li class="footer">About Us</li>
-    <li class="footer">Contact Us</li>
-    <li class="footer">Help</li>
-    <li class="footer">Get Application</li>
-    <li class="footer">Copyright &copy; 2014</li>
+    <li class="footer"><span>About Us</span></li>
+    <li class="footer"><span>Contact Us</span></li>
+    <li class="footer"><span>Help</span></li>
+    <li class="footer"><span>Get Application</span></li>
+    <li class="footer"><span>Copyright &copy; 2014</span></li>
 </ul>
 </footer>
 
