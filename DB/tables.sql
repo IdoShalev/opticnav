@@ -5,16 +5,6 @@ CREATE TABLE WEB_ACCOUNT
     pass                BINARY(20)  NOT NULL
 );
 
-CREATE TABLE NOTIFICATION
-(
-    notification_id     INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    web_account_id      INT(4)      NOT NULL,
-    viewed              BOOLEAN     NOT NULL,
-    type                VARCHAR(16) NOT NULL,
-    payload_id          INT(4)      NOT NULL,
-    CONSTRAINT          fk_notification_account FOREIGN KEY (web_account_id) REFERENCES WEB_ACCOUNT(web_account_id)
-);
-
 CREATE TABLE RESOURCE
 (
     resource_id         INT(4)      AUTO_INCREMENT PRIMARY KEY,
@@ -49,18 +39,3 @@ CREATE TABLE MARKER
     CONSTRAINT          fk_marker_map FOREIGN KEY (map_id) REFERENCES MAP(map_id),
     CONSTRAINT          fk_marker_resource FOREIGN KEY (resource_id) REFERENCES RESOURCE(resource_id)
 );
-
-CREATE TABLE MESSAGE
-(
-    message_id          INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    text                VARCHAR(64) NOT NULL
-);
-
-CREATE TABLE INVITE
-(
-    invite_id           INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    text                VARCHAR(64) NOT NULL,
-    ardDeamonInstance   BINARY(16)  NOT NULL,
-    sessionID           INT(4)      NOT NULL
-);
-
