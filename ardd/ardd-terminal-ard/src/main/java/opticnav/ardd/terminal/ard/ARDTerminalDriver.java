@@ -1,4 +1,4 @@
-package opticnav.ardd.terminal.admin;
+package opticnav.ardd.terminal.ard;
 
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -6,27 +6,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import opticnav.ardd.admin.AdminConnection;
-import opticnav.ardd.broker.admin.AdminBroker;
+import opticnav.ardd.broker.ard.ARDBroker;
 import opticnav.ardd.protocol.Protocol;
 import opticnav.ardd.terminal.shared.Command;
 import opticnav.ardd.terminal.shared.TerminalDriver;
-import static opticnav.ardd.protocol.Protocol.AdminClient.Commands.*;
 
-public class AdminTerminalDriver {
+public class ARDTerminalDriver {
     public static void main(String[] args) throws Exception {
         String host = "localhost";
-        int port = Protocol.DEFAULT_ADMIN_PORT;
-        Map<String, Command<AdminConnection>> commandMap = new HashMap<>();
-        
-        commandMap.put(REGARD.getCommand(), new RegARDCommand());
+        int port = Protocol.DEFAULT_ARD_PORT;
+        Map<String, Command<ARDBroker>> commandMap = new HashMap<>();
         
         Scanner in = new Scanner(System.in);
         PrintWriter out = new PrintWriter(System.out, true);
         Socket socket = new Socket(host, port);
         
-        try (AdminBroker conn = AdminBroker.fromSocket(socket)) {
-            TerminalDriver<AdminConnection> driver;
+        try (ARDBroker conn = ARDBroker.fromSocket(socket)) {
+            TerminalDriver<ARDBroker> driver;
             driver = new TerminalDriver<>(in, out, commandMap, conn);
             driver.run();
         }

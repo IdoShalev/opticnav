@@ -5,11 +5,11 @@ sourceCompatibility = 1.7
 
 dependencies {
     compile project(':ardd-terminal-shared')
-    compile project(':ardd-admin-broker')
+    compile project(':ardd-ard-broker')
 }
 
 repositories {
     mavenCentral()
 }
 
-mainClassName = "opticnav.ardd.terminal.admin.AdminTerminalDriver"
+mainClassName = "opticnav.ardd.terminal.ard.ARDTerminalDriver"

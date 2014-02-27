@@ -6,8 +6,9 @@ import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.admin.AdminConnectionException;
 import opticnav.ardd.protocol.HexCode;
 import opticnav.ardd.protocol.Protocol;
+import opticnav.ardd.terminal.shared.Command;
 
-public class RegARDCommand implements Command {
+public class RegARDCommand implements Command<AdminConnection> {
     @Override
     public void execute(AdminConnection conn, PrintWriter out, String[] args)
             throws AdminConnectionException {
