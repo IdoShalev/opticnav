@@ -1,4 +1,4 @@
-<t:page title="Welcome to OpticNav">
+<t:page title="Welcome to OpticNav" js="login.js">
 <div id=center>
     <div id=content>
         <div id=leftContent>
@@ -6,7 +6,8 @@
             To be written properly.
         </div>
         <div id=rightLogin>
-            <form action="index.jsp">
+         <t:message name="message" />
+            <form id="login" action="index.jsp">
                 Username: <input type="text" id="username"><br/>
                 Password: <input type="password" id="password"><br/>
                 <input type="submit" value="Login" />
