@@ -7,16 +7,17 @@
     title="${title}"
     css="main.css,${css}"
     js="jquery-2.1.0.min.js,message.js,${js}">
+    <link rel="icon" type="image/png" href="./css/images/Weblogo.png"/>
 <header>
 <div id="nav">
 <ul>
-    <li><a href="index.jsp"><span>Home Page</span></a></li>
-    <li><a href="registerAccount.jsp"><span>New Account</span></a></li>
-    <li><a href="download.jsp"><span>Download</span></a></li>
-    <%--DO NOT DELETE thank you.<li><div id="logo"><a href="index.jsp"><span></span></a></div></li> --%>
-    <li><a href="contact.jsp"><span>Contact Us</span></a></li>
-    <li><a href="about.jsp"><span>About</span></a></li>
-    <li><a href="help.jsp"><span>Help</span></a></li>
+    <li><div id="buttons"><a href="index.jsp">Home Page</a></div></li>
+    <li><div id="buttons"><a href="registerAccount.jsp">New Account</a></div></li>
+    <li><div id="buttons"><a href="download.jsp">Download</a></div></li>
+    <li><a href="index.jsp"><div id="logo"></div></a></li>
+    <li><div id="buttons"><a href="contact.jsp">Contact Us</a></div></li>
+    <li><div id="buttons"><a href="about.jsp">About</a></div></li>
+    <li><div id="buttons"><a href="help.jsp">Help</a></div></li>
 </ul>
 </div>
 </header>
@@ -25,14 +26,14 @@
 <jsp:doBody />
 </div>
 
-<footer>
-<ul class="footer">
-    <li class="footer"><span>About Us</span></li>
-    <li class="footer"><span>Contact Us</span></li>
-    <li class="footer"><span>Help</span></li>
-    <li class="footer"><span>Get Application</span></li>
-    <li class="footer"><span>Copyright &copy; 2014</span></li>
+<div id=footer>
+<ul>
+    <li><span>About Us</span></li>
+    <li><span>Contact Us</span></li>
+    <li><span>Help</span></li>
+    <li><span>Get Application</span></li>
+    <li><span>OpticNav &copy; 2014</span></li>
 </ul>
-</footer>
+</div>
 
 </t:page_base>

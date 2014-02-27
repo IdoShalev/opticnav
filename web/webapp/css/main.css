@@ -63,5 +63,8 @@ header, footer {
 }
 
 #logo{
-	background-image: url(OpticNavLogo.png);
+	background:url(../css/images/OpticNavLogo.png) no-repeat;width:140px;height:40px;background-size: 100%;
+}
+#buttons{
+	width:140px;height:40px;align:left;text-align:center;border:2px solid;
 }
