@@ -12,26 +12,26 @@
 <c:if test="true">
     <div id="nav">
         <ul>
-            <li><a href="index.jsp"><div id="buttons">Home Page</div></a></li>
-            <li><a href="registerAccount.jsp"><div id="buttons">New Account</div></a></li>
-            <li><a href="download.jsp"><div id="buttons">Download</div></a></li>
-            <li><a href="index.jsp"><div id="logo"></div></a></li>
-            <li><a href="contact.jsp"><div id="buttons">Contact Us</div></a></li>
-            <li><a href="about.jsp"><div id="buttons">About</div></a></li>
-            <li><a href="help.jsp"><div id="buttons">Help</div></a></li>
+            <li><t:link href="/"><div id="buttons">Home Page</div></t:link></li>
+            <li><t:link href="/register"><div id="buttons">New Account</div></t:link></li>
+            <li><t:link href="/download"><div id="buttons">Download</div></t:link></li>
+            <li><t:link href="/"><div id="logo"></div></t:link></li>
+            <li><t:link href="/contact"><div id="buttons">Contact Us</div></t:link></li>
+            <li><t:link href="/about"><div id="buttons">About</div></t:link></li>
+            <li><t:link href="/help"><div id="buttons">Help</div></t:link></li>
         </ul>
     </div>
 </c:if>
 <c:if test="false">
     <div id="nav">
 		<ul>
-		    <li><a href="index.jsp"><div id="buttons">Home Page</div></a></li>
-		    <li><a href="registerAccount.jsp"><div id="buttons">New Account</div></a></li>
-		    <li><a href="download.jsp"><div id="buttons">Get Application</div></a></li>
-		    <li><a href="index.jsp"><div id="logo"></div></a></li>
-		    <li><a href="contact.jsp"><div id="buttons">Contact Us</div></a></li>
-		    <li><a href="about.jsp"><div id="buttons">About</div></a></li>
-		    <li><a href="help.jsp"><div id="buttons">Help</div></a></li>
+		    <li><t:link href="/"><div id="buttons">Home Page</div></t:link></li>
+		    <li><t:link href="/register"><div id="buttons">New Account</div></t:link></li>
+		    <li><t:link href="/download"><div id="buttons">Get Application</div></t:link></li>
+		    <li><t:link href="/"><div id="logo"></div></t:link></li>
+		    <li><t:link href="/contact"><div id="buttons">Contact Us</div></t:link></li>
+		    <li><t:link href="/about"><div id="buttons">About</div></t:link></li>
+		    <li><t:link href="/help"><div id="buttons">Help</div></t:link></li>
 		</ul>
 	</div>
 </c:if>
@@ -44,10 +44,10 @@
 
 <div id=footer>
 <ul>
-    <li><a href="about.jsp"><div id="buttons">About</div></a></li>
-    <li><a href="contact.jsp"><div id="buttons">Contact Us</div></a></li>
-    <li><a href="help.jsp"><div id="buttons">Help</div></a></li>
-    <li><a href="download.jsp"><div id="buttons">Get Application</div></a></li>
+    <li><t:link href="/about"><div id="buttons">About</div></t:link></li>
+    <li><t:link href="/contact"><div id="buttons">Contact Us</div></t:link></li>
+    <li><t:link href="/help"><div id="buttons">Help</div></t:link></li>
+    <li><t:link href="/download"><div id="buttons">Get Application</div></t:link></li>
 </ul>
 </div>
 

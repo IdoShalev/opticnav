@@ -14,6 +14,7 @@
    <mvc:resources location="/css/" mapping="/css/**" />
   
    <context:component-scan base-package="opticnav.web.rest" />
+   <context:component-scan base-package="opticnav.web.controllers" />
    <mvc:annotation-driven />
    
    	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
@@ -24,5 +25,13 @@
 	<bean id="ARDdAdminPool" class="opticnav.web.arddbrokerpool.ARDdAdminPool">
         <constructor-arg type="String"><value>localhost</value></constructor-arg>
         <constructor-arg type="int"><value>8888</value></constructor-arg>
+    </bean>
+    
+    <bean id="viewResolver"
+    class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass"
+            value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
     </bean>
 </beans>
