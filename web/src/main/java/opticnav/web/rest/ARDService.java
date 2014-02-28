@@ -20,18 +20,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/rest/ard/**")
 public class ARDService extends Controller {
-	@Autowired
-	private ARDdAdminPool pool;
-	
-	@RequestMapping(method=RequestMethod.POST)
-	public Message register(@RequestBody String confirmationCode, HttpServletResponse resp)
-	        throws Exception {
+    @Autowired
+    private ARDdAdminPool pool;
+    
+    @RequestMapping(method=RequestMethod.POST)
+    public Message register(@RequestBody String confirmationCode, HttpServletResponse resp)
+            throws Exception {
         if (InputUtil.isEntered(confirmationCode)) {
-            if (HexCode.isStringCodeValid(confirmationCode, Protocol.AdminClient.CONFCODE_BYTES)) {
+            if (HexCode.isStringCodeValid(confirmationCode, Protocol.CONFCODE_BYTES)) {
                 HexCode code = new HexCode(confirmationCode);
                 
                 try (AdminConnection b = this.pool.getAdminBroker()) {
-                	boolean successful = b.registerARDWithConfCode(code) != 0;
+                    boolean successful = b.registerARDWithConfCode(code) != 0;
                     
                     if (successful) {
                         return ok("registerard.successful");
@@ -45,11 +45,11 @@ public class ARDService extends Controller {
         } else {
             return badRequest("registerard.nocode");
         }
-	}
-	
-	@RequestMapping(method=RequestMethod.GET)
-	@ResponseBody
-	public ARD info() {
-		return new ARD(44, "Tacocat");
-	}
+    }
+    
+    @RequestMapping(method=RequestMethod.GET)
+    @ResponseBody
+    public ARD info() {
+        return new ARD(44, "Tacocat");
+    }
 }
