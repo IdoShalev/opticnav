@@ -2,8 +2,7 @@ package opticnav.persistence.web;
 
 import java.sql.CallableStatement;
 import java.sql.SQLException;
-
-import com.mysql.jdbc.Connection;
+import java.sql.Types;
 
 public class WebDBBroker {
     private java.sql.Connection conn;
@@ -13,7 +12,7 @@ public class WebDBBroker {
     }
     
     public boolean registerAccount(String username, String password) throws WebDBBrokerException {
-        try (CallableStatement cs = conn.prepareCall("{call registerAccount(?, ?}")) {
+        try (CallableStatement cs = conn.prepareCall("{call registerAccount(?, ?)}")) {
             cs.setString(1, username);
             cs.setString(2, password);
             
@@ -27,20 +26,23 @@ public class WebDBBroker {
     }    
     
     public int verify(String username, String password) throws WebDBBrokerException {
-        try (CallableStatement cs = conn.prepareCall("{? = call validateUser(?, ?}")) {
+        try (CallableStatement cs = conn.prepareCall("{? = call validateUser(?, ?)}")) {
             cs.setString(2, username);
             cs.setString(3, password);
+            cs.registerOutParameter(1, Types.INTEGER);
             
-            cs.execute();
-            
-            return cs.getInt(1);
+            cs.execute();            
+            int id = cs.getInt(1);            
+            cs.close();            
+            return id;            
         } catch (SQLException e) {
             throw new WebDBBrokerException(e);
         }
     }
     
+    /*
     public int findName(String username) throws WebDBBrokerException {
-        try (CallableStatement cs = conn.prepareCall("{? = call findAccount(?}")) {
+        try (CallableStatement cs = conn.prepareCall("{? = call findAccount(?)}")) {
             cs.setString(2, username);
             
             cs.execute();
@@ -52,7 +54,7 @@ public class WebDBBroker {
     }
     
     public Boolean checkName(String username) throws WebDBBrokerException {
-        try (CallableStatement cs = conn.prepareCall("{? = call checkAccountName(?}")) {
+        try (CallableStatement cs = conn.prepareCall("{? = call checkAccountName(?)}")) {
             cs.setString(2, username);
             
             cs.execute();
@@ -62,4 +64,5 @@ public class WebDBBroker {
             throw new WebDBBrokerException(e);
         }
     }
+    */
 }

@@ -7,37 +7,39 @@ import opticnav.persistence.web.WebDBBroker;
 import opticnav.persistence.web.WebDBBrokerException;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AccountTest {
-    private java.sql.Connection conn;
-    private WebDBBroker broker;
+    static private java.sql.Connection conn;
+    static private WebDBBroker broker;
     
     @BeforeClass
-    public void startUp() throws ClassNotFoundException, SQLException {
-        // mysql connection stuff lol
-        Class.forName("com.mysql.jdbc.Driver");
+    static public void startUp() throws ClassNotFoundException, SQLException {
         
-        this.conn = DriverManager.getConnection("jdbc:mysql://localhost/OpticNavDB?"
-                    + "user=test&password=password");
+        //reset the database
         
+        // mysql connection stuff
+        Class.forName("com.mysql.jdbc.Driver");        
+        conn = DriverManager.getConnection("jdbc:mysql://localhost/OpticNavDB?"
+                    + "user=test&password=password");        
         broker = new WebDBBroker(conn);
     }
     
     @AfterClass
-    public void tearDown() throws SQLException {
+    static public void tearDown() throws SQLException {
         conn.close();
     }
     
+    /*
     @Test
     public void testregisterAccount() throws WebDBBrokerException {
-        assertEquals(true, broker.registerAccount("kay", "password"));
+        assertEquals(true, broker.registerAccount("java", "password"));
     }
+    */
     
     @Test
     public void testverify() throws WebDBBrokerException {
-        assertEquals(1, broker.verify("kay", "password"));
+        assertEquals(1, broker.verify("java", "password"));
     }
 }
