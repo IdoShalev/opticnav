@@ -2,8 +2,8 @@
 <div id=content>
  <div id=rightLogin>
          <form id="login" action="index.jsp">
-             Username: <input type="text" id="username"><br/>
-             Password: <input type="password" id="password"><br/>
+             <input type="text" placeholder="Username" id="username"><br/>
+             <input type="password" placeholder="Password" id="password"><br/>
              <input type="submit" value="Login" />
          </form>
          <t:message name="message" />

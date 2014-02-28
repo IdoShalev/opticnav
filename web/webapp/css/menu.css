@@ -30,7 +30,7 @@
  padding: 5px;
 }
 #footer{
-	right:50px;position:absolute; bottom:0;
+	;position:absolute; bottom:0;vertical-align:middle;
 }
 /* header menu stuff*/
 /*
