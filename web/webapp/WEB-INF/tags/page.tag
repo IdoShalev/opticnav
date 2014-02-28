@@ -11,13 +11,13 @@
 <header>
 <div id="nav">
 <ul>
-    <li><div id="buttons"><a href="index.jsp">Home Page</a></div></li>
-    <li><div id="buttons"><a href="registerAccount.jsp">New Account</a></div></li>
-    <li><div id="buttons"><a href="download.jsp">Download</a></div></li>
+    <li><a href="index.jsp"><div id="buttons">Home Page</div></a></li>
+    <li><a href="registerAccount.jsp"><div id="buttons">New Account</div></a></li>
+    <li><a href="download.jsp"><div id="buttons">Download</div></a></li>
     <li><a href="index.jsp"><div id="logo"></div></a></li>
-    <li><div id="buttons"><a href="contact.jsp">Contact Us</a></div></li>
-    <li><div id="buttons"><a href="about.jsp">About</a></div></li>
-    <li><div id="buttons"><a href="help.jsp">Help</a></div></li>
+    <li><a href="contact.jsp"><div id="buttons">Contact Us</div></a></li>
+    <li><a href="about.jsp"><div id="buttons">About</div></a></li>
+    <li><a href="help.jsp"><div id="buttons">Help</div></a></li>
 </ul>
 </div>
 </header>

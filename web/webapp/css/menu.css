@@ -1,32 +1,36 @@
+#logo{
+    background:url(../css/images/OpticNavLogo.png) no-repeat;width:180px;height:40px;background-size: 100%;
+}
+
 #nav li {
-    display: inline;
-    float:left
+    display: table-cell;
+  width: auto;
 }
 
 #nav ul{
-	list-style-type:none;
-margin:0;
-padding:40px;
+	width: 100%;
+  display: table;
+  table-layout: fixed;
+  padding:0px;
+
 }
 
-#nav{margin:auto;
-width:60%;}
-
+#nav{
+	margin-left:auto;
+}
 
 #footer ul{
  list-style-type: none;
  display: inline;
- margin: 0px;
  padding: 0px;
 }
 #footer ul li{
- margin: 0px;
+ display: table-cell;
+  width: auto;
  padding: 5px;
- float:right;
 }
 #footer{
-	margin:auto;
-width:60%;
+	right:50px;position:absolute; bottom:0;
 }
 /* header menu stuff*/
 /*

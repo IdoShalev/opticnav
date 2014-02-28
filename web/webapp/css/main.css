@@ -1,5 +1,5 @@
 @import "menu.css";
-
+@import "buttons.css";
 body {
 	font-family: Helvetica, Arial, sans;
 	
@@ -7,18 +7,13 @@ body {
     margin: 0;
 }
 /*index centering*/
-#center
-{
-    width: 50%; margin-left: auto; margin-right: auto;min-width: 60px; min-height: 60px;
-}
+
 #leftContent
 {
-    overflow: auto;
-    float: left ; height: 100%;width:50%;min-width: 1px; min-height: 1px;
 }
 #rightLogin
 {
-  float: left ; height: 100%;width:50%; min-height: 1px;
+  float: right ;
 }
 header, footer {
 	margin: 0;
@@ -27,7 +22,8 @@ header, footer {
 }
 
 #content {
-	margin: 2em;
+	margin: 3em;
+	padding-left:6em;padding-right:6em;
 }
 
 .registered_ard {
@@ -62,9 +58,4 @@ header, footer {
     border-color: #4b4;
 }
 
-#logo{
-	background:url(../css/images/OpticNavLogo.png) no-repeat;width:140px;height:40px;background-size: 100%;
-}
-#buttons{
-	width:140px;height:40px;align:left;text-align:center;border:2px solid;
-}
+
