@@ -25,6 +25,10 @@ function ajaxMessageClosure(elem) {
 		var ok = data.status >= 200 && data.status <= 299;
 		var json = data.responseJSON;
 		
-		showMessage(elem, ok, json.message);
+		if (json != null && json.message !== undefined) {
+			showMessage(elem, ok, json.message);
+		} else {
+			showErrorMessage(elem, data.status + ": " + data.statusText);
+		}
 	}
 }
