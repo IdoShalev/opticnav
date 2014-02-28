@@ -1,5 +1,8 @@
 package opticnav.ardd;
 
+import org.apache.commons.math3.random.RandomGenerator;
+import org.apache.commons.math3.random.Well1024a;
+
 import opticnav.ardd.net.ARDListener;
 import opticnav.ardd.net.AdminListener;
 
@@ -8,8 +11,15 @@ public class DaemonDriver {
         int adminPort = opticnav.ardd.protocol.Protocol.DEFAULT_ADMIN_PORT;
         int ardPort   = opticnav.ardd.protocol.Protocol.DEFAULT_ARD_PORT;
         
+        ARDPendingList   pending   = new ARDPendingList();
+        ARDPersistedList persisted = new ARDPersistedList();
+        RandomGenerator  randomGen = new Well1024a();
+        
+        ARDListsManager ardListsManager;
+        ardListsManager = new ARDListsManager(pending, persisted, randomGen);
+        
         AdminListener adminServer = new AdminListener(adminPort);
-        ARDListener   ardServer   = new ARDListener(ardPort);
+        ARDListener   ardServer   = new ARDListener(ardPort, ardListsManager);
         new Thread(adminServer).start();
         new Thread(ardServer).start();
     }

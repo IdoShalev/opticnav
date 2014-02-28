@@ -5,6 +5,8 @@ sourceCompatibility = 1.7
 
 dependencies {
     compile project(':ardd-protocol')
+    compile 'org.apache.commons:commons-collections4:4.0'
+    compile 'org.apache.commons:commons-math3:3.2'
 }
 
 repositories {

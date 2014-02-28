@@ -14,7 +14,7 @@ import opticnav.ardd.protocol.PrimitiveWriter;
 public final class ClientConnection implements Runnable {
     public interface CommandHandler {
         public void command(int code, PrimitiveReader in, PrimitiveWriter out)
-                throws IOException;
+                throws IOException, InterruptedException;
     }
     
     private Closeable closeableStream;
@@ -37,10 +37,14 @@ public final class ClientConnection implements Runnable {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
                 int code = this.input.readUInt8();
                 
-                this.cmd.command(code, this.input, this.output);
+                try {
+                    this.cmd.command(code, this.input, this.output);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
         } catch (EOFException e) {
             // The stream has ended. Quietly catch.

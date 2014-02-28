@@ -31,6 +31,8 @@ public final class Protocol {
     }
     
     public static final class ARDClient {
+        public static final int NO_ARD = 0;
+        
         public enum Commands {
             REQCODES(0, "reqcodes");
             
