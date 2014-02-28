@@ -6,13 +6,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Logger;
 
+import opticnav.ardd.connections.ARDClientCommandHandler;
+import opticnav.ardd.connections.ClientConnection;
+
 public class ARDListener implements Runnable {
     private final class Spawner implements Listener.ConnectionSpawner {
         @Override
         public Runnable create(Closeable closeable, InputStream input,
                 OutputStream output) {
-            // TODO
-            return null;
+            return new ClientConnection(closeable, input, output,
+                    new ARDClientCommandHandler());
         }
     }
 

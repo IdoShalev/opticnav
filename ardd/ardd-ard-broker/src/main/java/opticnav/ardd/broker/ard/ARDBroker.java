@@ -6,9 +6,13 @@ import java.io.IOException;
 import java.net.Socket;
 
 import opticnav.ardd.ard.ARDConnection;
+import opticnav.ardd.ard.ARDConnectionException;
 import opticnav.ardd.protocol.BlockingInputStream;
+import opticnav.ardd.protocol.HexCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
+import opticnav.ardd.protocol.Protocol;
+import opticnav.ardd.protocol.Protocol.ARDClient.Commands;
 
 public class ARDBroker implements ARDConnection {
     private Closeable closeable;
@@ -28,6 +32,30 @@ public class ARDBroker implements ARDConnection {
         this.closeable.close();
     }
     
+    @Override
+    public int requestPassConfCodes(RequestPassConfCodesCallback c)
+            throws ARDConnectionException {
+        try {
+            byte[] passCodeBytes, confCodeBytes;
+            
+            this.output.writeUInt8(Commands.REQCODES.getCode());
+            this.output.flush();
+            
+            passCodeBytes = this.input.readFixedBlob(Protocol.PASSCODE_BYTES);
+            confCodeBytes = this.input.readFixedBlob(Protocol.CONFCODE_BYTES);
+            HexCode passCode = new HexCode(passCodeBytes);
+            HexCode confCode = new HexCode(confCodeBytes);
+            
+            c.passConfCodes(passCode, confCode);
+            
+            int result = this.input.readUInt8();
+            
+            return result;
+        } catch (IOException e) {
+            throw new ARDConnectionException(e);
+        }
+    }
+
     public static ARDBroker fromSocket(Socket sock) throws IOException {
         BlockingInputStream blocking_in;
         BufferedOutputStream buffered_out;

@@ -12,7 +12,7 @@ public class AdminClientCommandHandler implements ClientConnection.CommandHandle
     public void command(int code, PrimitiveReader in, PrimitiveWriter out)
             throws IOException {
         if (code == Protocol.AdminClient.Commands.REGARD.getCode()) {
-            byte[] hexCode = in.readFixedBlob(Protocol.AdminClient.CONFCODE_BYTES);
+            byte[] hexCode = in.readFixedBlob(Protocol.CONFCODE_BYTES);
             HexCode hc = new HexCode(hexCode);
             boolean match = hc.equals(new HexCode("AABBCCDD"));
 

@@ -12,6 +12,7 @@ import opticnav.ardd.protocol.HexCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.Protocol;
+import opticnav.ardd.protocol.Protocol.AdminClient.Commands;
 
 public class AdminBroker implements AdminConnection {
     private Closeable closeable;
@@ -31,12 +32,12 @@ public class AdminBroker implements AdminConnection {
     @Override
     public int registerARDWithConfCode(HexCode code)
             throws AdminConnectionException {
-        if (code.getByteCount() != Protocol.AdminClient.CONFCODE_BYTES) {
+        if (code.getByteCount() != Protocol.CONFCODE_BYTES) {
             throw new IllegalArgumentException("Code is wrong size: " + code.getByteCount());
         }
         
         try {
-            this.output.writeUInt8(Protocol.AdminClient.Commands.REGARD.getCode());
+            this.output.writeUInt8(Commands.REGARD.getCode());
             this.output.writeFixedBlob(code.getByteArray());
             this.output.flush();
             return this.input.readUInt31();

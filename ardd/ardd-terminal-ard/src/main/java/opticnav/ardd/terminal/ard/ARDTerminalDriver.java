@@ -10,12 +10,15 @@ import opticnav.ardd.broker.ard.ARDBroker;
 import opticnav.ardd.protocol.Protocol;
 import opticnav.ardd.terminal.shared.Command;
 import opticnav.ardd.terminal.shared.TerminalDriver;
+import static opticnav.ardd.protocol.Protocol.ARDClient.Commands.*;
 
 public class ARDTerminalDriver {
     public static void main(String[] args) throws Exception {
         String host = "localhost";
         int port = Protocol.DEFAULT_ARD_PORT;
         Map<String, Command<ARDBroker>> commandMap = new HashMap<>();
+        
+        commandMap.put(REQCODES.getCommand(), new ReqCodesCommand());
         
         Scanner in = new Scanner(System.in);
         PrintWriter out = new PrintWriter(System.out, true);

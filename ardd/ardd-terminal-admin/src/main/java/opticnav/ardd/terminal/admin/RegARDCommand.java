@@ -15,7 +15,7 @@ public class RegARDCommand implements Command<AdminConnection> {
         if (args.length == 1) {
             String confcodeString = args[0];
             
-            if (HexCode.isStringCodeValid(confcodeString, Protocol.AdminClient.CONFCODE_BYTES)) {
+            if (HexCode.isStringCodeValid(confcodeString, Protocol.CONFCODE_BYTES)) {
                 HexCode confcode = new HexCode(args[0]);
                 
                 int ard_id = conn.registerARDWithConfCode(confcode);
