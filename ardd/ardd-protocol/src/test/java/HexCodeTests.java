@@ -41,4 +41,18 @@ public class HexCodeTests {
         // Both variants return true in Character.isDigit()
         assertFalse(HexCode.isStringCodeValid("４Ｆ"));
     }
+    
+    @Test
+    public void checkEquality() {
+        // we cannot check hash inequality because hashes may collide
+        // only hash equality can be checked
+        
+        HexCode hc1 = new HexCode("0123");
+        HexCode hc2 = new HexCode("0123");
+        HexCode hc3 = new HexCode("0124");
+        
+        assertEquals(hc1.hashCode(), hc2.hashCode());
+        assertTrue(hc1.equals(hc2));
+        assertFalse(hc1.equals(hc3));
+    }
 }
