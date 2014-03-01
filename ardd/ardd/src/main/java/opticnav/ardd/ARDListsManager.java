@@ -4,6 +4,7 @@ import opticnav.ardd.protocol.HexCode;
 import opticnav.ardd.protocol.Protocol;
 
 import org.apache.commons.math3.random.RandomGenerator;
+import org.apache.commons.math3.util.Pair;
 
 public final class ARDListsManager {
     private final ARDPendingList pending;
@@ -17,10 +18,9 @@ public final class ARDListsManager {
         this.randomGen = randomGen;
     }
     
-    public PassConfCodesWait generatePassConfCodes() {
+    public Pair<PassConfCodes, BlockingValue<Integer>> generatePassConfCodes() {
         byte[] confCodeBytes, passCodeBytes;
         HexCode confCode, passCode;
-        PassConfCodes codes;
         
         confCodeBytes = new byte[Protocol.CONFCODE_BYTES];
         passCodeBytes = new byte[Protocol.PASSCODE_BYTES];
@@ -44,32 +44,37 @@ public final class ARDListsManager {
             }
             
             // add to pending
-            codes = new PassConfCodes(passCode, confCode);
+            Pair<PassConfCodes, BlockingValue<Integer>> codes;
+            BlockingValue<Integer> result = new BlockingValue<>();
+            
+            codes = new Pair<>(new PassConfCodes(passCode, confCode), result);
             this.pending.addPassConfCodes(codes);
+            return codes;
         }
-        
-        return new PassConfCodesWait(codes);
     }
     
-    public int persistPendingWithConfCode(HexCode confCode) {
-        if (confCode.getByteCount() != Protocol.CONFCODE_BYTES) {
+    public int persistPendingWithConfCode(HexCode confcode) {
+        if (confcode.getByteCount() != Protocol.CONFCODE_BYTES) {
             throw new IllegalStateException();
         }
         
         synchronized (this.pending) {
-            HexCode passCode;
+            Pair<HexCode, BlockingValue<Integer>> pw;
             int ardID;
             
-            passCode = this.pending.getPasscodeAndRemoveFromConfcode(confCode);
+            pw = this.pending.getPasscodeWaitAndRemoveByConfcode(confcode);
             
-            if (passCode == null) {
+            if (pw == null) {
                 // could not find an entry with confcode
                 return Protocol.ARDClient.NO_ARD;
             }
             
             synchronized (this.persisted) {
-                ardID = this.persisted.registerARD(passCode);
+                ardID = this.persisted.registerARD(pw.getFirst());
             }
+            
+            // TODO - replace 0 with constant variable
+            pw.getSecond().set(0);
             
             return ardID;
         }

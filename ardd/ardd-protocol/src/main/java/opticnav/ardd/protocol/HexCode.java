@@ -61,6 +61,11 @@ public class HexCode {
     public String toString() {
         return getString();
     }
+    
+    @Override
+    public int hashCode() {
+        return java.util.Arrays.hashCode(this.code);
+    }
 
     @Override
     public boolean equals(Object obj) {

@@ -18,7 +18,7 @@ public class DaemonDriver {
         ARDListsManager ardListsManager;
         ardListsManager = new ARDListsManager(pending, persisted, randomGen);
         
-        AdminListener adminServer = new AdminListener(adminPort);
+        AdminListener adminServer = new AdminListener(adminPort, ardListsManager);
         ARDListener   ardServer   = new ARDListener(ardPort, ardListsManager);
         new Thread(adminServer).start();
         new Thread(ardServer).start();
