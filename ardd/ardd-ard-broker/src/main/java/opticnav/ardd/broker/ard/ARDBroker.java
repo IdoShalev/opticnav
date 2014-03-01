@@ -8,7 +8,8 @@ import java.net.Socket;
 import opticnav.ardd.ard.ARDConnection;
 import opticnav.ardd.ard.ARDConnectionException;
 import opticnav.ardd.protocol.BlockingInputStream;
-import opticnav.ardd.protocol.HexCode;
+import opticnav.ardd.protocol.ConfCode;
+import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.Protocol;
@@ -43,8 +44,8 @@ public class ARDBroker implements ARDConnection {
             
             passCodeBytes = this.input.readFixedBlob(Protocol.PASSCODE_BYTES);
             confCodeBytes = this.input.readFixedBlob(Protocol.CONFCODE_BYTES);
-            HexCode passCode = new HexCode(passCodeBytes);
-            HexCode confCode = new HexCode(confCodeBytes);
+            PassCode passCode = new PassCode(passCodeBytes);
+            ConfCode confCode = new ConfCode(confCodeBytes);
             
             c.passConfCodes(passCode, confCode);
             

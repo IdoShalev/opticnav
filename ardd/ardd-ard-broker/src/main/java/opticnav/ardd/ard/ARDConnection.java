@@ -2,11 +2,12 @@ package opticnav.ardd.ard;
 
 import java.io.IOException;
 
-import opticnav.ardd.protocol.HexCode;
+import opticnav.ardd.protocol.ConfCode;
+import opticnav.ardd.protocol.PassCode;
 
 public interface ARDConnection extends AutoCloseable {
     public interface RequestPassConfCodesCallback {
-        public void passConfCodes(HexCode passCode, HexCode confCode);
+        public void passConfCodes(PassCode passCode, ConfCode confCode);
     }
     
     public int requestPassConfCodes(RequestPassConfCodesCallback c)

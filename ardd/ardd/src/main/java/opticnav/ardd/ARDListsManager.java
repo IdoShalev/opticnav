@@ -1,6 +1,7 @@
 package opticnav.ardd;
 
-import opticnav.ardd.protocol.HexCode;
+import opticnav.ardd.protocol.ConfCode;
+import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.Protocol;
 
 import org.apache.commons.math3.random.RandomGenerator;
@@ -20,7 +21,8 @@ public final class ARDListsManager {
     
     public Pair<PassConfCodes, BlockingValue<Integer>> generatePassConfCodes() {
         byte[] confCodeBytes, passCodeBytes;
-        HexCode confCode, passCode;
+        ConfCode confCode;
+        PassCode passCode;
         
         confCodeBytes = new byte[Protocol.CONFCODE_BYTES];
         passCodeBytes = new byte[Protocol.PASSCODE_BYTES];
@@ -30,7 +32,7 @@ public final class ARDListsManager {
             // confcode must not already exist in pending list
             do {
                 this.randomGen.nextBytes(confCodeBytes);
-                confCode = new HexCode(confCodeBytes);
+                confCode = new ConfCode(confCodeBytes);
             } while (this.pending.containsConfCode(confCode));
 
             // generate passcode
@@ -38,7 +40,7 @@ public final class ARDListsManager {
             synchronized (this.persisted) {
                 do {
                     this.randomGen.nextBytes(passCodeBytes);
-                    passCode = new HexCode(passCodeBytes);
+                    passCode = new PassCode(passCodeBytes);
                 } while (this.pending.containsPassCode(passCode) ||
                         this.persisted.containsPassCode(passCode));
             }
@@ -53,13 +55,9 @@ public final class ARDListsManager {
         }
     }
     
-    public int persistPendingWithConfCode(HexCode confcode) {
-        if (confcode.getByteCount() != Protocol.CONFCODE_BYTES) {
-            throw new IllegalStateException();
-        }
-        
+    public int persistPendingWithConfCode(ConfCode confcode) {
         synchronized (this.pending) {
-            Pair<HexCode, BlockingValue<Integer>> pw;
+            Pair<PassCode, BlockingValue<Integer>> pw;
             int ardID;
             
             pw = this.pending.getPasscodeWaitAndRemoveByConfcode(confcode);

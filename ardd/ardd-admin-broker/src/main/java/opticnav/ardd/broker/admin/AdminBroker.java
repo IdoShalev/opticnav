@@ -8,10 +8,9 @@ import java.net.Socket;
 import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.admin.AdminConnectionException;
 import opticnav.ardd.protocol.BlockingInputStream;
-import opticnav.ardd.protocol.HexCode;
+import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
-import opticnav.ardd.protocol.Protocol;
 import opticnav.ardd.protocol.Protocol.AdminClient.Commands;
 
 public class AdminBroker implements AdminConnection {
@@ -30,12 +29,8 @@ public class AdminBroker implements AdminConnection {
      * @return 0 if no ARD was registered, ARD ID (1+) if registered
      */
     @Override
-    public int registerARDWithConfCode(HexCode code)
+    public int registerARDWithConfCode(ConfCode code)
             throws AdminConnectionException {
-        if (code.getByteCount() != Protocol.CONFCODE_BYTES) {
-            throw new IllegalArgumentException("Code is wrong size: " + code.getByteCount());
-        }
-        
         try {
             this.output.writeUInt8(Commands.REGARD.getCode());
             this.output.writeFixedBlob(code.getByteArray());

@@ -4,7 +4,8 @@ import java.io.PrintWriter;
 
 import opticnav.ardd.ard.ARDConnection;
 import opticnav.ardd.broker.ard.ARDBroker;
-import opticnav.ardd.protocol.HexCode;
+import opticnav.ardd.protocol.PassCode;
+import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.terminal.shared.Command;
 
 public class ReqCodesCommand implements Command<ARDBroker> {
@@ -13,7 +14,7 @@ public class ReqCodesCommand implements Command<ARDBroker> {
             throws Exception {
         ARDConnection.RequestPassConfCodesCallback cb = new ARDConnection.RequestPassConfCodesCallback() {
             @Override
-            public void passConfCodes(HexCode passCode, HexCode confCode) {
+            public void passConfCodes(PassCode passCode, ConfCode confCode) {
                 out.println("Passcode: " + passCode);
                 out.println("Confcode: " + confCode);
             }

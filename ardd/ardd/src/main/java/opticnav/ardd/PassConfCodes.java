@@ -1,28 +1,22 @@
 package opticnav.ardd;
 
-import opticnav.ardd.protocol.HexCode;
-import opticnav.ardd.protocol.Protocol;
+import opticnav.ardd.protocol.ConfCode;
+import opticnav.ardd.protocol.PassCode;
 
 public class PassConfCodes {
-    private HexCode passcode, confcode;
+    private PassCode passcode;
+    private ConfCode confcode;
 
-    public PassConfCodes(HexCode passcode, HexCode confcode) {
-        if (passcode.getByteCount() != Protocol.PASSCODE_BYTES) {
-            throw new IllegalStateException();
-        }
-        if (confcode.getByteCount() != Protocol.CONFCODE_BYTES) {
-            throw new IllegalStateException();
-        }
-        
+    public PassConfCodes(PassCode passcode, ConfCode confcode) {
         this.passcode = passcode;
         this.confcode = confcode;
     }
 
-    public HexCode getPasscode() {
+    public PassCode getPasscode() {
         return passcode;
     }
 
-    public HexCode getConfcode() {
+    public ConfCode getConfcode() {
         return confcode;
     }
 }

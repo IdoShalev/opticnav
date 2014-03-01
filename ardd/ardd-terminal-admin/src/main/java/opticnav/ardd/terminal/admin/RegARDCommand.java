@@ -4,8 +4,7 @@ import java.io.PrintWriter;
 
 import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.admin.AdminConnectionException;
-import opticnav.ardd.protocol.HexCode;
-import opticnav.ardd.protocol.Protocol;
+import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.terminal.shared.Command;
 
 public class RegARDCommand implements Command<AdminConnection> {
@@ -15,8 +14,8 @@ public class RegARDCommand implements Command<AdminConnection> {
         if (args.length == 1) {
             String confcodeString = args[0];
             
-            if (HexCode.isStringCodeValid(confcodeString, Protocol.CONFCODE_BYTES)) {
-                HexCode confcode = new HexCode(args[0]);
+            if (ConfCode.isStringCodeValid(confcodeString)) {
+                ConfCode confcode = new ConfCode(args[0]);
                 
                 int ard_id = conn.registerARDWithConfCode(confcode);
                 boolean registered = ard_id != 0;

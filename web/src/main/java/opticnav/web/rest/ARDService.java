@@ -3,8 +3,7 @@ package opticnav.web.rest;
 import javax.servlet.http.HttpServletResponse;
 
 import opticnav.ardd.admin.AdminConnection;
-import opticnav.ardd.protocol.HexCode;
-import opticnav.ardd.protocol.Protocol;
+import opticnav.ardd.protocol.ConfCode;
 import opticnav.web.arddbrokerpool.ARDdAdminPool;
 import opticnav.web.rest.pojo.ARD;
 import opticnav.web.rest.pojo.Message;
@@ -27,8 +26,8 @@ public class ARDService extends Controller {
     public Message register(@RequestBody String confirmationCode, HttpServletResponse resp)
             throws Exception {
         if (InputUtil.isEntered(confirmationCode)) {
-            if (HexCode.isStringCodeValid(confirmationCode, Protocol.CONFCODE_BYTES)) {
-                HexCode code = new HexCode(confirmationCode);
+            if (ConfCode.isStringCodeValid(confirmationCode)) {
+                ConfCode code = new ConfCode(confirmationCode);
                 
                 try (AdminConnection b = this.pool.getAdminBroker()) {
                     boolean successful = b.registerARDWithConfCode(code) != 0;
