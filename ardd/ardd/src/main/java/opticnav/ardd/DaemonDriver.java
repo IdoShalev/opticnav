@@ -1,7 +1,7 @@
 package opticnav.ardd;
 
+import org.apache.commons.math3.random.ISAACRandom;
 import org.apache.commons.math3.random.RandomGenerator;
-import org.apache.commons.math3.random.Well1024a;
 
 import opticnav.ardd.net.ARDListener;
 import opticnav.ardd.net.AdminListener;
@@ -13,7 +13,7 @@ public class DaemonDriver {
         
         ARDPendingList   pending   = new ARDPendingList();
         ARDPersistedList persisted = new ARDPersistedList();
-        RandomGenerator  randomGen = new Well1024a();
+        RandomGenerator  randomGen = new ISAACRandom();
         
         ARDListsManager ardListsManager;
         ardListsManager = new ARDListsManager(pending, persisted, randomGen);
