@@ -4,9 +4,19 @@ import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 
-public class WebDBBroker {
+import javax.sql.DataSource;
+
+public class WebDBBroker implements AutoCloseable {
     private java.sql.Connection conn;
 
+    public WebDBBroker(DataSource ds) throws WebDBBrokerException {
+        try {
+            this.conn = ds.getConnection();
+        } catch (SQLException e) {
+            throw new WebDBBrokerException(e);
+        }
+    }
+    
     public WebDBBroker(java.sql.Connection conn) {
         this.conn = conn;
     }
@@ -35,6 +45,15 @@ public class WebDBBroker {
             int id = cs.getInt(1);            
             cs.close();            
             return id;            
+        } catch (SQLException e) {
+            throw new WebDBBrokerException(e);
+        }
+    }
+
+    @Override
+    public void close() throws WebDBBrokerException {
+        try {
+            this.conn.close();
         } catch (SQLException e) {
             throw new WebDBBrokerException(e);
         }

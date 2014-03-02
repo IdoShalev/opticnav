@@ -11,7 +11,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AccountTest {
-    static private java.sql.Connection conn;
     static private WebDBBroker broker;
     
     @BeforeClass
@@ -20,15 +19,16 @@ public class AccountTest {
         //reset the database
         
         // mysql connection stuff
-        Class.forName("com.mysql.jdbc.Driver");        
+        java.sql.Connection conn;
+        Class.forName("com.mysql.jdbc.Driver");
         conn = DriverManager.getConnection("jdbc:mysql://localhost/OpticNavDB?"
-                    + "user=test&password=password");        
+                    + "user=test&password=password");
         broker = new WebDBBroker(conn);
     }
     
     @AfterClass
-    static public void tearDown() throws SQLException {
-        conn.close();
+    static public void tearDown() throws WebDBBrokerException {
+        broker.close();
     }
     
     /*

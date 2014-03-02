@@ -23,9 +23,19 @@
 	
 	<!-- Create a singleton bean that provides admin connections to ardd -->
 	<bean id="ARDdAdminPool" class="opticnav.web.arddbrokerpool.ARDdAdminPool">
-        <constructor-arg type="String"><value>localhost</value></constructor-arg>
-        <constructor-arg type="int"><value>8888</value></constructor-arg>
+        <constructor-arg type="String"><value>${ardd.admin.host}</value></constructor-arg>
+        <constructor-arg type="int"><value>${ardd.admin.port}</value></constructor-arg>
     </bean>
+    
+    <!-- Create a data source for connection to the database -->
+    <bean id="dbDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	    <property name="driverClassName" value="${jdbc.driverClassName}"/>
+	    <property name="url" value="${jdbc.url}"/>
+	    <property name="username" value="${jdbc.username}"/>
+	    <property name="password" value="${jdbc.password}"/>
+	</bean>
+    
+    <context:property-placeholder location="classpath*:*.properties"/>
     
     <bean id="viewResolver"
     class="org.springframework.web.servlet.view.InternalResourceViewResolver">
