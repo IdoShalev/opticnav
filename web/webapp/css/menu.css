@@ -60,6 +60,7 @@
   list-style-type: none;
   background: #C0C0C0;
   border-radius: 3px;
+
 }
 /*
     give the menu an area, it will disappear if the cursor is not in that area
@@ -69,6 +70,7 @@
   padding: 15px 44px;
   position: relative;
   list-style-type: none;
+    border-radius: 10px;
 }
 /*
     hides the menu
@@ -78,6 +80,7 @@
   visibility: hidden;
   position: absolute;
   list-style-type: none;
+    border-radius: 10px;
 }
 /*
     shows the menu
@@ -100,9 +103,10 @@
   
 }
 #loggedin {
-	float:right
+	float:right;
 }
 #cssmenu a{
 	color: black;
     text-decoration: none;
 }
+

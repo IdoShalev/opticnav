@@ -11,15 +11,15 @@
     <link rel="icon" type="image/png" href="./css/images/Weblogo.png"/>
 <header>
 <div id="loggedin">
-        <c:if test="${!empty user}">Welcome <c:out value="${user.username}"/>
+        <c:if test="${!empty user}">Welcome, <c:out value="${user.username}"/>
         <br/><t:link href="/logout">Logout</t:link></c:if></div>
     <div id="cssmenu">
 		<ul>
 		    <li><t:link href="/"><div id="homeB"></div></t:link><ul>
 		    <c:if test="${!empty user}">
-            <li><t:link href="/download"><div id="buttons">Device Manager</div></t:link></li>
-            <li><t:link href="/download"><div id="buttons">Create Map</div></t:link></li>
-            <li><t:link href="/download"><div id="buttons">Create an Instance</div></t:link></li>
+            <li><t:link href="/registerDevice"><div id="buttons">Device Manager</div></t:link></li>
+            <li><t:link href="/map"><div id="buttons">Create Map</div></t:link></li>
+            <li><t:link href="/instance"><div id="buttons">Create an Instance</div></t:link></li>
             </c:if>
             <c:if test="${empty user}">
 		    <li><t:link href="/register"><div id="buttons">New Account</div></t:link></li>
