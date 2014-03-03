@@ -1,6 +1,6 @@
 source /cs/trunk/DB/tables.sql;
 
-CALL registerAccount('kay', 'password');
+SELECT registerAccount('kay', 'password');
 CALL registerAccount('ido', 'password');
 CALL registerAccount('danny', 'password');
 CALL registerAccount('kaykutxd', 'password');
