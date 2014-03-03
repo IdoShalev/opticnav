@@ -12,6 +12,9 @@
   <c:forTokens items="${css}" delims="," var="cssfile">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/${cssfile}" />
   </c:forTokens>
+  <script>
+  var ctx = "${pageContext.request.contextPath}";
+  </script>
   <c:forTokens items="${js}" delims="," var="jsfile">
   <script src="${pageContext.request.contextPath}/js/${jsfile}"></script>
   </c:forTokens>
