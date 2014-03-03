@@ -3,6 +3,7 @@ package opticnav.web.rest;
 import javax.servlet.http.HttpServletResponse;
 
 import opticnav.persistence.web.WebDBBroker;
+import opticnav.web.components.UserSession;
 import opticnav.web.rest.pojo.Account;
 import opticnav.web.rest.pojo.Message;
 
@@ -18,8 +19,11 @@ public class AccountService extends Controller {
     @Autowired
     private javax.sql.DataSource dbDataSource;
     
+    @Autowired
+    private UserSession userSession;
+    
     @RequestMapping(value="login", method=RequestMethod.POST)
-    public Message login(@RequestBody Account account, HttpServletResponse resp)
+    public Message login(@RequestBody Account account)
             throws Exception {
         boolean valid;
         int accountID;
@@ -31,8 +35,10 @@ public class AccountService extends Controller {
         valid = accountID != 0;
         
         if (valid) {
+            this.userSession.setUser(account.username, accountID);
             return ok("account.loggedin");
         } else {
+            this.userSession.resetUser();
             return badRequest("account.couldnotlogin");
         }
     }
