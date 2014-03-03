@@ -11,6 +11,7 @@ SELECT validateUser('kay', 'password');
 SELECT validateUser('ido', 'password');
 SELECT validateUser('danny', 'password');
 SELECT validateUser('kay', 'fail');
+SELECT validateUser('java', 'password');
 
 SELECT checkAccountName('kay');
 SELECT checkAccountName('ido');
