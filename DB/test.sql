@@ -7,8 +7,8 @@ CALL registerAccount('kaykutxd', 'password');
 
 SELECT * FROM WEB_ACCOUNT;
 
-SELECT validateUser('kay', 'password');
-SELECT validateUser('ido', 'password');
+SELECT validateUser('Kay', 'kaypass');
+SELECT validateUser('Ido', 'idopass');
 SELECT validateUser('danny', 'password');
 SELECT validateUser('kay', 'fail');
 SELECT validateUser('java', 'password');

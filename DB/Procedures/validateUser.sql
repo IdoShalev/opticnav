@@ -15,12 +15,17 @@ RETURNS INT
 READS SQL DATA
 BEGIN
     DECLARE id INT;
+    DECLARE tempID INT;
     SET id = 0;
+    
+    SELECT web_account_id INTO tempID
+        FROM WEB_ACCOUNT
+        WHERE p_accountName = username;
 
     SELECT web_account_id INTO id
         FROM WEB_ACCOUNT
-        WHERE pass = UNHEX(SHA1(p_password))
-        AND user = p_accountName;
+        WHERE pass = UNHEX(SHA1(p_password + SHA1(tempID)))
+        AND username = p_accountName;
 
     RETURN id;
 END//

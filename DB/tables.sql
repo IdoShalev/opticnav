@@ -1,7 +1,7 @@
 CREATE TABLE WEB_ACCOUNT
 (
     web_account_id      INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    user                VARCHAR(25) NOT NULL UNIQUE,
+    username            VARCHAR(25) NOT NULL UNIQUE,
     pass                BINARY(20)  NOT NULL
 );
 

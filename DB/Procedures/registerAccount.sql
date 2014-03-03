@@ -14,14 +14,24 @@ CREATE FUNCTION registerAccount
 RETURNS BOOLEAN
 DETERMINISTIC
 BEGIN
+    DECLARE id INT;
     DECLARE duplicate_user CONDITION FOR SQLSTATE '23000';
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         RETURN false;
     END;
+
     INSERT INTO WEB_ACCOUNT
-    (user, pass)
-    VALUES (p_accountName, UNHEX(SHA1(p_password)));
+    (username, pass)
+    VALUES (p_accountName, UNHEX(SHA1('temppass')));
+
+    SELECT web_account_id INTO id
+        FROM WEB_ACCOUNT
+        WHERE p_accountName = username;
+
+    UPDATE WEB_ACCOUNT
+        SET pass = UNHEX(SHA1(p_password + SHA1(id)))
+        WHERE p_accountName = username;    
     
     RETURN true;
 END//

@@ -19,7 +19,7 @@ BEGIN
 
     SELECT web_account_id INTO id
     FROM WEB_ACCOUNT
-    WHERE user = p_accountName;
+    WHERE username = p_accountName;
 
     IF (id = 0) THEN
         SET flag = false;
