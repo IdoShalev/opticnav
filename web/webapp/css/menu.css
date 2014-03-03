@@ -1,5 +1,7 @@
 #logo{
-    background:url(../css/images/OpticNavLogo.png) no-repeat;width:180px;height:40px;background-size: 100%;
+    background:url(../css/images/OpticNavLogo.png) no-repeat;
+    width:220px;height:60px;background-size: 100%;
+    margin: 0 auto;
 }
 
 #nav li {
@@ -36,6 +38,9 @@
 /*
     unindent it to look like a drop down menu http://jsfiddle.net/q7gFR/1/
 */
+#cssmenu {
+	width: 120px; float: left;
+}
 #cssmenu,
 #cssmenu ul,
 #cssmenu ul li,
@@ -44,6 +49,8 @@
   margin: 0;
   line-height: 1;
   list-style-type: none;
+  background: #C0C0C0;
+  border-radius: 3px;
 }
 /*
     give the menu an area, it will disappear if the cursor is not in that area
@@ -71,6 +78,8 @@
   visibility: visible;
   position: absolute;
   list-style-type: none;
+  width: 200px;
+
 }
 /*
     menu area for the drop down menu
@@ -79,4 +88,8 @@
   width: 200px;
   position: absolute;
   list-style-type: none;
+  
+}
+#loggedin {
+	float: right;
 }

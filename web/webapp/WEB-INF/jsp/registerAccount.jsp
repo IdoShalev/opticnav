@@ -8,7 +8,7 @@
                 Username: <input type="text" id="username"><br/>
                 Password: <input type="password" id="password"><br/>
                 Confirm Password: <input type="password" id="password"><br/>
-                <input type="submit" value="Login" />
+                <input type="submit" value="Register" />
             </form>
         </div>
     </div>

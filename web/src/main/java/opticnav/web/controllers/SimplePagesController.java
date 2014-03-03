@@ -35,4 +35,20 @@ public class SimplePagesController {
     public String help() {
         return "help";
     }
+    @RequestMapping("/hub")
+    public String hub() {
+        return "hub";
+    }
+    @RequestMapping("/map")
+    public String map() {
+        return "map";
+    }
+    @RequestMapping("/instance")
+    public String instance() {
+        return "instance";
+    }
+    @RequestMapping("/registerDevice")
+    public String registerARD() {
+        return "registerARD";
+    }
 }

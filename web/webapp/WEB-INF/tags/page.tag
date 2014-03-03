@@ -3,29 +3,33 @@
 <%@attribute name="title" required="true" %>
 <%@attribute name="css" required="false" %>
 <%@attribute name="js" required="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <t:page_base
     title="${title}"
     css="main.css,${css}"
     js="jquery-2.1.0.min.js,message.js,${js}">
     <link rel="icon" type="image/png" href="./css/images/Weblogo.png"/>
 <header>
-<c:if test="true">
-
-</c:if>
-<c:if test="false">
-    <div id="nav">
+    <div id="cssmenu">
 		<ul>
-		    <li><t:link href="/"><div id="buttons">Home Page</div></t:link></li>
+		    <li><t:link href="/">Menu</t:link><ul>
+		    <c:if test="${!empty user}">
+            <li><t:link href="/download"><div id="buttons">Register Device</div></t:link></li>
+            <li><t:link href="/download"><div id="buttons">Create Map</div></t:link></li>
+            <li><t:link href="/download"><div id="buttons">Create an Instance</div></t:link></li>
+            </c:if>
+            <c:if test="${empty user}">
 		    <li><t:link href="/register"><div id="buttons">New Account</div></t:link></li>
+		    </c:if>
 		    <li><t:link href="/download"><div id="buttons">Get Application</div></t:link></li>
-		    <li><t:link href="/"><div id="logo"></div></t:link></li>
 		    <li><t:link href="/contact"><div id="buttons">Contact Us</div></t:link></li>
 		    <li><t:link href="/about"><div id="buttons">About</div></t:link></li>
-		    <li><t:link href="/help"><div id="buttons">Help</div></t:link></li>
-		</ul>
-	</div>
-</c:if>
-
+		    <li><t:link href="/help"><div id="buttons">Help</div></t:link></li></ul></li>
+		</ul></div><t:link href="/"><div id="logo"></div></t:link>
+		<div id="loggedin">
+		<c:if test="${!empty user}">Welcome <c:out value="${user.username }"/>
+        <br/><t:link href="#">Logout</t:link></c:if>
+        </div>
 </header>
 
 <div id="content">
