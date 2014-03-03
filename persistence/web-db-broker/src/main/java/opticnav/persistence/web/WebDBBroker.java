@@ -75,17 +75,5 @@ public class WebDBBroker implements AutoCloseable {
             throw new WebDBBrokerException(e);
         }
     }
-    
-    public Boolean checkName(String username) throws WebDBBrokerException {
-        try (CallableStatement cs = conn.prepareCall("{? = call checkAccountName(?)}")) {
-            cs.setString(2, username);
-            
-            cs.execute();
-            
-            return cs.getBoolean(1);
-        } catch (SQLException e) {
-            throw new WebDBBrokerException(e);
-        }
-    }
     */
 }
