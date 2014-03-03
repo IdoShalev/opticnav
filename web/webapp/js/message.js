@@ -32,3 +32,20 @@ function ajaxMessageClosure(elem) {
 		}
 	}
 }
+
+function ajaxMessageClosureOnError(elem, success){
+	return function(data) {
+		var ok = data.status >= 200 && data.status <= 299;
+		var json = data.responseJSON;
+		
+		if (ok) {
+			success(json);
+		} else {
+			if (json != null && json.message !== undefined) {
+				showMessage(elem, ok, json.message);
+			} else {
+				showErrorMessage(elem, data.status + ": " + data.statusText);
+			}
+		}
+	}
+}

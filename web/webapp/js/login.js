@@ -13,7 +13,9 @@ $(function() {
 		 url: ctx+"/rest/account/login",
 		 data: JSON.stringify(object),
 		 contentType: "application/json; charset=utf-8",
-		 complete: ajaxMessageClosure($("#message"))
+		 complete: ajaxMessageClosureOnError($("#message"), function() {
+			 window.location.replace(ctx);
+		 })
 		});
 		
 		event.preventDefault();
