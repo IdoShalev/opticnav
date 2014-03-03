@@ -31,15 +31,18 @@ public class AccountTest {
         broker.close();
     }
     
-    /*
     @Test
     public void testregisterAccount() throws WebDBBrokerException {
         assertEquals(true, broker.registerAccount("java", "password"));
+        assertEquals(false, broker.registerAccount("java", "password"));
     }
-    */
     
     @Test
     public void testverify() throws WebDBBrokerException {
-        assertEquals(1, broker.verify("java", "password"));
+        assertEquals(1, broker.verify("Kay", "kaypass"));
+        assertEquals(2, broker.verify("Ido", "idopass"));
+        assertEquals(3, broker.verify("Danny", "dannypass"));
+        assertEquals(4, broker.verify("Jacky", "jackypass"));
+        assertEquals(0, broker.verify("stranger", "kaypass"));
     }
 }

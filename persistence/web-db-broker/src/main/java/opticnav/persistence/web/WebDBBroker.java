@@ -7,6 +7,7 @@ import java.sql.Types;
 import javax.sql.DataSource;
 
 public class WebDBBroker implements AutoCloseable {
+    
     private java.sql.Connection conn;
 
     public WebDBBroker(DataSource ds) throws WebDBBrokerException {
@@ -22,14 +23,17 @@ public class WebDBBroker implements AutoCloseable {
     }
     
     public boolean registerAccount(String username, String password) throws WebDBBrokerException {
-        try (CallableStatement cs = conn.prepareCall("{call registerAccount(?, ?)}")) {
-            cs.setString(1, username);
-            cs.setString(2, password);
+        try (CallableStatement cs = conn.prepareCall("{? = call registerAccount(?, ?)}")) {
+            cs.setString(2, username);
+            cs.setString(3, password);
+            cs.registerOutParameter(1, Types.BOOLEAN);
             
             cs.execute();
+            boolean flag = cs.getBoolean(1);
+            cs.close();
             
-            // account registered!
-            return true;
+            return flag;
+            
         } catch (SQLException e) {
             throw new WebDBBrokerException(e);
         }
