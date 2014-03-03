@@ -4,6 +4,15 @@
     margin: 0 auto;
 }
 
+#homeB {
+	background:url(../css/images/home.png) no-repeat;
+    width:35px;height:35px;background-size: 100%;
+}
+
+#menuLogo {
+	float:left;
+}
+
 #nav li {
     display: table-cell;
   width: auto;
@@ -91,5 +100,9 @@
   
 }
 #loggedin {
-	float: right;
+	float:right
+}
+#cssmenu a{
+	color: black;
+    text-decoration: none;
 }

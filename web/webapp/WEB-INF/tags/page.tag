@@ -10,11 +10,14 @@
     js="jquery-2.1.0.min.js,message.js,${js}">
     <link rel="icon" type="image/png" href="./css/images/Weblogo.png"/>
 <header>
+<div id="loggedin">
+        <c:if test="${!empty user}">Welcome <c:out value="${user.username}"/>
+        <br/><t:link href="/logout">Logout</t:link></c:if></div>
     <div id="cssmenu">
 		<ul>
-		    <li><t:link href="/">Menu</t:link><ul>
+		    <li><t:link href="/"><div id="homeB"></div></t:link><ul>
 		    <c:if test="${!empty user}">
-            <li><t:link href="/download"><div id="buttons">Register Device</div></t:link></li>
+            <li><t:link href="/download"><div id="buttons">Device Manager</div></t:link></li>
             <li><t:link href="/download"><div id="buttons">Create Map</div></t:link></li>
             <li><t:link href="/download"><div id="buttons">Create an Instance</div></t:link></li>
             </c:if>
@@ -26,10 +29,7 @@
 		    <li><t:link href="/about"><div id="buttons">About</div></t:link></li>
 		    <li><t:link href="/help"><div id="buttons">Help</div></t:link></li></ul></li>
 		</ul></div><t:link href="/"><div id="logo"></div></t:link>
-		<div id="loggedin">
-		<c:if test="${!empty user}">Welcome <c:out value="${user.username }"/>
-        <br/><t:link href="#">Logout</t:link></c:if>
-        </div>
+		
 </header>
 
 <div id="content">
