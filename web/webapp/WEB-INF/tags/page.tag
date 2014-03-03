@@ -10,17 +10,7 @@
     <link rel="icon" type="image/png" href="./css/images/Weblogo.png"/>
 <header>
 <c:if test="true">
-    <div id="nav">
-        <ul>
-            <li><t:link href="/"><div id="buttons">Home Page</div></t:link></li>
-            <li><t:link href="/register"><div id="buttons">New Account</div></t:link></li>
-            <li><t:link href="/download"><div id="buttons">Download</div></t:link></li>
-            <li><t:link href="/"><div id="logo"></div></t:link></li>
-            <li><t:link href="/contact"><div id="buttons">Contact Us</div></t:link></li>
-            <li><t:link href="/about"><div id="buttons">About</div></t:link></li>
-            <li><t:link href="/help"><div id="buttons">Help</div></t:link></li>
-        </ul>
-    </div>
+
 </c:if>
 <c:if test="false">
     <div id="nav">
