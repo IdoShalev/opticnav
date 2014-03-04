@@ -15,7 +15,8 @@
         <br/><t:link href="/logout">Logout</t:link></c:if></div>
     <div id="cssmenu">
 		<ul>
-		    <li><t:link href="/"><div id="homeB"></div></t:link><ul>
+		    <li><a><div id="homeB"></div></a><ul>
+		    <li><t:link href="/"><div id="buttons">Home</div></t:link></li>
 		    <c:if test="${!empty user}">
             <li><t:link href="/registerDevice"><div id="buttons">Device Manager</div></t:link></li>
             <li><t:link href="/map"><div id="buttons">Create Map</div></t:link></li>
