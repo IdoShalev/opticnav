@@ -33,6 +33,29 @@ function ajaxMessageClosure(elem) {
 	}
 }
 
+
+
+function ajaxMessageClosureRedirectOnSuccess(elem, location, messageParam) {
+	return function(data) {
+		var ok = data.status >= 200 && data.status <= 299;
+		var json = data.responseJSON;
+		
+		if (ok) {
+			// This is an ugly hack, but it'll work for now
+			var messageParam_ok = messageParam+"_ok";
+			var ok_val = ok ? "1" : "0";
+			window.location.href = ctx+location+"?"+messageParam_ok+"="+ok_val
+					+"&"+messageParam+"="+json.message;
+		} else {
+			if (json != null && json.message !== undefined) {
+				showMessage(elem, ok, json.message);
+			} else {
+				showErrorMessage(elem, data.status + ": " + data.statusText);
+			}
+		}
+	}
+}
+
 function ajaxMessageClosureOnError(elem, success){
 	return function(data) {
 		var ok = data.status >= 200 && data.status <= 299;

@@ -13,7 +13,7 @@ $(function() {
 		 url: ctx+"/rest/account/register",
 		 data: JSON.stringify(object),
 		 contentType: "application/json; charset=utf-8",
-		 complete: ajaxMessageClosure($("#message"))
+		 complete: ajaxMessageClosureRedirectOnSuccess($("#message"), "/", "message")
 		});
 		
 		event.preventDefault();

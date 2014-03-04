@@ -47,11 +47,13 @@ header, footer {
 }
 
 .message_error {
+    display: block;
     background-color: #fdd;
     border-color: #f66;
 }
 
 .message_ok {
+    display: block;
     background-color: #dfd;
     border-color: #4b4;
 }
