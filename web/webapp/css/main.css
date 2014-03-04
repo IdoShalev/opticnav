@@ -42,8 +42,8 @@ header, footer {
     border: 1px solid;
     padding: 1em;
     margin: 1em;
-    min-width: 200px;
-    width: 200px;
+    width: 400px;
+    word-wrap: break-word;
 }
 
 .message_error {
