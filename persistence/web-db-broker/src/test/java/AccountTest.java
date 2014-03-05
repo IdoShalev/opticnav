@@ -35,6 +35,9 @@ public class AccountTest {
     public void testregisterAccount() throws WebDBBrokerException {
         assertEquals(true, broker.registerAccount("java", "password"));
         assertEquals(false, broker.registerAccount("java", "password"));
+        assertEquals(false, broker.registerAccount("", ""));
+        assertEquals(false, broker.registerAccount("", "empty"));
+        assertEquals(false, broker.registerAccount("empty", ""));
     }
     
     @Test
@@ -44,5 +47,6 @@ public class AccountTest {
         assertEquals(3, broker.verify("Danny", "dannypass"));
         assertEquals(4, broker.verify("Jacky", "jackypass"));
         assertEquals(0, broker.verify("stranger", "kaypass"));
+            //should the password really be unique
     }
 }

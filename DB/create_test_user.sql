@@ -6,7 +6,7 @@ DROP USER 'test'@localhost;
 CREATE USER 'test'@localhost IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON OpticNavDB TO 'test'@localhost;
 
-GRANT EXECUTE ON PROCEDURE OpticNavDB.registerAccount TO 'test'@localhost;
+GRANT EXECUTE ON FUNCTION OpticNavDB.registerAccount TO 'test'@localhost;
 GRANT EXECUTE ON FUNCTION OpticNavDB.validateUser TO 'test'@localhost;
 
 GRANT SELECT ON `mysql`.`proc` TO 'test'@localhost;

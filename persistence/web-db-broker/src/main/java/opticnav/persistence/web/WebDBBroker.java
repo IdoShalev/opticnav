@@ -23,34 +23,43 @@ public class WebDBBroker implements AutoCloseable {
     }
     
     public boolean registerAccount(String username, String password) throws WebDBBrokerException {
-        try (CallableStatement cs = conn.prepareCall("{? = call registerAccount(?, ?)}")) {
-            cs.setString(2, username);
-            cs.setString(3, password);
-            cs.registerOutParameter(1, Types.BOOLEAN);
-            
-            cs.execute();
-            boolean flag = cs.getBoolean(1);
-            cs.close();
-            
-            return flag;
-            
-        } catch (SQLException e) {
-            throw new WebDBBrokerException(e);
-        }
+            if(!checkUsername(username) || !checkPassword(password)){
+                return false;
+            }
+            else {
+                try (CallableStatement cs = conn.prepareCall("{? = call registerAccount(?, ?)}")) {
+                cs.setString(2, username);
+                cs.setString(3, password);
+                cs.registerOutParameter(1, Types.BOOLEAN);
+                
+                cs.execute();
+                boolean flag = cs.getBoolean(1);
+                cs.close();
+                
+                return flag;
+                } catch (SQLException e) {
+                    throw new WebDBBrokerException(e);
+                }
+            }        
     }    
     
     public int verify(String username, String password) throws WebDBBrokerException {
-        try (CallableStatement cs = conn.prepareCall("{? = call validateUser(?, ?)}")) {
-            cs.setString(2, username);
-            cs.setString(3, password);
-            cs.registerOutParameter(1, Types.INTEGER);
-            
-            cs.execute();            
-            int id = cs.getInt(1);            
-            cs.close();            
-            return id;            
-        } catch (SQLException e) {
-            throw new WebDBBrokerException(e);
+        if(!checkUsername(username) || !checkPassword(password)){
+            return 0;
+        }
+        else{
+            try (CallableStatement cs = conn.prepareCall("{? = call validateUser(?, ?)}")) {
+                cs.setString(2, username);
+                cs.setString(3, password);
+                cs.registerOutParameter(1, Types.INTEGER);
+                
+                cs.execute();            
+                int id = cs.getInt(1);            
+                cs.close();            
+                return id;            
+            } catch (SQLException e) {
+                throw new WebDBBrokerException(e);
+            }
         }
     }
 
@@ -76,4 +85,20 @@ public class WebDBBroker implements AutoCloseable {
         }
     }
     */
+    
+    private boolean checkUsername(String username){
+        boolean flag = true;
+        if (username == null || username.equals("")){
+            flag = false;
+        }
+        return flag;
+    }
+    
+    private boolean checkPassword(String password){
+        boolean flag = true;
+        if (password == null || password.equals("")){
+            flag = false;
+        }
+        return flag;
+    }
 }
