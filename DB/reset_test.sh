@@ -4,5 +4,5 @@ MYSQL_USER=root
 MYSQL_PASS=password
 
 # Concatenates all .sql files and feeds the output into MySQL
-cat create_db.sql tables.sql Procedures/*.sql Data/*.sql | mysql --user=$MYSQL_USER --password=$MYSQL_PASS
+cat create_db.sql tables.sql Procedures/*.sql Data/*.sql Triggers/*.sql | mysql --user=$MYSQL_USER --password=$MYSQL_PASS
 

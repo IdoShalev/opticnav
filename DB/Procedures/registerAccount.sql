@@ -15,25 +15,33 @@ RETURNS BOOLEAN
 DETERMINISTIC
 BEGIN
     DECLARE id INT;
+    DECLARE flag BOOLEAN;
     DECLARE duplicate_user CONDITION FOR SQLSTATE '23000';
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         RETURN false;
     END;
-
-    INSERT INTO WEB_ACCOUNT
-    (username, pass)
-    VALUES (p_accountName, UNHEX(SHA1('temppass')));
-
-    SELECT web_account_id INTO id
-        FROM WEB_ACCOUNT
-        WHERE p_accountName = username;
-
-    UPDATE WEB_ACCOUNT
-        SET pass = UNHEX(SHA1(p_password + SHA1(id)))
-        WHERE p_accountName = username;    
     
-    RETURN true;
+    SET flag = true;
+
+    IF (p_password = '')
+    THEN
+        SET flag = false;
+    ELSE
+        INSERT INTO WEB_ACCOUNT
+        (username, pass)
+        VALUES (p_accountName, UNHEX(SHA1('temppass')));
+
+        SELECT web_account_id INTO id
+            FROM WEB_ACCOUNT
+            WHERE p_accountName = username;
+
+        UPDATE WEB_ACCOUNT
+            SET pass = UNHEX(SHA1(p_password + SHA1(id)))
+            WHERE p_accountName = username;
+    END IF;    
+    
+    RETURN flag;
 END//
 
 DELIMITER ;

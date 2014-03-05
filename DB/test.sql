@@ -1,9 +1,12 @@
 source /cs/trunk/DB/tables.sql;
 
 SELECT registerAccount('kay', 'password');
-CALL registerAccount('ido', 'password');
-CALL registerAccount('danny', 'password');
-CALL registerAccount('kaykutxd', 'password');
+SELECT registerAccount('ido', 'password');
+SELECT registerAccount('danny', 'password');
+SELECT registerAccount('kaykutxd', 'password');
+SELECT registerAccount('', '');
+SELECT registerAccount('nope', '');
+SELECT registerAccount('', 'nope');
 
 SELECT * FROM WEB_ACCOUNT;
 
