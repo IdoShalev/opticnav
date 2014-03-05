@@ -1,0 +1,20 @@
+apply plugin: 'android'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.8.3'
+    }
+}
+
+dependencies {
+    compile project(':ardd-ard-broker')
+}
+
+android {
+    compileSdkVersion 10
+    buildToolsVersion "19.0.1"
+}
