@@ -17,4 +17,6 @@
         android:layout_marginLeft="33dp"
         android:text="Hello!" />
 
+    <opticnav.ardroid.ui.MapView android:layout_width="fill_parent" android:layout_height="fill_parent"/>
+
 </RelativeLayout>
