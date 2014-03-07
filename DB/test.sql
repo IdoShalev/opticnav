@@ -8,6 +8,12 @@ SELECT registerAccount('', '');
 SELECT registerAccount('nope', '');
 SELECT registerAccount('', 'nope');
 
+CALL setARD(2, 2345);
+
+CALL removeARD(1);
+
+SELECT getARD(2);
+
 SELECT * FROM WEB_ACCOUNT;
 
 SELECT validateUser('Kay', 'kaypass');
@@ -16,15 +22,10 @@ SELECT validateUser('danny', 'password');
 SELECT validateUser('kay', 'fail');
 SELECT validateUser('java', 'password');
 
-SELECT checkAccountName('kay');
-SELECT checkAccountName('ido');
-SELECT checkAccountName('danny');
-SELECT checkAccountName('fail');
-
-SELECT findAccount('kay');
-SELECT findAccount('ido');
-SELECT findAccount('danny');
-SELECT findAccount('fail');
+SELECT findAccount('Kay');
+SELECT findAccount('Ido');
+SELECT findAccount('Danny');
+SELECT findAccount('Fail');
 
 CALL createARD('tacocat', 'password');
 CALL createARD('theard', 'pass');

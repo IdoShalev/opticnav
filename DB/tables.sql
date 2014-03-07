@@ -2,14 +2,14 @@ CREATE TABLE WEB_ACCOUNT
 (
     web_account_id      INT(4)      AUTO_INCREMENT PRIMARY KEY,
     username            VARCHAR(25) NOT NULL UNIQUE,
+    ard_id              INT(4),
     pass                BINARY(20)  NOT NULL
 );
 
 CREATE TABLE RESOURCE
 (
     resource_id         INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    resource_type       VARCHAR(16) NOT NULL,
-    resource_uri        VARCHAR(256) NOT NULL
+    resource_type       VARCHAR(16) NOT NULL
 );
 
 CREATE TABLE MAP

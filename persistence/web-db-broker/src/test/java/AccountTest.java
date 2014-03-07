@@ -35,6 +35,7 @@ public class AccountTest {
     public void testregisterAccount() throws WebDBBrokerException {
         assertEquals(true, broker.registerAccount("java", "password"));
         assertEquals(false, broker.registerAccount("java", "password"));
+        assertEquals(true, broker.registerAccount("doublepass", "password"));
         assertEquals(false, broker.registerAccount("", ""));
         assertEquals(false, broker.registerAccount("", "empty"));
         assertEquals(false, broker.registerAccount("empty", ""));
@@ -47,6 +48,35 @@ public class AccountTest {
         assertEquals(3, broker.verify("Danny", "dannypass"));
         assertEquals(4, broker.verify("Jacky", "jackypass"));
         assertEquals(0, broker.verify("stranger", "kaypass"));
-            //should the password really be unique
+    }
+    
+    @Test
+    public void testfindName() throws WebDBBrokerException {
+        assertEquals(1, broker.findName("Kay"));
+        assertEquals(2, broker.findName("Ido"));
+        assertEquals(3, broker.findName("Danny"));
+        assertEquals(4, broker.findName("Jacky"));
+        assertEquals(0, broker.findName("stranger"));
+        assertEquals(0, broker.findName(""));
+    }
+    
+    @Test
+    public void testSetRemoveGetARD() throws WebDBBrokerException {
+        broker.setARD(1, 1234);
+        broker.setARD(2, 5678);
+        broker.setARD(3, 9012);
+        
+        assertEquals(1234, broker.getARD(1));
+        assertEquals(5678, broker.getARD(2));
+        assertEquals(9012, broker.getARD(3));
+        assertEquals(0, broker.getARD(4));
+        
+        broker.removeARD(1);
+        broker.removeARD(2);
+        broker.removeARD(3);
+        
+        assertEquals(0, broker.getARD(1));
+        assertEquals(0, broker.getARD(2));
+        assertEquals(0, broker.getARD(3));
     }
 }

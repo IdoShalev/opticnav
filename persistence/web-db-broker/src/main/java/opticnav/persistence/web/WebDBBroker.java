@@ -72,19 +72,59 @@ public class WebDBBroker implements AutoCloseable {
         }
     }
     
-    /*
     public int findName(String username) throws WebDBBrokerException {
-        try (CallableStatement cs = conn.prepareCall("{? = call findAccount(?)}")) {
+        try (CallableStatement cs = conn.prepareCall("{? = call findAccount(?)}")) {            
+            cs.registerOutParameter(1, Types.INTEGER);
             cs.setString(2, username);
             
             cs.execute();
+            int id = cs.getInt(1);
+            cs.close();
             
-            return cs.getInt(1);
+            return id;
         } catch (SQLException e) {
             throw new WebDBBrokerException(e);
         }
     }
-    */
+    
+    public int getARD(int accID) throws WebDBBrokerException {
+        
+        try (CallableStatement cs = conn.prepareCall("{? = call getARD(?)}")) {
+            cs.setInt(2, accID);
+            cs.registerOutParameter(1, Types.INTEGER);
+
+            cs.execute();
+            int ard_id = cs.getInt(1);
+            cs.close();
+            return ard_id;
+        } catch (SQLException e) {
+            throw new WebDBBrokerException(e);
+        }
+        
+    }
+    
+    public void setARD(int accID, int ardID) throws WebDBBrokerException {
+        try (CallableStatement cs = conn.prepareCall("{call setARD(?, ?)}")) {
+            cs.setInt(1, accID);
+            cs.setInt(2, ardID);
+            
+            cs.execute();
+            cs.close();
+        } catch (SQLException e) {
+            throw new WebDBBrokerException(e);
+        }
+    }
+    
+    public void removeARD(int accID) throws WebDBBrokerException {
+        try (CallableStatement cs = conn.prepareCall("{call removeARD(?)}")) {
+            cs.setInt(1, accID);
+            
+            cs.execute();
+            cs.close();
+        } catch (SQLException e) {
+            throw new WebDBBrokerException(e);
+        }
+    }
     
     private boolean checkUsername(String username){
         boolean flag = true;
