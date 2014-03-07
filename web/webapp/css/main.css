@@ -18,10 +18,14 @@ header, footer {
 	padding: 1em;
 	background: #ccc;
 }
+#footer{
+     bottom:0;vertical-align:middle;clear:both;
+}
 
 #content {
 	margin: 3em;
 	padding-left:6em;padding-right:6em;
+	min-height: 360px;
 }
 
 .registered_ard {

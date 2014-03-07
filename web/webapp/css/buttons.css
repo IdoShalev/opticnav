@@ -3,12 +3,15 @@
 }
 
 #hubB {
-	color:white;
-	display: table-cell;
+  display:inline-block;
+  color:white;
+    display: table-cell;
+    text-align: center;
   vertical-align: middle;
-  float: none;
-  line-height: normal;
-	width: 350px; height: 200px;
+  float: left;
+  line-height: 200px;
+  margin: 5px;
+	width: 320px; height: 200px;
     background: #3b5998;
   border-radius: 3px;
   border: 1px solid #2b4479;

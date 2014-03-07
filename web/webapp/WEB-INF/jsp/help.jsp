@@ -1,6 +1,6 @@
 <t:page title="Help">
-<div id=content>
-    <div id=helpPage>
+<div id="content">
+    <div id="helpPage">
     <h2>FAQ</h2>
     <h3>What do I require for this application?</h3>
     <p>

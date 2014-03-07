@@ -1,6 +1,10 @@
-#logo{
-    background:url(../css/images/OpticNavLogo.png) no-repeat;
-    width:220px;height:60px;background-size: 100%;
+.logo{
+	height:60px;
+}
+
+.logodiv{
+    height:60px;
+    display: table;
     margin: 0 auto;
 }
 
@@ -40,9 +44,7 @@
   width: auto;
  padding: 5px;
 }
-#footer{
-	 bottom:0;vertical-align:middle;
-}
+
 /* header menu stuff*/
 /*
     unindent it to look like a drop down menu http://jsfiddle.net/q7gFR/1/

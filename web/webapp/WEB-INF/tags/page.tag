@@ -29,7 +29,7 @@
 		    <li><t:link href="/contact"><div id="buttons">Contact Us</div></t:link></li>
 		    <li><t:link href="/about"><div id="buttons">About</div></t:link></li>
 		    <li><t:link href="/help"><div id="buttons">Help</div></t:link></li></ul></li>
-		</ul></div><t:link href="/"><div id="logo"></div></t:link>
+		</ul></div><div class="logodiv"><t:link href="/"><img class="logo" src="${pageContext.request.contextPath}/css/images/OpticNavLogo.png"></t:link></div>
 		
 </header>
 
