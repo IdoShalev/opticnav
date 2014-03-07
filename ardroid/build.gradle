@@ -10,8 +10,15 @@ buildscript {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile project(':ardd-ard-broker')
+
+    // render SVG graphics with ease!
+    compile 'com.caverock:androidsvg:1.2.1'
 }
 
 android {
