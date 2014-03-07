@@ -39,7 +39,7 @@ public class AccountService extends Controller {
             return ok("account.loggedin");
         } else {
             this.userSession.resetUser();
-            return badRequest("account.couldnotlogin");
+            throw new BadRequest("account.couldnotlogin");
         }
     }
     
@@ -60,7 +60,7 @@ public class AccountService extends Controller {
         if (registered) {
             return ok("account.registered");
         } else {
-            return badRequest("account.couldnotregister");
+            throw new BadRequest("account.couldnotregister");
         }
     }
 }

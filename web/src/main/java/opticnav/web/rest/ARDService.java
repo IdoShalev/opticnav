@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.web.arddbrokerpool.ARDdAdminPool;
-import opticnav.web.rest.pojo.ARD;
 import opticnav.web.rest.pojo.Message;
 import opticnav.web.util.InputUtil;
 
@@ -35,20 +34,33 @@ public class ARDService extends Controller {
                     if (successful) {
                         return ok("registerard.successful");
                     } else {
-                        return badRequest("registerard.nomatch");
+                        throw new BadRequest("registerard.nomatch");
                     }
                 }
             } else {
-                return badRequest("registerard.badcode");
+                throw new BadRequest("registerard.badcode");
             }
         } else {
-            return badRequest("registerard.nocode");
+            throw new BadRequest("registerard.nocode");
         }
     }
     
     @RequestMapping(method=RequestMethod.GET)
     @ResponseBody
-    public ARD info() {
-        return new ARD(44, "Tacocat");
+    public Message getRegisteredARD() throws Exception {
+        boolean hasRegistered = false;
+        
+        if (hasRegistered) {
+            return ok("ard.hasregistered");
+        } else {
+            throw new NotFound("ard.noregistered");
+        }
+    }
+    
+    @RequestMapping(method=RequestMethod.DELETE)
+    @ResponseBody
+    public Message removeARD() {
+        boolean hasRegistered = false;
+        return ok(hasRegistered ? "ard.hasregistered" : "ard.noregistered");
     }
 }

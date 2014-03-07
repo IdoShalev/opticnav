@@ -42,7 +42,7 @@ header, footer {
     border: 1px solid;
     padding: 1em;
     margin: 1em;
-    width: 400px;
+    width: 100%;
     word-wrap: break-word;
 }
 
