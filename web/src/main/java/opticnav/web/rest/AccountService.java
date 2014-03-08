@@ -1,8 +1,11 @@
 package opticnav.web.rest;
 
+import java.sql.Connection;
+
 import javax.servlet.http.HttpServletResponse;
 
-import opticnav.persistence.web.WebDBBroker;
+import opticnav.persistence.web.DBUtil;
+import opticnav.persistence.web.PublicBroker;
 import opticnav.web.components.UserSession;
 import opticnav.web.rest.pojo.Account;
 import opticnav.web.rest.pojo.Message;
@@ -28,7 +31,8 @@ public class AccountService extends Controller {
         boolean valid;
         int accountID;
         
-        try (WebDBBroker db = new WebDBBroker(dbDataSource)) {
+        try (Connection conn = DBUtil.getConnectionFromDataSource(dbDataSource)) {
+            PublicBroker db = new PublicBroker(conn);
             accountID = db.verify(account.username, account.password);
         }
         
@@ -53,7 +57,8 @@ public class AccountService extends Controller {
             throws Exception {
         boolean registered;
 
-        try (WebDBBroker db = new WebDBBroker(dbDataSource)) {
+        try (Connection conn = DBUtil.getConnectionFromDataSource(dbDataSource)) {
+            PublicBroker db = new PublicBroker(conn);
             registered = db.registerAccount(account.username, account.password);
         }
         

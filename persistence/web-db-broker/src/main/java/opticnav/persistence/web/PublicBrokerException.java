@@ -1,9 +1,9 @@
 package opticnav.persistence.web;
 
-public class WebDBBrokerException extends Exception {
+public class PublicBrokerException extends Exception {
     private static final long serialVersionUID = 1L;
 
-    public WebDBBrokerException(Throwable exception) {
+    public PublicBrokerException(Throwable exception) {
         super(exception);
     }
 }
