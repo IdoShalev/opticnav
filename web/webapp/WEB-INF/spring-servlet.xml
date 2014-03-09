@@ -39,16 +39,16 @@
 	
 	<!-- Create a singleton bean that provides admin connections to ardd -->
 	<bean id="ARDdAdminPool" class="opticnav.web.arddbrokerpool.ARDdAdminPool">
-        <constructor-arg type="String"><value>${ardd.admin.host}</value></constructor-arg>
-        <constructor-arg type="int"><value>${ardd.admin.port}</value></constructor-arg>
+        <constructor-arg type="String"><value>${opticnav.ardd.admin.host}</value></constructor-arg>
+        <constructor-arg type="int"><value>${opticnav.ardd.admin.port}</value></constructor-arg>
     </bean>
     
     <!-- Create a data source for connection to the database -->
     <bean id="dbDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-	    <property name="driverClassName" value="${jdbc.driverClassName}"/>
-	    <property name="url" value="${jdbc.url}"/>
-	    <property name="username" value="${jdbc.username}"/>
-	    <property name="password" value="${jdbc.password}"/>
+	    <property name="driverClassName" value="${opticnav.jdbc.driverClassName}"/>
+	    <property name="url" value="${opticnav.jdbc.url}"/>
+	    <property name="username" value="${opticnav.jdbc.username}"/>
+	    <property name="password" value="${opticnav.jdbc.password}"/>
 	</bean>
 	
     <!-- Create a user session bean, scoped to session -->
@@ -56,7 +56,7 @@
 	   <aop:scoped-proxy proxy-target-class="false" />
 	</bean>
     
-    <context:property-placeholder location="classpath*:*.properties"/>
+    <context:property-placeholder location="classpath*:*.properties" local-override="true" system-properties-mode="OVERRIDE" />
     
     <bean id="viewResolver"
     class="org.springframework.web.servlet.view.InternalResourceViewResolver">
