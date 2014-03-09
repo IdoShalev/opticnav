@@ -46,7 +46,7 @@ header, footer {
     border: 1px solid;
     padding: 1em;
     margin: 1em;
-    width: 100%;
+    width: auto;
     word-wrap: break-word;
 }
 

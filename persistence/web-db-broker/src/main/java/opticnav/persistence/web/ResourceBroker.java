@@ -70,11 +70,13 @@ public class ResourceBroker {
     
     public Resource getResource(int id)
             throws ResourceBrokerExcpetion {
-        // TODO - read row in DB first to get mimetype
+        // TODO - read row in DB first to get mimetype and that it's
+        // supposed to exist
         File file = getFileFromResourceID(id);
+        String type = "image/png";
         
         try {
-            return new FileResource(new MimeType("image/png"), file);
+            return new FileResource(new MimeType(type), file);
         } catch (MimeTypeParseException e) {
             throw new ResourceBrokerExcpetion(e);
         }
