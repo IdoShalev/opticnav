@@ -105,6 +105,30 @@
   list-style-type: none;
   
 }
+
+#cssmenu > ul > li > ul > li {
+  float: none;
+  position: relative;
+}
+#cssmenu > ul > li > ul > li > ul {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+}
+#cssmenu > ul > li > ul > li:hover > ul {
+  opacity: 1;
+  visibility: visible;
+  position: absolute;
+}
+#cssmenu > ul > li > ul > li > ul {
+  left: 200px;
+  top: 1px;
+  width: 200px;
+}
+#cssmenu > ul > li > ul > li > ul > li {
+  float: none;
+}
+
 #loggedin {
 	float:right;
 }

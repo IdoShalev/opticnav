@@ -1,13 +1,19 @@
 @import "menu.css";
 @import "buttons.css";
+@import "mapManager.css";
 body {
 	font-family: Helvetica, Arial, sans;
 	
-	background: #fff;
+	background: #F5F5DC;
+	
     margin: 0;
 }
 /*index centering*/
 
+#space
+{
+	
+}
 
 #rightLogin
 {
@@ -26,6 +32,7 @@ header, footer {
 	margin: 3em;
 	padding-left:6em;padding-right:6em;
 	min-height: 360px;
+	background-color: #FFFAFA
 }
 
 .registered_ard {

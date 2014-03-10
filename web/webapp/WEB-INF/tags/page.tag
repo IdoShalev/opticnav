@@ -16,13 +16,14 @@
     <div id="cssmenu">
 		<ul>
 		    <li><a><div id="homeB"></div></a><ul>
-		    <li><t:link href="/"><div id="buttons">Home</div></t:link></li>
 		    <c:if test="${!empty user}">
-            <li><t:link href="/registerDevice"><div id="buttons">Device Manager</div></t:link></li>
-            <li><t:link href="/map"><div id="buttons">Create Map</div></t:link></li>
-            <li><t:link href="/instance"><div id="buttons">Create an Instance</div></t:link></li>
+		    <li><t:link href="/"><div id="buttons">Hub</div></t:link>
+            <ul><li><t:link href="/registerDevice"><div id="buttons">Device Manager</div></t:link></li>
+            <li><t:link href="/map"><div id="buttons">Maps Manager</div></t:link></li>
+            <li><t:link href="/instance"><div id="buttons">Start an Instance</div></t:link></li></ul></li>
             </c:if>
             <c:if test="${empty user}">
+            <li><t:link href="/"><div id="buttons">Home</div></t:link></li>
 		    <li><t:link href="/register"><div id="buttons">New Account</div></t:link></li>
 		    </c:if>
 		    <li><t:link href="/download"><div id="buttons">Get Application</div></t:link></li>
