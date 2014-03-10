@@ -1,5 +1,6 @@
 package opticnav.ardd.protocol;
 
+import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -10,7 +11,7 @@ import java.io.OutputStream;
  * All integers are little-endian.
  *
  */
-public class PrimitiveWriter implements Flushable {
+public final class PrimitiveWriter implements Flushable, Closeable {
     private OutputStream out;
     
     public PrimitiveWriter(OutputStream output) {
@@ -70,5 +71,10 @@ public class PrimitiveWriter implements Flushable {
     @Override
     public void flush() throws IOException {
         this.out.flush();
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.out.close();
     }
 }

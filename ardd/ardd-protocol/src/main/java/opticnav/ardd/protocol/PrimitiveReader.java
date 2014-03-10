@@ -15,7 +15,7 @@ public final class PrimitiveReader {
     public PrimitiveReader(InputStream input) {
         this.in = input;
     }
-    
+
     public byte[] readBlob(int max_length) throws IOException {
         int length = readSInt32();
         if (length <= 0 || length > max_length) {
