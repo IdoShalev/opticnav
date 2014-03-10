@@ -1,5 +1,7 @@
 /* *********************************************************************
-**	Description:
+**	Description:    Returns the ARD ID for the specified WEB_ACCOUNT
+**
+**  Returns:        The ARD ID
 ********************************************************************* */
 
 DROP FUNCTION IF EXISTS getARD;

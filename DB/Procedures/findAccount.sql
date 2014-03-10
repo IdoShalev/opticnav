@@ -1,5 +1,6 @@
 /* *********************************************************************
 **	Description:	Will search for the provided account name
+**
 **  Returns:        0 if the account name is not found
 **                  The account id if the account name is found
 ********************************************************************* */

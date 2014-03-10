@@ -1,8 +1,10 @@
 /* *********************************************************************
 **	Description:	Will add a new row to the ACCOUNT table conating
-**                  the provided account name, the provided password 
-**                  in a hashed binary form, and an auto incementing
-**                  account id.
+**                  the provided account name and the provided password 
+**                  in binary form
+**
+**  Returns:        True if the WEB_ACCOUNT was created without error
+**                  False if the username or password where empty strings
 ********************************************************************* */
 
 DROP FUNCTION IF EXISTS registerAccount;
@@ -30,15 +32,10 @@ BEGIN
     ELSE
         INSERT INTO WEB_ACCOUNT
         (username, pass)
-        VALUES (p_accountName, UNHEX(SHA1('temppass')));
-
-        SELECT web_account_id INTO id
-            FROM WEB_ACCOUNT
-            WHERE p_accountName = username;
-
-        UPDATE WEB_ACCOUNT
-            SET pass = UNHEX(SHA1(p_password + SHA1(id)))
-            WHERE p_accountName = username;
+        VALUES (p_accountName, UNHEX(SHA1(CONCAT(p_password,(SELECT `AUTO_INCREMENT`
+                                                        FROM  INFORMATION_SCHEMA.TABLES
+                                                        WHERE TABLE_SCHEMA = 'OpticNavDB'
+                                                        AND   TABLE_NAME   = 'MAP')))));
     END IF;    
     
     RETURN flag;

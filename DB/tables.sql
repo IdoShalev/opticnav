@@ -9,8 +9,7 @@ CREATE TABLE WEB_ACCOUNT
 CREATE TABLE RESOURCE
 (
     resource_id         INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    resource_type       VARCHAR(16) NOT NULL,
-    resource_data       MEDIUMBLOB  NOT NULL
+    resource_type       VARCHAR(127) NOT NULL
 );
 
 CREATE TABLE MAP

@@ -14,6 +14,13 @@ CALL removeARD(1);
 
 SELECT getARD(2);
 
+SELECT addResource('type');
+SELECT addResource('type');
+
+CALL removeResource (1);
+
+SELECT getResourceType (2);
+
 SELECT * FROM WEB_ACCOUNT;
 
 SELECT validateUser('Kay', 'kaypass');
