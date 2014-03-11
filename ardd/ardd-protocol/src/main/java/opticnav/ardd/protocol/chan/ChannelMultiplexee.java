@@ -7,31 +7,26 @@ import java.io.PipedOutputStream;
 
 import org.apache.commons.io.IOUtils;
 
-public class ChannelMultiplexee {
-    private Channel channel;
+/**
+ * Represents a channel being multiplexed into a ChannelMultiplexer.
+ */
+class ChannelMultiplexee {
     private PipedInputStream input;
     private PipedOutputStream output_to_input;
     private SOutput output;
     
-    public ChannelMultiplexee(Channel channel, int channelID, ChannelMultiplexer.Writer writer) {
+    public ChannelMultiplexee(int channelID, ChannelMultiplexer.Writer writer) {
         try {
-            this.input = new PipedInputStream();
+            this.input = new PipedInputStream(writer.getMaxDataSize());
             this.output_to_input = new PipedOutputStream(this.input);
         } catch (IOException e) {
             throw new IllegalStateException("This should never happen", e);
         }
-        this.channel = channel;
         this.output = new SOutput(writer, channelID);
     }
     
-    public void read(int bytes) throws IOException {
-        InputStream in = this.channel.getInputStream();
-        
-        // TODO - more efficient copy
-        for (int i = 0; i < bytes; i++) {
-            int b = in.read();
-            this.output_to_input.write(b);
-        }
+    public void read(byte[] b) throws IOException {
+        this.output_to_input.write(b);
         this.output_to_input.flush();
     }
     
