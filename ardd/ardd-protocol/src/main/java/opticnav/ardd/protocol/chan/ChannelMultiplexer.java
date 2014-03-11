@@ -66,7 +66,7 @@ public class ChannelMultiplexer {
                     
                     output.writeUInt8(ChannelMultiplexer.CTL_DATA);
                     output.writeUInt8(channelID);
-                    output.writeUInt16(b.length);
+                    output.writeUInt16(write_len);
                     os.write(b, off, write_len);
                     output.flush();
                     
@@ -164,7 +164,7 @@ public class ChannelMultiplexer {
                     if (bytes == 0) {
                         throw new IllegalStateException("Data cannot be 0 bytes");
                     } else if (bytes > maxDataSize) { 
-                        throw new IllegalStateException("Data cannot exceed " + maxDataSize + " bytes");
+                        throw new IllegalStateException("Data cannot exceed " + maxDataSize + " bytes: got " + bytes);
                     }
                     byte[] buf = input.readFixedBlob(bytes);
                     c.read(buf);

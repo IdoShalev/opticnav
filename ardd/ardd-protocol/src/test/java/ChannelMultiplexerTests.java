@@ -29,6 +29,10 @@ import static org.junit.Assert.*;
  *
  */
 public class ChannelMultiplexerTests {
+    /** The maximum data size for ChannelMultiplexer. It's small here to test
+     * for extreme cases. */
+    private static final int MAX_DATA_SIZE = 8;
+    
     private ExecutorService pool;
     private List<Future<?>> tasks;
     private Thread clientThread, serverThread;
@@ -64,8 +68,8 @@ public class ChannelMultiplexerTests {
         
         Channel clientChannel = new Channel(ic, oc);
         Channel serverChannel = new Channel(is, os);
-        clientMp = new ChannelMultiplexer(clientChannel);
-        serverMp = new ChannelMultiplexer(serverChannel);
+        clientMp = new ChannelMultiplexer(clientChannel, MAX_DATA_SIZE);
+        serverMp = new ChannelMultiplexer(serverChannel, MAX_DATA_SIZE);
 
         // Establish the expected channels
         clientChan0 = clientMp.createChannel(0);
