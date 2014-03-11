@@ -11,7 +11,7 @@ CREATE PROCEDURE deleteMarker
 (p_marker_id INT(4))
 BEGIN
     DELETE FROM Marker
-    WHERE marker_id = p_marker_id
+    WHERE marker_id = p_marker_id;
 END//
 
 DELIMITER ;
