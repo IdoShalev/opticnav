@@ -35,7 +35,7 @@ BEGIN
         VALUES (p_accountName, UNHEX(SHA1(CONCAT(p_password,(SELECT `AUTO_INCREMENT`
                                                         FROM  INFORMATION_SCHEMA.TABLES
                                                         WHERE TABLE_SCHEMA = 'OpticNavDB'
-                                                        AND   TABLE_NAME   = 'MAP')))));
+                                                        AND   TABLE_NAME   = 'WEB_ACCOUNT')))));
     END IF;    
     
     RETURN flag;

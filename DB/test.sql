@@ -25,7 +25,7 @@ SELECT * FROM WEB_ACCOUNT;
 
 SELECT validateUser('Kay', 'kaypass');
 SELECT validateUser('Ido', 'idopass');
-SELECT validateUser('danny', 'password');
+SELECT validateUser('danny', 'dannypass');
 SELECT validateUser('kay', 'fail');
 SELECT validateUser('java', 'password');
 
