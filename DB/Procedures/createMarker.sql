@@ -21,7 +21,7 @@ BEGIN
     RETURN (SELECT `AUTO_INCREMENT`
             FROM  INFORMATION_SCHEMA.TABLES
             WHERE TABLE_SCHEMA = 'OpticNavDB'
-            AND   TABLE_NAME   = 'MAP') - 1;
+            AND   TABLE_NAME   = 'MARKER') - 1;
 END//
 
 DELIMITER ;
