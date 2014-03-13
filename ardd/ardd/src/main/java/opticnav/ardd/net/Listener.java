@@ -1,20 +1,19 @@
 package opticnav.ardd.net;
 
-import java.io.BufferedOutputStream;
-import java.io.Closeable;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import opticnav.ardd.protocol.BlockingInputStream;
+import org.apache.commons.io.IOUtils;
+
+import opticnav.ardd.protocol.chan.Channel;
+import opticnav.ardd.protocol.chan.ChannelUtil;
 
 public final class Listener implements Runnable {
     public interface ConnectionSpawner {
-        public Runnable create(Closeable closeable, InputStream input, OutputStream output);
+        public Runnable create(Channel channel);
     }
     
     private ServerSocket socket;
@@ -44,24 +43,14 @@ public final class Listener implements Runnable {
             // Thread has been interrupted - let it fall through to the end
         }
         
-        try { this.socket.close(); } catch (IOException e) {}
+        IOUtils.closeQuietly(this.socket);
     }
 
     private void dispatchClient(Socket client)
             throws InterruptedException, IOException
     {
-        InputStream input;
-        OutputStream output;
-        
-        // Ensure the connection doesn't die
-        client.setKeepAlive(true);
-        // BlockingInputStream will not read incomplete buffers
-        input = new BlockingInputStream(client.getInputStream());
-        // BufferedOutputStream avoids sending small buffers over a network
-        // (the payload should be as big as it makes sense)
-        output = new BufferedOutputStream(client.getOutputStream());
-        
-        Thread connThread = new Thread(this.cs.create(client, input, output));
+        Channel channel = ChannelUtil.fromSocket(client);
+        Thread connThread = new Thread(this.cs.create(channel));
         connThread.start();
         
         this.logger.info("Client connection accepted: " + client.getInetAddress());

@@ -111,7 +111,9 @@ public class ChannelMultiplexer {
         
         ChannelMultiplexee cm;
         cm = new ChannelMultiplexee(channelID, this.writer);
-        channelMap.put(channelID, cm);
+        if (channelMap.put(channelID, cm) != null) {
+            throw new IllegalArgumentException("Channel already exists");
+        }
         
         return cm.getChannel();
     }

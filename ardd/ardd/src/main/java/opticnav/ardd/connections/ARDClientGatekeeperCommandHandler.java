@@ -11,10 +11,10 @@ import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.Protocol.ARDClient.Commands;
 
-public class ARDClientCommandHandler implements ClientConnection.CommandHandler {
+public class ARDClientGatekeeperCommandHandler implements ClientConnection.CommandHandler {
     private ARDListsManager ardListsManager;
     
-    public ARDClientCommandHandler(ARDListsManager ardListsManager) {
+    public ARDClientGatekeeperCommandHandler(ARDListsManager ardListsManager) {
         this.ardListsManager = ardListsManager;
     }
     
@@ -28,14 +28,19 @@ public class ARDClientCommandHandler implements ClientConnection.CommandHandler 
             codesWait = this.ardListsManager.generatePassConfCodes();
             codes = codesWait.getFirst();
             
-            out.writeFixedBlob(codes.getPasscode().getByteArray());
             out.writeFixedBlob(codes.getConfcode().getByteArray());
+            // TODO - proper cancellation channel
+            out.writeUInt8(255);
             out.flush();
             
             // blocks until result (ARD registered or otherwise)
-            int result = codesWait.getSecond().get();
-            
-            out.writeUInt8(result);
+            // TODO - proper response and ARD id
+            int ardID = codesWait.getSecond().get();
+            int response = 0;
+            out.writeUInt8(response);
+            out.writeUInt31(ardID);
+            out.writeFixedBlob(codes.getPasscode().getByteArray());
+
             out.flush();
         }
     }

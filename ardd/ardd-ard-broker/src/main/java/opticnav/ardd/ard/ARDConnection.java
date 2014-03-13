@@ -6,11 +6,21 @@ import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 
 public interface ARDConnection extends AutoCloseable {
-    public interface RequestPassConfCodesCallback {
-        public void passConfCodes(PassCode passCode, ConfCode confCode);
+    public interface Cancellation {
+        public void cancel();
     }
     
-    public int requestPassConfCodes(RequestPassConfCodesCallback c)
+    public interface RequestPassConfCodesCallback {
+        public void confCode(ConfCode confCode, Cancellation cancellation);
+        public void registered(PassCode passCode, int ardID);
+        public void couldnotregister();
+        public void cancelled();
+    }
+    
+    /**
+     * Blocks until a passcode+ARD id is received, or an error occurs
+     */
+    public void requestPassConfCodes(RequestPassConfCodesCallback c)
             throws ARDConnectionException;
     public void close() throws IOException;
 }
