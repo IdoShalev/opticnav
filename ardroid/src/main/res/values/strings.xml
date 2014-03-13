@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">OpticNav</string>
     <string name="action_settings">Settings</string>
+    <string name="register_enterconfcode">To register this device, please enter the following confirmation code into the OpticNav web site</string>
 </resources>
