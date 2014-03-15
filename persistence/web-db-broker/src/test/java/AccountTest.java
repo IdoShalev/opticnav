@@ -23,7 +23,7 @@ public class AccountTest {
         //reset the database
         
         MysqlDataSource ds = new MysqlDataSource();
-        ds.setUser("test");
+        ds.setUser("root");
         ds.setPassword("password");
         ds.setServerName("localhost");
         ds.setDatabaseName("OpticNavDB");
@@ -54,6 +54,8 @@ public class AccountTest {
         assertEquals(3, publicBroker.verify("Danny", "dannypass"));
         assertEquals(4, publicBroker.verify("Jacky", "jackypass"));
         assertEquals(0, publicBroker.verify("stranger", "kaypass"));
+        assertEquals(0, publicBroker.verify("Kay", "fail"));
+        assertEquals(0, publicBroker.verify("Ido", ""));
     }
     
     @Test

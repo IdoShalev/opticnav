@@ -5,7 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
 
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
@@ -47,10 +50,15 @@ public class ResourceBroker {
 
     public int createResource(MimeType mimeType, InputStream input)
             throws ResourceBrokerExcpetion {
-        try {
-            // TODO - store entry and get ID from database
+        try (CallableStatement cs = conn.prepareCall("{? = call addResource(?)}")){
+            // store entry and get ID from database
             // mimeType.getBaseType() for storing in DB
-            int id = 0;
+            cs.setString(2, mimeType.getBaseType());
+            cs.registerOutParameter(1, Types.INTEGER);
+            
+            cs.execute();
+            int id = cs.getInt(1);
+            cs.close();
             
             File file = getFileFromResourceID(id);
             // create the group directory if it doesn't exist
@@ -61,19 +69,32 @@ public class ResourceBroker {
             }
             
             // commit
+            conn.commit();
             
             return id;
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             throw new ResourceBrokerExcpetion(e);
         }
     }
     
     public Resource getResource(int id)
             throws ResourceBrokerExcpetion {
-        // TODO - read row in DB first to get mimetype and that it's
+        // read row in DB first to get mimetype and that it's
         // supposed to exist
+        String type = null;
+        try (CallableStatement cs = conn.prepareCall("{? = call getResourceType(?)}")){
+            cs.setInt(2, id);
+            cs.registerOutParameter(1, Types.VARCHAR);
+            
+            cs.execute();
+            type = cs.getString(1); //TODO may return NULL if id does not exist
+            
+            
+        } catch (SQLException e1) {
+            throw new ResourceBrokerExcpetion(e1);
+        }
+        
         File file = getFileFromResourceID(id);
-        String type = "image/png";
         
         try {
             return new FileResource(new MimeType(type), file);
