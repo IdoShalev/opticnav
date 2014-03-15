@@ -33,3 +33,13 @@ CREATE TABLE MARKER
     CONSTRAINT          fk_marker_map FOREIGN KEY (map_id) REFERENCES MAP(map_id),
     CONSTRAINT          fk_marker_resource FOREIGN KEY (resource_id) REFERENCES RESOURCE(resource_id)
 );
+
+CREATE TABLE ANCHOR
+(
+    map_id              INT(4)      NOT NULL,
+    image_x             INT(4)      NOT NULL,
+    image_y             INT(4)      NOT NULL,
+    lat                 INT(4)      NOT NULL,
+    longitude           INT(4)      NOT NULL,
+    CONSTRAINT          fk_anchor_map FOREIGN KEY (map_id) REFERENCES MAP(map_id)
+);
