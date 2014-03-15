@@ -1,0 +1,126 @@
+<html>
+
+<head>
+<style>
+body {
+   font-family: Arial;
+   margin: 0;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="map.css" />
+<script src="jquery-2.1.0.min.js"></script>
+<script src="jquery.ba-resize.min.js"></script>
+
+<script src="MapCoordHelper.js"></script>
+<script src="MapController.js"></script>
+<script src="Map.js"></script>
+<script>
+/* JavaScript is not object-oriented, but can mimic OOP patterns
+ * For more on OO JavaScript, take a gander:
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript
+ */
+function loadMapsList() {
+    var mapList = $("#map-list");
+    
+    function addEntry(name, id) {
+        /* Append a <entry> surrounded by an <a>
+         * Example output: <a href="javascript:loadMap(1)"><entry>Map 1</entry></a> */
+        mapList.append($('<a>', {href:'javascript:MapController.loadMap('+id+')'})
+                        .append($('<entry>', {}).text(name)));
+    }
+    
+    mapList.hide();
+    mapList.empty();
+    
+    // begin GET /map
+    var json = {
+        maps: [
+            {id: 1, name: "SAIT Campus"},
+            {id: 2, name: "Middle of Nowhere"},
+            {id: 3, name: "Super Secret Hideout"},
+            {id: 4, name: "Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch"},
+        ]
+    };
+    
+    for (var i = 0; i < json.maps.length; i++) {
+        var map = json.maps[i];
+        addEntry(map.name, map.id);
+    }
+    
+    mapList.fadeIn();
+    // end GET/map
+}
+
+function createMap() {
+    var modal_backdrop = $("#modal-backdrop");
+    var map_creation = $("#map-creation");
+    modal_backdrop.fadeIn();
+    map_creation.fadeIn();
+}
+
+$(function() {
+    // When the map view resizes, the marker locations need to change
+    $("#map-view").resize(function() {
+        MapController.recalculateMarkerPositions();
+    });
+    
+    // When the user clicks outside of a popup, it should disappear
+    $("#marker-popup").focusout(function(e) {
+        // setTimeout is an awful hack, but it's needed to get the active element
+        setTimeout(function() {
+            var p = $(document.activeElement).parents("#marker-popup").length >= 1;
+            if (!p) {
+                $("#marker-popup").hide();
+            }
+        }, 1);
+    });
+    $("#marker-popup").hide();
+    
+    // Prompt the user if there are any unsaved changes
+    $(window).on('beforeunload', MapController.unsavedMapPageUnloadEvent);
+    
+    // Load the map list
+    loadMapsList();
+});
+</script>
+</head>
+
+<body>
+<div>
+<div id="map-manager">
+<div id="map-creation" class="modal-dialog">
+    <input type="text" id="map-creation-name" placeholder="Map Name" />
+    <input type="file" id="map-creation-file" />
+    <button id="map-creation-create">Create</button>
+</div>
+<div id="modal-backdrop"></div>
+<sidebar>
+    <a href="javascript:createMap()"><div class="create-button">
+    Create a New Map
+    </div></a>
+    <a href="javascript:MapController.saveMap()"><div id="save-button" class="save-button">
+    Save Changes
+    </div></a>
+    <div id="map-list"></div>
+    <a href="javascript:toggleAnchorMode()"><div class="anchor-mode-button">
+    Toggle anchor placement mode
+    </div></a>
+</sidebar>
+<div id="map-view">
+    <div id="map-popups">
+        <div id="marker-popup">
+        <button>Delete</button>
+        <input type="text" id="marker-name" placeholder="Marker name" /><br/>
+        <input type="text" id="marker-lat" placeholder="Latitude" />
+        <input type="text" id="marker-lng" placeholder="Longitude" />
+        <button>Save</button>
+        </div>
+    </div>
+    <div id="map-markers"></div>
+    <img id="map-image" />
+</div>
+</div>
+</div>
+</body>
+
+</html>

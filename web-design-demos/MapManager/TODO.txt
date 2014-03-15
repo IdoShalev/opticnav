@@ -1,0 +1,8 @@
+Anchor placement mode
+Drag markers
+Give markers an icon
+Delete a marker
+Save a marker
+
+AJAX (when it's in the web project)
+
