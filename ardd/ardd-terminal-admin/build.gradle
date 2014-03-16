@@ -8,8 +8,4 @@ dependencies {
     compile project(':ardd-admin-broker')
 }
 
-repositories {
-    mavenCentral()
-}
-
 mainClassName = "opticnav.ardd.terminal.admin.AdminTerminalDriver"

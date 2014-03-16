@@ -14,10 +14,6 @@ dependencies {
     providedCompile 'javax.servlet:jstl:1.2'
 }
 
-repositories {
-    mavenCentral()
-}
-
 webAppDirName = 'webapp'
 
 apply from: 'web-deploy.gradle'
