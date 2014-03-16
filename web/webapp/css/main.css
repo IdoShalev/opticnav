@@ -3,16 +3,11 @@
 body {
 	font-family: Helvetica, Arial, sans;
 	
-	background: #F5F5DC;
+	background: #FFFAFA;
 	
     margin: 0;
 }
 /*index centering*/
-
-#space
-{
-	
-}
 
 #rightLogin
 {
@@ -22,7 +17,9 @@ header, footer {
 	margin: 0;
 	padding: 1em;
 	background: #ccc;
+	box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
 }
+
 #footer{
      bottom:0;vertical-align:middle;clear:both;
 }
@@ -31,7 +28,7 @@ header, footer {
 	margin: 3em;
 	padding-left:6em;padding-right:6em;
 	min-height: 560px;
-	background-color: #FFFAFA
+	background-color: #FFFAFA;
 }
 
 .registered_ard {

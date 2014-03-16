@@ -84,6 +84,7 @@
   position: absolute;
   list-style-type: none;
     border-radius: 10px;
+    box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
 }
 /*
     shows the menu
@@ -94,7 +95,8 @@
   position: absolute;
   list-style-type: none;
   width: 200px;
-
+ z-index:1000000;
+ box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
 }
 /*
     menu area for the drop down menu
