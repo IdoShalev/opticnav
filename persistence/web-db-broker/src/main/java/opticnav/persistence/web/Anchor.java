@@ -5,7 +5,6 @@ public class Anchor {
     private int localX, localY;
     
     public Anchor(int lng, int lat, int localX, int localY) {
-        super();
         this.lng = lng;
         this.lat = lat;
         this.localX = localX;

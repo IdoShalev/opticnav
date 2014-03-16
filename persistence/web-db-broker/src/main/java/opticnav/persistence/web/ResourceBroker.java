@@ -58,7 +58,6 @@ public class ResourceBroker {
             
             cs.execute();
             int id = cs.getInt(1);
-            cs.close();
             
             File file = getFileFromResourceID(id);
             // create the group directory if it doesn't exist

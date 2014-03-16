@@ -1,9 +1,10 @@
 package opticnav.persistence.web;
 
 import java.sql.CallableStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.LinkedList;
+import java.util.List;
 
 public class AccountBroker {
     private java.sql.Connection conn;
@@ -62,7 +63,6 @@ public class AccountBroker {
             
             cs.execute();
             int id = cs.getInt(1);
-            cs.close();
             conn.commit();
             
             return id;
@@ -72,44 +72,49 @@ public class AccountBroker {
     }
     
     public void modifyMap(int id, Map map) throws AccountBrokerException {
-        try(CallableStatement cs = conn.prepareCall("{call deleteMarker(?)}")){
+        try (CallableStatement cs = conn.prepareCall("{call deleteMarker(?)}")) {
             cs.setInt(1, id);
             cs.execute();
-            
-            //cs = conn.prepareCall("{call deleteAnchor(?)}");
+        } catch (SQLException e) {
+            throw new AccountBrokerException(e);
+        }
+        try (CallableStatement cs = conn.prepareCall("{call deleteAnchor(?)}")) {
             cs.setInt(1, id);
             cs.execute();
-            
-            /*
-            LinkedList<Marker> ml = map.getMarkerList();            
-            for (int i = 0; i < ml.length(); i++){
-                cs = conn.prepareCall("{? = call createMarker(?, ?, ?, ?, ?)}");
+        } catch (SQLException e) {
+            throw new AccountBrokerException(e);
+        }
+        try (CallableStatement cs = conn.prepareCall("{? = call createMarker(?, ?, ?, ?, ?)}")) {
+            List<Marker> ml = map.getMarkers();
+            for (int i = 0; i < ml.size(); i++) {
                 cs.registerOutParameter(1, Types.INTEGER);
                 cs.setString(2, ml.get(i).getName());
                 cs.setInt(3, id);
                 cs.setInt(4, 0);
-                cs.setInt(5, ml.get(i).getLat);
-                cs.setInt(6, ml.get(i).getLong);
-                
+                cs.setInt(5, ml.get(i).getLat());
+                cs.setInt(6, ml.get(i).getLng());
+
                 cs.execute();
             }
-            */
-            /*
-            LinkedList<Anchor> al = map.getAnchorList();
-            for (int i = 0; i < al.length(); i++){
-                cs = conn.prepareCall("{call createAnchor(?, ?, ?, ?, ?)}");
+        } catch (SQLException e) {
+            throw new AccountBrokerException(e);
+        }
+        try (CallableStatement cs = conn.prepareCall("{call createAnchor(?, ?, ?, ?, ?)}")) {
+            List<Anchor> al = map.getAnchors();
+            for (int i = 0; i < al.size(); i++) {
                 cs.setInt(1, id);
-                cs.setInt(2, al.get(i).getLocalX);
-                cs.setInt(3, al.get(i).getLocalY);
-                cs.setInt(4, al.get(i).getLat);
-                cs.setInt(5, al.get(i).getLong);
-                
+                cs.setInt(2, al.get(i).getLocalX());
+                cs.setInt(3, al.get(i).getLocalY());
+                cs.setInt(4, al.get(i).getLat());
+                cs.setInt(5, al.get(i).getLng());
+
                 cs.execute();
             }
-            */
-            cs.close();
+        } catch (SQLException e) {
+            throw new AccountBrokerException(e);
+        }
+        try {
             conn.commit();
-            
         } catch (SQLException e) {
             throw new AccountBrokerException(e);
         }
@@ -119,20 +124,45 @@ public class AccountBroker {
         try(CallableStatement cs = conn.prepareCall("{call deleteMap(?)}")){
             cs.setInt(1, id);
             cs.execute();
-            cs.close();
             conn.commit();
         } catch (SQLException e) {
             throw new AccountBrokerException(e);
         }
             
     }
-    
-    //TODO change procedures
-    /*
+
     public Map getMap(int id) throws AccountBrokerException {
+        Map map = new Map();
         
+        try(CallableStatement cs = conn.prepareCall("{call getAllMarkers(?)}")){
+            cs.setInt(1, id);
+            
+            ResultSet rs = cs.executeQuery();
+            @SuppressWarnings("unused")
+            Marker marker = null;
+            while(rs.next()){
+                map.addMarker(marker = new Marker(rs.getInt(5), rs.getInt(4), rs.getString(1), rs.getInt(3)));
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new AccountBrokerException(e);
+        }
+        try(CallableStatement cs = conn.prepareCall("{call getAllAnchorss(?)}")){
+            cs.setInt(1, id);
+            
+            ResultSet rs = cs.executeQuery();
+            @SuppressWarnings("unused")
+            Anchor anchor = null;
+            while(rs.next()){
+                map.addAnchor(anchor = new Anchor(rs.getInt(5), rs.getInt(4), rs.getInt(2), rs.getInt(3)));;
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new AccountBrokerException(e);
+        }
+        
+        return map;
     }
-    */
     
     public int getMapResource(int id) throws AccountBrokerException {
         try(CallableStatement cs = conn.prepareCall("{? = call getMapResource(?)}")){
@@ -141,7 +171,6 @@ public class AccountBroker {
             
             cs.execute();
             id = cs.getInt(1);
-            cs.close();
             return id;
         } catch (SQLException e) {
             throw new AccountBrokerException(e);

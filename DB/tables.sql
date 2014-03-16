@@ -24,10 +24,9 @@ CREATE TABLE MAP
 
 CREATE TABLE MARKER
 (
-    marker_id           INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    marker_name         VARCHAR(64) NOT NULL,
+    marker_name         VARCHAR(64) ,
     map_id              INT(4)      NOT NULL,
-    resource_id         INT(4),
+    resource_id         INT(4)      ,
     lat                 INT(4)      NOT NULL,
     longitude           INT(4)      NOT NULL,
     CONSTRAINT          fk_marker_map FOREIGN KEY (map_id) REFERENCES MAP(map_id),

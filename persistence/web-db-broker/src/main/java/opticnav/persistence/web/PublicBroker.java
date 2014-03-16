@@ -24,7 +24,6 @@ public class PublicBroker {
                 cs.execute();
                 boolean flag = cs.getBoolean(1);                
                 conn.commit();
-                cs.close();
                 
                 return flag;
             } catch (SQLException e) {
