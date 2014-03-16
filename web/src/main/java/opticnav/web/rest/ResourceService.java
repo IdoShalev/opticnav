@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/rest/resource/**")
+@RequestMapping("/api/resource/**")
 public class ResourceService extends Controller {
     @Autowired
     private DataSource dbDataSource;

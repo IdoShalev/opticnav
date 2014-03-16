@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/rest/account/**")
+@RequestMapping("/api/account/**")
 public class AccountService extends Controller {
     @Autowired
     private javax.sql.DataSource dbDataSource;

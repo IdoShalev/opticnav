@@ -4,7 +4,7 @@ $(function() {
 		
 		$.ajax({
 			type: "POST",
-			url: ctx+"/rest/ard",
+			url: ctx+"/api/ard",
 			data: code,
 			contentType: "text/plain",
 			complete: ajaxMessageClosure($("#message"))

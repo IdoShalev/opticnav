@@ -8,7 +8,7 @@ $(function(){
         
         $.ajax({
             type: "POST",
-            url: ctx+"/rest/resource",
+            url: ctx+"/api/resource",
             enctype: "multipart/form-data",
             data: fd,
 		    cache: false,

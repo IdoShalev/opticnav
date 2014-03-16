@@ -10,7 +10,7 @@ $(function() {
 
 		$.ajax({
 		 type: "POST",
-		 url: ctx+"/rest/account/login",
+		 url: ctx+"/api/account/login",
 		 data: JSON.stringify(object),
 		 contentType: "application/json; charset=utf-8",
 		 complete: ajaxMessageClosureOnError($("#message"), function() {

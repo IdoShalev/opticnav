@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/rest/ard/**")
+@RequestMapping("/api/ard/**")
 public class ARDService extends Controller {
     @Autowired
     private ARDdAdminPool pool;
