@@ -1,6 +1,5 @@
 @import "menu.css";
 @import "buttons.css";
-@import "mapManager.css";
 body {
 	font-family: Helvetica, Arial, sans;
 	
@@ -31,7 +30,7 @@ header, footer {
 #content {
 	margin: 3em;
 	padding-left:6em;padding-right:6em;
-	min-height: 360px;
+	min-height: 560px;
 	background-color: #FFFAFA
 }
 
