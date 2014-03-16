@@ -4,11 +4,22 @@ import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 
-public class PublicBroker {
+import javax.sql.DataSource;
+
+public class PublicBroker implements AutoCloseable {
     private java.sql.Connection conn;
     
-    public PublicBroker(java.sql.Connection conn) {
-        this.conn = conn;
+    public PublicBroker(DataSource dataSource) throws SQLException {
+        this.conn = DBUtil.getConnectionFromDataSource(dataSource);
+    }
+
+    @Override
+    public void close() throws PublicBrokerException {
+        try {
+            this.conn.close();
+        } catch (SQLException e) {
+            throw new PublicBrokerException(e);
+        }
     }
 
     public boolean registerAccount(String username, String password) throws PublicBrokerException {

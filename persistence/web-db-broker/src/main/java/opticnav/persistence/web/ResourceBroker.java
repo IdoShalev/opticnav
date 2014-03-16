@@ -12,33 +12,39 @@ import java.sql.Types;
 
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
+import javax.sql.DataSource;
 
 import org.apache.commons.io.IOUtils;
 
-public class ResourceBroker {
+public class ResourceBroker implements AutoCloseable {
     private static final int GROUP_SIZE = 100;
     
     private String resourcePath;
     private Connection conn;
     
-    public ResourceBroker(String resourcePath, Connection conn)
-            throws ResourceBrokerExcpetion {
+    public ResourceBroker(String resourcePath, DataSource dataSource)
+            throws IOException, SQLException {
+        File path = new File(resourcePath).getCanonicalFile();
+        if (!path.exists()) {
+            throw new IOException("Resource path doesn't exist");
+        }
+        if (!path.isDirectory()) {
+            throw new IOException("Resource path must be a directory");
+        }
+        
+        this.resourcePath = path.toString();
+        this.conn = DBUtil.getConnectionFromDataSource(dataSource);
+    }
+    
+    @Override
+    public void close() throws ResourceBrokerExcpetion {
         try {
-            File path = new File(resourcePath).getCanonicalFile();
-            if (!path.exists()) {
-                throw new IOException("Resource path doesn't exist");
-            }
-            if (!path.isDirectory()) {
-                throw new IOException("Resource path must be a directory");
-            }
-            
-            this.resourcePath = path.toString();
-            this.conn = conn;
-        } catch (IOException e) {
+            this.conn.close();
+        } catch (SQLException e) {
             throw new ResourceBrokerExcpetion(e);
         }
     }
-    
+
     public int createResource(String mimeType, InputStream input)
             throws ResourceBrokerExcpetion {
         try {

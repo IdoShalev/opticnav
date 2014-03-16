@@ -1,9 +1,6 @@
 import static org.junit.Assert.*;
 
-import java.sql.SQLException;
-
 import opticnav.persistence.web.AccountBroker;
-import opticnav.persistence.web.DBUtil;
 import opticnav.persistence.web.PublicBroker;
 import opticnav.persistence.web.PublicBrokerException;
 
@@ -15,26 +12,25 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 public class AccountTest {
     static private PublicBroker publicBroker;
-    static private java.sql.Connection conn;
+    static private MysqlDataSource ds;
     
     @BeforeClass
-    static public void startUp() throws ClassNotFoundException, SQLException {
+    static public void startUp() throws Exception {
         
         //reset the database
         
-        MysqlDataSource ds = new MysqlDataSource();
+        ds = new MysqlDataSource();
         ds.setUser("root");
         ds.setPassword("password");
         ds.setServerName("localhost");
         ds.setDatabaseName("OpticNavDB");
         
-        conn = DBUtil.getConnectionFromDataSource(ds);
-        publicBroker = new PublicBroker(conn);
+        publicBroker = new PublicBroker(ds);
     }
     
     @AfterClass
-    static public void tearDown() throws SQLException {
-        conn.close();
+    static public void tearDown() throws Exception {
+        publicBroker.close();
     }
     
     @Test
@@ -70,26 +66,33 @@ public class AccountTest {
     
     @Test
     public void testSetRemoveGetARD() throws Exception {
-        AccountBroker ab1 = new AccountBroker(conn, 1);
-        AccountBroker ab2 = new AccountBroker(conn, 2);
-        AccountBroker ab3 = new AccountBroker(conn, 3);
-        AccountBroker ab4 = new AccountBroker(conn, 4);
+        AccountBroker ab1 = new AccountBroker(ds, 1);
+        AccountBroker ab2 = new AccountBroker(ds, 2);
+        AccountBroker ab3 = new AccountBroker(ds, 3);
+        AccountBroker ab4 = new AccountBroker(ds, 4);
         
-        ab1.setARD(1234);
-        ab2.setARD(5678);
-        ab3.setARD(9012);
-        
-        assertEquals(1234, ab1.getARD());
-        assertEquals(5678, ab2.getARD());
-        assertEquals(9012, ab3.getARD());
-        assertEquals(0, ab4.getARD());
-        
-        ab1.removeARD();
-        ab2.removeARD();
-        ab3.removeARD();
-        
-        assertEquals(0, ab1.getARD());
-        assertEquals(0, ab2.getARD());
-        assertEquals(0, ab3.getARD());
+        try {
+            ab1.setARD(1234);
+            ab2.setARD(5678);
+            ab3.setARD(9012);
+            
+            assertEquals(1234, ab1.getARD());
+            assertEquals(5678, ab2.getARD());
+            assertEquals(9012, ab3.getARD());
+            assertEquals(0, ab4.getARD());
+            
+            ab1.removeARD();
+            ab2.removeARD();
+            ab3.removeARD();
+            
+            assertEquals(0, ab1.getARD());
+            assertEquals(0, ab2.getARD());
+            assertEquals(0, ab3.getARD());
+        } finally {
+            ab4.close();
+            ab3.close();
+            ab2.close();
+            ab1.close();
+        }
     }
 }

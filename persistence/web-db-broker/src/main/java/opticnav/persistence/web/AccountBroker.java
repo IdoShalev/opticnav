@@ -6,15 +6,27 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 
-public class AccountBroker {
+import javax.sql.DataSource;
+
+public class AccountBroker implements AutoCloseable{
     private java.sql.Connection conn;
     private int accountID;
     
-    public AccountBroker(java.sql.Connection conn, int accountID) {
-        this.conn = conn;
+    public AccountBroker(DataSource dataSource, int accountID)
+            throws SQLException {
+        this.conn = DBUtil.getConnectionFromDataSource(dataSource);
         this.accountID = accountID;
     }
     
+    @Override
+    public void close() throws AccountBrokerException {
+        try {
+            this.conn.close();
+        } catch (SQLException e) {
+            throw new AccountBrokerException(e);
+        }
+    }
+
     public int getARD() throws AccountBrokerException {
         try (CallableStatement cs = conn.prepareCall("{? = call getARD(?)}")) {
             cs.setInt(2, accountID);

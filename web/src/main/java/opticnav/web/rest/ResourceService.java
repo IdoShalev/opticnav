@@ -1,13 +1,11 @@
 package opticnav.web.rest;
 
 import java.io.InputStream;
-import java.sql.Connection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import opticnav.persistence.web.DBUtil;
 import opticnav.persistence.web.Resource;
 import opticnav.persistence.web.ResourceBroker;
 import opticnav.web.rest.pojo.Message;
@@ -27,7 +25,7 @@ public class ResourceService extends Controller {
     private DataSource dbDataSource;
     
     @Value("${opticnav.resource.dir}")
-    private String resourceDir;
+    private String resourcePath;
     
     @RequestMapping(method=RequestMethod.POST,
             headers="content-type=multipart/form-data")
@@ -35,9 +33,8 @@ public class ResourceService extends Controller {
             throws Exception {
         int resourceID;
         
-        try (Connection db = DBUtil.getConnectionFromDataSource(dbDataSource)) {
-            ResourceBroker resourceBroker = new ResourceBroker(resourceDir, db);
-            resourceID = ResourceUploadUtil.upload(this, resourceBroker, request);
+        try (ResourceBroker broker = new ResourceBroker(resourcePath, dbDataSource)) {
+            resourceID = ResourceUploadUtil.upload(this, broker, request);
         }
         
         return new Message("Resource uploaded: " + resourceID);
@@ -47,10 +44,9 @@ public class ResourceService extends Controller {
     public void get(@PathVariable("id") int id,
             HttpServletResponse resp) throws Exception {
         Resource resource;
-        
-        try (Connection db = DBUtil.getConnectionFromDataSource(dbDataSource)) {
-            ResourceBroker resourceBroker = new ResourceBroker(resourceDir, db);
-            resource = resourceBroker.getResource(id);
+
+        try (ResourceBroker broker = new ResourceBroker(resourcePath, dbDataSource)) {
+            resource = broker.getResource(id);
         }
         
         resp.setContentType(resource.getMimeType().getBaseType());
