@@ -38,6 +38,15 @@ public class WelcomeActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+        Button configureServer = (Button)findViewById(R.id.configureServer);
+        configureServer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(WelcomeActivity.this, MapActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
