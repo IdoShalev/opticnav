@@ -12,7 +12,7 @@ var Map = function(id, complete) {
     var img;
     var dirty = false;
     
-    // Equivilent to "Public methods"
+    // Equivalent to "Public methods"
     var pub = {
         getImageWidth: function() {
             return img.naturalWidth;
@@ -75,7 +75,7 @@ var Map = function(id, complete) {
         }
     };
     
-    // begin GET /map/{id}
+    // begin GET /map/{id} Change this to an AJAX request JACKY 
     anchors = [
         {gps: MapCoordHelper.gpsReprToNumbers({lng: "114 5 24.24 W", lat: "51 3 53.78 N"}),
          local: {x: 463, y: 346}},

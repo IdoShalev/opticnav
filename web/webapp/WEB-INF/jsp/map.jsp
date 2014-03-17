@@ -1,5 +1,5 @@
-<t:page title="Maps Manager" css="map.css" js="Map.js,MapController.js,MapCoordHelper.js">
-
+<t:page title="Maps Manager" css="map.css" js="Map.js,MapController.js,MapCoordHelper.js,MapManager.js">
+<t:message name="MapMessage"/>
 <div style="min-height: 560px;position: relative">
 <div id="map-manager">
 <div id="map-creation" class="modal-dialog">
@@ -23,11 +23,11 @@
 <div id="map-view">
     <div id="map-popups">
         <div id="marker-popup">
-        <button>Delete</button>
+        <button id="delete">Delete</button>
         <input type="text" id="marker-name" placeholder="Marker name" /><br/>
         <input type="text" id="marker-lat" placeholder="Latitude" />
         <input type="text" id="marker-lng" placeholder="Longitude" />
-        <button>Save</button>
+        <button id="save">Save</button>
         </div>
     </div>
     <div id="map-markers"></div>

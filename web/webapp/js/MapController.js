@@ -14,10 +14,18 @@ var MapController = function() {
         $("#marker-name").val(marker.info.name);
         
         var gps_repr = MapCoordHelper.gpsNumbersToRepr(marker.gps);
+        var that = this;
         
         $("#marker-lat").val(gps_repr.lat);
         $("#marker-lng").val(gps_repr.lng);
         $("#marker-name").focus();
+        
+        //Delete Button in MarkerPropertites, check if working
+        $("#delete").click(function(){
+            currentMap.removeMarker(marker);
+            popup.hide();
+            that.generateMarkerElements();
+        });        
     }
     
     function imageLocalToViewLocal(coord, image_width, image_height, view) {
@@ -113,10 +121,12 @@ var MapController = function() {
             var markersElem = $("#map-markers");
             markersElem.empty();
             
+            var that = this;
+            
             for (var i = 0; i < markers.length; i++) {
                 var elem = $("<div>", {class: 'marker'});
                 elem.click(function() {
-                    showMarkerProperties($(this), $(this).data("marker"));
+                    showMarkerProperties(that, $(this), $(this).data("marker"));
                 });
                 elem.data("marker", markers[i]);
                 markersElem.append(elem);
