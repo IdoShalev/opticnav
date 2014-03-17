@@ -13,7 +13,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import opticnav.persistence.web.ResourceBroker;
-import opticnav.persistence.web.ResourceBrokerExcpetion;
+import opticnav.persistence.web.exceptions.ResourceBrokerExcpetion;
 import opticnav.web.rest.Controller.MessageException;
 
 public class ResourceUploadUtil {

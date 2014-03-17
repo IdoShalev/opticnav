@@ -1,14 +1,14 @@
-package opticnav.persistence.web;
+package opticnav.persistence.web.map;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Map {
+public class ModifyMap {
     private LinkedList<Marker> markers;
     private LinkedList<Anchor> anchors;
     
-    public Map() {
+    public ModifyMap() {
         this.markers = new LinkedList<Marker>();
         this.anchors = new LinkedList<Anchor>();
     }
@@ -27,6 +27,4 @@ public class Map {
     public List<Anchor> getAnchors() {
         return Collections.unmodifiableList(anchors);
     }
-    
-    
 }

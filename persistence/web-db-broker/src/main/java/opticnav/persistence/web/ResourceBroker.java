@@ -14,6 +14,8 @@ import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 import javax.sql.DataSource;
 
+import opticnav.persistence.web.exceptions.ResourceBrokerExcpetion;
+
 import org.apache.commons.io.IOUtils;
 
 public class ResourceBroker implements AutoCloseable {

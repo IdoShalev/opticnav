@@ -1,4 +1,4 @@
-package opticnav.persistence.web;
+package opticnav.persistence.web.map;
 
 public class Marker {
     private int lng, lat, resourceID;

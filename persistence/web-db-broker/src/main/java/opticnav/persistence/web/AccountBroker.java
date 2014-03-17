@@ -4,9 +4,17 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.sql.DataSource;
+
+import opticnav.persistence.web.exceptions.AccountBrokerException;
+import opticnav.persistence.web.map.Anchor;
+import opticnav.persistence.web.map.GetMap;
+import opticnav.persistence.web.map.MapsListEntry;
+import opticnav.persistence.web.map.Marker;
+import opticnav.persistence.web.map.ModifyMap;
 
 public class AccountBroker implements AutoCloseable{
     private java.sql.Connection conn;
@@ -83,7 +91,7 @@ public class AccountBroker implements AutoCloseable{
         }
     }
     
-    public void modifyMap(int id, Map map) throws AccountBrokerException {
+    public void modifyMap(int id, ModifyMap map) throws AccountBrokerException {
         try (CallableStatement cs = conn.prepareCall("{call deleteMarker(?)}")) {
             cs.setInt(1, id);
             cs.execute();
@@ -143,49 +151,58 @@ public class AccountBroker implements AutoCloseable{
             
     }
 
-    public Map getMap(int id) throws AccountBrokerException {
-        Map map = new Map();
-        
-        try(CallableStatement cs = conn.prepareCall("{call getAllMarkers(?)}")){
-            cs.setInt(1, id);
-            
-            ResultSet rs = cs.executeQuery();
-            @SuppressWarnings("unused")
-            Marker marker = null;
-            while(rs.next()){
-                map.addMarker(marker = new Marker(rs.getInt(5), rs.getInt(4), rs.getString(1), rs.getInt(3)));
+    public GetMap getMap(int id) throws AccountBrokerException {
+        String name;
+        int imageResource;
+        try {
+            try (CallableStatement cs = conn.prepareCall("{? = call getMapName(?)}")){
+                cs.registerOutParameter(1, Types.VARCHAR);
+                cs.setInt(2, id);
+                
+                cs.execute();
+                name = cs.getString(1);
             }
-            rs.close();
+            try (CallableStatement cs = conn.prepareCall("{? = call getMapResource(?)}")){
+                cs.registerOutParameter(1, Types.INTEGER);
+                cs.setInt(2, id);
+                
+                cs.execute();
+                imageResource = cs.getInt(1);
+            }
+            GetMap map = new GetMap(name, imageResource);
+            try (CallableStatement cs = conn.prepareCall("{call getAllMarkers(?)}")){
+                cs.setInt(1, id);
+                
+                try (ResultSet rs = cs.executeQuery()) {
+                    while(rs.next()){
+                        Marker marker;
+                        marker = new Marker(rs.getInt(5), rs.getInt(4), rs.getString(1), rs.getInt(3));
+                        map.addMarker(marker);
+                    }
+                }
+            }
+            try (CallableStatement cs = conn.prepareCall("{call getAllAnchorss(?)}")){
+                cs.setInt(1, id);
+                
+                try (ResultSet rs = cs.executeQuery()) {
+                    while(rs.next()) {
+                        Anchor anchor;
+                        anchor = new Anchor(rs.getInt(5), rs.getInt(4), rs.getInt(2), rs.getInt(3));
+                        map.addAnchor(anchor);
+                    }
+                }
+            }
+            return map;
         } catch (SQLException e) {
             throw new AccountBrokerException(e);
         }
-        try(CallableStatement cs = conn.prepareCall("{call getAllAnchorss(?)}")){
-            cs.setInt(1, id);
-            
-            ResultSet rs = cs.executeQuery();
-            @SuppressWarnings("unused")
-            Anchor anchor = null;
-            while(rs.next()){
-                map.addAnchor(anchor = new Anchor(rs.getInt(5), rs.getInt(4), rs.getInt(2), rs.getInt(3)));;
-            }
-            rs.close();
-        } catch (SQLException e) {
-            throw new AccountBrokerException(e);
-        }
-        
-        return map;
     }
-    
-    public int getMapResource(int id) throws AccountBrokerException {
-        try(CallableStatement cs = conn.prepareCall("{? = call getMapResource(?)}")){
-            cs.registerOutParameter(1, Types.INTEGER);
-            cs.setInt(2, id);
-            
-            cs.execute();
-            id = cs.getInt(1);
-            return id;
-        } catch (SQLException e) {
-            throw new AccountBrokerException(e);
-        }
+
+    public List<MapsListEntry> getMapsList() {
+        // TODO - make a stored procedure, kay!
+        List<MapsListEntry> list = new LinkedList<>();
+        list.add(new MapsListEntry("Some map", 1));
+        list.add(new MapsListEntry("Some other map", 2));
+        return list;
     }
 }

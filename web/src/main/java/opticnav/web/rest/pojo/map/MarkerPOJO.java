@@ -1,6 +1,6 @@
 package opticnav.web.rest.pojo.map;
 
-import opticnav.persistence.web.Marker;
+import opticnav.persistence.web.map.Marker;
 
 public class MarkerPOJO {
     public String name;

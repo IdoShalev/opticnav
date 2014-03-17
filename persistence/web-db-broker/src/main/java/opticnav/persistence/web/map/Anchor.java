@@ -1,4 +1,4 @@
-package opticnav.persistence.web;
+package opticnav.persistence.web.map;
 
 public class Anchor {
     private int lng, lat;

@@ -3,16 +3,19 @@ package opticnav.web.rest.pojo.map;
 import java.util.LinkedList;
 import java.util.List;
 
-import opticnav.persistence.web.Anchor;
-import opticnav.persistence.web.Map;
-import opticnav.persistence.web.Marker;
+import opticnav.persistence.web.map.Anchor;
+import opticnav.persistence.web.map.GetMap;
+import opticnav.persistence.web.map.Marker;
 
 public class GetMapPOJO {
     public String name;
+    public int imageResource;
     public List<MarkerPOJO> marker;
     public List<AnchorPOJO> anchor;
     
-    public GetMapPOJO(Map map) {
+    public GetMapPOJO(GetMap map) {
+        this.name = map.getName();
+        this.imageResource = map.getImageResource();
         this.marker = new LinkedList<>();
         this.anchor = new LinkedList<>();
         

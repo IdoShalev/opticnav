@@ -6,6 +6,8 @@ import java.sql.Types;
 
 import javax.sql.DataSource;
 
+import opticnav.persistence.web.exceptions.PublicBrokerException;
+
 public class PublicBroker implements AutoCloseable {
     private java.sql.Connection conn;
     

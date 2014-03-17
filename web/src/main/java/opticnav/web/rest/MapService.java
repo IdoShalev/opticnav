@@ -1,9 +1,14 @@
 package opticnav.web.rest;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import opticnav.persistence.web.AccountBroker;
-import opticnav.persistence.web.Anchor;
-import opticnav.persistence.web.Map;
-import opticnav.persistence.web.Marker;
+import opticnav.persistence.web.map.Anchor;
+import opticnav.persistence.web.map.GetMap;
+import opticnav.persistence.web.map.MapsListEntry;
+import opticnav.persistence.web.map.Marker;
+import opticnav.persistence.web.map.ModifyMap;
 import opticnav.web.components.UserSession;
 import opticnav.web.rest.pojo.map.*;
 
@@ -26,8 +31,25 @@ public class MapService extends Controller {
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
     public GetMapPOJO getMap(@PathVariable("id") int id) throws Exception {
         try (AccountBroker broker = new AccountBroker(dbDataSource, userSession.getUser().getId())) {
-            Map map = broker.getMap(id);
+            GetMap map = broker.getMap(id);
             return new GetMapPOJO(map);
+        }
+    }
+    
+    @RequestMapping(method=RequestMethod.GET)
+    public List<GetMapsListEntryPOJO> getMapsList() throws Exception {
+        try (AccountBroker broker = new AccountBroker(dbDataSource, userSession.getUser().getId())) {
+            List<MapsListEntry> mapsList = broker.getMapsList();
+            List<GetMapsListEntryPOJO> list = new LinkedList<>();
+            
+            for (MapsListEntry entry: mapsList) {
+                GetMapsListEntryPOJO item = new GetMapsListEntryPOJO();
+                item.name = entry.getName();
+                item.id = entry.getId();
+                list.add(item);
+            }
+            
+            return list;
         }
     }
     
@@ -42,7 +64,7 @@ public class MapService extends Controller {
     public void modifyMap(@PathVariable("id") int id,
             @RequestBody ModifyMapPOJO map) throws Exception {
         try (AccountBroker broker = new AccountBroker(dbDataSource, userSession.getUser().getId())) {
-            Map pMap = new Map();
+            ModifyMap pMap = new ModifyMap();
             for (MarkerPOJO m: map.markers) {
                 // TODO - resource
                 Marker marker = new Marker(m.lng, m.lat, m.name, 0);

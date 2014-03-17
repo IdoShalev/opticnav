@@ -1,8 +1,7 @@
 import static org.junit.Assert.*;
-
 import opticnav.persistence.web.AccountBroker;
 import opticnav.persistence.web.PublicBroker;
-import opticnav.persistence.web.PublicBrokerException;
+import opticnav.persistence.web.exceptions.PublicBrokerException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
