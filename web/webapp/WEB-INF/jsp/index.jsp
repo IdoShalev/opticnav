@@ -7,6 +7,7 @@
              <input type="password" placeholder="Password" id="password"><br/>
              <input type="submit" value="Login" />
          </form>
+         Don't have an account? <t:link href="/register">Register now.</t:link>
          <t:message name="message" />
     </div>
     <div id="leftContent">

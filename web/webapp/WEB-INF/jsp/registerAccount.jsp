@@ -5,9 +5,9 @@
             <t:message name="message" />
             Welcoming new user text and stuff.
             <form id= "register_Account" action="registerAccount.jsp">
-                Username: <input type="text" id="username"><br/>
-                Password: <input type="password" id="password"><br/>
-                Confirm Password: <input type="password" id="password"><br/>
+                <input type="text" id="username" placeholder="Username"><br/>
+                <input type="password" id="password" placeholder="Password"><br/>
+                <input type="password" id="password" placeholder="Confirm Password"><br/>
                 <input type="submit" value="Register" />
             </form>
         </div>

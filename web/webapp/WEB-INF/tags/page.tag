@@ -13,25 +13,23 @@
 <div id="loggedin">
         <c:if test="${!empty user}">Welcome, <c:out value="${user.username}"/>
         <br/><t:link href="/logout">Logout</t:link></c:if></div>
-    <div id="cssmenu">
+        <div class="logodiv"><t:link href="/"><img class="logo" src="${pageContext.request.contextPath}/css/images/OpticNavLogo.png"></t:link></div>
+        <div class="container">
+    <div id="nav">
 		<ul>
-		    <li><a><div id="homeB"></div></a><ul>
 		    <c:if test="${!empty user}">
-		    <li><t:link href="/"><div id="buttons">Hub</div></t:link>
-            <ul><li><t:link href="/registerDevice"><div id="buttons">Device Manager</div></t:link></li>
-            <li><t:link href="/map"><div id="buttons">Maps Manager</div></t:link></li>
-            <li><t:link href="/instance"><div id="buttons">Start an Instance</div></t:link></li></ul></li>
+		    <li><t:link href="/"><div class="buttonsS">Hub</div></t:link></li>
+            <li><t:link href="/registerDevice"><div class="buttonsS">Device Manager</div></t:link></li>
+            <li><t:link href="/map"><div class="buttonsS">Maps Manager</div></t:link></li>
+            <li><t:link href="/instance"><div class="buttonsS">Start an Instance</div></t:link></li>
             </c:if>
             <c:if test="${empty user}">
-            <li><t:link href="/"><div id="buttons">Home</div></t:link></li>
-		    <li><t:link href="/register"><div id="buttons">New Account</div></t:link></li>
+            <li><t:link href="/"><div class="buttons">Home</div></t:link></li>
+		    <li><t:link href="/register"><div class="buttons">Register</div></t:link></li>
 		    </c:if>
-		    <li><t:link href="/download"><div id="buttons">Get Application</div></t:link></li>
-		    <li><t:link href="/contact"><div id="buttons">Contact Us</div></t:link></li>
-		    <li><t:link href="/about"><div id="buttons">About</div></t:link></li>
-		    <li><t:link href="/help"><div id="buttons">Help</div></t:link></li></ul></li>
-		</ul></div><div class="logodiv"><t:link href="/"><img class="logo" src="${pageContext.request.contextPath}/css/images/OpticNavLogo.png"></t:link></div>
-		
+		    <li><t:link href="/download"><div class="buttons">Get Application</div></t:link></li>
+		    <li><t:link href="/help"><div class="buttons">Help</div></t:link></li>
+		</ul></div></div>
 </header>
 
 <div id="content">
@@ -39,12 +37,7 @@
 </div>
 
 <div id=footer>
-<ul>
-    <li><t:link href="/about"><div id="buttons">About</div></t:link></li>
-    <li><t:link href="/contact"><div id="buttons">Contact Us</div></t:link></li>
-    <li><t:link href="/help"><div id="buttons">Help</div></t:link></li>
-    <li><t:link href="/download"><div id="buttons">Get Application</div></t:link></li>
-</ul>
+
 </div>
 
 </t:page_base>

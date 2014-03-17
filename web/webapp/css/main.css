@@ -1,4 +1,4 @@
-@import "menu.css";
+@import "header.css";
 @import "buttons.css";
 body {
 	font-family: Helvetica, Arial, sans;
@@ -11,7 +11,7 @@ body {
 
 #rightLogin
 {
-  float: right ;
+	float: right;
 }
 header, footer {
 	margin: 0;
@@ -36,7 +36,7 @@ header, footer {
     border-radius: 4px;
     padding: 1em;
     margin: 1em;
-    background-color: #88f;
+    background-color: #ccc;
     width: 200px;
 }
 
@@ -64,6 +64,10 @@ header, footer {
     background-color: #dfd;
     border-color: #4b4;
 }
+.container{
+	   text-align: center; width:100%; margin: 0 auto;
+}
 #welcomeToHub {
-	text-align: center; width:100%; margin: 0 auto;
+	   display: table;
+    margin: 0 auto;
 }
