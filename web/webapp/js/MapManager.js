@@ -38,6 +38,22 @@ function createMap() {
     var map_creation = $("#map-creation");
     modal_backdrop.fadeIn();
     map_creation.fadeIn();
+    
+    //Leaves the Page, we forgot this, stuck forever
+    $("#map-creation-cancel").click(function(){
+    	modal_backdrop.fadeOut();
+        map_creation.fadeOut();
+    });
+    
+    $("#map-creation-create").click(function(){
+		$.ajax({
+			 type: "POST",
+			 url: ctx+"/api/map",
+			 data: JSON.stringify(object),
+			 contentType: "application/json; charset=utf-8",
+			 complete: //Complete Something TODO
+			});
+    });
 }
 
 $(function() {

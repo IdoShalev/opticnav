@@ -6,6 +6,7 @@
     <input type="text" id="map-creation-name" placeholder="Map Name" />
     <input type="file" id="map-creation-file" />
     <button id="map-creation-create">Create</button>
+    <button id="map-creation-cancel">Cancel</button>
 </div>
 <div id="modal-backdrop"></div>
 <sidebar>
