@@ -28,7 +28,7 @@ CREATE TABLE MARKER
     map_id              INT(4)      NOT NULL,
     resource_id         INT(4)      ,
     lat                 INT(4)      NOT NULL,
-    longitude           INT(4)      NOT NULL,
+    lng                 INT(4)      NOT NULL,
     CONSTRAINT          fk_marker_map FOREIGN KEY (map_id) REFERENCES MAP(map_id),
     CONSTRAINT          fk_marker_resource FOREIGN KEY (resource_id) REFERENCES RESOURCE(resource_id)
 );

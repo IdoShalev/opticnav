@@ -1,0 +1,17 @@
+/* *********************************************************************
+**	Description:	
+********************************************************************* */
+
+
+DROP PROCEDURE IF EXISTS getMapList;
+
+DELIMITER //
+
+CREATE PROCEDURE getMapList
+(p_user_id INT(4))
+BEGIN
+    SELECT * FROM MAP
+    WHERE web_account_id = p_user_id;
+END//
+
+DELIMITER ;

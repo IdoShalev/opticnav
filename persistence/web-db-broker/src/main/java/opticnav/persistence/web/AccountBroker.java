@@ -16,16 +16,16 @@ import opticnav.persistence.web.map.MapsListEntry;
 import opticnav.persistence.web.map.Marker;
 import opticnav.persistence.web.map.ModifyMap;
 
-public class AccountBroker implements AutoCloseable{
+public class AccountBroker implements AutoCloseable {
     private java.sql.Connection conn;
     private int accountID;
-    
+
     public AccountBroker(DataSource dataSource, int accountID)
             throws SQLException {
         this.conn = DBUtil.getConnectionFromDataSource(dataSource);
         this.accountID = accountID;
     }
-    
+
     @Override
     public void close() throws AccountBrokerException {
         try {
@@ -46,51 +46,51 @@ public class AccountBroker implements AutoCloseable{
         } catch (SQLException e) {
             throw new AccountBrokerException(e);
         }
-        
+
     }
-    
+
     public void setARD(int ardID) throws AccountBrokerException {
         try (CallableStatement cs = conn.prepareCall("{call setARD(?, ?)}")) {
             cs.setInt(1, accountID);
             cs.setInt(2, ardID);
-            
+
             cs.execute();
             conn.commit();
         } catch (SQLException e) {
             throw new AccountBrokerException(e);
         }
     }
-    
+
     public void removeARD() throws AccountBrokerException {
         try (CallableStatement cs = conn.prepareCall("{call removeARD(?)}")) {
             cs.setInt(1, accountID);
-            
+
             cs.execute();
             conn.commit();
         } catch (SQLException e) {
             throw new AccountBrokerException(e);
         }
     }
-    
-    //TODO please check=========================================================
-    
-    public int createMap(String name, int imageResource) throws AccountBrokerException{
-        try (CallableStatement cs = conn.prepareCall("{? = call createMap(?, ?, ?)}")){
+
+    public int createMap(String name, int imageResource)
+            throws AccountBrokerException {
+        try (CallableStatement cs = conn
+                .prepareCall("{? = call createMap(?, ?, ?)}")) {
             cs.registerOutParameter(1, Types.INTEGER);
             cs.setString(2, name);
             cs.setInt(3, imageResource);
             cs.setInt(4, this.accountID);
-            
+
             cs.execute();
             int id = cs.getInt(1);
             conn.commit();
-            
+
             return id;
         } catch (SQLException e) {
             throw new AccountBrokerException(e);
         }
     }
-    
+
     public void modifyMap(int id, ModifyMap map) throws AccountBrokerException {
         try (CallableStatement cs = conn.prepareCall("{call deleteMarker(?)}")) {
             cs.setInt(1, id);
@@ -104,22 +104,23 @@ public class AccountBroker implements AutoCloseable{
         } catch (SQLException e) {
             throw new AccountBrokerException(e);
         }
-        try (CallableStatement cs = conn.prepareCall("{? = call createMarker(?, ?, ?, ?, ?)}")) {
+        try (CallableStatement cs = conn
+                .prepareCall("{call createMarker(?, ?, ?, ?, ?)}")) {
             List<Marker> ml = map.getMarkers();
             for (int i = 0; i < ml.size(); i++) {
-                cs.registerOutParameter(1, Types.INTEGER);
-                cs.setString(2, ml.get(i).getName());
-                cs.setInt(3, id);
-                cs.setInt(4, 0);
-                cs.setInt(5, ml.get(i).getLat());
-                cs.setInt(6, ml.get(i).getLng());
+                cs.setString(1, ml.get(i).getName());
+                cs.setInt(2, id);
+                cs.setInt(3, 0);
+                cs.setInt(4, ml.get(i).getLat());
+                cs.setInt(5, ml.get(i).getLng());
 
                 cs.execute();
             }
         } catch (SQLException e) {
             throw new AccountBrokerException(e);
         }
-        try (CallableStatement cs = conn.prepareCall("{call createAnchor(?, ?, ?, ?, ?)}")) {
+        try (CallableStatement cs = conn
+                .prepareCall("{call createAnchor(?, ?, ?, ?, ?)}")) {
             List<Anchor> al = map.getAnchors();
             for (int i = 0; i < al.size(); i++) {
                 cs.setInt(1, id);
@@ -139,55 +140,61 @@ public class AccountBroker implements AutoCloseable{
             throw new AccountBrokerException(e);
         }
     }
-    
+
     public void deleteMap(int id) throws AccountBrokerException {
-        try(CallableStatement cs = conn.prepareCall("{call deleteMap(?)}")){
+        try (CallableStatement cs = conn.prepareCall("{call deleteMap(?)}")) {
             cs.setInt(1, id);
             cs.execute();
             conn.commit();
         } catch (SQLException e) {
             throw new AccountBrokerException(e);
         }
-            
+
     }
 
     public GetMap getMap(int id) throws AccountBrokerException {
         String name;
         int imageResource;
         try {
-            try (CallableStatement cs = conn.prepareCall("{? = call getMapName(?)}")){
+            try (CallableStatement cs = conn
+                    .prepareCall("{? = call getMapName(?)}")) {
                 cs.registerOutParameter(1, Types.VARCHAR);
                 cs.setInt(2, id);
-                
+
                 cs.execute();
                 name = cs.getString(1);
             }
-            try (CallableStatement cs = conn.prepareCall("{? = call getMapResource(?)}")){
+            try (CallableStatement cs = conn
+                    .prepareCall("{? = call getMapResource(?)}")) {
                 cs.registerOutParameter(1, Types.INTEGER);
                 cs.setInt(2, id);
-                
+
                 cs.execute();
                 imageResource = cs.getInt(1);
             }
             GetMap map = new GetMap(name, imageResource);
-            try (CallableStatement cs = conn.prepareCall("{call getAllMarkers(?)}")){
+            try (CallableStatement cs = conn
+                    .prepareCall("{call getAllMarkers(?)}")) {
                 cs.setInt(1, id);
-                
+
                 try (ResultSet rs = cs.executeQuery()) {
-                    while(rs.next()){
+                    while (rs.next()) {
                         Marker marker;
-                        marker = new Marker(rs.getInt(5), rs.getInt(4), rs.getString(1), rs.getInt(3));
+                        marker = new Marker(rs.getInt(5), rs.getInt(4),
+                                rs.getString(1), rs.getInt(3));
                         map.addMarker(marker);
                     }
                 }
             }
-            try (CallableStatement cs = conn.prepareCall("{call getAllAnchorss(?)}")){
+            try (CallableStatement cs = conn
+                    .prepareCall("{call getAllAnchors(?)}")) {
                 cs.setInt(1, id);
-                
+
                 try (ResultSet rs = cs.executeQuery()) {
-                    while(rs.next()) {
+                    while (rs.next()) {
                         Anchor anchor;
-                        anchor = new Anchor(rs.getInt(5), rs.getInt(4), rs.getInt(2), rs.getInt(3));
+                        anchor = new Anchor(rs.getInt(5), rs.getInt(4),
+                                rs.getInt(2), rs.getInt(3));
                         map.addAnchor(anchor);
                     }
                 }
@@ -198,11 +205,24 @@ public class AccountBroker implements AutoCloseable{
         }
     }
 
-    public List<MapsListEntry> getMapsList() {
-        // TODO - make a stored procedure, kay!
+    public List<MapsListEntry> getMapsList() throws AccountBrokerException {
         List<MapsListEntry> list = new LinkedList<>();
-        list.add(new MapsListEntry("Some map", 1));
-        list.add(new MapsListEntry("Some other map", 2));
+        try {
+            try (CallableStatement cs = conn
+                    .prepareCall("{call getMapsList(?)}")) {
+                cs.setInt(1, accountID);
+
+                try (ResultSet rs = cs.executeQuery()) {
+                    while (rs.next()) {
+                        MapsListEntry mapE;
+                        mapE = new MapsListEntry(rs.getString(3), rs.getInt(1));
+                        list.add(mapE);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new AccountBrokerException(e);
+        }
         return list;
     }
 }
