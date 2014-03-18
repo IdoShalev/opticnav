@@ -15,8 +15,8 @@ body {
 }
 header, footer {
 	margin: 0;
-	padding: 1em;
-	background: #ccc;
+	padding-top: 1em;
+	background-color: rgba(204, 204, 204, 0.8);
 	box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
 }
 
@@ -27,7 +27,7 @@ header, footer {
 #content {
 	margin: 3em;
 	padding-left:6em;padding-right:6em;
-	min-height: 560px;
+	min-height: 360px;
 	background-color: #FFFAFA;
 }
 
