@@ -3,11 +3,11 @@
 ********************************************************************* */
 
 
-DROP PROCEDURE IF EXISTS getMapList;
+DROP PROCEDURE IF EXISTS getMapsList;
 
 DELIMITER //
 
-CREATE PROCEDURE getMapList
+CREATE PROCEDURE getMapsList
 (p_user_id INT(4))
 BEGIN
     SELECT * FROM MAP
