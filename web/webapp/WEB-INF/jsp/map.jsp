@@ -4,7 +4,7 @@
 <div id="map-manager">
 <div id="map-creation" class="modal-dialog">
     <input type="text" id="map-creation-name" placeholder="Map Name" />
-    <input type="file" id="map-creation-file" />
+    <input type="file" id="map-creation-file" /><br/>
     <button id="map-creation-create">Create</button>
     <button id="map-creation-cancel">Cancel</button>
 </div>
