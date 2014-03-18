@@ -104,7 +104,7 @@ var MapController = function() {
                     
                     // show the map
                     view.fadeIn();
-                });
+                }, $("#MapMessage"));
             }
         },
         saveMap: function() {

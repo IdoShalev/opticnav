@@ -16,7 +16,6 @@ function loadMapsList() {
     mapList.hide();
     mapList.empty();
     
-    // begin GET /map Make this into Ajax Request Jacky ahaha
     $.ajax({
 		 type: "GET",
 		 url: ctx+"/api/map",
@@ -30,7 +29,6 @@ function loadMapsList() {
 			    mapList.fadeIn();
 		 })
 		});
-    // end GET/map
 }
 
 function createMap() {
@@ -46,13 +44,26 @@ function createMap() {
     });
     
     $("#map-creation-create").click(function(){
-		$.ajax({
-			 type: "POST",
-			 url: ctx+"/api/map",
-			 data: JSON.stringify(object),
-			 contentType: "application/json; charset=utf-8",
-			 complete: //Complete Something TODO
-			});
+    	var name= $('#map-creation-name').val();
+
+        var fd = new FormData();
+        var file = $("#map-creation-file").get(0).files[0];
+        fd.append("file", file);
+        
+        $.ajax({
+            type: "POST",
+            url: ctx+"/api/map?name=" + encodeURIComponent(name),
+            enctype: "multipart/form-data",
+            data: fd,
+		    cache: false,
+		    contentType: false,
+		    processData: false,
+			complete: ajaxMessageClosureOnError($("#MapMessage"), function() {
+				loadMapsList();
+				modal_backdrop.fadeOut();
+		        map_creation.fadeOut();
+			})
+        });
     });
 }
 

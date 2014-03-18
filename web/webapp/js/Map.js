@@ -4,7 +4,7 @@
  * and a new one is constructed. This avoids fragile resetting of variables.
  * This contains absolutely NO view logic.
  */
-var Map = function(id, complete) {
+var Map = function(id, complete, errorElem) {
     // Constructors, setting "private attributes and methods"
     var markers = [];
     var anchors = [];
@@ -74,30 +74,25 @@ var Map = function(id, complete) {
             return dirty;
         }
     };
+
     
-    // begin GET /map/{id} Change this to an AJAX request JACKY 
-    anchors = [
-        {gps: MapCoordHelper.gpsReprToNumbers({lng: "114 5 24.24 W", lat: "51 3 53.78 N"}),
-         local: {x: 463, y: 346}},
-         
-        {gps: MapCoordHelper.gpsReprToNumbers({lng: "114 5 16.69 W", lat: "51 3 52.59 N"}),
-         local: {x: 714, y: 409}},
-         
-        {gps: MapCoordHelper.gpsReprToNumbers({lng: "114 5 10.05 W", lat: "51 3 56.56 N"}),
-         local: {x: 937, y: 200}},
-    ];
-    mapTransform = MapCoordHelper.getImageLocalGPSTransform(anchors);
-    
-    img = new Image();
-    if (id == 1) {
-        img.src = "saitcampus.png";
-    } else {
-        img.src = "awesome.png";
-    }
-    
-    img.onload = function() {
-        // everything has completed loading
-        complete(pub, img);
-    }
-    // end GET /map/{id}
+    $.ajax({
+		type: "GET",
+		url: ctx+"/api/map/"+id,
+		contentType: "application/json; charset=utf-8",
+		complete: ajaxMessageClosureOnError(errorElem, function(json) {
+			json.imageResource;
+			markers = json.marker;
+			anchors = json.anchor;
+			mapTransform = MapCoordHelper.getImageLocalGPSTransform(anchors);
+			
+			img = new Image();
+			img.src = ctx+"/api/resource/"+json.imageResource;
+			
+			img.onload = function() {
+			    // everything has completed loading
+			    complete(pub, img);
+			}
+		})
+	});
 };
