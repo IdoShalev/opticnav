@@ -47,5 +47,6 @@
 }
 
 #loggedin {
-    float:right;
+    right: 50px;
+    position: absolute;
 }

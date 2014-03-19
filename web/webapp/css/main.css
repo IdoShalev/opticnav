@@ -18,6 +18,7 @@ header, footer {
 	padding-top: 1em;
 	background-color: rgba(204, 204, 204, 0.8);
 	box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
+    position: relative;
 }
 
 #footer{
