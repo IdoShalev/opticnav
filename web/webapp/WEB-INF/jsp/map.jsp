@@ -1,6 +1,6 @@
 <t:page title="Maps Manager" css="map.css" js="Map.js,MapController.js,MapCoordHelper.js,MapManager.js">
 <t:message name="MapMessage"/>
-<div style="min-height: 560px;position: relative">
+<div id="map-manager-container">
 <div id="map-manager">
 <div id="map-creation" class="modal-dialog">
     <input type="text" id="map-creation-name" placeholder="Map Name" />

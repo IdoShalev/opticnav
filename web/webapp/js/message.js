@@ -20,6 +20,10 @@ function showOkMessage(elem, message) {
     elem.addClass("message_ok");
 }
 
+function clearMessage(elem) {
+	elem.fadeOut();
+}
+
 function ajaxMessageClosure(elem) {
 	return function(data) {
 		var ok = data.status >= 200 && data.status <= 299;
@@ -62,6 +66,7 @@ function ajaxMessageClosureOnError(elem, success){
 		var json = data.responseJSON;
 		
 		if (ok) {
+			clearMessage(elem);
 			success(json);
 		} else {
 			if (json != null && json.message !== undefined) {

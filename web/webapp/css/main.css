@@ -5,7 +5,7 @@ body {
 	
 	background: #FFFAFA;
 	
-    margin: 0;
+	margin: 0;
 }
 /*index centering*/
 
@@ -19,6 +19,7 @@ header, footer {
 	background-color: rgba(204, 204, 204, 0.8);
 	box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
     position: relative;
+	z-index: 10;
 }
 
 #footer{
@@ -28,7 +29,6 @@ header, footer {
 #content {
 	margin: 3em;
 	padding-left:6em;padding-right:6em;
-	min-height: 360px;
 	background-color: #FFFAFA;
 }
 
