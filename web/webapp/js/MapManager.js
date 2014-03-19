@@ -36,7 +36,29 @@ function createMap() {
     var map_creation = $("#map-creation");
     modal_backdrop.fadeIn();
     map_creation.fadeIn();
+}
+
+$(function() {
+    var modal_backdrop = $("#modal-backdrop");
+    var map_creation = $("#map-creation");
+
+    // When the map view resizes, the marker locations need to change
+    $("#map-view").resize(function() {
+        MapController.recalculateMarkerPositions();
+    });
     
+    // When the user clicks outside of a popup, it should disappear
+    $("#marker-popup").focusout(function(e) {
+        // setTimeout is an awful hack, but it's needed to get the active element
+        setTimeout(function() {
+            var p = $(document.activeElement).parents("#marker-popup").length >= 1;
+            if (!p) {
+                $("#marker-popup").hide();
+            }
+        }, 1);
+    });
+    $("#marker-popup").hide();
+
     //Leaves the Page, we forgot this, stuck forever
     $("#map-creation-cancel").click(function(){
     	modal_backdrop.fadeOut();
@@ -65,25 +87,6 @@ function createMap() {
 			})
         });
     });
-}
-
-$(function() {
-    // When the map view resizes, the marker locations need to change
-    $("#map-view").resize(function() {
-        MapController.recalculateMarkerPositions();
-    });
-    
-    // When the user clicks outside of a popup, it should disappear
-    $("#marker-popup").focusout(function(e) {
-        // setTimeout is an awful hack, but it's needed to get the active element
-        setTimeout(function() {
-            var p = $(document.activeElement).parents("#marker-popup").length >= 1;
-            if (!p) {
-                $("#marker-popup").hide();
-            }
-        }, 1);
-    });
-    $("#marker-popup").hide();
     
     // Prompt the user if there are any unsaved changes
     $(window).on('beforeunload', MapController.unsavedMapPageUnloadEvent);
