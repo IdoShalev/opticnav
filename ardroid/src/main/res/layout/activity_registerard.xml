@@ -14,11 +14,11 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/register_enterconfcode"
-            android:id="@+id/textView" android:gravity="center"/>
+            android:gravity="center"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="0123ABCD"
-            android:id="@+id/textView2" android:layout_gravity="center" android:gravity="center_vertical|center_horizontal"
+            android:id="@+id/confcode" android:layout_gravity="center" android:gravity="center_vertical|center_horizontal"
             android:singleLine="true" android:textAppearance="@style/ConfCode"/>
 </LinearLayout>
