@@ -94,7 +94,7 @@ public class ResourceBroker implements AutoCloseable {
             cs.registerOutParameter(1, Types.VARCHAR);
             
             cs.execute();
-            type = cs.getString(1); //TODO may return NULL if id does not exist
+            type = cs.getString(1);
             
             
         } catch (SQLException e1) {

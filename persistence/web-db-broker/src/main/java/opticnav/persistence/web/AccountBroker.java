@@ -62,7 +62,7 @@ public class AccountBroker implements AutoCloseable {
     }
 
     public void removeARD() throws AccountBrokerException {
-        try (CallableStatement cs = conn.prepareCall("{call removeARD(?)}")) {
+        try (CallableStatement cs = conn.prepareCall("{call deleteARD(?)}")) {
             cs.setInt(1, accountID);
 
             cs.execute();
@@ -174,7 +174,7 @@ public class AccountBroker implements AutoCloseable {
             }
             GetMap map = new GetMap(name, imageResource);
             try (CallableStatement cs = conn
-                    .prepareCall("{call getAllMarkers(?)}")) {
+                    .prepareCall("{call getMapMarkers(?)}")) {
                 cs.setInt(1, id);
 
                 try (ResultSet rs = cs.executeQuery()) {
@@ -187,7 +187,7 @@ public class AccountBroker implements AutoCloseable {
                 }
             }
             try (CallableStatement cs = conn
-                    .prepareCall("{call getAllAnchors(?)}")) {
+                    .prepareCall("{call getMapAnchors(?)}")) {
                 cs.setInt(1, id);
 
                 try (ResultSet rs = cs.executeQuery()) {
@@ -207,6 +207,7 @@ public class AccountBroker implements AutoCloseable {
 
     public List<MapsListEntry> getMapsList() throws AccountBrokerException {
         List<MapsListEntry> list = new LinkedList<>();
+        MapsListEntry mapE;
         try {
             try (CallableStatement cs = conn
                     .prepareCall("{call getMapsList(?)}")) {
@@ -214,7 +215,6 @@ public class AccountBroker implements AutoCloseable {
 
                 try (ResultSet rs = cs.executeQuery()) {
                     while (rs.next()) {
-                        MapsListEntry mapE;
                         mapE = new MapsListEntry(rs.getString(3), rs.getInt(1));
                         list.add(mapE);
                     }
