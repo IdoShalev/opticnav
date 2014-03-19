@@ -3,11 +3,11 @@
 ********************************************************************* */
 
 
-DROP PROCEDURE IF EXISTS getAllAnchors;
+DROP PROCEDURE IF EXISTS getMapAnchors;
 
 DELIMITER //
 
-CREATE PROCEDURE getAllAnchors
+CREATE PROCEDURE getMapAnchors
 (p_map_id INT(4))
 BEGIN
     SELECT * FROM ANCHOR

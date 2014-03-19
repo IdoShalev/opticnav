@@ -3,11 +3,11 @@
 ********************************************************************* */
 
 
-DROP PROCEDURE IF EXISTS removeARD;
+DROP PROCEDURE IF EXISTS deleteARD;
 
 DELIMITER //
 
-CREATE PROCEDURE removeARD 
+CREATE PROCEDURE deleteARD 
 (p_acc_id VARCHAR(25))
 BEGIN
     UPDATE WEB_ACCOUNT

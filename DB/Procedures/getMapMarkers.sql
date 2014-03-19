@@ -5,11 +5,11 @@
 ********************************************************************* */
 
 
-DROP PROCEDURE IF EXISTS getAllMarkers;
+DROP PROCEDURE IF EXISTS getMapMarkers;
 
 DELIMITER //
 
-CREATE PROCEDURE getAllMarkers
+CREATE PROCEDURE getMapMarkers
 (p_map_id INT(4))
 BEGIN
     SELECT * FROM MARKER
