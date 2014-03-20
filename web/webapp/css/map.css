@@ -192,3 +192,14 @@
 	box-shadow: 0 1px 2px rgba(2, 2, 2, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
 	border: 1px solid #2d4373;
 }
+/*hides and shows an image for delete map*/
+.myButtonLink {
+    display: block;
+    width: 100px;
+    height: 100px;
+    background: url('/path/to/myImage.png') bottom;
+    text-indent: -99999px;
+}
+.myButtonLink:hover {
+    background-position: 0 0;
+}
