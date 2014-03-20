@@ -4,13 +4,27 @@
  * and a new one is constructed. This avoids fragile resetting of variables.
  * This contains absolutely NO view logic.
  */
-var Map = function(id, complete, errorElem) {
+var Map = function(mapPersistence, complete, errorElem) {
     // Constructors, setting "private attributes and methods"
     var markers = [];
     var anchors = [];
     var mapTransform;
     var img;
     var dirty = false;
+    
+    // Used in persistence loading
+    var loader = {
+    	loadMarkers: function(m) {
+    		markers = m;
+    	},
+    	loadAnchors: function(a) {
+    		anchors = a;
+			mapTransform = MapCoordHelper.getImageLocalGPSTransform(anchors);
+    	},
+    	loadImage: function(i) {
+    		img = i;
+    	}
+    };
     
     // Equivalent to "Public methods"
     var pub = {
@@ -21,31 +35,13 @@ var Map = function(id, complete, errorElem) {
             return img.naturalHeight;
         },
         // Saves the Map anchors and markers using the PUT /map controller
-        save: function(onSave) {
-        	// TODO - move this somewhere else
-        	var ajaxClosure = function(messageCallback) {
-        		return function(data) {
-        			var ok = data.status >= 200 && data.status <= 299;
-        			var json = data.responseJSON;
-        			
-        			messageCallback(ok, json);
-        		};
-        	};
-        	
-        	var object = {"markers": markers, "anchors": anchors};
-        	
-        	$.ajax({
-       		 type: "PUT",
-       		 url: ctx+"/api/map/" + id,
-    		 data: JSON.stringify(object),
-    		 contentType: "application/json; charset=utf-8",
-       		 complete: ajaxClosure(function(ok, json) {
-       			 if (ok) {
-       				 dirty = false;
-       			 }
-       			 onSave(ok, json);
-       		 })
-       		});
+        save: function(onComplete) {
+        	mapPersistence.save(markers, anchors, function(ok, message) {
+        		if (ok) {
+        			dirty = false;
+        		}
+        		onComplete(ok, message);
+        	});
         },
         // Returns true if a marker was added, false if not enough anchors are defined
         addMarker: function(name, gps) {
@@ -97,26 +93,6 @@ var Map = function(id, complete, errorElem) {
             return dirty;
         }
     };
-
     
-    $.ajax({
-		type: "GET",
-		url: ctx+"/api/map/"+id,
-		contentType: "application/json; charset=utf-8",
-		complete: ajaxMessageClosureOnError(errorElem, function(json) {
-			json.imageResource;
-			markers = json.marker;
-			anchors = json.anchor;
-			anchors = [{"gps":{"lng":-41072424,"lat":18383378},"local":{"x":463,"y":346}},{"gps":{"lng":-41071669,"lat":18383259},"local":{"x":714,"y":409}},{"gps":{"lng":-41071005,"lat":18383656},"local":{"x":937,"y":200}}];
-			mapTransform = MapCoordHelper.getImageLocalGPSTransform(anchors);
-			
-			img = new Image();
-			img.src = ctx+"/api/resource/"+json.imageResource;
-			
-			img.onload = function() {
-			    // everything has completed loading
-			    complete(pub, img);
-			}
-		})
-	});
+    mapPersistence.load(pub, loader, errorElem, complete);
 };

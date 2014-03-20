@@ -13,6 +13,8 @@ import opticnav.persistence.web.map.MapsListEntry;
 import opticnav.persistence.web.map.Marker;
 import opticnav.persistence.web.map.ModifyMap;
 import opticnav.web.components.UserSession;
+import opticnav.web.rest.pojo.LocaleMessage;
+import opticnav.web.rest.pojo.Message;
 import opticnav.web.rest.pojo.map.*;
 import opticnav.web.util.InputUtil;
 
@@ -83,7 +85,7 @@ public class MapService extends Controller {
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
-    public void modifyMap(@PathVariable("id") int id,
+    public Message modifyMap(@PathVariable("id") int id,
             @RequestBody ModifyMapPOJO map) throws Exception {
         try (AccountBroker broker = new AccountBroker(dbDataSource, userSession.getUser().getId())) {
             ModifyMap pMap = new ModifyMap();
@@ -97,13 +99,16 @@ public class MapService extends Controller {
                 pMap.addAnchor(anchor);
             }
             broker.modifyMap(id, pMap);
+            
+            return ok("map.saved");
         }
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
-    public void deleteMap(@PathVariable("id") int id) throws Exception {
+    public Message deleteMap(@PathVariable("id") int id) throws Exception {
         try (AccountBroker broker = new AccountBroker(dbDataSource, userSession.getUser().getId())) {
             broker.deleteMap(id);
+            return ok("map.deleted");
         }
     }
 }

@@ -171,11 +171,12 @@ var MapController = function() {
         
         loadMap: function(id) {
             if (this.tryCloseMap()) {
+            	var persistence = new MapAJAX(id);
                 var view = $("#map-view");
                 view.hide();
                 // load the map...
                 var that = this;
-                new Map(id, function(map, image) {
+                new Map(persistence, function(map, image) {
                     image.id = "map-image";
                     currentMap = map;
                     setAnchorMode.call(that, false);
@@ -196,8 +197,8 @@ var MapController = function() {
         },
         saveMap: function() {
             if (currentMap !== null) {
-                currentMap.save(function(ok, json) {
-                	showMessage($("#MapMessage"), ok, json.message);
+                currentMap.save(function(ok, message) {
+                	showMessage($("#MapMessage"), ok, message);
                 });
             }
         },
