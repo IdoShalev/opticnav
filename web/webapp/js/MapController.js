@@ -4,7 +4,11 @@
  */
 var MapController = function() {
     var currentMap = null;
+    var anchorMode = false;
     var unsavedMapMessage = "The current map has unsaved changes. Do you want to discard all map changes?";
+    
+    var ANCHORMODE_OFF = "Anchor placement mode: OFF";
+    var ANCHORMODE_ON  = "Anchor placement mode: ON";
     
     function showMarkerProperties(elem, marker) {
         var popup = $("#marker-popup");
@@ -26,6 +30,26 @@ var MapController = function() {
             popup.hide();
             that.generateMarkerElements();
         });        
+    }
+    
+    function showAnchorProperties(elem, marker) {
+        var popup = $("#anchor-popup");
+        popup.data("anchor", elem);
+        MapController.recalculateAnchorPopup();
+        popup.fadeIn();
+        
+        var gps_repr;
+        if (marker.gps === null) {
+        	// No GPS coordinate yet
+        	gps_repr = {"lng": "", "lat": ""};
+        } else {
+        	gps_repr = MapCoordHelper.gpsNumbersToRepr(marker.gps);
+    	}
+        var that = this;
+        
+        $("#anchor-lat").val(gps_repr.lat);
+        $("#anchor-lng").val(gps_repr.lng);
+        $("#anchor-lat").focus();
     }
     
     function imageLocalToViewLocal(coord, image_width, image_height, view) {
@@ -57,10 +81,38 @@ var MapController = function() {
     }
     
     function mapImageClick(x, y) {
-        var transform = currentMap.getMapTransform();
-        var gps = transform.imageLocalToGPS(x, y);
-        currentMap.addMarker("Untitled marker", gps);
-        this.generateMarkerElements();
+    	if (anchorMode) {
+    		// place anchor (no GPS coordinate)
+    		currentMap.addAnchor(null, {"x": x, "y": y});
+    		this.generateAnchorElements();
+    	} else {
+    		// place marker
+	        var transform = currentMap.getMapTransform();
+            var gps = transform.imageLocalToGPS(x, y);
+	        currentMap.addMarker("Untitled marker", gps);
+	        this.generateMarkerElements();
+    	}
+    }
+    
+    function setAnchorMode(mode) {
+    	anchorMode = mode;
+    	
+    	var markers = $("#map-markers");
+    	var anchors = $("#map-anchors");
+    	if (anchorMode) {
+    		this.generateAnchorElements();
+    		markers.hide();
+    		anchors.show();
+    	} else {
+    		this.generateMarkerElements();
+    		markers.show();
+    		anchors.hide();
+    	}
+
+        $("#marker-popup").hide();
+        $("#anchor-popup").hide();
+    	
+    	$("#placement-mode").text(anchorMode?ANCHORMODE_ON:ANCHORMODE_OFF);
     }
     
     return {
@@ -92,6 +144,7 @@ var MapController = function() {
                 new Map(id, function(map, image) {
                     image.id = "map-image";
                     currentMap = map;
+                    setAnchorMode.call(that, false);
                     $("#map-image").replaceWith(image);
                     $("#map-image").click(function(e) {
                         var img = $(this);
@@ -113,58 +166,103 @@ var MapController = function() {
             }
         },
         
-        // Replaces all marker elements with new ones. This is called when a
-        // marker is added or removed.
-        generateMarkerElements: function() {
-            var markers = currentMap.getMarkerList();
-            
-            var markersElem = $("#map-markers");
-            markersElem.empty();
+        toggleAnchorMode: function() {
+            if (currentMap !== null) {
+                setAnchorMode.call(this, !anchorMode);
+            }
+        },
+        
+        generateElements: function(list, className, dataname, elems, propertiesCallback) {
+            elems.empty();
             
             var that = this;
             
-            for (var i = 0; i < markers.length; i++) {
-                var elem = $("<div>", {class: 'marker'});
+            for (var i = 0; i < list.length; i++) {
+                var elem = $("<div>", {class: className});
                 elem.click(function() {
-                    showMarkerProperties(that, $(this), $(this).data("marker"));
+                	propertiesCallback.call(that, $(this), $(this).data(dataname));
                 });
-                elem.data("marker", markers[i]);
-                markersElem.append(elem);
+                elem.data(dataname, list[i]);
+                elems.append(elem);
             }
-            
+        },
+        
+        // Replaces all marker elements with new ones. This is called when a
+        // marker is added or removed.
+        generateMarkerElements: function() {
+        	this.generateElements(currentMap.getMarkerList(), "marker", "marker", $("#map-markers"), showMarkerProperties);
             this.recalculateMarkerPositions();
+        },
+        
+        generateAnchorElements: function() {
+        	this.generateElements(currentMap.getAnchorList(), "anchor", "anchor", $("#map-anchors"), showAnchorProperties);
+            this.recalculateAnchorPositions();
         },
 
         // Markers have moved and the view need to be updated. This is called
         // when the view is resized or the user moves a marker.
         recalculateMarkerPositions: function() {
-            function setMarkerPosition(elem, x, y) {
+        	var elements = $("#map-markers .marker");
+        	var dataname = "marker";
+
+            function setPosition(elem, x, y) {
                 elem.css({left: x, top: y});
             }
             
             var view = $("#map-view");
+            
             var image_width  = currentMap.getImageWidth();
             var image_height = currentMap.getImageHeight();
             
             var transform = currentMap.getMapTransform();
             
-            // marker positions
-            $("#map-markers .marker").each(function(index, elem) {
-                var marker = $(elem).data("marker");
+            elements.each(function(index, elem) {
+                var marker = $(elem).data(dataname);
                 var pos = transform.gpsToImageLocal(marker.gps);
     
                 var view_pos = imageLocalToViewLocal(pos, image_width, image_height, view);
-                setMarkerPosition($(this), view_pos.x, view_pos.y);
+                setPosition($(this), view_pos.x, view_pos.y);
             });
             
             this.recalculateMarkerPopup();
         },
         
-        // Place the marker popup next to the marker it belongs to 
-        recalculateMarkerPopup: function() {
+        recalculateAnchorPositions: function() {
+        	var elements = $("#map-anchors .anchor");
+        	var dataname = "anchor";
+
+            function setPosition(elem, x, y) {
+                elem.css({left: x, top: y});
+            }
+            
             var view = $("#map-view");
-            var popup = $("#marker-popup");
-            var marker_elem = popup.data("marker");
+            
+            var image_width  = currentMap.getImageWidth();
+            var image_height = currentMap.getImageHeight();
+            
+            elements.each(function(index, elem) {
+                var anchor = $(elem).data(dataname);
+                var pos = anchor.local;
+    
+                var view_pos = imageLocalToViewLocal(pos, image_width, image_height, view);
+                setPosition($(this), view_pos.x, view_pos.y);
+            });
+            
+            this.recalculateAnchorPopup();
+        },
+
+        recalculatePositions: function() {
+        	if (anchorMode) {
+            	this.recalculateAnchorPositions();
+        	} else {
+            	this.recalculateMarkerPositions();
+        	}
+        },
+
+        recalculatePopup: function(popup, dataname) {
+            var view = $("#map-view");
+            
+            var marker_elem = popup.data(dataname);
             if (marker_elem !== undefined) {
                 // popup is associated with a marker
                 var marker_pos = marker_elem.position();
@@ -181,6 +279,16 @@ var MapController = function() {
                 }
                 popup.css(pos);
             }
+        },
+        
+        // Place the marker popup next to the marker it belongs to 
+        recalculateMarkerPopup: function() {
+        	this.recalculatePopup($("#marker-popup"), "marker");
+        },
+        
+        // Place the marker popup next to the marker it belongs to 
+        recalculateAnchorPopup: function() {
+        	this.recalculatePopup($("#anchor-popup"), "anchor");
         }
     };
 }();

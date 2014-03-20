@@ -131,7 +131,15 @@
     z-index: 1;
 }
 
-#marker-popup {
+.anchor {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: black;
+    z-index: 1;
+}
+
+#marker-popup, #anchor-popup {
     position: absolute;
     padding: 1em;
     width: 256px;
@@ -144,7 +152,7 @@
     z-index: 2;
 }
 
-#marker-popup input {
+#marker-popup input, #anchor-popup input {
     width: 100%;
 }
 

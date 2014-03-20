@@ -84,6 +84,7 @@ var Map = function(id, complete, errorElem) {
 			json.imageResource;
 			markers = json.marker;
 			anchors = json.anchor;
+			anchors = [{"gps":{"lng":-41072424,"lat":18383378},"local":{"x":463,"y":346}},{"gps":{"lng":-41071669,"lat":18383259},"local":{"x":714,"y":409}},{"gps":{"lng":-41071005,"lat":18383656},"local":{"x":937,"y":200}}];
 			mapTransform = MapCoordHelper.getImageLocalGPSTransform(anchors);
 			
 			img = new Image();

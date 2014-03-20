@@ -1,4 +1,4 @@
-<t:page title="Maps Manager" css="map.css" js="Map.js,MapController.js,MapCoordHelper.js,MapManager.js">
+<t:page title="Maps Manager" css="map.css" js="Map.js,MapController.js,MapCoordHelper.js,MapManager.js,jquery.ba-resize.min.js">
 <t:message name="MapMessage"/>
 <div id="map-manager-container">
 <div id="map-manager">
@@ -17,12 +17,19 @@
     Save Changes
     </div></a>
     <div id="map-list"></div>
-    <a href="javascript:toggleAnchorMode()"><div class="anchor-mode-button">
-    Toggle anchor placement mode
+    <a href="javascript:MapController.toggleAnchorMode()"><div id="placement-mode" class="anchor-mode-button">
+    Anchor Placement mode: OFF
     </div></a>
 </sidebar>
 <div id="map-view">
     <div id="map-popups">
+        <div id="anchor-popup">
+        <button id="anchor-delete">Delete</button>
+        <input type="text" id="anchor-lat" placeholder="Latitude" />
+        <input type="text" id="anchor-lng" placeholder="Longitude" />
+        <button id="anchor-save">Save</button>
+        </div>
+        
         <div id="marker-popup">
         <button id="delete">Delete</button>
         <input type="text" id="marker-name" placeholder="Marker name" /><br/>
@@ -31,6 +38,7 @@
         <button id="save">Save</button>
         </div>
     </div>
+    <div id="map-anchors"></div>
     <div id="map-markers"></div>
     <img id="map-image" />
 </div>

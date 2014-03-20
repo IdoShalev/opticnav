@@ -44,7 +44,7 @@ $(function() {
 
     // When the map view resizes, the marker locations need to change
     $("#map-view").resize(function() {
-        MapController.recalculateMarkerPositions();
+        MapController.recalculatePositions();
     });
     
     // When the user clicks outside of a popup, it should disappear
@@ -58,6 +58,19 @@ $(function() {
         }, 1);
     });
     $("#marker-popup").hide();
+    $("#anchor-popup").hide();
+    
+    $("#anchor-save").click(function() {
+        var popup = $("#anchor-popup");
+        var anchor_elem = popup.data("anchor");
+        var anchor = anchor_elem.data("anchor");
+        
+        var lng = $("#anchor-lng").val();
+        var lat = $("#anchor-lat").val();
+        
+        anchor.gps = MapCoordHelper.gpsReprToNumbers({"lng": lng, "lat": lat});
+        popup.hide();
+    });
 
     //Leaves the Page, we forgot this, stuck forever
     $("#map-creation-cancel").click(function(){
