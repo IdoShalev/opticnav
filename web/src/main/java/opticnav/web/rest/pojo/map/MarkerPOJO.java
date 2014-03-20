@@ -10,6 +10,8 @@ public class MarkerPOJO {
     public GPSPOJO gps;
     
     public MarkerPOJO(Marker m) {
+        this.info = new InfoPOJO();
+        this.gps = new GPSPOJO();
         this.info.name = m.getName();
         this.gps.lng = m.getLng();
         this.gps.lat = m.getLat();

@@ -2,6 +2,13 @@
  * The MapController class drives the view (HTML elements).
  * It handles all button clicks, marker clicks, updating the elements, etc.
  */
+$("#marker-delete").click(function(){
+	//Delete Button in MarkerPropertites, check if working
+	currentMap.removeMarker(deleteCurrentMarker);
+    popup.hide();
+    that.generateMarkerElements();
+});
+
 var MapController = function() {
     var currentMap = null;
     var anchorMode = false;
@@ -30,13 +37,6 @@ var MapController = function() {
     function deleteCurrentMarker(marker){
     	var markerHold = marker;
     }
-    
-    $("#marker-delete").click(function(){
-    	//Delete Button in MarkerPropertites, check if working
-		currentMap.removeMarker(deleteCurrentMarker);
-        popup.hide();
-        that.generateMarkerElements();
-    });
     
     function showAnchorProperties(elem, marker) {
         var popup = $("#anchor-popup");
