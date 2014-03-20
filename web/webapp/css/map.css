@@ -125,18 +125,20 @@
 
 .marker {
     position: absolute;
-    width: 16px;
-    height: 16px;
-    background-color: black;
+    width: 24px;
+    height: 24px;
+    background:url(../css/images/Marker.svg);
     z-index: 1;
+    background-size: contain;
 }
 
 .anchor {
     position: absolute;
-    width: 16px;
-    height: 16px;
-    background-color: black;
+    width: 24px;
+    height: 24px;
+    background:url(../css/images/Anchor.svg);
     z-index: 1;
+    background-size: contain;
 }
 
 #marker-popup, #anchor-popup {

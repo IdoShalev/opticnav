@@ -214,7 +214,7 @@ var MapController = function() {
         	var dataname = "marker";
 
             function setPosition(elem, x, y) {
-                elem.css({left: x, top: y});
+                elem.css({"left": x-elem.width()/2, "top": y-elem.height()});
             }
             
             var view = $("#map-view");
@@ -240,7 +240,7 @@ var MapController = function() {
         	var dataname = "anchor";
 
             function setPosition(elem, x, y) {
-                elem.css({left: x, top: y});
+                elem.css({"left": x-elem.width()/2, "top": y-elem.height()});
             }
             
             var view = $("#map-view");
