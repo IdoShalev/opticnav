@@ -9,7 +9,6 @@ $(function() {
 		
 		object.username = username;
 		object.password = password;
-		object.confirmPassword = confirmPassword;
 		
 		if (password != confirmPassword) {
 			showErrorMessage(messageElem, "Passwords do not match");
