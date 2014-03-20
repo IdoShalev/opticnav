@@ -2,11 +2,12 @@
  * The MapController class drives the view (HTML elements).
  * It handles all button clicks, marker clicks, updating the elements, etc.
  */
+// TODO - this is broken
 $("#marker-delete").click(function(){
 	//Delete Button in MarkerPropertites, check if working
 	currentMap.removeMarker(deleteCurrentMarker);
     popup.hide();
-    that.generateMarkerElements();
+    generateMarkerElements();
 });
 
 var MapController = function() {
@@ -90,13 +91,13 @@ var MapController = function() {
     	if (anchorMode) {
     		// place anchor (no GPS coordinate)
     		currentMap.addAnchor(null, {"x": x, "y": y});
-    		this.generateAnchorElements();
+    		generateAnchorElements.call(this);
     	} else {
     		// place marker
 	        var transform = currentMap.getMapTransform();
             var gps = transform.imageLocalToGPS(x, y);
 	        currentMap.addMarker("Untitled marker", gps);
-	        this.generateMarkerElements();
+	        generateMarkerElements.call(this);
     	}
     }
     
@@ -106,11 +107,11 @@ var MapController = function() {
     	var markers = $("#map-markers");
     	var anchors = $("#map-anchors");
     	if (anchorMode) {
-    		this.generateAnchorElements();
+    		generateAnchorElements.call(this);
     		markers.hide();
     		anchors.show();
     	} else {
-    		this.generateMarkerElements();
+    		generateMarkerElements.call(this);
     		markers.show();
     		anchors.hide();
     	}
@@ -119,6 +120,33 @@ var MapController = function() {
         $("#anchor-popup").hide();
     	
     	$("#placement-mode").text(anchorMode?ANCHORMODE_ON:ANCHORMODE_OFF);
+    }
+    
+    function generateElements(list, className, dataname, elems, propertiesCallback) {
+        elems.empty();
+        
+        var that = this;
+        
+        for (var i = 0; i < list.length; i++) {
+            var elem = $("<div>", {class: className});
+            elem.click(function() {
+            	propertiesCallback.call(that, $(this), $(this).data(dataname));
+            });
+            elem.data(dataname, list[i]);
+            elems.append(elem);
+        }
+    }
+    
+    // Replaces all marker elements with new ones. This is called when a
+    // marker is added or removed.
+    function generateMarkerElements() {
+    	generateElements(currentMap.getMarkerList(), "marker", "marker", $("#map-markers"), showMarkerProperties);
+        this.recalculateMarkerPositions();
+    }
+    
+    function generateAnchorElements() {
+    	generateElements(currentMap.getAnchorList(), "anchor", "anchor", $("#map-anchors"), showAnchorProperties);
+        this.recalculateAnchorPositions();
     }
     
     return {
@@ -159,7 +187,7 @@ var MapController = function() {
                         mapImageClick.call(that, x, y);
                     });
                     
-                    that.generateMarkerElements();
+                    generateMarkerElements.call(that);
                     
                     // show the map
                     view.fadeIn();
@@ -178,33 +206,6 @@ var MapController = function() {
             if (currentMap !== null) {
                 setAnchorMode.call(this, !anchorMode);
             }
-        },
-        
-        generateElements: function(list, className, dataname, elems, propertiesCallback) {
-            elems.empty();
-            
-            var that = this;
-            
-            for (var i = 0; i < list.length; i++) {
-                var elem = $("<div>", {class: className});
-                elem.click(function() {
-                	propertiesCallback.call(that, $(this), $(this).data(dataname));
-                });
-                elem.data(dataname, list[i]);
-                elems.append(elem);
-            }
-        },
-        
-        // Replaces all marker elements with new ones. This is called when a
-        // marker is added or removed.
-        generateMarkerElements: function() {
-        	this.generateElements(currentMap.getMarkerList(), "marker", "marker", $("#map-markers"), showMarkerProperties);
-            this.recalculateMarkerPositions();
-        },
-        
-        generateAnchorElements: function() {
-        	this.generateElements(currentMap.getAnchorList(), "anchor", "anchor", $("#map-anchors"), showAnchorProperties);
-            this.recalculateAnchorPositions();
         },
 
         // Markers have moved and the view need to be updated. This is called
