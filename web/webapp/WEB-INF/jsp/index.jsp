@@ -11,6 +11,7 @@
          <t:message name="message" />
     </div>
     <div id="leftContent">
+        Welcome to OpticNav
         This area contain info that the user will see as they enter the main page.
         To be written properly.
     </div>

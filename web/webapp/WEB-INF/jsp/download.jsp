@@ -1,17 +1,15 @@
 <t:page title="Download Page">
-    <pre>
-    OpticNav application is free to use and may be download here.
+    <p>OpticNav application is free to use and may be download here.</p>
     
-    To install the application on your Android Device do the following.
-    blah blah blah.....//TODO
+    <p>To install the application on your Android Device do the following.</p>
+    <p>blah blah blah.....//TODO</p>
     
-    By downloading and installing the application you agree to
-    blah blah blah.....//TODO
+    <p>By downloading and installing the application you agree to</p>
+    <p>blah blah blah.....//TODO</p>
     
-    This application will require internet connection,
-    the use of GPS,
-    blah blah blah.....//TODO
+    <p>This application will require internet connection,</p>
+    <p>the use of GPS,</p>
+    <p>blah blah blah.....//TODO</p>
     
     Download <a href="#">Here</a>
-    </pre>
 </t:page>

@@ -2,14 +2,16 @@
 <div id=center>
     <div id=content>
         <div id=registerPage>
-            <t:message name="message" />
-            Welcoming new user text and stuff.
-            <form id= "register_Account" action="registerAccount.jsp">
+            <h2>Creating Account</h2>
+            <p>Please fill in the fields below.</p>
+            <p>All fields must be filled in correctly to make a new account.</p>
+            <form id= "register_Account">
                 <input type="text" id="username" placeholder="Username"><br/>
                 <input type="password" id="password" placeholder="Password"><br/>
-                <input type="password" id="password" placeholder="Confirm Password"><br/>
+                <input type="password" id="confirmPassword" placeholder="Confirm Password"><br/>
                 <input type="submit" value="Register" />
             </form>
+            <t:message name="message" />
         </div>
     </div>
 </div>
