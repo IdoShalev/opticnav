@@ -3,13 +3,16 @@ package opticnav.web.rest.pojo.map;
 import opticnav.persistence.web.map.Anchor;
 
 public class AnchorPOJO {
-    public int lng, lat;
-    public int localX, localY;
+    public GPSPOJO gps;
+    public LocalPOJO local;
     
     public AnchorPOJO(Anchor a) {
-        this.lng = a.getLng();
-        this.lat = a.getLat();
-        this.localX = a.getLocalX();
-        this.localY = a.getLocalY();
+        this.gps.lng = a.getLng();
+        this.gps.lat = a.getLat();
+        this.local.x = a.getLocalX();
+        this.local.y = a.getLocalY();
+    }
+    
+    public AnchorPOJO() {
     }
 }

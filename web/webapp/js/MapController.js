@@ -23,14 +23,20 @@ var MapController = function() {
         $("#marker-lat").val(gps_repr.lat);
         $("#marker-lng").val(gps_repr.lng);
         $("#marker-name").focus();
-        
-        //Delete Button in MarkerPropertites, check if working
-        $("#delete").click(function(){
-            currentMap.removeMarker(marker);
-            popup.hide();
-            that.generateMarkerElements();
-        });        
+        deleteCurrentMarker(marker);
+
     }
+    
+    function deleteCurrentMarker(marker){
+    	var markerHold = marker;
+    }
+    
+    $("#marker-delete").click(function(){
+    	//Delete Button in MarkerPropertites, check if working
+		currentMap.removeMarker(deleteCurrentMarker);
+        popup.hide();
+        that.generateMarkerElements();
+    });
     
     function showAnchorProperties(elem, marker) {
         var popup = $("#anchor-popup");
@@ -162,7 +168,9 @@ var MapController = function() {
         },
         saveMap: function() {
             if (currentMap !== null) {
-                currentMap.save();
+                currentMap.save(function(ok, json) {
+                	showMessage($("#MapMessage"), ok, json.message);
+                });
             }
         },
         

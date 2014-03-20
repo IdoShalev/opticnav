@@ -4,3 +4,4 @@ SELECT registerAccount('Kay', 'kaypass');
 SELECT registerAccount('Ido', 'idopass');
 SELECT registerAccount('Danny', 'dannypass');
 SELECT registerAccount('Jacky', 'jackypass');
+SELECT registerAccount('a', 'a');

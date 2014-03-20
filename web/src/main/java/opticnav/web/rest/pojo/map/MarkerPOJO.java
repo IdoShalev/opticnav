@@ -3,12 +3,18 @@ package opticnav.web.rest.pojo.map;
 import opticnav.persistence.web.map.Marker;
 
 public class MarkerPOJO {
-    public String name;
-    public int lng, lat;
+    public static class InfoPOJO {
+        public String name;
+    }
+    public InfoPOJO info;
+    public GPSPOJO gps;
     
     public MarkerPOJO(Marker m) {
-        this.name = m.getName();
-        this.lng = m.getLng();
-        this.lat = m.getLat();
+        this.info.name = m.getName();
+        this.gps.lng = m.getLng();
+        this.gps.lat = m.getLat();
+    }
+    
+    public MarkerPOJO() {
     }
 }

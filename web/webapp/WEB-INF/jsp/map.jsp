@@ -31,11 +31,11 @@
         </div>
         
         <div id="marker-popup">
-        <button id="delete">Delete</button>
+        <button id="marker-delete">Delete</button>
         <input type="text" id="marker-name" placeholder="Marker name" /><br/>
         <input type="text" id="marker-lat" placeholder="Latitude" />
         <input type="text" id="marker-lng" placeholder="Longitude" />
-        <button id="save">Save</button>
+        <button id="marker-save">Save</button>
         </div>
     </div>
     <div id="map-anchors"></div>

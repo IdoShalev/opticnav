@@ -89,11 +89,11 @@ public class MapService extends Controller {
             ModifyMap pMap = new ModifyMap();
             for (MarkerPOJO m: map.markers) {
                 // TODO - resource
-                Marker marker = new Marker(m.lng, m.lat, m.name, 0);
+                Marker marker = new Marker(m.gps.lng, m.gps.lat, m.info.name, 0);
                 pMap.addMarker(marker);
             }
             for (AnchorPOJO a: map.anchors) {
-                Anchor anchor = new Anchor(a.lng, a.lat, a.localX, a.localY);
+                Anchor anchor = new Anchor(a.gps.lng, a.gps.lat, a.local.x, a.local.y);
                 pMap.addAnchor(anchor);
             }
             broker.modifyMap(id, pMap);

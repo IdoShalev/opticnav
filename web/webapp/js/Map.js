@@ -20,9 +20,32 @@ var Map = function(id, complete, errorElem) {
         getImageHeight: function() {
             return img.naturalHeight;
         },
-        // Saves the Map anchors and markers using the POST /map controller
-        save: function() {
-            dirty = false;
+        // Saves the Map anchors and markers using the PUT /map controller
+        save: function(onSave) {
+        	// TODO - move this somewhere else
+        	var ajaxClosure = function(messageCallback) {
+        		return function(data) {
+        			var ok = data.status >= 200 && data.status <= 299;
+        			var json = data.responseJSON;
+        			
+        			messageCallback(ok, json);
+        		};
+        	};
+        	
+        	var object = {"markers": markers, "anchors": anchors};
+        	
+        	$.ajax({
+       		 type: "PUT",
+       		 url: ctx+"/api/map/" + id,
+    		 data: JSON.stringify(object),
+    		 contentType: "application/json; charset=utf-8",
+       		 complete: ajaxClosure(function(ok, json) {
+       			 if (ok) {
+       				 dirty = false;
+       			 }
+       			 onSave(ok, json);
+       		 })
+       		});
         },
         // Returns true if a marker was added, false if not enough anchors are defined
         addMarker: function(name, gps) {
