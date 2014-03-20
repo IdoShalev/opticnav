@@ -64,24 +64,50 @@ CALL deleteARD();                                   ERROR 1318 (42000)
 SELECT * FROM WEB_ACCOUNT;
 make sure the ards are removed
 
-================================================================================
-
 add some resources
 
 SELECT addResource('type');                         1
 SELECT addResource('test');                         2
-SELECT addResource('');                             3  we might want to avoid that
+SELECT addResource('');                             3
 
-SELECT getResourceType (2);
+trying to get the resource type
+
+SELECT getResourceType (1);                         type
+SELECT getResourceType (2);                         test
+SELECT getResourceType (3);                         ''
+SELECT getResourceType (4);                         NULL
+SELECT getResourceType ();                          ERROR 1318 (42000)
 
 creating maps (p_map_name VARCHAR(64), p_res_id INT(4), p_acc_id INT(4))
 
-SELECT createMap('mapName0', 1, 1);
-SELECT createMap('mapName2', 2, 2);
-SELECT createMap('mapName3', 1, 2);
-SELECT createMap('mapName4', 1, 2);
+SELECT createMap('mapName0', 1, 1);                 returns number > 0
+SELECT createMap('mapName2', 2, 2);                 returns number > 0
+SELECT createMap('mapName3', 1, 2);                 returns number > 0
+SELECT createMap('mapName4', 1, 2);                 returns number > 0
+SELECT createMap('', 1, 2);                         ERROR 1644 (45000)
+SELECT createMap('mapName4', , 2);                  ERROR 1064 (42000)
+SELECT createMap('mapName4', 1, );                  ERROR 1064 (42000)
+SELECT createMap('mapName4', 99, 2);                ERROR 1452 (23000)
+SELECT createMap('mapName4', 1, 99);                ERROR 1452 (23000)
 
-createMarker
+creating some markers (p_name VARCHAR(64), p_map_id INT(4), p_res_id INT(4), p_lat INT(4), p_long INT(4))
+
+CALL createMarker('marker1', 1, 0, 10, 10);         -
+CALL createMarker('marker2', 1, 0, 10, 10);         -
+CALL createMarker('marker1', 1, , 10, 10);          ERROR 1064 (42000)
+CALL createMarker('marker1', , 0, 10, 10);          ERROR 1064 (42000)
+CALL createMarker('', 1, 0, 10, 10);                -
+CALL createMarker('marker1', 1, 0, , 10);           ERROR 1064 (42000)
+CALL createMarker('marker1', 1, 0, 10, );           ERROR 1064 (42000)
+
+SELECT * FROM MARKER;
+
+getting the map markers
+
+CALL getMapMarkers(1);                              a table of 3 makers
+CALL getMapMarkers(2);                              empty set
+CALL getMapMarkers(99);                             empty set
+CALL getMapMarkers();                               ERROR 1318 (42000)
 
 createAnchor
 
@@ -89,7 +115,7 @@ getMapName
 
 getMapResource
 
-getMapMarkers
+
 
 getMapAnchors
 

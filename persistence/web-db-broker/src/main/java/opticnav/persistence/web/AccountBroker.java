@@ -110,7 +110,7 @@ public class AccountBroker implements AutoCloseable {
             for (int i = 0; i < ml.size(); i++) {
                 cs.setString(1, ml.get(i).getName());
                 cs.setInt(2, id);
-                cs.setInt(3, 0);
+                cs.setInt(3, 0);    //no resource
                 cs.setInt(4, ml.get(i).getLat());
                 cs.setInt(5, ml.get(i).getLng());
 
@@ -207,7 +207,6 @@ public class AccountBroker implements AutoCloseable {
 
     public List<MapsListEntry> getMapsList() throws AccountBrokerException {
         List<MapsListEntry> list = new LinkedList<>();
-        MapsListEntry mapE;
         try {
             try (CallableStatement cs = conn
                     .prepareCall("{call getMapsList(?)}")) {
@@ -215,6 +214,7 @@ public class AccountBroker implements AutoCloseable {
 
                 try (ResultSet rs = cs.executeQuery()) {
                     while (rs.next()) {
+                        MapsListEntry mapE;
                         mapE = new MapsListEntry(rs.getString(3), rs.getInt(1));
                         list.add(mapE);
                     }
