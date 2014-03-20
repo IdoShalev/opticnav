@@ -41,7 +41,7 @@ public class WelcomeActivity extends Activity {
         detectServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(WelcomeActivity.this, RegisterARDActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, MapActivity.class);
                 startActivity(intent);
             }
         });
