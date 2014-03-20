@@ -39,6 +39,6 @@ CREATE TABLE ANCHOR
     image_x             INT(4)      NOT NULL,
     image_y             INT(4)      NOT NULL,
     lat                 INT(4)      NOT NULL,
-    longitude           INT(4)      NOT NULL,
+    lng                 INT(4)      NOT NULL,
     CONSTRAINT          fk_anchor_map FOREIGN KEY (map_id) REFERENCES MAP(map_id)
 );
