@@ -14,7 +14,7 @@ public class Coordinate {
     /**
      *
      * @param lng Longitude, expressed as hundredths of a longitude second
-     * @param lat Latitude, expressed as hundredths of a longitude second
+     * @param lat Latitude, expressed as hundredths of a latitude second
      */
     public Coordinate(int lng, int lat) {
         this.lng = (double)lng/LONGITUDE_CENTISECONDS_180 * 180.0;

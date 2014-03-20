@@ -9,6 +9,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.util.AttributeSet;
 import android.view.View;
+import opticnav.ardroid.opticnav.ardroid.model.MapModel;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,8 @@ public class MapView extends View {
     // TODO - look into SurfaceView
     private Bitmap bitmap;
     private float rotate = 0;
+
+    private MapModel model;
 
     public MapView(Context context, AttributeSet attrs) {
         super(context, attrs);

@@ -19,7 +19,7 @@
               android:id="@+id/configureServerPort"
               android:inputType="number"
               android:maxLength="5"
-              android:hint="Port - default is 8888"/>
+              android:hint="Port - default is 4444"/>
     <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:id="@+id/configureServerConnect"
             android:onClick="connect"

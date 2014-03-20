@@ -13,6 +13,7 @@ import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardroid.ui.RegisterARDActivity;
 import opticnav.ardroid.ui.WelcomeActivity;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,10 +27,25 @@ public class ServerUIHandler {
         this.context    = context;
         this.channel    = channel;
         this.threadPool = Executors.newCachedThreadPool();
-        this.broker     = null;//new ARDBroker(this.channel, this.threadPool);
+        this.broker     = new ARDBroker(this.channel, this.threadPool);
     }
 
-    public void connect(final WelcomeActivity source) {
+    public void close() {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
+                    broker.close();
+                } catch (IOException e) {
+                    // XXX
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+    }
+
+    public void connect(final Activity source, PassCode passcode) {
         // if a passcode is stored and connection works, go to the Lobby activity
         // if not, go to the RegisterARD activity to request a passcode
 
@@ -39,7 +55,7 @@ public class ServerUIHandler {
             @Override
             protected Void doInBackground(Void... voids) {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

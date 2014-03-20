@@ -3,6 +3,7 @@ package opticnav.ardroid.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -17,11 +18,14 @@ public class ServerConfigActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
+        Application app = (Application)getApplicationContext();
         setContentView(R.layout.activity_serverconfig);
         this.connecting = false;
 
+        app.serverConfig.onCreate(this);
+
         if (savedInstanceBundle == null) {
-            Application app = (Application)getApplicationContext();
+            app = (Application)getApplicationContext();
             String host = app.getPreferencesServerHost();
             int port = app.getPreferencesServerPort();
             String portString;
@@ -35,6 +39,12 @@ public class ServerConfigActivity extends Activity {
             ((EditText)findViewById(R.id.configureServerHost)).setText(host);
             ((EditText)findViewById(R.id.configureServerPort)).setText(portString);
         }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Application app = (Application)getApplicationContext();
+        app.serverConfig.onDestroy(this);
     }
 
     @Override
@@ -83,7 +93,7 @@ public class ServerConfigActivity extends Activity {
         ((Application)getApplicationContext()).connectToServer(this, host, port);
     }
 
-    private void setConnecting(boolean connecting) {
+    public void setConnecting(boolean connecting) {
         this.connecting = connecting;
         findViewById(R.id.configureServerHost).setEnabled(!connecting);
         findViewById(R.id.configureServerPort).setEnabled(!connecting);

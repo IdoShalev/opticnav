@@ -28,6 +28,7 @@
         </activity>
         <activity android:name=".ui.ServerConfigActivity" />
         <activity android:name=".ui.RegisterARDActivity" />
+        <activity android:name=".ui.LobbyActivity" />
         <activity android:name=".ui.MapActivity" />
     </application>
 </manifest>
