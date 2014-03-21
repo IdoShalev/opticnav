@@ -25,8 +25,6 @@ $(function() {
 				 contentType: "application/json; charset=utf-8",
 				 complete: ajaxMessageClosureRedirectOnSuccess(messageElem, "/", "message")
 				});
-				
-				
 		}
 		event.preventDefault();
 	});

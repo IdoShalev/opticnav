@@ -1,34 +1,28 @@
-#selectMap
-{
-	width: 100%; height: 100px;
-    float: left;
-    background: #ccc;
-    border: 1px solid #2b4479;
-    border: 1px solid #2d4373;
-    margin: 1em;
+#controller{
+	width: 300px;
+	box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
+    overflow: hidden;
+    top:0;
+    bottom: 0;
+    position: absolute;
+    padding:50px;
 }
 
-#findPeople
-{
-	width: 100%; height: 100px;
-    float: left;
-    background: #ccc;
-    border: 1px solid #2b4479;
-    border: 1px solid #2d4373;
-    margin: 1em;
+#info{
+	padding:50px;
+	top:0;
+	right: 0;
+    left:400px;
+    bottom: 0;
+    position: absolute;
+    overflow: hidden;
 }
 
-#findPeople
-{
-	float:left;
-}
-
-#userList
-{
-	float:right;
-}
-
-#instanceB
-{
-    margin: 0 auto;
+#instanceContainer{
+    position: fixed;
+    overflow: hidden;
+    bottom:0;
+    top: 132px;
+    left:0;
+    right:0;
 }
