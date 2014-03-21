@@ -3,12 +3,6 @@
  * It handles all button clicks, marker clicks, updating the elements, etc.
  */
 // TODO - this is broken
-$("#marker-delete").click(function(){
-	//Delete Button in MarkerPropertites, check if working
-	currentMap.removeMarker(deleteCurrentMarker);
-    popup.hide();
-    generateMarkerElements();
-});
 
 var MapController = function() {
     var currentMap = null;
@@ -17,6 +11,20 @@ var MapController = function() {
     
     var ANCHORMODE_OFF = "Anchor placement mode: OFF";
     var ANCHORMODE_ON  = "Anchor placement mode: ON";
+    
+    function getCurrentMarker() {
+        var popup = $("#marker-popup");
+        var markerElement = popup.data("marker");
+        var marker = markerElement.data("marker");
+        return marker;
+    }
+    
+    function getCurrentAnchor() {
+        var popup = $("#anchor-popup");
+        var anchorElement = popup.data("anchor");
+        var anchor = anchorElement.data("anchor");
+        return anchor;
+    }
     
     function showMarkerProperties(elem, marker) {
         var popup = $("#marker-popup");
@@ -31,12 +39,6 @@ var MapController = function() {
         $("#marker-lat").val(gps_repr.lat);
         $("#marker-lng").val(gps_repr.lng);
         $("#marker-name").focus();
-        deleteCurrentMarker(marker);
-
-    }
-    
-    function deleteCurrentMarker(marker){
-    	var markerHold = marker;
     }
     
     function showAnchorProperties(elem, marker) {
@@ -150,6 +152,20 @@ var MapController = function() {
     }
     
     return {
+    	removeCurrentMarker: function() {
+            currentMap.removeMarker(getCurrentMarker());
+            var popup = $("#marker-popup");
+            popup.hide();
+            generateMarkerElements.call(MapController);
+        },
+        
+        removeCurrentAnchor: function() {
+            currentMap.removeAnchor(getCurrentAnchor());
+            var popup = $("#anchor-popup");
+            popup.hide();
+            generateAnchorElements.call(MapController);
+        },
+    	
         // When the page closes, run this function first.
         // This will prevent the page from closing if there are unsaved changes
         unsavedMapPageUnloadEvent: function() {

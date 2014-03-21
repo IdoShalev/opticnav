@@ -65,24 +65,48 @@ var MapCoordHelper = function() {
             ]
         */
         getImageLocalGPSTransform: function(anchors) {
-            if (anchors.length < 3) {
-                return null;
-            }
+        	var anchor_idx = 0;
+        	
+        	// returns a GPS coordinate, or null if there are no more anchors
+        	function getNextAnchor() {
+        		var anchor = null;
+        		while (anchor_idx < anchors.length && anchor === null) {
+        			var a = anchors[anchor_idx++];
+        			if (a !== null || a.gps !== null) {
+        				anchor = a;
+        			}
+        		}
+        		return anchor;
+        	}
+        	
+        	var anchor0 = getNextAnchor();
+        	var anchor1 = getNextAnchor();
+        	var anchor2 = getNextAnchor();
+        	
+        	// oh god why...
+        	if (anchor0 === null || anchor1 === null || anchor2 === null) {
+        		return null;
+        	}
+        	
+        	if (anchor0.gps === null || anchor1.gps === null || anchor2.gps === null) {
+        		return null;
+        	}
+        	
             // GPS coordinates
-            var gx0 = anchors[0].gps.lng;
-            var gy0 = anchors[0].gps.lat;
-            var gx1 = anchors[1].gps.lng;
-            var gy1 = anchors[1].gps.lat;
-            var gx2 = anchors[2].gps.lng;
-            var gy2 = anchors[2].gps.lat;
+            var gx0 = anchor0.gps.lng;
+            var gy0 = anchor0.gps.lat;
+            var gx1 = anchor1.gps.lng;
+            var gy1 = anchor1.gps.lat;
+            var gx2 = anchor2.gps.lng;
+            var gy2 = anchor2.gps.lat;
             
             // Image-local coordinates
-            var px0 = anchors[0].local.x;
-            var py0 = anchors[0].local.y;
-            var px1 = anchors[1].local.x
-            var py1 = anchors[1].local.y;
-            var px2 = anchors[2].local.x;
-            var py2 = anchors[2].local.y;
+            var px0 = anchor0.local.x;
+            var py0 = anchor0.local.y;
+            var px1 = anchor1.local.x
+            var py1 = anchor1.local.y;
+            var px2 = anchor2.local.x;
+            var py2 = anchor2.local.y;
             
             // Some very complicated formulas churned out by wxMaxima.
             /*

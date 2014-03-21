@@ -2,6 +2,7 @@
  * For more on OO JavaScript, take a gander:
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript
  */
+//TODO Anchor Save
 
 function loadMapsList() {
     var mapList = $("#map-list");
@@ -70,6 +71,28 @@ $(function() {
         
         anchor.gps = MapCoordHelper.gpsReprToNumbers({"lng": lng, "lat": lat});
         popup.hide();
+    });
+    
+    $("#marker-save").click(function(){
+    	var popup = $("#marker-popup");
+        var marker_elem = popup.data("marker");
+        var marker = marker_elem.data("marker");
+        
+        var marker_name = $("#marker-name").val();
+        var lng = $("#marker-lng").val();
+        var lat = $("#marker-lat").val();
+        
+        marker.info.name = marker_name;
+        marker.gps = MapCoordHelper.gpsReprToNumbers({"lng": lng, "lat": lat});
+        popup.hide();
+    });
+    
+    $("#marker-delete").click(function(){
+    	MapController.removeCurrentMarker();
+    });
+    
+    $("#anchor-delete").click(function(){
+    	MapController.removeCurrentAnchor();
     });
 
     //Leaves the Page, we forgot this, stuck forever
