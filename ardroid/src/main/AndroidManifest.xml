@@ -26,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.ServerConfigActivity" />
+        <activity android:name=".ui.ServerConfigActivity" android:noHistory="true" />
         <activity android:name=".ui.RegisterARDActivity" />
         <activity android:name=".ui.LobbyActivity" />
         <activity android:name=".ui.MapActivity" />

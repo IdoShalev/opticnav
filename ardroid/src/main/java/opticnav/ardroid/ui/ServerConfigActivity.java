@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import opticnav.ardd.protocol.Protocol;
 import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
+import opticnav.ardroid.connection.CancellableSocket;
 
 public class ServerConfigActivity extends Activity {
     private boolean connecting;
@@ -90,7 +91,8 @@ public class ServerConfigActivity extends Activity {
             port = Integer.parseInt(portText);
         }
 
-        ((Application)getApplicationContext()).connectToServer(this, host, port);
+        CancellableSocket.Cancellable c;
+        c = ((Application) getApplicationContext()).connectToServer(host, port);
     }
 
     public void setConnecting(boolean connecting) {

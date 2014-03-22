@@ -4,14 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.widget.Toast;
 import opticnav.ardd.ard.ARDConnection;
 import opticnav.ardd.ard.ARDConnectionException;
 import opticnav.ardd.broker.ard.ARDBroker;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.chan.Channel;
+import opticnav.ardroid.Application;
 import opticnav.ardroid.ui.RegisterARDActivity;
 import opticnav.ardroid.ui.WelcomeActivity;
+import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -19,7 +23,7 @@ import java.util.concurrent.Executors;
 
 public class ServerUIHandler {
     private final Channel channel;
-    private final ARDBroker broker;
+    private final ARDConnection broker;
     private final ExecutorService threadPool;
     private final Context context;
 
@@ -45,7 +49,7 @@ public class ServerUIHandler {
         }.execute();
     }
 
-    public void connect(final Activity source, PassCode passcode) {
+    public void connect(final PassCode passcode) {
         // if a passcode is stored and connection works, go to the Lobby activity
         // if not, go to the RegisterARD activity to request a passcode
 
@@ -54,37 +58,50 @@ public class ServerUIHandler {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if (passcode == null) {
+                    requestCodes();
+                } else {
+                    connectToLobby(passcode);
                 }
                 return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void v) {
-                Intent intent = new Intent(source, RegisterARDActivity.class);
-                intent.putExtra("confcode", "AABBCCDD");
-                source.startActivity(intent);
             }
         }.execute();
     }
 
-    public void requestCodes() {
-        new AsyncTask<Void, Void, Void>() {
+    private void connectToLobby(final PassCode passCode) {
+    }
+
+    private void showLobby() {
+    }
+
+    private void requestCodes() {
+        final Handler handler = new Handler(context.getMainLooper());
+        new Thread(new Runnable() {
             @Override
-            protected Void doInBackground(Void... voids) {
+            public void run() {
                 try {
                 broker.requestPassConfCodes(new ARDConnection.RequestPassConfCodesCallback() {
                     @Override
-                    public void confCode(ConfCode confCode, ARDConnection.Cancellation cancellation) {
-
+                    public void confCode(final ConfCode confCode, ARDConnection.Cancellation cancellation) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(context, RegisterARDActivity.class);
+                                intent.putExtra("confcode", confCode.getString());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                context.startActivity(intent);
+                            }
+                        });
                     }
 
                     @Override
                     public void registered(PassCode passCode, int ardID) {
-
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(context, "Registered!", Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
 
                     @Override
@@ -100,8 +117,7 @@ public class ServerUIHandler {
                 } catch (ARDConnectionException e) {
 
                 }
-                return null;
             }
-        }.execute();
+        }).start();
     }
 }

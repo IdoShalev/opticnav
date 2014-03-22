@@ -13,11 +13,15 @@ import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.Protocol;
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelUtil;
+import opticnav.ardroid.connection.AsyncConnectionEvent;
+import opticnav.ardroid.connection.CancellableSocket;
 import opticnav.ardroid.connection.ServerUIHandler;
 import opticnav.ardroid.ui.*;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 /**
  * Because Android development is brain damaged, it's very hard to keep the same state in Activitys during changes
@@ -68,7 +72,7 @@ public class Application extends android.app.Application {
         this.prefs = getSharedPreferences("OpticNav", 0);
     }
 
-    public void connectToServer(final Activity sender, final String host, final int port) {
+    public CancellableSocket.Cancellable connectToServer(final String host, final int port) {
         // XXX
         if (this.server != null) {
             this.server.close();
@@ -80,34 +84,32 @@ public class Application extends android.app.Application {
         editor.putInt(PREFS_SERVERPORT, port);
         editor.commit();
 
-        new AsyncTask<Void, Void, Exception>() {
-            @Override
-            protected Exception doInBackground(Void... voids) {
-                // 1. Acquire a socket connection
-                try {
-                    Socket sock = new Socket(host, port);
-                    Channel channel = ChannelUtil.fromSocket(sock);
-                    server = new ServerUIHandler(Application.this, channel);
-                    return null;
-                } catch (Exception e) {
-                    return e;
-                }
-            }
-            @Override
-            protected void onPostExecute(Exception result) {
-                // 2. Issue a connection using the passcode (if any)
+        SocketAddress addr = new InetSocketAddress(host, port);
 
-                // XXX - lifecycle race condition
+        return CancellableSocket.connect(addr, 10000, new AsyncConnectionEvent(new CancellableSocket.ConnectionEvent() {
+            @Override
+            public void cancelled() {
+
+            }
+
+            @Override
+            public void error(IOException e) {
                 serverConfig.getActivity().setConnecting(false);
-                if (result == null) {
-                    // no exception - successful
+                Toast.makeText(Application.this, "Could not connect\nReason: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void connected(Socket socket) {
+                try {
+                    final Channel channel = ChannelUtil.fromSocket(socket);
+                    server = new ServerUIHandler(Application.this, channel);
                     createConnectionNotification();
-                    server.connect(sender, getPasscode());
-                } else {
-                    Toast.makeText(Application.this, "Could not connect\nReason: " + result.getMessage(), Toast.LENGTH_LONG).show();
+                    server.connect(getPasscode());
+                } catch (IOException e) {
+                    error(e);
                 }
             }
-        }.execute();
+        }));
     }
 
     public String getPreferencesServerHost() {
