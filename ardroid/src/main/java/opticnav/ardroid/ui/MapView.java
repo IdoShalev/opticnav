@@ -50,10 +50,21 @@ public class MapView extends View implements MapModelObserver {
             Coordinate coordinate = markerState.getCurrentCoordinate();
             final float x = (float)coordinate.getLongitudeDouble()*density;
             final float y = (float)coordinate.getLatitudeDouble()*density;
-            final float radius = 10*density*markerState.getCurrentVisibility();
+            final float radius = 10*visibilityErp(markerState.getCurrentVisibility())*density;
 
             canvas.drawCircle(x, y, radius, paint);
         }
+    }
+
+    /**
+     *
+     * @param in An input value ranging 0..1
+     * @return The new interpolated value
+     */
+    private static float visibilityErp(float in) {
+        // a nice overshoot interpolation
+        final float o = (float)(Math.PI/2 * 1.4);
+        return (float)(Math.sin(in*o)/Math.sin(o));
     }
 
     /** Update the view by one frame */

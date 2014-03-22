@@ -36,11 +36,15 @@ public class Moving implements MarkerState {
 
     @Override
     public Coordinate getCurrentCoordinate() {
-        return Coordinate.lerp(this.src.getCoordinate(), this.dst.getCoordinate(), phase);
+        return Coordinate.lerp(this.src.getCoordinate(), this.dst.getCoordinate(), easeErp(phase));
     }
 
     @Override
     public float getCurrentVisibility() {
         return 1.0f;
+    }
+
+    private float easeErp(float in) {
+        return (float)Math.sin(in*Math.PI/2);
     }
 }

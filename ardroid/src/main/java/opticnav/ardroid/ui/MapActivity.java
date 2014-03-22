@@ -43,11 +43,12 @@ public class MapActivity extends Activity {
                         mapModel.addMarker(0, new Marker("Test1", new Coordinate(100, 100)));
                         Thread.sleep(500);
                         mapModel.addMarker(1, new Marker("Test2", new Coordinate(50, 150)));
-                        mapModel.moveMarker(0, new Coordinate(0, 0));
+                        mapModel.moveMarker(0, new Coordinate(50, 240));
                         Thread.sleep(1000);
-                        mapModel.moveMarker(0, new Coordinate(200, 20));
+                        mapModel.moveMarker(0, new Coordinate(200, 120));
                         Thread.sleep(2000);
                         mapModel.removeMarker(0);
+                        mapModel.moveMarker(1, new Coordinate(300, 300));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
