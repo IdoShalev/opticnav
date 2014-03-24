@@ -12,17 +12,15 @@ import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.Protocol.AdminClient.Commands;
+import opticnav.ardd.protocol.chan.Channel;
 
 public class AdminBroker implements AdminConnection {
-    private Closeable closeable;
     private PrimitiveReader input;
     private PrimitiveWriter output;
     
-    public AdminBroker(Closeable closeable, PrimitiveReader input,
-            PrimitiveWriter output) {
-        this.closeable = closeable;
-        this.input = input;
-        this.output = output;
+    public AdminBroker(Channel channel) {
+        this.input = new PrimitiveReader(channel.getInputStream());
+        this.output = new PrimitiveWriter(channel.getOutputStream());
     }
 
     /**
@@ -43,22 +41,6 @@ public class AdminBroker implements AdminConnection {
 
     @Override
     public void close() throws IOException {
-        this.output.flush();
-        this.closeable.close();
-    }
-    
-    public static AdminBroker fromSocket(Socket sock) throws IOException {
-        BlockingInputStream blocking_in;
-        BufferedOutputStream buffered_out;
-        blocking_in = new BlockingInputStream(sock.getInputStream());
-        buffered_out = new BufferedOutputStream(sock.getOutputStream());
-        
-        PrimitiveReader in;
-        PrimitiveWriter out;
-        in = new PrimitiveReader(blocking_in);
-        out = new PrimitiveWriter(buffered_out);
-        
-        sock.setKeepAlive(true);
-        return new AdminBroker(sock, in, out);
+        this.output.close();
     }
 }

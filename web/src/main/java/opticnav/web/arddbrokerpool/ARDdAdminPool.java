@@ -6,6 +6,7 @@ import java.net.Socket;
 import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.admin.AdminConnectionException;
 import opticnav.ardd.broker.admin.AdminBroker;
+import opticnav.ardd.protocol.chan.ChannelUtil;
 
 public class ARDdAdminPool implements AutoCloseable {
     public static class BrokerNotAvailableException extends AdminConnectionException {
@@ -29,7 +30,7 @@ public class ARDdAdminPool implements AutoCloseable {
         try {
             Socket socket = new Socket(host, port);
             
-            return AdminBroker.fromSocket(socket);
+            return new AdminBroker(ChannelUtil.fromSocket(socket));
         } catch (IOException e) {
             throw new BrokerNotAvailableException(e);
         }
