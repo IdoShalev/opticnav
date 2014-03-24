@@ -16,6 +16,8 @@ configurations {
 
 dependencies {
     compile project(':ardd-ard-broker')
+    compile 'org.slf4j:slf4j-android:1.7.6'
+    compile 'org.slf4j:slf4j-ext:1.7.6'
 
     // render SVG graphics with ease!
     compile 'com.caverock:androidsvg:1.2.1'
@@ -24,4 +26,10 @@ dependencies {
 android {
     compileSdkVersion 19
     buildToolsVersion "19.0.1"
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
 }

@@ -15,6 +15,10 @@ import opticnav.ardd.protocol.Protocol;
 import opticnav.ardroid.connection.CancellableSocket;
 import opticnav.ardroid.connection.ServerUIHandler;
 import opticnav.ardroid.ui.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.logging.LogManager;
 
 /**
  * Because Android development is brain damaged, it's very hard to keep the same state in Activitys during changes
@@ -29,6 +33,8 @@ import opticnav.ardroid.ui.*;
  * This class is not thread safe! Only use this class from the UI thread.
  */
 public class Application extends android.app.Application {
+    private static final Logger LOG = LoggerFactory.getLogger(Application.class);
+
     public static class Lifecycle<T extends Activity> {
         private T activity = null;
 
@@ -70,6 +76,7 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        LOG.info("Application created");
         this.prefs = getSharedPreferences("OpticNav", 0);
         this.context = this;
         this.serverUIHandler = new ServerUIHandler(this, new ServerUIHandler.OnDisconnect() {

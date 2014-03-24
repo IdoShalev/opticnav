@@ -1,6 +1,8 @@
 package opticnav.ardroid.connection;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -16,6 +18,8 @@ import java.net.SocketException;
  *
  */
 public final class CancellableSocket {
+    private static final Logger LOG = LoggerFactory.getLogger(CancellableSocket.class);
+
     public interface Cancellable {
         /**
          * Try to cancel the connection.
@@ -87,16 +91,23 @@ public final class CancellableSocket {
             @Override
             public void run() {
                 try {
+                    LOG.debug("Socket trying to connect");
                     socket.connect(addr, timeout);
                     // It is possible that cancel() is called at this exact point (before setFinished).
                     // In such a case, the socket will be closed by cancel() even though it connected.
                     if (cancellable.setFinished()) {
+                        LOG.debug("Socket connected");
                         event.connected(socket);
+                    } else {
+                        LOG.debug("Socket cancelled after it connected");
                     }
                 } catch (IOException e) {
                     if (!cancellable.isCancelled()) {
                         // Exception is unrelated to cancellation - report it
+                        LOG.debug("Socket IO error", e);
                         event.error(e);
+                    } else {
+                        LOG.debug("Socket cancelled successfully");
                     }
                 }
             }
