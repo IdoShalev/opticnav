@@ -13,6 +13,8 @@ import opticnav.persistence.web.exceptions.PublicBrokerException;
 import opticnav.persistence.web.map.MapsListEntry;
 
 public class PublicBroker implements AutoCloseable {
+    public static final int ACCOUNT_ID_NONE = 0;
+    
     private java.sql.Connection conn;
 
     public PublicBroker(DataSource dataSource) throws SQLException {
@@ -70,6 +72,13 @@ public class PublicBroker implements AutoCloseable {
         }
     }
 
+    /**
+     * Finds the account ID with an exact match of the provided username
+     * 
+     * @param username The username to be query
+     * @return A valid account ID, or 0 if none was found
+     * @throws PublicBrokerException
+     */
     public int findName(String username) throws PublicBrokerException {
         try (CallableStatement cs = conn
                 .prepareCall("{? = call findAccount(?)}")) {

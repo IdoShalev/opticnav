@@ -8,6 +8,7 @@ import opticnav.web.rest.pojo.Account;
 import opticnav.web.rest.pojo.Message;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/account/**")
 public class AccountService extends Controller {
+    public static final class QueryPOJO {
+        public String username;
+        public int id;
+        
+        public QueryPOJO(String username, int id) {
+            this.username = username;
+            this.id = id;
+        }
+    }
+    
     @Autowired
     private javax.sql.DataSource dbDataSource;
     
@@ -32,7 +43,7 @@ public class AccountService extends Controller {
             accountID = broker.verify(account.username, account.password);
         }
         
-        valid = accountID != 0;
+        valid = accountID != PublicBroker.ACCOUNT_ID_NONE;
         
         if (valid) {
             this.userSession.setUser(account.username, accountID);
@@ -62,5 +73,19 @@ public class AccountService extends Controller {
         } else {
             throw new BadRequest("account.couldnotregister");
         }
+    }
+    
+    @RequestMapping(value="query/{username}", method=RequestMethod.GET)
+    public QueryPOJO query(@PathVariable String username) throws Exception {
+        int id;
+        try (PublicBroker broker = new PublicBroker(dbDataSource)) {
+            id = broker.findName(username);
+        }
+        
+        if (id == PublicBroker.ACCOUNT_ID_NONE) {
+            throw new NotFound("account.query.notfound", username);
+        }
+        
+        return new QueryPOJO(username, id);
     }
 }
