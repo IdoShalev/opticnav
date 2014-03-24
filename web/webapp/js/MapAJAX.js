@@ -79,7 +79,7 @@ var MapAJAX = function(id) {
 	};
 };
 
-function loadMapsList(errorElem, mapsListCallback) {
+function loadMapsListAJAX(errorElem, mapsListCallback) {
 	$.ajax({
 		type : "GET",
 		url : ctx + "/api/map",
@@ -90,10 +90,3 @@ function loadMapsList(errorElem, mapsListCallback) {
 	});
 }
 
-loadMapsList($("#error-message-box"), function(maps) {
-	// add each map to a list or something...
-	for (var i = 0; i < maps.length; i++) {
-		var map = maps[i];
-		
-	}
-});

@@ -16,20 +16,15 @@ function loadMapsList() {
     
     mapList.hide();
     mapList.empty();
-    
-    $.ajax({
-		 type: "GET",
-		 url: ctx+"/api/map",
-		 contentType: "application/json; charset=utf-8",
-		 complete: ajaxMessageClosureOnError($("#MapMessage"), function(maps) {
-			    for (var i = 0; i < maps.length; i++) {
-			        var map = maps[i];
-			        addEntry(map.name, map.id);
-			    }
-			    
-			    mapList.fadeIn();
-		 })
-		});
+
+    loadMapsListAJAX($("#MapMessage"), function(maps) {
+	    for (var i = 0; i < maps.length; i++) {
+		    var map = maps[i];
+		    addEntry(map.name, map.id);
+	    }
+
+		mapList.fadeIn();
+    });
 }
 
 function createMap() {
