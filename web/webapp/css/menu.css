@@ -1,48 +1,50 @@
-.logo{
-	height:60px;
+.logo {
+	height: 60px;
 }
 
-.logodiv{
-    height:60px;
-    display: table;
-    margin: 0 auto;
+.logodiv {
+	height: 60px;
+	display: table;
+	margin: 0 auto;
 }
 
 #homeB {
-	background:url(../css/images/home.png) no-repeat;
-    width:35px;height:35px;background-size: 100%;
+	background: url(../css/images/home.png) no-repeat;
+	width: 35px;
+	height: 35px;
+	background-size: 100%;
 }
 
 #menuLogo {
-	float:left;
+	float: left;
 }
 
 #nav li {
-    display: table-cell;
-  width: auto;
+	display: table-cell;
+	width: auto;
 }
 
-#nav ul{
+#nav ul {
 	width: 100%;
-  display: table;
-  table-layout: fixed;
-  padding:0px;
-
+	display: table;
+	table-layout: fixed;
+	padding: 0px;
 }
 
-#nav{
-	margin-left:auto;
+#nav {
+	margin-left: auto;
 }
 
-#footer ul{
- list-style-type: none;
- display: inline;
- padding: 0px;
+#footer ul {
+	list-style-type: none;
+	display: inline;
+	padding: 0px;
 }
-#footer ul li{
- display: table-cell;
-  width: auto;
- padding: 5px;
+
+#footer ul li {
+	display: table-cell;
+	width: auto;
+	padding: 5px;
 }
 
 /* header menu stuff*/
@@ -50,92 +52,92 @@
     unindent it to look like a drop down menu http://jsfiddle.net/q7gFR/1/
 */
 #cssmenu {
-	width: 120px; float: left;
+	width: 120px;
+	float: left;
 }
-#cssmenu,
-#cssmenu ul,
-#cssmenu ul li,
 
-#cssmenu ul li a {
-  padding: 0;
-  margin: 0;
-  line-height: 1;
-  list-style-type: none;
-  background: #C0C0C0;
-  border-radius: 3px;
-
+#cssmenu,#cssmenu ul,#cssmenu ul li,#cssmenu ul li a {
+	padding: 0;
+	margin: 0;
+	line-height: 1;
+	list-style-type: none;
+	background: #C0C0C0;
+	border-radius: 3px;
 }
 /*
     give the menu an area, it will disappear if the cursor is not in that area
 */
-#cssmenu ul > li > a {
-  display: block;
-  padding: 15px 44px;
-  position: relative;
-  list-style-type: none;
-    border-radius: 10px;
+#cssmenu ul>li>a {
+	display: block;
+	padding: 15px 44px;
+	position: relative;
+	list-style-type: none;
+	border-radius: 10px;
 }
 /*
     hides the menu
 */
-#cssmenu > ul > li > ul {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
-  list-style-type: none;
-    border-radius: 10px;
-    box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
+#cssmenu>ul>li>ul {
+	opacity: 0;
+	visibility: hidden;
+	position: absolute;
+	list-style-type: none;
+	border-radius: 10px;
+	box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
 }
 /*
     shows the menu
 */
-#cssmenu > ul > li:hover > ul {
-  opacity: 1;
-  visibility: visible;
-  position: absolute;
-  list-style-type: none;
-  width: 200px;
- z-index:1000000;
- box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
+#cssmenu>ul>li:hover>ul {
+	opacity: 1;
+	visibility: visible;
+	position: absolute;
+	list-style-type: none;
+	width: 200px;
+	z-index: 1000000;
+	box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
 }
 /*
     menu area for the drop down menu
 */
-#cssmenu > ul > li > ul {
-  width: 200px;
-  position: absolute;
-  list-style-type: none;
-  
+#cssmenu>ul>li>ul {
+	width: 200px;
+	position: absolute;
+	list-style-type: none;
 }
 
-#cssmenu > ul > li > ul > li {
-  float: none;
-  position: relative;
+#cssmenu>ul>li>ul>li {
+	float: none;
+	position: relative;
 }
-#cssmenu > ul > li > ul > li > ul {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
+
+#cssmenu>ul>li>ul>li>ul {
+	opacity: 0;
+	visibility: hidden;
+	position: absolute;
 }
-#cssmenu > ul > li > ul > li:hover > ul {
-  opacity: 1;
-  visibility: visible;
-  position: absolute;
+
+#cssmenu>ul>li>ul>li:hover>ul {
+	opacity: 1;
+	visibility: visible;
+	position: absolute;
 }
-#cssmenu > ul > li > ul > li > ul {
-  left: 200px;
-  top: 1px;
-  width: 200px;
+
+#cssmenu>ul>li>ul>li>ul {
+	left: 200px;
+	top: 1px;
+	width: 200px;
 }
-#cssmenu > ul > li > ul > li > ul > li {
-  float: none;
+
+#cssmenu>ul>li>ul>li>ul>li {
+	float: none;
 }
 
 #loggedin {
-	float:right;
-}
-#cssmenu a{
-	color: black;
-    text-decoration: none;
+	float: right;
 }
 
+#cssmenu a {
+	color: black;
+	text-decoration: none;
+}

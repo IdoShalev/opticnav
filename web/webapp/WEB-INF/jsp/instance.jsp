@@ -1,4 +1,4 @@
-<t:page title="Instance" css="instanceCSS.css">
+<t:page title="Instance" css="instanceCSS.css" js="mapAJAX.js,instanceManager.js">
 <div id="instanceContainer">
     <div id="controller">
         Instance Controller<br/>

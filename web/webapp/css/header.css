@@ -1,52 +1,54 @@
-.logo{
-    height:60px;
+.logo {
+	height: 60px;
 }
 
-.logodiv{
-    height:60px;
-    display: table;
-    margin: 0 auto;
+.logodiv {
+	height: 60px;
+	display: table;
+	margin: 0 auto;
 }
 
 #homeB {
-    background:url(../css/images/home.png) no-repeat;
-    width:35px;height:35px;background-size: 100%;
+	background: url(../css/images/home.png) no-repeat;
+	width: 35px;
+	height: 35px;
+	background-size: 100%;
 }
 
 #menuLogo {
-    float:left;
+	float: left;
 }
 
 #nav li {
-    display: table-cell;
-  width: auto;
+	display: table-cell;
+	width: auto;
 }
 
-#nav ul{
-  display: table;
-  table-layout: fixed;
-  padding:0px;
-  margin:0;
-
-}
-#nav{
-	   display: table;
-    margin: 0 auto;
-
+#nav ul {
+	display: table;
+	table-layout: fixed;
+	padding: 0px;
+	margin: 0;
 }
 
-#footer ul{
- list-style-type: none;
- display: inline;
- padding: 0px;
+#nav {
+	display: table;
+	margin: 0 auto;
 }
-#footer ul li{
- display: table-cell;
-  width: auto;
- padding: 5px;
+
+#footer ul {
+	list-style-type: none;
+	display: inline;
+	padding: 0px;
+}
+
+#footer ul li {
+	display: table-cell;
+	width: auto;
+	padding: 5px;
 }
 
 #loggedin {
-    right: 50px;
-    position: absolute;
+	right: 50px;
+	position: absolute;
 }

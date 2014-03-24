@@ -1,74 +1,80 @@
 @import "header.css";
+
 @import "buttons.css";
+
 body {
 	font-family: Helvetica, Arial, sans;
-	
 	background: #FFFAFA;
-	
 	margin: 0;
 }
 /*index centering*/
-
-#rightLogin
-{
+#rightLogin {
 	float: right;
 }
-header, footer {
+
+header,footer {
 	margin: 0;
 	padding-top: 1em;
 	background-color: rgba(204, 204, 204, 0.8);
-	box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
-    position: relative;
+	box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+	position: relative;
 	z-index: 10;
 }
 
-#footer{
-     bottom:0;vertical-align:middle;clear:both;
+#footer {
+	bottom: 0;
+	vertical-align: middle;
+	clear: both;
 }
 
 #content {
 	margin: 3em;
-	padding-left:6em;padding-right:6em;
+	padding-left: 6em;
+	padding-right: 6em;
 	background-color: #FFFAFA;
 }
 
 .registered_ard {
-    border: 0px solid;
-    border-radius: 4px;
-    padding: 1em;
-    margin: 1em;
-    background-color: #ccc;
-    width: 200px;
+	border: 0px solid;
+	border-radius: 4px;
+	padding: 1em;
+	margin: 1em;
+	background-color: #ccc;
+	width: 200px;
 }
 
 .message {
 	display: none;
-    transition: background-color 0.5s, border-color 0.5s;
-    /* subtle gradient */
-    background-image: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.05));
-    border-radius: 4px;
-    border: 1px solid;
-    padding: 1em;
-    margin: 1em;
-    width: auto;
-    word-wrap: break-word;
+	transition: background-color 0.5s, border-color 0.5s;
+	/* subtle gradient */
+	background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.05));
+	border-radius: 4px;
+	border: 1px solid;
+	padding: 1em;
+	margin: 1em;
+	width: auto;
+	word-wrap: break-word;
 }
 
 .message_error {
-    display: block;
-    background-color: #fdd;
-    border-color: #f66;
+	display: block;
+	background-color: #fdd;
+	border-color: #f66;
 }
 
 .message_ok {
-    display: block;
-    background-color: #dfd;
-    border-color: #4b4;
+	display: block;
+	background-color: #dfd;
+	border-color: #4b4;
 }
-.container{
-	   text-align: center; width:100%; margin: 0 auto;
+
+.container {
+	text-align: center;
+	width: 100%;
+	margin: 0 auto;
 }
+
 #welcomeToHub {
-	   display: table;
-    margin: 0 auto;
+	display: table;
+	margin: 0 auto;
 }
