@@ -3,6 +3,10 @@ apply plugin: 'application'
 
 sourceCompatibility = 1.7
 
+configurations {
+    compile.extendsFrom configurations.common
+}
+
 dependencies {
     compile project(':ardd-protocol')
     compile 'org.apache.commons:commons-collections4:4.0'

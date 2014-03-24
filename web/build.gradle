@@ -2,6 +2,10 @@ apply plugin: 'war'
 
 sourceCompatibility = 1.7
 
+configurations {
+    compile.extendsFrom configurations.common
+}
+
 dependencies {
     compile project(':ardd-admin-broker')
     compile project(':web-db-broker')

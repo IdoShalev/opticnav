@@ -2,17 +2,20 @@ package opticnav.ardd.connections;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.Callable;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.chan.Channel;
 
 // TODO - ClientConnect should implement Callable<Void>
-public final class ClientConnection implements Runnable {
+public final class ClientConnection implements Callable<Void> {
+    private static final Logger logger = LogManager.getLogger();
+    
     public interface CommandHandler {
         public void command(int code, PrimitiveReader in, PrimitiveWriter out)
                 throws IOException, InterruptedException;
@@ -21,18 +24,16 @@ public final class ClientConnection implements Runnable {
     private PrimitiveReader input;
     private PrimitiveWriter output;
     private CommandHandler cmd;
-    private Logger logger;
     
     public ClientConnection(Channel channel, CommandHandler cmd) {
         this.input = new PrimitiveReader(channel.getInputStream());
         this.output = new PrimitiveWriter(channel.getOutputStream());
-        // XXX
-        this.logger = Logger.getAnonymousLogger();
         this.cmd = cmd;
     }
     
     @Override
-    public void run() {
+    public Void call() {
+        logger.entry();
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 int code = this.input.readUInt8();
@@ -46,12 +47,13 @@ public final class ClientConnection implements Runnable {
         } catch (EOFException e) {
             // The stream has ended. Quietly catch.
         } catch (IOException e) {
-            this.logger.log(Level.SEVERE, "IO Exception", e);
+            logger.catching(e);
         } finally {
             // in all cases, close the stream
             IOUtils.closeQuietly(this.output);
-            
-            this.logger.info("Admin client closed connection");
+            logger.exit();
         }
+        
+        return null;
     }
 }

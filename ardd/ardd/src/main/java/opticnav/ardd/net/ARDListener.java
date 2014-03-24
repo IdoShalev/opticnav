@@ -1,19 +1,18 @@
 package opticnav.ardd.net;
 
 import java.io.IOException;
-import java.util.logging.Logger;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
 
 import opticnav.ardd.ARDListsManager;
 import opticnav.ardd.connections.ARDChannelsManager;
-import opticnav.ardd.connections.ARDClientGatekeeperCommandHandler;
-import opticnav.ardd.connections.ClientConnection;
 import opticnav.ardd.protocol.chan.Channel;
 
 public class ARDListener implements Runnable {
     private final class Spawner implements Listener.ConnectionSpawner {
         @Override
-        public Runnable create(Channel channel) {
-            return new ARDChannelsManager(channel, ardListsManager);
+        public Callable<Void> create(Channel channel, ExecutorService threadPool) {
+            return new ARDChannelsManager(channel, threadPool, ardListsManager);
         }
     }
 
@@ -22,13 +21,12 @@ public class ARDListener implements Runnable {
     
     public ARDListener(int port, ARDListsManager ardListsManager)
             throws IOException {
-        Logger logger = Logger.getLogger("ARDListener");
         this.ardListsManager = ardListsManager;
-        this.listener = new Listener(port, new Spawner(), logger);
+        this.listener = new Listener(this.getClass(), port, new Spawner());
     }
 
     @Override
     public void run() {
-        this.listener.run();
+        this.listener.call();
     }
 }

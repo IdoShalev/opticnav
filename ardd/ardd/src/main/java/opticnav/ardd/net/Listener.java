@@ -1,42 +1,51 @@
 package opticnav.ardd.net;
 
 import java.io.IOException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import org.apache.commons.io.IOUtils;
 
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelUtil;
 
-public final class Listener implements Runnable {
+public final class Listener implements Callable<Void> {
+    private static final Logger logger = LogManager.getLogger();
+    
     public interface ConnectionSpawner {
-        public Runnable create(Channel channel);
+        public Callable<Void> create(Channel channel, ExecutorService threadPool);
     }
     
     private ServerSocket socket;
     private ConnectionSpawner cs;
-    private Logger logger;
+    private Class<?> clazzSource;
     
-    public Listener(int port, ConnectionSpawner cs, Logger logger) throws IOException {
+    public Listener(Class<?> clazzSource, int port, ConnectionSpawner cs)
+            throws IOException {
+        this.clazzSource = clazzSource;
         this.socket = new ServerSocket(port);
-        this.logger = logger;
         this.cs = cs;
 
         logger.info("Listening on port " + port);
     }
 
     @Override
-    public void run() {
+    public Void call() {
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     Socket client = socket.accept();
                     dispatchClient(client);
                 } catch (IOException e) {
-                    this.logger.log(Level.SEVERE, "IO exception", e);
+                    logger.catching(e);
                 }
             }
         } catch (InterruptedException e) {
@@ -44,15 +53,25 @@ public final class Listener implements Runnable {
         }
         
         IOUtils.closeQuietly(this.socket);
+        return null;
     }
 
     private void dispatchClient(Socket client)
             throws InterruptedException, IOException
     {
-        Channel channel = ChannelUtil.fromSocket(client);
-        Thread connThread = new Thread(this.cs.create(channel));
-        connThread.start();
+        logger.info(clazzSource.getSimpleName() + " connection accepted: " + client.getInetAddress());
         
-        this.logger.info("Client connection accepted: " + client.getInetAddress());
+        final String loggerName = client.getInetAddress() + " - " + clazzSource.getSimpleName();
+        
+        ExecutorService threadPool = Executors.newCachedThreadPool(new ThreadFactory() {
+            private int threadNum = 0;
+            @Override
+            public Thread newThread(Runnable runnable) {
+                return new Thread(runnable, loggerName+"-"+threadNum++);
+            }
+        });
+        
+        Channel channel = ChannelUtil.fromSocket(client);
+        threadPool.submit(this.cs.create(channel, threadPool));
     }
 }

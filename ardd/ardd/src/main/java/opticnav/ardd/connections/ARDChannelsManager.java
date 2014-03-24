@@ -1,7 +1,7 @@
 package opticnav.ardd.connections;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import opticnav.ardd.ARDListsManager;
@@ -10,7 +10,7 @@ import opticnav.ardd.protocol.Protocol;
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelMultiplexer;
 
-public class ARDChannelsManager implements Runnable {
+public class ARDChannelsManager implements Callable<Void> {
     private ExecutorService threadPool;
     private Channel channel;
     private ChannelMultiplexer mpxr;
@@ -22,8 +22,9 @@ public class ARDChannelsManager implements Runnable {
     private Channel lobby;
     private ClientConnection lobbyConn;
 
-    public ARDChannelsManager(Channel channel, ARDListsManager ardListsManager) {
-        this.threadPool = Executors.newCachedThreadPool();
+    public ARDChannelsManager(Channel channel, ExecutorService threadPool,
+            ARDListsManager ardListsManager) {
+        this.threadPool = threadPool;
         this.channel = channel;
         
         this.mpxr = new ChannelMultiplexer(this.channel);
@@ -51,17 +52,12 @@ public class ARDChannelsManager implements Runnable {
     }
 
     @Override
-    public void run() {
-        try {
-            Thread gk = new Thread(this.gatekeeperConn);
-            gk.start();
-            Future<Void> listenerResult = this.threadPool.submit(listener);
-            
-            listenerResult.get();
-            gk.join();
-        } catch (Exception e) {
-            // TODO - log this
-            e.printStackTrace();
-        }
+    public Void call() throws Exception {
+        Future<Void> gk = this.threadPool.submit(this.gatekeeperConn);
+        Future<Void> listenerResult = this.threadPool.submit(listener);
+        
+        listenerResult.get();
+        gk.get();
+        return null;
     }
 }

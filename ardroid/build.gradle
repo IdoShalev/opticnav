@@ -10,6 +10,10 @@ buildscript {
     }
 }
 
+configurations {
+    compile.extendsFrom configurations.common
+}
+
 dependencies {
     compile project(':ardd-ard-broker')
 

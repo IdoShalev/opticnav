@@ -2,6 +2,10 @@ apply plugin: 'java'
 
 sourceCompatibility = 1.7
 
+configurations {
+    compile.extendsFrom configurations.common
+}
+
 dependencies {
     compile project(':ardd-protocol')
 }
