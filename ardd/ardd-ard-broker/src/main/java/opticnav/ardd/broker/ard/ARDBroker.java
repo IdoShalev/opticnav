@@ -7,16 +7,17 @@ import java.util.concurrent.Future;
 
 import opticnav.ardd.ard.ARDConnection;
 import opticnav.ardd.ard.ARDConnectionException;
+import opticnav.ardd.ard.ARDLobbyConnection;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveUtil;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.Protocol;
-import opticnav.ardd.protocol.Protocol.ARDClient.Commands;
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelMultiplexer;
 import opticnav.ardd.protocol.chan.ChannelMultiplexer.Listener;
+import static opticnav.ardd.protocol.Protocol.ARDClient.*;
 
 public class ARDBroker implements ARDConnection {
     private ChannelMultiplexer mpxr;
@@ -29,7 +30,7 @@ public class ARDBroker implements ARDConnection {
         this.threadPool = threadPool;
         
         // Channel 0 is the pre-established gatekeeper channel
-        this.gatekeeperChannel = this.mpxr.createChannel(0);
+        this.gatekeeperChannel = this.mpxr.createChannel(CHANNEL_GATEKEEPER);
         
         Listener listener = this.mpxr.createListener();
         listenerResult = this.threadPool.submit(listener);
@@ -57,7 +58,7 @@ public class ARDBroker implements ARDConnection {
             byte[] confCodeBytes;
             Channel cancellationChan;
             
-            output.writeUInt8(Commands.REQCODES.getCode());
+            output.writeUInt8(Commands.REQCODES.CODE);
             output.flush();
             
             confCodeBytes = input.readFixedBlob(Protocol.CONFCODE_BYTES);
@@ -69,22 +70,51 @@ public class ARDBroker implements ARDConnection {
             // waiting for a response...
             
             int response = input.readUInt8();
-            
-            // TODO - replace with constants
-            if (response == 0) {
+
+            if (response == ReqCodes.REGISTERED) {
                 // registered an ARD with confcode
-                int ardID = input.readUInt31();
                 byte[] passCodeBytes;
                 passCodeBytes = input.readFixedBlob(Protocol.PASSCODE_BYTES);
                 PassCode passCode = new PassCode(passCodeBytes);
                 
-                c.registered(passCode, ardID);
-            } else if (response == 1) {
+                c.registered(passCode);
+            } else if (response == ReqCodes.COULDNOTREGISTER) {
                 // could not register with confcode
-                c.couldnotregister();
-            } else if (response == 2) {
+                c.couldNotRegister();
+            } else if (response == ReqCodes.CANCELLED) {
                 // cancelled
                 c.cancelled();
+            } else {
+                throw new IllegalStateException("Invalid response code: " + response);
+            }
+        } catch (IOException e) {
+            throw new ARDConnectionException(e);
+        }
+    }
+
+    @Override
+    public ARDLobbyConnection connectToLobby(PassCode passCode) throws ARDConnectionException {
+        try {
+            PrimitiveReader input  = PrimitiveUtil.reader(gatekeeperChannel);
+            PrimitiveWriter output = PrimitiveUtil.writer(gatekeeperChannel);
+
+            output.writeUInt8(Commands.CONNECT_TO_LOBBY.CODE);
+            output.writeFixedBlob(passCode.getByteArray());
+            output.flush();
+
+            int response = input.readUInt8();
+            if (response == 0) {
+                // passcode acknowledged, can connect to lobby
+                Channel lobbyChannel = mpxr.createChannel(CHANNEL_LOBBY);
+                return new ARDLobbyConnectionImpl(lobbyChannel);
+            } else if (response == 1) {
+                // passcode doesn't exist
+                return null;
+            } else if (response == 2) {
+                // there's an ongoing lobby connection
+                return null;
+            } else {
+                throw new IllegalStateException("Invalid response code: " + response);
             }
         } catch (IOException e) {
             throw new ARDConnectionException(e);

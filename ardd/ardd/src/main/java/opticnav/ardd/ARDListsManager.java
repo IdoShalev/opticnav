@@ -18,6 +18,10 @@ public final class ARDListsManager {
         this.persisted = persisted;
         this.randomGen = randomGen;
     }
+
+    public ARDPersistedList getPersistedList() {
+        return this.persisted;
+    }
     
     public Pair<PassConfCodes, BlockingValue<Integer>> generatePassConfCodes() {
         byte[] confCodeBytes, passCodeBytes;
@@ -65,16 +69,15 @@ public final class ARDListsManager {
             if (pw == null) {
                 // could not find an entry with confcode
                 return Protocol.ARDClient.NO_ARD;
+            } else {
+                synchronized (this.persisted) {
+                    ardID = this.persisted.registerARD(pw.getFirst());
+                }
+
+                pw.getSecond().set(Protocol.ARDClient.ReqCodes.REGISTERED);
+
+                return ardID;
             }
-            
-            synchronized (this.persisted) {
-                ardID = this.persisted.registerARD(pw.getFirst());
-            }
-            
-            // TODO - replace 0 with constant variable
-            pw.getSecond().set(0);
-            
-            return ardID;
         }
     }
 }

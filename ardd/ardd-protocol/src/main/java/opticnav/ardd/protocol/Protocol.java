@@ -31,25 +31,37 @@ public final class Protocol {
     }
     
     public static final class ARDClient {
+        public static final int CHANNEL_GATEKEEPER = 0;
+        public static final int CHANNEL_LOBBY = 1;
+
         public static final int NO_ARD = 0;
+
+        public static class ReqCodes {
+            public static final int REGISTERED = 0;
+            public static final int COULDNOTREGISTER = 1;
+            public static final int CANCELLED = 2;
+        }
         
         public enum Commands {
-            REQCODES(0, "reqcodes");
+            REQCODES(0),
+            CONNECT_TO_LOBBY(1);
             
-            private int code;
-            private String command;
+            public final int CODE;
 
-            private Commands(int code, String command) {
-                this.code = code;
-                this.command = command;
+            private Commands(int code) {
+                this.CODE = code;
             }
-            
-            public int getCode() {
-                return this.code;
-            }
+        }
 
-            public String getCommand() {
-                return this.command;
+        public static final class Lobby {
+            public enum Commands {
+                LIST_INSTANCES(0);
+
+                public final int CODE;
+
+                private Commands(int code) {
+                    this.CODE = code;
+                }
             }
         }
     }

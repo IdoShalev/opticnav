@@ -12,8 +12,8 @@ public interface ARDConnection extends AutoCloseable {
     
     public interface RequestPassConfCodesCallback {
         public void confCode(ConfCode confCode, Cancellation cancellation);
-        public void registered(PassCode passCode, int ardID);
-        public void couldnotregister();
+        public void registered(PassCode passCode);
+        public void couldNotRegister();
         public void cancelled();
     }
     
@@ -22,5 +22,8 @@ public interface ARDConnection extends AutoCloseable {
      */
     public void requestPassConfCodes(RequestPassConfCodesCallback c)
             throws ARDConnectionException;
+
+    public ARDLobbyConnection connectToLobby(PassCode passCode) throws ARDConnectionException;
+
     public void close() throws IOException;
 }

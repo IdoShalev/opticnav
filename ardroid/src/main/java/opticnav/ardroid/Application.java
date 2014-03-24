@@ -6,22 +6,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.widget.Toast;
+import opticnav.ardd.ard.ARDConnection;
+import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.Protocol;
-import opticnav.ardd.protocol.chan.Channel;
-import opticnav.ardd.protocol.chan.ChannelUtil;
-import opticnav.ardroid.connection.AsyncConnectionEvent;
 import opticnav.ardroid.connection.CancellableSocket;
 import opticnav.ardroid.connection.ServerUIHandler;
 import opticnav.ardroid.ui.*;
-
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
 
 /**
  * Because Android development is brain damaged, it's very hard to keep the same state in Activitys during changes
@@ -55,6 +48,14 @@ public class Application extends android.app.Application {
         }
     }
 
+    /** evil singleton variable. Why is Android so stupid? */
+    private static Application context;
+
+    /** evil singleton method. */
+    public static Application getInstance() {
+        return context;
+    }
+
     private static final String PREFS_SERVERHOST = "serverHost";
     private static final String PREFS_SERVERPORT = "serverPort";
     private static final String PREFS_PASSCODE = "passCode";
@@ -64,52 +65,74 @@ public class Application extends android.app.Application {
     public final Lifecycle<MapActivity> map = new Lifecycle<MapActivity>();
 
     private SharedPreferences prefs;
-    private ServerUIHandler server;
+    private ServerUIHandler serverUIHandler;
 
     @Override
     public void onCreate() {
         super.onCreate();
         this.prefs = getSharedPreferences("OpticNav", 0);
+        this.context = this;
+        this.serverUIHandler = new ServerUIHandler(this, new ServerUIHandler.OnDisconnect() {
+            @Override
+            public void onDisconnect() {
+                // Clear the back stack up to the Welcome activity
+                Intent intent = new Intent(context, WelcomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
+    }
+
+    public ServerUIHandler getServerUIHandler() {
+        return this.serverUIHandler;
     }
 
     public CancellableSocket.Cancellable connectToServer(final String host, final int port) {
-        // XXX
-        if (this.server != null) {
-            this.server.close();
-            this.server = null;
-        }
-
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PREFS_SERVERHOST, host);
         editor.putInt(PREFS_SERVERPORT, port);
         editor.commit();
 
-        SocketAddress addr = new InetSocketAddress(host, port);
+        return this.serverUIHandler.connect(host, port, getPasscode(),
+                new ServerUIHandler.ConnectEvents() {
+                    @Override
+                    public void connectionError(Exception e) {
 
-        return CancellableSocket.connect(addr, 10000, new AsyncConnectionEvent(new CancellableSocket.ConnectionEvent() {
-            @Override
-            public void cancelled() {
+                    }
 
-            }
+                    @Override
+                    public void connectionCancelled() {
 
-            @Override
-            public void error(IOException e) {
-                serverConfig.getActivity().setConnecting(false);
-                Toast.makeText(Application.this, "Could not connect\nReason: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            }
+                    }
 
-            @Override
-            public void connected(Socket socket) {
-                try {
-                    final Channel channel = ChannelUtil.fromSocket(socket);
-                    server = new ServerUIHandler(Application.this, channel);
-                    createConnectionNotification();
-                    server.connect(getPasscode());
-                } catch (IOException e) {
-                    error(e);
-                }
-            }
-        }));
+                    @Override
+                    public void authenticate() {
+
+                    }
+
+                    @Override
+                    public void confCode(ConfCode confCode, ARDConnection.Cancellation cancellation) {
+                        Intent intent = new Intent(context, RegisterARDActivity.class);
+                        intent.putExtra("confcode", confCode.getString());
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+
+                    @Override
+                    public void registered(PassCode passCode) {
+                        Toast.makeText(context, "Registered!", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void couldNotRegister() {
+
+                    }
+
+                    @Override
+                    public void confCodeCancelled() {
+
+                    }
+                });
     }
 
     public String getPreferencesServerHost() {
