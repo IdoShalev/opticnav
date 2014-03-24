@@ -1,41 +1,39 @@
-<t:page title="Instance" css="instanceCSS.css" js="mapAJAX.js,instanceManager.js">
+<t:page title="Instance" css="instance.css" js="MapAJAX.js,instanceManager.js">    
 <div id="instanceContainer">
-    <div id="controller">
-        Instance Controller<br/>
-        <br/>
-        Map<br/>
-        <select id="mapSelection">
-		    <option>SAIT</option>
-		    <option>Secret Hideout</option>
-		</select>
-		<br/>
-		Invite
-		<input type="text" id="invite"><br/>
-        <input type="submit" value="Invite"><br/>
-        <select id="mySelect" size="5">
-		    <option>Ido</option>
-		    <option>Danny</option>
-		    <option>Jacky</option>
-		    <option>Kay</option>
-	    </select><br/>
-	    <input type="submit" value="Start Instance">
-    </div>
-    
     <div id="info">
         Instance Information <br/>
-        </br>
-        Map: SAIT
         <br/>
-        Start Time: 3:20:05PM
+        Map: <span id="inst-map-name"></span>
+        <br/>
+        Start Time: <span id="inst-start-time"></span>
         <br/>
         People in the instance<br/>
-        <select id="mySelect" size="5">
-            <option>Ido</option>
-            <option>Danny</option>
-            <option>Jacky</option>
-            <option>Kay</option>
-        </select><br/>
+        <ul id="inst-selected-users">
+            
+        </ul><br/>
         <input type="submit" value="Stop Instance">
+    </div>
+
+    <div id="controller">
+        <div id="leftControl">
+        Instance Controller<br/>
+        <br/>
+        <div id="map-container">
+        <div id="map-list"></div>
+        </div>
+        <br/>
+        </div>
+        
+        <div id="rightControl">
+        Invite<br/>
+        <input type="text" id="invite-to-inst"><br/>
+        <input type="button" value="Invite" id="inst-invite"><br/>
+        <ul id="inst-selected-users">
+            
+        </ul><br/>
+        <input type="submit" value="Start Instance" id="instaB">
+        <t:message name="message" />
+        </div>
     </div>
 </div>
 </t:page>

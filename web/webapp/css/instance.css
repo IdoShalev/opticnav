@@ -1,0 +1,86 @@
+#info{
+    /* hidden by default */
+    display: hidden;
+    
+	width: 300px;
+	box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
+    overflow: hidden;
+    top:0;
+    bottom: 0;
+    position: absolute;
+    padding:50px;
+}
+
+#instaB{
+	bottom:0;
+}
+
+#leftControl{
+	height:100%;
+	float:left;
+	padding:50px;
+}
+
+#rightControl{
+	height:100%;
+	float:left;
+	padding:50px;
+}
+
+#controller{
+	padding:50px;
+	top:0;
+	right: 0;
+    left:400px;
+    bottom: 0;
+    position: absolute;
+    overflow: hidden;
+}
+
+#instanceContainer{
+    position: fixed;
+    overflow: hidden;
+    bottom:0;
+    top: 132px;
+    left:0;
+    right:0;
+}
+
+#map-list {
+    top: 120px;
+    bottom: 36px;
+    left: 0;
+    right: 0;
+}
+
+#map-container 
+{
+	width:250px;
+	height:250px;
+	overflow:scroll;
+}
+
+
+#map-list a {
+    color: inherit; /* blue colors for links too */
+    text-decoration: inherit; /* no underline */
+}
+
+
+#map-list entry {
+    display: block;
+    position: relative;
+    transition: background-color 0.25s;
+    padding: 0.5em 1em;
+    background-color: #eee;
+    border-bottom: 1px solid #888;
+    /* text should not exceed the width of the entry */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+}
+
+
+#map-list entry:hover {
+    background-color: #ccc;
+}
