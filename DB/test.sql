@@ -90,6 +90,22 @@ SELECT createMap('mapName4', 1, );                  ERROR 1064 (42000)
 SELECT createMap('mapName4', 99, 2);                ERROR 1452 (23000)
 SELECT createMap('mapName4', 1, 99);                ERROR 1452 (23000)
 
+trying to get the map name
+
+SELECT getMapName(1);                               mapName0
+SELECT getMapName(2);                               mapName2
+SELECT getMapName(3);                               mapName3
+SELECT getMapName(4);                               mapName4
+SELECT getMapName(9);                               NULL
+SELECT getMapName();                                ERROR 1318 (42000)
+
+trying to get the map resource
+
+SELECT getMapResource(1);                           1
+SELECT getMapResource(2);                           2
+SELECT getMapResource(9);                           NULL
+SELECT getMapResource();                            ERROR 1318 (42000)
+
 creating some markers (p_name VARCHAR(64), p_map_id INT(4), p_res_id INT(4), p_lat INT(4), p_long INT(4))
 
 CALL createMarker('marker1', 1, 0, 10, 10);         -
@@ -109,16 +125,33 @@ CALL getMapMarkers(2);                              empty set
 CALL getMapMarkers(99);                             empty set
 CALL getMapMarkers();                               ERROR 1318 (42000)
 
-createAnchor
+create some anchors  (p_map_id INT(4), p_local_x INT(4), p_local_y INT(4), p_lat INT(4), p_lng INT(4))
 
-getMapName
+CALL createAnchor(1, 10, 10, 20, 20);               -
+CALL createAnchor(1, 20, 20, 30, 30);               -
+CALL createAnchor(1, 30, 30, 40, 40);               -
+CALL createAnchor(9, 30, 30, 40, 40);               ERROR 1452 (23000)
+CALL createAnchor(1, 30, 30, 40, );                 ERROR 1064 (42000)
 
-getMapResource
+getting the anchors of a map
+
+CALL getMapAnchors(1);                              a table of 2 anchors
+CALL getMapAnchors(9);                              empty set
+CALL getMapAnchors();                               ERROR 1318 (42000)
+
+getting the maps of a user
+
+CALL getMapsList(1);                                a table of x lists
+CALL getMapsList(9);                                empty set
+CALL getMapsList();                                 ERROR 1318 (42000)
+
+deleteing a map
+
+CALL deleteMap(1);
 
 
 
-getMapAnchors
 
-getMapsList
 
-deleteMap
+
+
