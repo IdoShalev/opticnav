@@ -8,6 +8,10 @@
     <button id="map-creation-create">Create</button>
     <button id="map-creation-cancel" style="margin-left:250px">Cancel</button>
 </div>
+<div id="alert-popup">
+    <p id="alert-message"></p>
+    <button id="alert-ok">Ok</button>
+</div>
 <div id="modal-backdrop"></div>
 <sidebar>
     <a href="javascript:createMap()"><div class="create-button">
@@ -28,6 +32,7 @@
         <input type="text" id="anchor-lat" placeholder="Latitude" />
         <input type="text" id="anchor-lng" placeholder="Longitude" />
         <button id="anchor-save">Save</button>
+        <button id="anchor-cancel">Cancel</button>
         </div>
         
         <div id="marker-popup">
@@ -36,6 +41,7 @@
         <input type="text" id="marker-lat" placeholder="Latitude" />
         <input type="text" id="marker-lng" placeholder="Longitude" />
         <button id="marker-save">Save</button>
+        <button id="marker-cancel">Cancel</button>
         </div>
     </div>
     <div id="map-anchors"></div>

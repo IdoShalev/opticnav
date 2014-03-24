@@ -97,9 +97,19 @@ var MapController = function() {
     	} else {
     		// place marker
 	        var transform = currentMap.getMapTransform();
+	        
+	        /* Broken, don't know if we'll use JACKY TODO
+	        if(transform == null){
+		        $("#modal_backdrop").fadeIn();
+		        $("#alert-message").append("You need three anchors to place markers");
+	        	$("#alert-popup").fadeIn();
+	        	
+	        }*/
+	        
             var gps = transform.imageLocalToGPS(x, y);
 	        currentMap.addMarker("Untitled marker", gps);
 	        generateMarkerElements.call(this);
+	        
     	}
     }
     

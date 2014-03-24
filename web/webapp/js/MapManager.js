@@ -55,6 +55,7 @@ $(function() {
     });
     $("#marker-popup").hide();
     $("#anchor-popup").hide();
+    $("#alert-popup").hide();
     
     $("#anchor-save").click(function() {
         var popup = $("#anchor-popup");
@@ -66,6 +67,16 @@ $(function() {
         
         anchor.gps = MapCoordHelper.gpsReprToNumbers({"lng": lng, "lat": lat});
         popup.hide();
+    });
+    
+    $("#anchor-cancel").click(function() {
+    	var popup = $("#anchor-popup");
+        popup.hide();
+    });
+    
+    $("#marker-cancel").click(function(){
+    	var popup = $("#marker-popup");
+    	popup.hide();
     });
     
     $("#marker-save").click(function(){
@@ -88,6 +99,11 @@ $(function() {
     
     $("#anchor-delete").click(function(){
     	MapController.removeCurrentAnchor();
+    });
+    
+    $("#alert-ok").click(function(){
+    	modal_backdrop.fadeOut();
+    	$("#alert-message").fadeOut();
     });
 
     //Leaves the Page, we forgot this, stuck forever
