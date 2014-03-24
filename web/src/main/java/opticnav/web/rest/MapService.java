@@ -13,7 +13,6 @@ import opticnav.persistence.web.map.MapsListEntry;
 import opticnav.persistence.web.map.Marker;
 import opticnav.persistence.web.map.ModifyMap;
 import opticnav.web.components.UserSession;
-import opticnav.web.rest.pojo.LocaleMessage;
 import opticnav.web.rest.pojo.Message;
 import opticnav.web.rest.pojo.map.*;
 import opticnav.web.util.InputUtil;

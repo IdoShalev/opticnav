@@ -1,5 +1,5 @@
 $(function() {
-	$("#RegisterARD").submit(function(event) {
+	$("#device-register").click(function() {
 		var code = $("#code").val();
 		
 		$.ajax({
@@ -9,17 +9,24 @@ $(function() {
 			contentType: "text/plain",
 			complete: ajaxMessageClosure($("#message"))
 		});
-		
-		event.preventDefault();
+	});
+	
+	$("#device-remove").click(function() {
+		$.ajax({
+			type: "DELETE",
+			url: ctx+"/api/ard",
+			contentType : "application/json; charset=utf-8",
+			complete: ajaxMessageClosure($("#message"))
+		});
 	});
 	
 	function updateARD() {
-        $.get("rest/ard",function(data) {
-        	var id = data.id;
-        	var name = data.name;
-        	$('#ard_id').text(id);
-        	$('#ard_name').text(name);
-        }, "json");
+		$.ajax({
+			type: "GET",
+			url: ctx+"/api/ard",
+			contentType : "application/json; charset=utf-8",
+			complete: ajaxMessageClosure($("#message"))
+		});
 	}
 	
 	updateARD();

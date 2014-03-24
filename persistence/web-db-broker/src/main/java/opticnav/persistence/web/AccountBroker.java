@@ -49,6 +49,10 @@ public class AccountBroker implements AutoCloseable {
 
     }
 
+    public boolean hasARD() throws AccountBrokerException {
+        return getARD() != 0;
+    }
+
     public void setARD(int ardID) throws AccountBrokerException {
         try (CallableStatement cs = conn.prepareCall("{call setARD(?, ?)}")) {
             cs.setInt(1, accountID);

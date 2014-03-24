@@ -3,6 +3,8 @@ package opticnav.web.rest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import opticnav.ardd.admin.AdminConnectionException;
+import opticnav.ardd.broker.admin.AdminBroker;
 import opticnav.web.rest.pojo.LocaleMessage;
 import opticnav.web.rest.pojo.Message;
 
@@ -44,6 +46,21 @@ public class Controller {
         }
     }
     
+    public class Conflict extends MessageException {
+        private static final long serialVersionUID = 1L;
+        public Conflict(String key, Object...params) {
+            super(key, params);
+        }
+    }
+
+    
+    @ExceptionHandler(AdminConnectionException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Message handleAdminConnectionException(AdminConnectionException ex) {
+        Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+        return new LocaleMessage(msg, "adminconnection.broken");
+    }
+    
     // If an exception is thrown, override default error page with a POJO
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -61,6 +78,12 @@ public class Controller {
     @ExceptionHandler(BadRequest.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Message handleBadRequest(MessageException ex) {
+        return ex.getMessageObject();
+    }
+    
+    @ExceptionHandler(Conflict.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Message handleConflict(MessageException ex) {
         return ex.getMessageObject();
     }
 
