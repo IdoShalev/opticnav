@@ -5,6 +5,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
+
 import opticnav.ardd.ard.ARDConnection;
 import opticnav.ardd.ard.ARDConnectionException;
 import opticnav.ardd.ard.ARDLobbyConnection;
@@ -20,12 +23,17 @@ import opticnav.ardd.protocol.chan.ChannelMultiplexer.Listener;
 import static opticnav.ardd.protocol.Protocol.ARDClient.*;
 
 public class ARDBroker implements ARDConnection {
-    private ChannelMultiplexer mpxr;
-    private ExecutorService threadPool;
-    private Future<Void> listenerResult;
-    private Channel gatekeeperChannel;
+    private static final XLogger LOG = XLoggerFactory
+            .getXLogger(ARDBroker.class);
+    
+    final private Channel channel;
+    final private ChannelMultiplexer mpxr;
+    final private ExecutorService threadPool;
+    final private Future<Void> listenerResult;
+    final private Channel gatekeeperChannel;
     
     public ARDBroker(Channel channel, ExecutorService threadPool) {
+        this.channel = channel;
         this.mpxr = new ChannelMultiplexer(channel);
         this.threadPool = threadPool;
         
@@ -40,7 +48,10 @@ public class ARDBroker implements ARDConnection {
     public void close() throws IOException {
         try {
             // wait for the listener task to complete
+            LOG.debug("Closing listener...");
+            // TODO - graceful shutdown so that this doesn't block...
             this.listenerResult.get();
+            LOG.debug("Listener closed");
         } catch (InterruptedException e) {
             throw new IOException(e);
         } catch (ExecutionException e) {
@@ -63,6 +74,8 @@ public class ARDBroker implements ARDConnection {
             
             confCodeBytes = input.readFixedBlob(Protocol.CONFCODE_BYTES);
             int cancellationChanID = input.readUInt8();
+            LOG.debug("Cancellation channel: " + cancellationChanID);
+            
             ConfCode confCode = new ConfCode(confCodeBytes);
             cancellationChan = this.mpxr.createChannel(cancellationChanID);
             c.confCode(confCode, new CancellationImpl(cancellationChan));

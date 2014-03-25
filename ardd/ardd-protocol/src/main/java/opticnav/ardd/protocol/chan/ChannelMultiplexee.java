@@ -1,11 +1,8 @@
 package opticnav.ardd.protocol.chan;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-
-import org.apache.commons.io.IOUtils;
 
 /**
  * Represents a channel being multiplexed into a ChannelMultiplexer.

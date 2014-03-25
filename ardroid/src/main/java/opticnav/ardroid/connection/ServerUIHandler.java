@@ -201,8 +201,8 @@ public class ServerUIHandler {
             public void run() {
                 final Server server = ServerUIHandler.this.server.getAndEmpty();
                 try {
-                    LOG.info("Disconnected from server");
                     server.broker.close();
+                    LOG.info("Disconnected from server");
                 } catch (IOException e) {
                     LOG.catching(e);
                 }
@@ -218,16 +218,19 @@ public class ServerUIHandler {
         // runs in background thread
 
         if (passCode == null) {
+            LOG.info("No passCode provided - requesting one...");
             requestCodes(connectEvents);
         } else {
+            LOG.info("Using passCode: " + passCode.getString());
+
             Server server = this.server.get();
 
             ARDLobbyConnection conn = server.broker.connectToLobby(passCode);
             if (conn == null) {
-                // could not authenticate with passCode
+                LOG.info("Could not authenticate with passCode - requesting one...");
                 requestCodes(connectEvents);
             } else {
-                // authenticated successfully
+                LOG.info("Authenticated with passCode successfully");
                 final Handler handler = new Handler(context.getMainLooper());
                 handler.post(new Runnable() {
                     @Override

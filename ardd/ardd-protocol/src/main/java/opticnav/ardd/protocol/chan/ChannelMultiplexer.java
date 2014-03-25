@@ -6,6 +6,8 @@ import java.io.OutputStream;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
@@ -23,6 +25,9 @@ import opticnav.ardd.protocol.PrimitiveWriter;
  * commands or communicating concurrently.
  */
 public class ChannelMultiplexer {
+    private static final XLogger LOG = XLoggerFactory
+            .getXLogger(ChannelMultiplexer.class);
+    
     /** Maximum channel ID */
     public static final int MAX_CHANNEL_ID = 255;
 
@@ -115,6 +120,7 @@ public class ChannelMultiplexer {
             throw new IllegalArgumentException("Channel already exists");
         }
         
+        LOG.debug("Channel created: " + channelID);
         return cm.getChannel();
     }
     
@@ -141,7 +147,12 @@ public class ChannelMultiplexer {
                 runC();
             } catch (EOFException e) {
                 // ignore - EOF is expected
+                LOG.debug("Multiplexer EOF");
             } finally {
+                LOG.debug("Multiplexer Channel finished");
+                // All channels needs to be closed
+                channelMap.removeAll();
+                // Close the stream
                 IOUtils.closeQuietly(this.channel.getOutputStream());
             }
             return null;
@@ -173,12 +184,11 @@ public class ChannelMultiplexer {
                 } else if (control == CTL_EOF) {
                     // receive an end-of-file control code
                     int channelID = input.readUInt8();
+                    LOG.debug("Receive EOF: " + channelID);
                     ChannelMultiplexee c = channelMap.remove(channelID);
                     if (c == null) { 
                         throw new IllegalStateException("Channel to EOF doesn't exist: " + channelID);
                     }
-                    
-                    c.close();
                 } else {
                     throw new IllegalStateException("Invalid control code: " + control);
                 }

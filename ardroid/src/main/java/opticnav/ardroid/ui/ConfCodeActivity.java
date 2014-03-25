@@ -8,7 +8,7 @@ import android.widget.TextView;
 import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
 
-public class RegisterARDActivity extends Activity {
+public class ConfCodeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -12,13 +12,10 @@ import opticnav.ardd.ard.ARDConnection;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.Protocol;
-import opticnav.ardroid.connection.CancellableSocket;
 import opticnav.ardroid.connection.ServerUIHandler;
 import opticnav.ardroid.ui.*;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
-
-import java.util.logging.LogManager;
 
 /**
  * Because Android development is brain damaged, it's very hard to keep the same state in Activitys during changes
@@ -100,7 +97,7 @@ public class Application extends android.app.Application {
         editor.putInt(PREFS_SERVERPORT, port);
         editor.commit();
 
-        this.serverUIHandler.connect(host, port, getPasscode(),
+        this.serverUIHandler.connect(host, port, getPassCode(),
                 new ServerUIHandler.ConnectEvents() {
                     @Override
                     public void connectionError(Exception e) {
@@ -122,7 +119,7 @@ public class Application extends android.app.Application {
 
                     @Override
                     public void confCode(ConfCode confCode, ARDConnection.Cancellation cancellation) {
-                        Intent intent = new Intent(context, RegisterARDActivity.class);
+                        Intent intent = new Intent(context, ConfCodeActivity.class);
                         intent.putExtra("confcode", confCode.getString());
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
@@ -131,6 +128,7 @@ public class Application extends android.app.Application {
                     @Override
                     public void registered(PassCode passCode) {
                         Toast.makeText(context, "Registered!", Toast.LENGTH_LONG).show();
+                        setPassCode(passCode);
                         authenticate();
                     }
 
@@ -154,14 +152,22 @@ public class Application extends android.app.Application {
         return prefs.getInt(PREFS_SERVERPORT, Protocol.DEFAULT_ARD_PORT);
     }
 
-    public PassCode getPasscode() {
-        String passCodeString = prefs.getString(PREFS_PASSCODE, null);
+    private PassCode getPassCode() {
+        final String passCodeString = prefs.getString(PREFS_PASSCODE, null);
         boolean isValid = passCodeString != null && PassCode.isStringCodeValid(passCodeString);
         if (isValid) {
             return new PassCode(passCodeString);
         } else {
             return null;
         }
+    }
+
+    private void setPassCode(PassCode passCode) {
+        LOG.info("Setting passCode: " + passCode.getString());
+
+        final SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(PREFS_PASSCODE, passCode.getString());
+        editor.commit();
     }
 
     private void createConnectionNotification() {
