@@ -14,3 +14,4 @@ local.properties
 # IDEA
 .idea/
 *.iml
+/web/webapp/css/images/cnrdelete_all.png
