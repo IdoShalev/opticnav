@@ -73,16 +73,16 @@
   </defs>
   <sodipodi:namedview
      id="base"
-     pagecolor="#ff3636"
+     pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:zoom="1.0647008"
-     inkscape:cx="86.13252"
-     inkscape:cy="78.608535"
+     inkscape:cx="-52.819284"
+     inkscape:cy="58.339"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g3814"
      showgrid="false"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -101,7 +101,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -115,14 +115,14 @@
        style="display:inline"
        id="g3814">
       <path
-         style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:10;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:#500b0b;fill-opacity:1;stroke:#ff3232;stroke-width:10;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
          d="m 87.5,14.03125 c -27.614238,0 -50,22.385762 -50,50 0.0056,0.77195 0.03323,1.541643 0.0625,2.3125 0.01476,0.322781 0.04164,0.647594 0.0625,0.96875 2.43895,48.20577 49.875,93.65625 49.875,93.65625 0,0 50.069,-47.4938 50,-96.9375 0,-27.614238 -22.38576,-50 -50,-50 z"
          id="path3026"
-         transform="translate(712.50003,938.32649)"
-         inkscape:connector-curvature="0" />
+         inkscape:connector-curvature="0"
+         transform="translate(712.50003,938.32649)" />
       <path
          transform="matrix(0.93389554,0,0,0.93389554,-66.7275,424.7675)"
-         d="m 962.67536,618.58301 a 34.597725,34.597725 0 1 1 -69.19545,0 34.597725,34.597725 0 1 1 69.19545,0 z"
+         d="m 962.67536,618.58301 c 0,19.10779 -15.48993,34.59772 -34.59772,34.59772 -19.1078,0 -34.59773,-15.48993 -34.59773,-34.59772 0,-19.1078 15.48993,-34.59773 34.59773,-34.59773 19.10779,0 34.59772,15.48993 34.59772,34.59773 z"
          sodipodi:ry="34.597725"
          sodipodi:rx="34.597725"
          sodipodi:cy="618.58301"
