@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Handler;
-import android.widget.Toast;
+import android.util.Pair;
 import opticnav.ardd.ard.ARDConnection;
 import opticnav.ardd.ard.ARDConnectionException;
 import opticnav.ardd.ard.ARDLobbyConnection;
@@ -16,8 +14,8 @@ import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelUtil;
-import opticnav.ardroid.ui.RegisterARDActivity;
-import opticnav.ardroid.ui.WelcomeActivity;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -33,6 +31,8 @@ import java.util.concurrent.Executors;
  * application. Callbacks are passed by the caller (usually an Activity) to ServerUIHandler methods to achieve this.
  */
 public class ServerUIHandler {
+    private static final XLogger LOG = XLoggerFactory.getXLogger(ServerUIHandler.class);
+
     /** The server connection timeout value in milliseconds */
     private static final int CONNECTION_TIMEOUT = 10 * 1000;
     /**
@@ -74,6 +74,10 @@ public class ServerUIHandler {
         public void confCodeCancelled();
     }
 
+    public interface  ConnectionCancelEvent {
+        public void cancel();
+    }
+
     public interface OnDisconnect {
         /** The server is disconnected. onDisconnect() runs on the Android UI thread. */
         public void onDisconnect();
@@ -82,14 +86,16 @@ public class ServerUIHandler {
     private final Context context;
     private final OnDisconnect onDisconnect;
     private SynchronizedOptional<Server> server;
+    private SynchronizedOptional<CancellableSocket.Cancellable> cancellableSocket;
 
     public ServerUIHandler(Context context, OnDisconnect onDisconnect) {
         this.context    = context;
         this.server = new SynchronizedOptional<Server>();
+        this.cancellableSocket = new SynchronizedOptional<CancellableSocket.Cancellable>();
         this.onDisconnect = onDisconnect;
     }
 
-    public CancellableSocket.Cancellable connect(String host, int port, final PassCode passCode,
+    public void connect(String host, int port, final PassCode passCode,
                                                  final ConnectEvents connectEvents) {
         // if a passcode is stored and connection works, go to the Lobby activity
         // if not, go to the RegisterARD activity to request a passcode
@@ -97,7 +103,7 @@ public class ServerUIHandler {
         final SocketAddress addr = new InetSocketAddress(host, port);
         final Handler handler = new Handler(context.getMainLooper());
 
-        return CancellableSocket.connect(addr, CONNECTION_TIMEOUT, new CancellableSocket.ConnectionEvent() {
+        cancellableSocket.set(CancellableSocket.connect(addr, CONNECTION_TIMEOUT, new CancellableSocket.ConnectionEvent() {
             @Override
             public void cancelled() {
                 handler.post(new Runnable() {
@@ -114,23 +120,57 @@ public class ServerUIHandler {
                     @Override
                     public void run() {
                         connectEvents.connectionError(e);
-                        //Toast.makeText(context, "Could not connect\nReason: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
             }
 
             @Override
             public void connected(Socket socket) {
+                LOG.info("Connected to server");
                 try {
                     Channel channel = ChannelUtil.fromSocket(socket);
                     ServerUIHandler.this.server.set(new Server(channel));
+                    ServerUIHandler.this.cancellableSocket.empty();
 
                     tryConnectToLobby(passCode, connectEvents);
                 } catch (IOException e) {
                     error(e);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            disconnect();
+                        }
+                    });
                 }
             }
-        });
+        }));
+    }
+
+    public void tryCancelConnection(final Activity source, final ConnectionCancelEvent event) {
+        if (this.cancellableSocket.isPresent()) {
+            new AlertDialog.Builder(source)
+                    .setMessage("The app is still trying to connect to a server. Do you really want to cancel?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            final Pair<Boolean, CancellableSocket.Cancellable> cancellable;
+                            cancellable = ServerUIHandler.this.cancellableSocket.getIfPresent();
+
+                            // If a Cancellable is found, cancel it
+                            if (cancellable.first) {
+                                cancellable.second.cancel();
+                            }
+
+                            // Send a cancel event to the UI
+                            event.cancel();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        } else if (this.server.isPresent()) {
+            // hmmm... try to disconnect the server then
+            tryDisconnect(source);
+        }
     }
 
     public void tryDisconnect(final Activity source) {
@@ -146,13 +186,7 @@ public class ServerUIHandler {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                disconnect();
-                            }
-                        }).start();
-                        onDisconnect.onDisconnect();
+                        disconnect();
                     }
                 })
                 .setNegativeButton("No", null)
@@ -160,15 +194,22 @@ public class ServerUIHandler {
     }
 
     private void disconnect() {
-        // runs in background thread
+        // runs in UI thread
 
-        Server server = this.server.getAndEmpty();
-        try {
-            server.broker.close();
-        } catch (IOException e) {
-            // TODO - log somewhere
-            e.printStackTrace();
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final Server server = ServerUIHandler.this.server.getAndEmpty();
+                try {
+                    LOG.info("Disconnected from server");
+                    server.broker.close();
+                } catch (IOException e) {
+                    LOG.catching(e);
+                }
+            }
+        }).start();
+
+        onDisconnect.onDisconnect();
     }
 
 

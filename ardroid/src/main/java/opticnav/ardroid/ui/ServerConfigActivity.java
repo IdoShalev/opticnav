@@ -12,6 +12,7 @@ import opticnav.ardd.protocol.Protocol;
 import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
 import opticnav.ardroid.connection.CancellableSocket;
+import opticnav.ardroid.connection.ServerUIHandler;
 
 public class ServerConfigActivity extends Activity {
     private boolean connecting;
@@ -19,14 +20,14 @@ public class ServerConfigActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
-        Application app = (Application)getApplicationContext();
+        final Application app = Application.getInstance();
+
         setContentView(R.layout.activity_serverconfig);
         this.connecting = false;
 
         app.serverConfig.onCreate(this);
 
         if (savedInstanceBundle == null) {
-            app = (Application)getApplicationContext();
             String host = app.getPreferencesServerHost();
             int port = app.getPreferencesServerPort();
             String portString;
@@ -62,20 +63,13 @@ public class ServerConfigActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (this.connecting) {
-            new AlertDialog.Builder(this)
-                    .setMessage("The app is still trying to connect to a server. Do you really want to cancel?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            ServerConfigActivity.this.finish();
-                        }
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
-        } else {
-            super.onBackPressed();
-        }
+        Application.getInstance().getServerUIHandler()
+                .tryCancelConnection(this, new ServerUIHandler.ConnectionCancelEvent() {
+            @Override
+            public void cancel() {
+                ServerConfigActivity.this.finish();
+            }
+        });
     }
 
     // onClick
@@ -91,8 +85,7 @@ public class ServerConfigActivity extends Activity {
             port = Integer.parseInt(portText);
         }
 
-        CancellableSocket.Cancellable c;
-        c = ((Application) getApplicationContext()).connectToServer(host, port);
+        Application.getInstance().connectToServer(host, port);
     }
 
     public void setConnecting(boolean connecting) {

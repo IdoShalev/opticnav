@@ -15,8 +15,8 @@ import opticnav.ardd.protocol.Protocol;
 import opticnav.ardroid.connection.CancellableSocket;
 import opticnav.ardroid.connection.ServerUIHandler;
 import opticnav.ardroid.ui.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import java.util.logging.LogManager;
 
@@ -33,7 +33,7 @@ import java.util.logging.LogManager;
  * This class is not thread safe! Only use this class from the UI thread.
  */
 public class Application extends android.app.Application {
-    private static final Logger LOG = LoggerFactory.getLogger(Application.class);
+    private static final XLogger LOG = XLoggerFactory.getXLogger(Application.class);
 
     public static class Lifecycle<T extends Activity> {
         private T activity = null;
@@ -94,27 +94,30 @@ public class Application extends android.app.Application {
         return this.serverUIHandler;
     }
 
-    public CancellableSocket.Cancellable connectToServer(final String host, final int port) {
+    public void connectToServer(final String host, final int port) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PREFS_SERVERHOST, host);
         editor.putInt(PREFS_SERVERPORT, port);
         editor.commit();
 
-        return this.serverUIHandler.connect(host, port, getPasscode(),
+        this.serverUIHandler.connect(host, port, getPasscode(),
                 new ServerUIHandler.ConnectEvents() {
                     @Override
                     public void connectionError(Exception e) {
-
+                        LOG.catching(e);
+                        Toast.makeText(context, "Connection error\nReason: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void connectionCancelled() {
-
+                        Toast.makeText(context, "Connection cancelled", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void authenticate() {
-
+                        Intent intent = new Intent(context, LobbyActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
                     }
 
                     @Override
@@ -128,6 +131,7 @@ public class Application extends android.app.Application {
                     @Override
                     public void registered(PassCode passCode) {
                         Toast.makeText(context, "Registered!", Toast.LENGTH_LONG).show();
+                        authenticate();
                     }
 
                     @Override

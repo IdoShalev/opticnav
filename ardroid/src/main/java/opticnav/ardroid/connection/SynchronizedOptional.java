@@ -1,5 +1,7 @@
 package opticnav.ardroid.connection;
 
+import android.util.Pair;
+
 import java.util.NoSuchElementException;
 
 /**
@@ -16,6 +18,14 @@ class SynchronizedOptional<E> {
             throw new NoSuchElementException("Cannot get a non-present SynchronizedOptional value");
         }
         return this.value;
+    }
+
+    public synchronized Pair<Boolean, E> getIfPresent() {
+        if (!this.isPresent) {
+            return new Pair<Boolean, E>(false, null);
+        } else {
+            return new Pair<Boolean, E>(true, this.value);
+        }
     }
 
     public synchronized void set(E value) {
