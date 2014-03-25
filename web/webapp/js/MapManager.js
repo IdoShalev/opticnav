@@ -59,11 +59,21 @@ $(function() {
     
     $("#anchor-save").click(function() {
         var popup = $("#anchor-popup");
+        var lng;
+        var lat; 
+        
+        if($("#anchor-lng").val() != "" && $("#anchor-lat").val() != "") {
+        	lng = $("#anchor-lng").val();
+        	lat = $("#anchor-lat").val();
+        }else{
+        	$("#modal-backdrop").fadeIn();
+	        $("#alert-message").append("You can't save an anchor that doesn't have" +
+	        		" both longitude and latitude values");
+        	$("#alert-popup").fadeIn();
+        }
+        
         var anchor_elem = popup.data("anchor");
         var anchor = anchor_elem.data("anchor");
-        
-        var lng = $("#anchor-lng").val();
-        var lat = $("#anchor-lat").val();
         
         anchor.gps = MapCoordHelper.gpsReprToNumbers({"lng": lng, "lat": lat});
         popup.hide();
@@ -103,7 +113,8 @@ $(function() {
     
     $("#alert-ok").click(function(){
     	modal_backdrop.fadeOut();
-    	$("#alert-message").fadeOut();
+    	$("#alert-popup").text("");
+    	$("#alert-popup").fadeOut();
     });
 
     //Leaves the Page, we forgot this, stuck forever

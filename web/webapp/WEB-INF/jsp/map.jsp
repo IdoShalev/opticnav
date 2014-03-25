@@ -8,7 +8,7 @@
     <button id="map-creation-create">Create</button>
     <button id="map-creation-cancel" style="margin-left:250px">Cancel</button>
 </div>
-<div id="alert-popup">
+<div id="alert-popup" class="modal-dialog">
     <p id="alert-message"></p>
     <button id="alert-ok">Ok</button>
 </div>
