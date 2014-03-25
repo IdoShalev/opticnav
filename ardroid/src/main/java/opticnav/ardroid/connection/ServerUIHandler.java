@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.util.Pair;
+import android.widget.Toast;
 import opticnav.ardd.ard.ARDConnection;
 import opticnav.ardd.ard.ARDConnectionException;
 import opticnav.ardd.ard.ARDLobbyConnection;
+import opticnav.ardd.ard.ARDLobbyConnectionStatus;
 import opticnav.ardd.broker.ard.ARDBroker;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
@@ -223,21 +225,34 @@ public class ServerUIHandler {
         } else {
             LOG.info("Using passCode: " + passCode.getString());
 
-            Server server = this.server.get();
+            final Handler handler = new Handler(context.getMainLooper());
+            final Server server = this.server.get();
+            final ARDLobbyConnectionStatus status = server.broker.connectToLobby(passCode);
 
-            ARDLobbyConnection conn = server.broker.connectToLobby(passCode);
-            if (conn == null) {
+            switch (status.getStatus()) {
+            case NOPASSCODE:
                 LOG.info("Could not authenticate with passCode - requesting one...");
                 requestCodes(connectEvents);
-            } else {
+                break;
+            case ALREADYCONNECTED:
+                // :(
+                LOG.info("Device with the same passCode already connected");
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        disconnect();
+                    }
+                });
+                break;
+            case CONNECTED:
                 LOG.info("Authenticated with passCode successfully");
-                final Handler handler = new Handler(context.getMainLooper());
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         connectEvents.authenticate();
                     }
                 });
+                break;
             }
         }
     }

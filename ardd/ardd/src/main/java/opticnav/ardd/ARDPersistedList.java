@@ -35,4 +35,14 @@ public class ARDPersistedList {
         logger.debug("ARD persisted: " + passCode);
         return ardID;
     }
+
+    /**
+     * Get the persisted ARD id associated with a passCode
+     * 
+     * @param passCode The passCode to look up
+     * @return The ARD id associated with the passCode, or null if not found
+     */
+    public Integer getARDIDByPassCode(PassCode passCode) {
+        return this.list.getKey(passCode);
+    }
 }

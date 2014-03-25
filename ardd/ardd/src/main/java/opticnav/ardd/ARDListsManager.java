@@ -12,17 +12,23 @@ import org.apache.commons.math3.util.Pair;
 public final class ARDListsManager {
     private final ARDPendingList pending;
     private final ARDPersistedList persisted;
+    private final ARDConnectedList connected;
     private final RandomGenerator randomGen;
 
-    public ARDListsManager(ARDPendingList pending, ARDPersistedList persisted,
+    public ARDListsManager(ARDPendingList pending, ARDPersistedList persisted, ARDConnectedList connected,
             RandomGenerator randomGen) {
         this.pending = pending;
         this.persisted = persisted;
+        this.connected = connected;
         this.randomGen = randomGen;
     }
 
     public ARDPersistedList getPersistedList() {
         return this.persisted;
+    }
+
+    public ARDConnectedList getConnectedList() {
+        return this.connected;
     }
     
     public Pair<PassConfCodes, BlockingValue<Integer>> generatePassConfCodes() {

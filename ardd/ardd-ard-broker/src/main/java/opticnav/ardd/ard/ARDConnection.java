@@ -23,7 +23,7 @@ public interface ARDConnection extends AutoCloseable {
     public void requestPassConfCodes(RequestPassConfCodesCallback c)
             throws ARDConnectionException;
 
-    public ARDLobbyConnection connectToLobby(PassCode passCode) throws ARDConnectionException;
+    public ARDLobbyConnectionStatus connectToLobby(PassCode passCode) throws ARDConnectionException;
 
     public void close() throws IOException;
 }

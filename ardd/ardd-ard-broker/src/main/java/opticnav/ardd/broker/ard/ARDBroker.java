@@ -11,6 +11,7 @@ import org.slf4j.ext.XLoggerFactory;
 import opticnav.ardd.ard.ARDConnection;
 import opticnav.ardd.ard.ARDConnectionException;
 import opticnav.ardd.ard.ARDLobbyConnection;
+import opticnav.ardd.ard.ARDLobbyConnectionStatus;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.PrimitiveReader;
@@ -106,7 +107,7 @@ public class ARDBroker implements ARDConnection {
     }
 
     @Override
-    public ARDLobbyConnection connectToLobby(PassCode passCode) throws ARDConnectionException {
+    public ARDLobbyConnectionStatus connectToLobby(PassCode passCode) throws ARDConnectionException {
         try {
             PrimitiveReader input  = PrimitiveUtil.reader(gatekeeperChannel);
             PrimitiveWriter output = PrimitiveUtil.writer(gatekeeperChannel);
@@ -119,13 +120,13 @@ public class ARDBroker implements ARDConnection {
             if (response == 0) {
                 // passcode acknowledged, can connect to lobby
                 Channel lobbyChannel = mpxr.createChannel(CHANNEL_LOBBY);
-                return new ARDLobbyConnectionImpl(lobbyChannel);
+                return new ARDLobbyConnectionStatus(new ARDLobbyConnectionImpl(lobbyChannel));
             } else if (response == 1) {
                 // passcode doesn't exist
-                return null;
+                return new ARDLobbyConnectionStatus(ARDLobbyConnectionStatus.Status.NOPASSCODE);
             } else if (response == 2) {
                 // there's an ongoing lobby connection
-                return null;
+                return new ARDLobbyConnectionStatus(ARDLobbyConnectionStatus.Status.ALREADYCONNECTED);
             } else {
                 throw new IllegalStateException("Invalid response code: " + response);
             }

@@ -4,8 +4,10 @@ import java.io.IOException;
 
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.Protocol;
+
 import org.apache.commons.math3.util.Pair;
 
+import opticnav.ardd.ARDConnection;
 import opticnav.ardd.ARDListsManager;
 import opticnav.ardd.BlockingValue;
 import opticnav.ardd.PassConfCodes;
@@ -55,8 +57,11 @@ public class ARDClientGatekeeperCommandHandler implements ClientConnection.Comma
 
             if (this.ardListsManager.getPersistedList().containsPassCode(passCode)) {
                 // passcode exists
-                if (this.ardChannelsManager.startLobbyConnection(passCode)) {
-                    // no ongoing lobby connection
+                final ARDConnection connection;
+                connection = this.ardListsManager.getConnectedList().createConnected(passCode);
+                if (connection != null) {
+                    // no ongoing connection
+                    this.ardChannelsManager.startLobbyConnection(connection);
                     // TODO - replace 0 with constant
                     out.writeUInt8(0);
                 } else {
