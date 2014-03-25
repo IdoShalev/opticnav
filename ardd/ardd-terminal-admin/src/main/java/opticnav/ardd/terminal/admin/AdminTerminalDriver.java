@@ -9,6 +9,7 @@ import java.util.Scanner;
 import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.broker.admin.AdminBroker;
 import opticnav.ardd.protocol.Protocol;
+import opticnav.ardd.protocol.chan.ChannelUtil;
 import opticnav.ardd.terminal.shared.Command;
 import opticnav.ardd.terminal.shared.TerminalDriver;
 import static opticnav.ardd.protocol.Protocol.AdminClient.Commands.*;
@@ -25,7 +26,7 @@ public class AdminTerminalDriver {
         PrintWriter out = new PrintWriter(System.out, true);
         Socket socket = new Socket(host, port);
         
-        try (AdminBroker conn = AdminBroker.fromSocket(socket)) {
+        try (AdminBroker conn = new AdminBroker(ChannelUtil.fromSocket(socket))) {
             TerminalDriver<AdminConnection> driver;
             driver = new TerminalDriver<>(in, out, commandMap, conn);
             driver.run();

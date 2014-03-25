@@ -1,5 +1,7 @@
 package opticnav.ardd;
 
+import java.io.IOException;
+
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.Protocol;
@@ -59,7 +61,7 @@ public final class ARDListsManager {
         }
     }
     
-    public int persistPendingWithConfCode(ConfCode confcode) {
+    public int persistPendingWithConfCode(ConfCode confcode) throws IOException {
         synchronized (this.pending) {
             Pair<PassCode, BlockingValue<Integer>> pw;
             int ardID;

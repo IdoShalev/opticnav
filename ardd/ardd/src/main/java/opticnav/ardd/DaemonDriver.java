@@ -1,5 +1,7 @@
 package opticnav.ardd;
 
+import java.io.File;
+
 import org.apache.commons.math3.random.ISAACRandom;
 import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.logging.log4j.LogManager;
@@ -15,11 +17,17 @@ public class DaemonDriver {
         int adminPort = opticnav.ardd.protocol.Protocol.DEFAULT_ADMIN_PORT;
         int ardPort   = opticnav.ardd.protocol.Protocol.DEFAULT_ARD_PORT;
         
-        ARDPendingList   pending   = new ARDPendingList();
-        ARDPersistedList persisted = new ARDPersistedList();
-        RandomGenerator  randomGen = new ISAACRandom();
+        // TODO - read from properties or something
+        final File ardListFile = new File("/tmp/ard-list.txt");
+        final File indexesFile = new File("/tmp/indexes.txt");
         
-        ARDListsManager ardListsManager;
+        final Persistence persistence = new FilePersistence(ardListFile, indexesFile);
+        
+        final ARDPendingList   pending   = new ARDPendingList();
+        final ARDPersistedList persisted = new ARDPersistedList(persistence);
+        final RandomGenerator  randomGen = new ISAACRandom();
+        
+        final ARDListsManager ardListsManager;
         ardListsManager = new ARDListsManager(pending, persisted, randomGen);
         
         AdminListener adminServer = new AdminListener(adminPort, ardListsManager);

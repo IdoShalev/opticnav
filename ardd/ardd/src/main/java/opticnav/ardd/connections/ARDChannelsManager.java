@@ -53,6 +53,7 @@ public class ARDChannelsManager implements Callable<Void> {
 
     @Override
     public Void call() throws Exception {
+
         Future<Void> gk = this.threadPool.submit(this.gatekeeperConn);
         Future<Void> listenerResult = this.threadPool.submit(listener);
         
