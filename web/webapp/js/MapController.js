@@ -138,12 +138,15 @@ var MapController = function() {
         elems.empty();
         
         var that = this;
-        
+    	
         for (var i = 0; i < list.length; i++) {
             var elem = $("<div>", {class: className});
             elem.click(function() {
             	propertiesCallback.call(that, $(this), $(this).data(dataname));
             });
+            if(list[i] == null){
+    			elem.setAttribute("style","background: url(../css/images/Anchor-invalid.svg)");
+    		}
             elem.data(dataname, list[i]);
             elems.append(elem);
         }
