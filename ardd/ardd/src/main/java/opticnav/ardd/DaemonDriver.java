@@ -4,14 +4,14 @@ import java.io.File;
 
 import org.apache.commons.math3.random.ISAACRandom;
 import org.apache.commons.math3.random.RandomGenerator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.net.ARDListener;
 import opticnav.ardd.net.AdminListener;
 
 public class DaemonDriver {
-    static final Logger logger = LogManager.getLogger();
+    static final XLogger logger = XLoggerFactory.getXLogger(DaemonDriver.class);
     
     public static void main(String[] args) throws Exception {
         int adminPort = opticnav.ardd.protocol.Protocol.DEFAULT_ADMIN_PORT;

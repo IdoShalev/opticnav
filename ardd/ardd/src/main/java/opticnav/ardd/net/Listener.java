@@ -2,9 +2,6 @@ package opticnav.ardd.net;
 
 import java.io.IOException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.Callable;
@@ -13,12 +10,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelUtil;
 
 public final class Listener implements Callable<Void> {
-    private static final Logger logger = LogManager.getLogger();
+    private static final XLogger logger = XLoggerFactory.getXLogger(Listener.class);
     
     public interface ConnectionSpawner {
         public Callable<Void> create(Channel channel, ExecutorService threadPool);

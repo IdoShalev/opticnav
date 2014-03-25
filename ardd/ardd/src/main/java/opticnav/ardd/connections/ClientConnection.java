@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
@@ -14,7 +14,7 @@ import opticnav.ardd.protocol.chan.Channel;
 
 // TODO - ClientConnect should implement Callable<Void>
 public final class ClientConnection implements Callable<Void> {
-    private static final Logger logger = LogManager.getLogger();
+    private static final XLogger logger = XLoggerFactory.getXLogger(ClientConnection.class);
     
     public interface CommandHandler {
         public void command(int code, PrimitiveReader in, PrimitiveWriter out)

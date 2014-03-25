@@ -11,8 +11,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 /**
  * TODO: Alternative persistence method, perhaps don't accept entire maps for storage
@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
  * the original contents of that file will be lost.
  */
 public class FilePersistence implements Persistence {
-    private static final Logger LOG = LogManager.getLogger();
+    private static final XLogger LOG = XLoggerFactory.getXLogger(FilePersistence.class);
     
     private final File ardListFile, indexesFile;
     private int index_ardID, index_instanceID;

@@ -9,11 +9,11 @@ import opticnav.ardd.protocol.PassCode;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.apache.commons.math3.util.Pair;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 public class ARDPendingList {
-    private static final Logger logger = LogManager.getLogger();
+    private static final XLogger logger = XLoggerFactory.getXLogger(ARDPendingList.class);
     
     private BidiMap<ConfCode, PassCode> confcode_passcode;
     private Map<PassCode, BlockingValue<Integer>> passcode_resultvalue;
