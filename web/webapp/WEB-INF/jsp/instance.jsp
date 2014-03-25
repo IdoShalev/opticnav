@@ -28,7 +28,7 @@
         Invite<br/>
         <input type="text" id="invite-to-inst"><br/>
         <input type="button" value="Invite" id="inst-invite"><br/>
-        <ul id="inst-selected-users">
+        <ul id="inst-select-users">
             
         </ul><br/>
         <input type="submit" value="Start Instance" id="instaB">

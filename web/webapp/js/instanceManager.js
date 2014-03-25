@@ -22,7 +22,7 @@ $(function(){
 	
 	$("#inst-invite").click(function() {
 		var username = $("#invite-to-inst").val();
-		var selectedUsers = $("#inst-selected-users");
+		var selectedUsers = $("#inst-select-users");
 		// GET /account/query/{username}
 		$.ajax({
 			type : "GET",
