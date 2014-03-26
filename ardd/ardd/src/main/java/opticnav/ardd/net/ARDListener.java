@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
 import opticnav.ardd.ARDListsManager;
-import opticnav.ardd.connections.ARDChannelsManager;
+import opticnav.ardd.clients.ardclient.ARDChannelsManager;
 import opticnav.ardd.protocol.chan.Channel;
 
 public class ARDListener implements Runnable {

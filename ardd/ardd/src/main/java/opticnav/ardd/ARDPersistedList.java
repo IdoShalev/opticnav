@@ -7,6 +7,7 @@ import org.apache.commons.collections4.bidimap.DualHashBidiMap;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
+import opticnav.ardd.persistence.Persistence;
 import opticnav.ardd.protocol.PassCode;
 
 public class ARDPersistedList {

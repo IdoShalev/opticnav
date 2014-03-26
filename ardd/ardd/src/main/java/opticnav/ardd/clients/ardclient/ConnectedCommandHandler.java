@@ -1,12 +1,13 @@
-package opticnav.ardd.connections;
+package opticnav.ardd.clients.ardclient;
 
+import opticnav.ardd.clients.ClientCommandDispatcher;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import static opticnav.ardd.protocol.Protocol.ARDClient.Lobby.*;
 
 import java.io.IOException;
 
-public class ARDClientLobbyConnectionHandler implements ClientConnection.CommandHandler {
+class ConnectedCommandHandler implements ClientCommandDispatcher.CommandHandler {
     @Override
     public void command(int code, PrimitiveReader in, PrimitiveWriter out)
             throws IOException, InterruptedException {

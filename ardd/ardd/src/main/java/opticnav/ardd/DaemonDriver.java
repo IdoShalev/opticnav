@@ -9,6 +9,8 @@ import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.net.ARDListener;
 import opticnav.ardd.net.AdminListener;
+import opticnav.ardd.persistence.FilePersistence;
+import opticnav.ardd.persistence.Persistence;
 
 public class DaemonDriver {
     static final XLogger logger = XLoggerFactory.getXLogger(DaemonDriver.class);

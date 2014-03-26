@@ -48,14 +48,17 @@ public class ARDPendingList {
         return this.confcode_passcode.containsValue(passCode);
     }
 
-    public void addPassConfCodes(Pair<PassConfCodes, BlockingValue<Integer>> p) {
+    public void addPassConfCodes(Pair<Pair<PassCode, ConfCode>, BlockingValue<Integer>> p) {
         logger.debug("Added passConfCodes: "
-                    + p.getFirst().getPasscode() + ", "
-                    + p.getFirst().getConfcode());
+                    + p.getFirst().getFirst() + ", "
+                    + p.getFirst().getSecond());
         
-        PassConfCodes codes = p.getFirst();
+        final Pair<PassCode, ConfCode> codes = p.getFirst();
+        final BlockingValue<Integer> resultValue = p.getSecond();
+        final PassCode passCode = codes.getFirst();
+        final ConfCode confCode = codes.getSecond();
         
-        this.confcode_passcode.put(codes.getConfcode(), codes.getPasscode());
-        this.passcode_resultvalue.put(codes.getPasscode(), p.getSecond());
+        this.confcode_passcode.put(confCode, passCode);
+        this.passcode_resultvalue.put(passCode, resultValue);
     }
 }

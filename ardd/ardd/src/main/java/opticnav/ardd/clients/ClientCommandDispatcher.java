@@ -1,4 +1,4 @@
-package opticnav.ardd.connections;
+package opticnav.ardd.clients;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -12,9 +12,12 @@ import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.chan.Channel;
 
-// TODO - ClientConnect should implement Callable<Void>
-public final class ClientConnection implements Callable<Void> {
-    private static final XLogger logger = XLoggerFactory.getXLogger(ClientConnection.class);
+/**
+ * ClientCommandDispatcher reads incoming commands from a provided Channel and dispatches
+ * command requests to a CommandHandler.
+ */
+public final class ClientCommandDispatcher implements Callable<Void> {
+    private static final XLogger logger = XLoggerFactory.getXLogger(ClientCommandDispatcher.class);
     
     public interface CommandHandler {
         public void command(int code, PrimitiveReader in, PrimitiveWriter out)
@@ -25,7 +28,7 @@ public final class ClientConnection implements Callable<Void> {
     private PrimitiveWriter output;
     private CommandHandler cmd;
     
-    public ClientConnection(Channel channel, CommandHandler cmd) {
+    public ClientCommandDispatcher(Channel channel, CommandHandler cmd) {
         this.input = new PrimitiveReader(channel.getInputStream());
         this.output = new PrimitiveWriter(channel.getOutputStream());
         this.cmd = cmd;

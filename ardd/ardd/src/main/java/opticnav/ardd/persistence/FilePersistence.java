@@ -1,4 +1,4 @@
-package opticnav.ardd;
+package opticnav.ardd.persistence;
 
 import opticnav.ardd.protocol.PassCode;
 

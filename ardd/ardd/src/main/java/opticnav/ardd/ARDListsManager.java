@@ -31,7 +31,7 @@ public final class ARDListsManager {
         return this.connected;
     }
     
-    public Pair<PassConfCodes, BlockingValue<Integer>> generatePassConfCodes() {
+    public Pair<Pair<PassCode, ConfCode>, BlockingValue<Integer>> generatePassConfCodes() {
         byte[] confCodeBytes, passCodeBytes;
         ConfCode confCode;
         PassCode passCode;
@@ -58,10 +58,10 @@ public final class ARDListsManager {
             }
             
             // add to pending
-            Pair<PassConfCodes, BlockingValue<Integer>> codes;
+            Pair<Pair<PassCode, ConfCode>, BlockingValue<Integer>> codes;
             BlockingValue<Integer> result = new BlockingValue<>();
             
-            codes = new Pair<>(new PassConfCodes(passCode, confCode), result);
+            codes = new Pair<>(new Pair<>(passCode, confCode), result);
             this.pending.addPassConfCodes(codes);
             return codes;
         }

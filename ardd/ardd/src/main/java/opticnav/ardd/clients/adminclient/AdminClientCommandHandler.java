@@ -1,14 +1,15 @@
-package opticnav.ardd.connections;
+package opticnav.ardd.clients.adminclient;
 
 import java.io.IOException;
 
 import opticnav.ardd.ARDListsManager;
+import opticnav.ardd.clients.ClientCommandDispatcher;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.Protocol;
 
-public class AdminClientCommandHandler implements ClientConnection.CommandHandler {
+public class AdminClientCommandHandler implements ClientCommandDispatcher.CommandHandler {
     private ARDListsManager ardListsManager;
 
     public AdminClientCommandHandler(ARDListsManager ardListsManager) {

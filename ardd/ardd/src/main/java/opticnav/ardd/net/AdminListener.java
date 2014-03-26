@@ -5,15 +5,15 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
 import opticnav.ardd.ARDListsManager;
-import opticnav.ardd.connections.AdminClientCommandHandler;
-import opticnav.ardd.connections.ClientConnection;
+import opticnav.ardd.clients.ClientCommandDispatcher;
+import opticnav.ardd.clients.adminclient.AdminClientCommandHandler;
 import opticnav.ardd.protocol.chan.Channel;
 
 public class AdminListener implements Runnable {
     private final class Spawner implements Listener.ConnectionSpawner {
         @Override
         public Callable<Void> create(Channel channel, ExecutorService threadPool) {
-            return new ClientConnection(channel,
+            return new ClientCommandDispatcher(channel,
                     new AdminClientCommandHandler(ardListsManager));
         }
     }

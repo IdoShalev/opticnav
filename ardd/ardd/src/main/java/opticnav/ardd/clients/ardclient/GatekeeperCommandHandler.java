@@ -1,7 +1,9 @@
-package opticnav.ardd.connections;
+package opticnav.ardd.clients.ardclient;
 
 import java.io.IOException;
 
+import opticnav.ardd.clients.ClientCommandDispatcher;
+import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.Protocol;
 
@@ -10,16 +12,15 @@ import org.apache.commons.math3.util.Pair;
 import opticnav.ardd.ARDConnection;
 import opticnav.ardd.ARDListsManager;
 import opticnav.ardd.BlockingValue;
-import opticnav.ardd.PassConfCodes;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import static opticnav.ardd.protocol.Protocol.ARDClient.*;
 
-public class ARDClientGatekeeperCommandHandler implements ClientConnection.CommandHandler {
+class GatekeeperCommandHandler implements ClientCommandDispatcher.CommandHandler {
     private ARDListsManager ardListsManager;
     private ARDChannelsManager ardChannelsManager;
     
-    public ARDClientGatekeeperCommandHandler(ARDListsManager ardListsManager,
+    public GatekeeperCommandHandler(ARDListsManager ardListsManager,
                                              ARDChannelsManager ardChannelsManager) {
         this.ardListsManager = ardListsManager;
         this.ardChannelsManager = ardChannelsManager;
@@ -29,13 +30,15 @@ public class ARDClientGatekeeperCommandHandler implements ClientConnection.Comma
     public void command(int code, PrimitiveReader in, PrimitiveWriter out)
             throws IOException, InterruptedException {
         if (code == Commands.REQCODES.CODE) {
-            Pair<PassConfCodes, BlockingValue<Integer>> codesWait;
-            PassConfCodes codes;
+            final Pair<Pair<PassCode, ConfCode>, BlockingValue<Integer>> codesWait;
+            final PassCode passCode;
+            final ConfCode confCode;
             
             codesWait = this.ardListsManager.generatePassConfCodes();
-            codes = codesWait.getFirst();
+            passCode = codesWait.getFirst().getFirst();
+            confCode = codesWait.getFirst().getSecond();
             
-            out.writeFixedBlob(codes.getConfcode().getByteArray());
+            out.writeFixedBlob(confCode.getByteArray());
             // TODO - proper cancellation channel
             out.writeUInt8(255);
             out.flush();
@@ -46,7 +49,7 @@ public class ARDClientGatekeeperCommandHandler implements ClientConnection.Comma
             int ardID = codesWait.getSecond().get();
             int response = ReqCodes.REGISTERED;
             out.writeUInt8(response);
-            out.writeFixedBlob(codes.getPasscode().getByteArray());
+            out.writeFixedBlob(passCode.getByteArray());
 
             out.flush();
         } else if (code == Commands.CONNECT_TO_LOBBY.CODE) {
