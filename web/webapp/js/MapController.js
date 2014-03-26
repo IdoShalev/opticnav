@@ -161,7 +161,6 @@ var MapController = function() {
     
     function generateAnchorElements() {
     	var list = currentMap.getAnchorList();
-    	var className = "anchor";
     	var elems = $("#map-anchors");
     	
         elems.empty();
@@ -169,6 +168,9 @@ var MapController = function() {
         var that = this;
     	
         for (var i = 0; i < list.length; i++) {
+        	var hasGPS = list[i].gps !== null;
+        	var className = hasGPS ? "anchor" : "anchor-invalid";
+        	
             var elem = $("<div>", {"class": className});
             elem.click(function() {
             	var anchorElem = $(this);
@@ -285,8 +287,7 @@ var MapController = function() {
         },
         
         recalculateAnchorPositions: function() {
-        	var elements = $("#map-anchors .anchor");
-        	var dataname = "anchor";
+        	var elements = $("#map-anchors div");
 
             function setPosition(elem, x, y) {
                 elem.css({"left": x-elem.width()/2, "top": y-elem.height()});
@@ -298,7 +299,7 @@ var MapController = function() {
             var image_height = currentMap.getImageHeight();
             
             elements.each(function(index, elem) {
-                var anchor = $(elem).data(dataname);
+                var anchor = $(elem).data("anchor");
                 var pos = anchor.local;
     
                 var view_pos = imageLocalToViewLocal(pos, image_width, image_height, view);
@@ -346,6 +347,11 @@ var MapController = function() {
         // Place the marker popup next to the marker it belongs to 
         recalculateAnchorPopup: function() {
         	this.recalculatePopup($("#anchor-popup"), "anchor");
+        },
+        
+        //Allows generation of anchors from different JS pages
+        generateAnchors: function() {
+        	generateAnchorElements.call(MapController);
         }
     };
 }();

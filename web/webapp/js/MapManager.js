@@ -77,6 +77,7 @@ $(function() {
         
         anchor.gps = MapCoordHelper.gpsReprToNumbers({"lng": lng, "lat": lat});
         popup.hide();
+        MapController.generateAnchors();
     });
     
     $("#anchor-cancel").click(function() {

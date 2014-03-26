@@ -134,22 +134,26 @@
 	-moz-user-select: none;
 }
 
+.marker, .anchor, .anchor-invalid {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    z-index: 1;
+}
+
 .marker {
-	position: absolute;
-	width: 24px;
-	height: 24px;
 	background: url(../css/images/Marker.svg);
-	z-index: 1;
-	background-size: contain;
+    background-size: contain;
 }
 
 .anchor {
-	position: absolute;
-	width: 24px;
-	height: 24px;
 	background: url(../css/images/Anchor.svg);
-	z-index: 1;
-	background-size: contain;
+    background-size: contain;
+}
+
+.anchor-invalid {
+    background: url(../css/images/Anchor-invalid.svg);
+    background-size: contain;
 }
 
 #marker-popup,#anchor-popup {
