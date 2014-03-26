@@ -10,7 +10,6 @@ import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.ard.ARDConnection;
 import opticnav.ardd.ard.ARDConnectionException;
-import opticnav.ardd.ard.ARDLobbyConnection;
 import opticnav.ardd.ard.ARDLobbyConnectionStatus;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
@@ -70,7 +69,7 @@ public class ARDBroker implements ARDConnection {
             byte[] confCodeBytes;
             Channel cancellationChan;
             
-            output.writeUInt8(Commands.REQCODES.CODE);
+            output.writeUInt8(Commands.REQCODES);
             output.flush();
             
             confCodeBytes = input.readFixedBlob(Protocol.CONFCODE_BYTES);
@@ -112,7 +111,7 @@ public class ARDBroker implements ARDConnection {
             PrimitiveReader input  = PrimitiveUtil.reader(gatekeeperChannel);
             PrimitiveWriter output = PrimitiveUtil.writer(gatekeeperChannel);
 
-            output.writeUInt8(Commands.CONNECT_TO_LOBBY.CODE);
+            output.writeUInt8(Commands.CONNECT);
             output.writeFixedBlob(passCode.getByteArray());
             output.flush();
 

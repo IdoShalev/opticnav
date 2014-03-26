@@ -1,28 +1,27 @@
 package opticnav.ardd.clients.ardclient;
 
-import opticnav.ardd.clients.ClientCommandDispatcher;
+import opticnav.ardd.clients.AnnotatedCommandHandler;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
-import static opticnav.ardd.protocol.Protocol.ARDClient.Lobby.*;
+import static opticnav.ardd.protocol.Protocol.ARDClient.Connected.*;
 
-import java.io.IOException;
+public class ConnectedCommandHandler extends AnnotatedCommandHandler {
+    public ConnectedCommandHandler() {
+        super(ConnectedCommandHandler.class);
+    }
+    
+    @Command(Commands.LIST_INSTANCES)
+    public void listInstances(PrimitiveReader in, PrimitiveWriter out) throws Exception {
+        // TODO
+        int count = 2;
 
-class ConnectedCommandHandler implements ClientCommandDispatcher.CommandHandler {
-    @Override
-    public void command(int code, PrimitiveReader in, PrimitiveWriter out)
-            throws IOException, InterruptedException {
-        if (code == Commands.LIST_INSTANCES.CODE) {
-            // TODO
-            int count = 2;
+        out.writeUInt16(count);
 
-            out.writeUInt16(count);
-
-            for (int i = 0; i < count; i++) {
-                // TODO - write instances
-                out.writeString("Instance name");
-                out.writeUInt16(i);
-            }
-            out.flush();
+        for (int i = 0; i < count; i++) {
+            // TODO - write instances
+            out.writeString("Instance name");
+            out.writeUInt16(i);
         }
+        out.flush();
     }
 }

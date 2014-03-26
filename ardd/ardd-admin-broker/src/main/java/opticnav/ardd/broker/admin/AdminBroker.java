@@ -26,7 +26,7 @@ public class AdminBroker implements AdminConnection {
     public int registerARDWithConfCode(ConfCode code)
             throws AdminConnectionException {
         try {
-            this.output.writeUInt8(Commands.REGARD.getCode());
+            this.output.writeUInt8(Commands.REGARD);
             this.output.writeFixedBlob(code.getByteArray());
             this.output.flush();
             return this.input.readUInt31();

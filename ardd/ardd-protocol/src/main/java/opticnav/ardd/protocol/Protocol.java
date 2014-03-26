@@ -8,14 +8,19 @@ public final class Protocol {
     public static final int PASSCODE_BYTES = 16;
     
     public static final class AdminClient {
-        public enum Commands {
-            REGARD(0, "regard"),
-            ARDINFO(1, "ardinfo");
+        public static class Commands {
+            public static final int REGARD = 0;
+            public static final int ARDINFO = 1;
+        }
+        
+        public enum CommandsText {
+            REGARD(Commands.REGARD, "regard"),
+            ARDINFO(Commands.ARDINFO, "ardinfo");
             
             private int code;
             private String command;
 
-            private Commands(int code, String command) {
+            private CommandsText(int code, String command) {
                 this.code = code;
                 this.command = command;
             }
@@ -42,26 +47,14 @@ public final class Protocol {
             public static final int CANCELLED = 2;
         }
         
-        public enum Commands {
-            REQCODES(0),
-            CONNECT_TO_LOBBY(1);
-            
-            public final int CODE;
-
-            private Commands(int code) {
-                this.CODE = code;
-            }
+        public static class Commands {
+            public static final int REQCODES = 0;
+            public static final int CONNECT = 1;
         }
 
-        public static final class Lobby {
-            public enum Commands {
-                LIST_INSTANCES(0);
-
-                public final int CODE;
-
-                private Commands(int code) {
-                    this.CODE = code;
-                }
+        public static final class Connected {
+            public static class Commands {
+                public static final int LIST_INSTANCES = 0;
             }
         }
     }

@@ -12,7 +12,7 @@ import opticnav.ardd.protocol.Protocol;
 import opticnav.ardd.protocol.chan.ChannelUtil;
 import opticnav.ardd.terminal.shared.Command;
 import opticnav.ardd.terminal.shared.TerminalDriver;
-import static opticnav.ardd.protocol.Protocol.AdminClient.Commands.*;
+import static opticnav.ardd.protocol.Protocol.AdminClient.CommandsText.*;
 
 public class AdminTerminalDriver {
     public static void main(String[] args) throws Exception {
