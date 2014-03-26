@@ -38,6 +38,11 @@ public class Creating implements MarkerState {
     }
 
     @Override
+    public Float getCurrentDirection() {
+        return this.marker.getDirection();
+    }
+
+    @Override
     public float getCurrentVisibility() {
         return phase;
     }

@@ -20,10 +20,17 @@ public class MapView extends View implements MapModelObserver {
     private final Map<Integer, MarkerState> markerStates;
     private final Map<Integer, Queue<Pair<MarkerState.Type, Marker>>> markerStateQueues;
 
+    private boolean followingMarker;
+    private int followingMarkerID;
+    private double followingMarkerViewDistancePixels;
+
     public MapView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.markerStates = new HashMap<Integer, MarkerState>();
         this.markerStateQueues = new HashMap<Integer, Queue<Pair<MarkerState.Type, Marker>>>();
+        this.followingMarker = true;
+        this.followingMarkerID = 0;
+        this.followingMarkerViewDistancePixels = 500.0;
     }
 
     public void setModel(MapModel model) {
@@ -40,19 +47,106 @@ public class MapView extends View implements MapModelObserver {
         }
     }
 
+    private Matrix calculateViewMatrix(float density) {
+        Matrix matrix = new Matrix();
+
+        // TODO
+
+        // if there are no markers, show the entire map
+
+        // if there is only one marker, follow it
+
+        // if there is more than one, show all of them
+
+        if (true) {
+            // fit all and center
+            final float xRatio = (float)model.getBitmap().getWidth()/getWidth();
+            final float yRatio = (float)model.getBitmap().getHeight()/getHeight();
+
+            final float mul = Math.max(xRatio, yRatio);
+
+            matrix.postScale(mul, mul);
+
+            // center the image
+            if (xRatio < yRatio) {
+                // more horizontal space
+                matrix.postTranslate((getWidth()-model.getBitmap().getWidth())/2, 0);
+            } else {
+                // more vertical space
+                matrix.postTranslate(0, (getHeight()-model.getBitmap().getHeight())/2);
+            }
+        }
+
+        return matrix;
+    }
+
+    /**
+     * Generate a pseudo-random color based on the ID
+     */
+    private int colorFromMarkerID(int id) {
+        // enh, it's "random" enough
+        float rand = new Random(id*1000000).nextFloat();
+
+        float[] hsv = {rand*360.0f, 0.6f, 0.5f};
+        return Color.HSVToColor(hsv);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
-        final float density = getResources().getDisplayMetrics().density;
+        final int STROKE_COLOR = Color.rgb(255, 255, 255);
 
         Paint paint = new Paint();
-        paint.setColor(Color.rgb(0, 0, 0));
-        for (MarkerState markerState: markerStates.values()) {
-            Coordinate coordinate = markerState.getCurrentCoordinate();
-            final float x = (float)coordinate.getLongitudeDouble()*density;
-            final float y = (float)coordinate.getLatitudeDouble()*density;
-            final float radius = 10*visibilityErp(markerState.getCurrentVisibility())*density;
+        final float density = getResources().getDisplayMetrics().density;
 
-            canvas.drawCircle(x, y, radius, paint);
+        // TODO - no image
+
+        final Matrix matrix = calculateViewMatrix(density);
+
+        canvas.drawBitmap(model.getBitmap(), matrix, paint);
+
+        for (Map.Entry<Integer, MarkerState> p: markerStates.entrySet()) {
+            final int markerID = p.getKey();
+            final MarkerState markerState = p.getValue();
+
+            final Float direction = markerState.getCurrentDirection();
+            final Coordinate coordinate = markerState.getCurrentCoordinate();
+            final float x = (float)coordinate.getX();
+            final float y = (float)coordinate.getY();
+
+            final float radius = 15*visibilityErp(markerState.getCurrentVisibility());
+
+            if (direction == null) {
+                // marker has no direction
+                float[] transformedPoints = {x, y};
+                matrix.mapPoints(transformedPoints);
+
+                paint.setColor(STROKE_COLOR);
+                canvas.drawCircle(transformedPoints[0], transformedPoints[1], radius * density * 1.125f, paint);
+                paint.setColor(colorFromMarkerID(markerID));
+                canvas.drawCircle(transformedPoints[0], transformedPoints[1], radius * density, paint);
+            } else {
+                // marker has a direction
+                float[] anglePoints = {-radius, radius, 0, -radius,
+                                        0, -radius, +radius, radius};
+
+                final Matrix modelView = new Matrix(matrix);
+                modelView.preTranslate(x, y);
+                modelView.preRotate(direction * 360);
+                modelView.mapPoints(anglePoints);
+
+                paint.setStrokeJoin(Paint.Join.MITER);
+                paint.setStrokeCap(Paint.Cap.SQUARE);
+
+                // outline
+                paint.setColor(STROKE_COLOR);
+                paint.setStrokeWidth(density*6);
+                canvas.drawLines(anglePoints, paint);
+
+                // inline
+                paint.setColor(colorFromMarkerID(markerID));
+                paint.setStrokeWidth(density*3);
+                canvas.drawLines(anglePoints, paint);
+            }
         }
     }
 
@@ -69,10 +163,10 @@ public class MapView extends View implements MapModelObserver {
 
     /** Update the view by one frame */
     public void step() {
+        markerStatesStep();
+
         // Redraw the view
         invalidate();
-
-        markerStatesStep();
     }
 
     /**

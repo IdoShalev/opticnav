@@ -7,12 +7,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MapModel {
-    private Bitmap bitmap;
-
-    private Map<Integer, Marker> markerList;
+    private final boolean hasMapImage;
+    private final Bitmap bitmap;
+    private final Map<Integer, Marker> markerList;
     private MapModelObserver observer;
 
+    public MapModel() {
+        this.hasMapImage = false;
+        this.bitmap = null;
+        this.markerList = new HashMap<Integer, Marker>();
+        this.observer = null;
+    }
+
     public MapModel(Bitmap bitmap) {
+        this.hasMapImage = true;
         this.bitmap = bitmap;
         this.markerList = new HashMap<Integer, Marker>();
         this.observer = null;
@@ -24,6 +32,10 @@ public class MapModel {
 
     public void unsetObserver() {
         this.observer = null;
+    }
+
+    public boolean hasMapImage() {
+        return this.hasMapImage;
     }
 
     public Bitmap getBitmap() {
@@ -38,6 +50,21 @@ public class MapModel {
 
         if (this.observer != null) {
             this.observer.postMarkerCreating(id, marker);
+        }
+    }
+
+    public void moveMarker(int id, Coordinate coordinate, float direction) {
+        Marker oldMarker = this.markerList.get(id);
+        if (oldMarker == null) {
+            throw new IllegalStateException("Marker to move must exist: " + id);
+        }
+
+        Marker newMarker = oldMarker.withNewCoordinateAndDirection(coordinate, direction);
+        // Replace the old marker with a new object
+        this.markerList.put(id, newMarker);
+
+        if (this.observer != null) {
+            this.observer.postMarkerMoving(id, newMarker);
         }
     }
 

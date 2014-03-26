@@ -36,6 +36,11 @@ public class Still implements MarkerState {
     }
 
     @Override
+    public Float getCurrentDirection() {
+        return this.marker.getDirection();
+    }
+
+    @Override
     public float getCurrentVisibility() {
         return 1.0f;
     }

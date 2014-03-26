@@ -1,7 +1,6 @@
 package opticnav.ardroid.ui;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
@@ -13,28 +12,29 @@ import com.caverock.androidsvg.SVG;
 import com.caverock.androidsvg.SVGParseException;
 import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
-import opticnav.ardroid.connection.ServerUIHandler;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import java.io.IOException;
 
 public class WelcomeActivity extends Activity {
-    private Application.Lifecycle<WelcomeActivity> lifecycle;
+    private static final XLogger LOG = XLoggerFactory.getXLogger(WelcomeActivity.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        this.lifecycle = ((Application)getApplicationContext()).welcome;
-        lifecycle.onCreate(this);
-
-        ImageView opticNavLogo = (ImageView)findViewById(R.id.opticNavLogo);
         try {
-            SVG svg = SVG.getFromAsset(getAssets(), "opticnavlogo.svg");
-            Drawable drawable = new PictureDrawable(svg.renderToPicture());
+            final SVG svg = SVG.getFromAsset(getAssets(), "opticnavlogo.svg");
+            final Drawable drawable = new PictureDrawable(svg.renderToPicture());
+            final ImageView opticNavLogo = (ImageView)findViewById(R.id.opticNavLogo);
             opticNavLogo.setImageDrawable(drawable);
+            opticNavLogo.invalidate();
         } catch (SVGParseException e) {
+            LOG.catching(e);
         } catch (IOException e) {
+            LOG.catching(e);
         }
 
         Button detectServer = (Button)findViewById(R.id.detectServer);
@@ -45,21 +45,17 @@ public class WelcomeActivity extends Activity {
                 startActivity(intent);
             }
         });
-
-        Button configureServer = (Button)findViewById(R.id.configureServer);
-        configureServer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(WelcomeActivity.this, ServerConfigActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        lifecycle.onDestroy(this);
+    // onClick
+    public void configureServer(View view) {
+        Intent intent = new Intent(this, ServerConfigActivity.class);
+        startActivity(intent);
+    }
+
+    // onClick
+    public void testingMode(View view) {
+
     }
 
     @Override

@@ -40,11 +40,36 @@ public class Moving implements MarkerState {
     }
 
     @Override
+    public Float getCurrentDirection() {
+        final boolean srcD, dstD;
+        srcD = this.src.hasDirection();
+        dstD = this.dst.hasDirection();
+
+        if (srcD && dstD) {
+            // interpolate between the directions
+            return lerp(this.src.getDirection(), this.dst.getDirection(), easeErp(phase));
+        } else if (srcD && !dstD) {
+            // marker is losing direction, keep direction of source
+            return this.src.getDirection();
+        } else if (!srcD && dstD) {
+            // marker is getting direction, keep direction of destination
+            return this.dst.getDirection();
+        } else {
+            // there is no direction
+            return null;
+        }
+    }
+
+    @Override
     public float getCurrentVisibility() {
         return 1.0f;
     }
 
     private float easeErp(float in) {
         return (float)Math.sin(in*Math.PI/2);
+    }
+
+    private static float lerp(float begin, float end, float phase) {
+        return (end-begin)*phase + begin;
     }
 }
