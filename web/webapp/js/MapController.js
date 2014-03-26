@@ -134,33 +134,51 @@ var MapController = function() {
     	$("#placement-mode").text(anchorMode?ANCHORMODE_ON:ANCHORMODE_OFF);
     }
     
-    function generateElements(list, className, dataname, elems, propertiesCallback) {
+    // Replaces all marker elements with new ones. This is called when a
+    // marker is added or removed.
+    function generateMarkerElements() {
+    	var list = currentMap.getMarkerList();
+    	var className = "marker";
+    	var elems = $("#map-markers");
+
         elems.empty();
         
         var that = this;
     	
         for (var i = 0; i < list.length; i++) {
-            var elem = $("<div>", {class: className});
+            var elem = $("<div>", {"class": className});
             elem.click(function() {
-            	propertiesCallback.call(that, $(this), $(this).data(dataname));
+            	var markerElem = $(this);
+            	var marker = markerElem.data("marker");
+            	showMarkerProperties.call(that, markerElem, marker);
             });
-            if(list[i] == null){
-    			elem.setAttribute("style","background: url(../css/images/Anchor-invalid.svg)");
-    		}
-            elem.data(dataname, list[i]);
+            elem.data("marker", list[i]);
             elems.append(elem);
         }
-    }
-    
-    // Replaces all marker elements with new ones. This is called when a
-    // marker is added or removed.
-    function generateMarkerElements() {
-    	generateElements(currentMap.getMarkerList(), "marker", "marker", $("#map-markers"), showMarkerProperties);
+        
         this.recalculateMarkerPositions();
     }
     
     function generateAnchorElements() {
-    	generateElements(currentMap.getAnchorList(), "anchor", "anchor", $("#map-anchors"), showAnchorProperties);
+    	var list = currentMap.getAnchorList();
+    	var className = "anchor";
+    	var elems = $("#map-anchors");
+    	
+        elems.empty();
+        
+        var that = this;
+    	
+        for (var i = 0; i < list.length; i++) {
+            var elem = $("<div>", {"class": className});
+            elem.click(function() {
+            	var anchorElem = $(this);
+            	var anchor = anchorElem.data("anchor");
+            	showAnchorProperties.call(that, anchorElem, anchor);
+            });
+            elem.data("anchor", list[i]);
+            elems.append(elem);
+        }
+        
         this.recalculateAnchorPositions();
     }
     
