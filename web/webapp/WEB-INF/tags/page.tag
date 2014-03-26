@@ -21,7 +21,7 @@
 		    <li><t:link href="/"><div class="buttonsS">Hub</div></t:link></li>
             <li><t:link href="/registerDevice"><div class="buttonsS">Device Manager</div></t:link></li>
             <li><t:link href="/map"><div class="buttonsS">Maps Manager</div></t:link></li>
-            <li><t:link href="/instance"><div class="buttonsS">Start an Instance</div></t:link></li>
+            <li><t:link href="/instance"><div class="buttonsS">Instance Manager</div></t:link></li>
             </c:if>
             <c:if test="${empty user}">
             <li><t:link href="/"><div class="buttons">Home</div></t:link></li>

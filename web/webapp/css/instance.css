@@ -1,86 +1,106 @@
-#info{
-    /* hidden by default */
-    display: hidden;
-    
+#info {
+	/* hidden by default */
+	display: hidden;
 	width: 300px;
-	box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
-    overflow: hidden;
-    top:0;
-    bottom: 0;
-    position: absolute;
-    padding:50px;
+	box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+	overflow: hidden;
+	top: 0;
+	bottom: 0;
+	position: absolute;
+	padding: 50px;
 }
 
-#instaB{
-	bottom:0;
+#instaB {
+	bottom: 0;
 }
 
-#leftControl{
-	height:100%;
-	float:left;
-	padding:50px;
+#leftControl {
+	height: 100%;
+	float: left;
+	padding: 25px;
 }
 
-#rightControl{
-	height:100%;
-	float:left;
-	padding:50px;
+#rightControl {
+	height: 100%;
+	float: left;
+	padding: 25px;
 }
 
-#controller{
-	padding:50px;
-	top:0;
+#controller {
+	top: 0;
+	display: inline-block;
 	right: 0;
-    left:400px;
-    bottom: 0;
-    position: absolute;
-    overflow: hidden;
+	left: 400px;
+	bottom: 0;
+	position: absolute;
+	overflow: auto;
 }
 
-#instanceContainer{
-    position: fixed;
-    overflow: hidden;
-    bottom:0;
-    top: 132px;
-    left:0;
-    right:0;
+#instanceContainer {
+	position: fixed;
+	overflow: auto;
+	bottom: 0;
+	top: 132px;
+	left: 0;
+	right: 0;
 }
 
 #map-list {
-    top: 120px;
-    bottom: 36px;
-    left: 0;
-    right: 0;
+	height: 250px;
+	overflow: auto;
+	width: 250px;
 }
-
-#map-container 
-{
-	width:250px;
-	height:250px;
-	overflow:scroll;
-}
-
 
 #map-list a {
-    color: inherit; /* blue colors for links too */
-    text-decoration: inherit; /* no underline */
+	color: inherit; /* blue colors for links too */
+	text-decoration: inherit; /* no underline */
 }
-
 
 #map-list entry {
-    display: block;
-    position: relative;
-    transition: background-color 0.25s;
-    padding: 0.5em 1em;
-    background-color: #eee;
-    border-bottom: 1px solid #888;
-    /* text should not exceed the width of the entry */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+	display: block;
+	position: relative;
+	transition: background-color 0.25s;
+	padding: 0.5em 1em;
+	background-color: #eee;
+	border-bottom: 1px solid #888;
+	/* text should not exceed the width of the entry */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.05));
 }
 
-
 #map-list entry:hover {
+	background-color: #ccc;
+}
+
+#inst-select-users {
+	padding: 0px;
+	margin: 0;
+	/* text should not exceed the width of the entry */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+	line-height: 25px;
+	width: 250px;
+}
+
+#inst-select-users li {
+	display: block;
+	position: relative;
+	transition: background-color 0.25s;
+	padding: 0.5em 1em;
+	background-color: #eee;
+	border-bottom: 1px solid #888;
+	display: table;
+	width: auto;
+	line-height: 20px;
+	width: 250px;
+}
+
+#inst-select-users li:hover {
+    background-color: #ccc;
+}
+
+#map-list entry.selected {
     background-color: #ccc;
 }
