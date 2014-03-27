@@ -10,7 +10,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import opticnav.persistence.web.exceptions.PublicBrokerException;
-import opticnav.persistence.web.map.MapsListEntry;
 
 public class PublicBroker implements AutoCloseable {
     public static final int ACCOUNT_ID_NONE = 0;
@@ -109,6 +108,17 @@ public class PublicBroker implements AutoCloseable {
             throw new PublicBrokerException(e);
         }
         return list;
+    }
+    
+    public String getAccountNameByID(int id)throws PublicBrokerException {
+        try (CallableStatement cs = conn.prepareCall("{? = call getAccountNameByID(?)}")) {
+            cs.registerOutParameter(1, Types.VARCHAR);
+            cs.setInt(2, id);
+            cs.execute();
+            return cs.getString(1);
+        } catch (SQLException e) {
+            throw new PublicBrokerException(e);
+        }
     }
 
     private boolean checkUsername(String username) {
