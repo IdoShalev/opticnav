@@ -10,10 +10,13 @@ import opticnav.ardroid.model.MapModel;
 import opticnav.ardroid.model.MapModelObserver;
 import opticnav.ardroid.model.Marker;
 import opticnav.ardroid.ui.marker.*;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import java.util.*;
 
 public class MapView extends View implements MapModelObserver {
+    private static final XLogger LOG = XLoggerFactory.getXLogger(MapView.class);
     // TODO - look into SurfaceView
     private MapModel model;
 
@@ -45,6 +48,9 @@ public class MapView extends View implements MapModelObserver {
             final Marker marker = entry.getValue();
             this.markerStates.put(id, new Still(marker));
         }
+
+        LOG.debug("Image width: " + model.getBitmap().getWidth());
+        LOG.debug("Image height: " + model.getBitmap().getHeight());
     }
 
     private Matrix calculateViewMatrix(float density) {
@@ -60,20 +66,20 @@ public class MapView extends View implements MapModelObserver {
 
         if (true) {
             // fit all and center
-            final float xRatio = (float)model.getBitmap().getWidth()/getWidth();
-            final float yRatio = (float)model.getBitmap().getHeight()/getHeight();
+            final float xRatio = (float)getWidth()/model.getBitmap().getWidth();
+            final float yRatio = (float)getHeight()/model.getBitmap().getHeight();
 
-            final float mul = Math.max(xRatio, yRatio);
+            final float mul = Math.min(xRatio, yRatio);
 
             matrix.postScale(mul, mul);
 
             // center the image
-            if (xRatio < yRatio) {
+            if (xRatio > yRatio) {
                 // more horizontal space
-                matrix.postTranslate((getWidth()-model.getBitmap().getWidth())/2, 0);
+                matrix.postTranslate((getWidth()-model.getBitmap().getWidth()*mul)/2, 0);
             } else {
                 // more vertical space
-                matrix.postTranslate(0, (getHeight()-model.getBitmap().getHeight())/2);
+                matrix.postTranslate(0, (getHeight()-model.getBitmap().getHeight()*mul)/2);
             }
         }
 
