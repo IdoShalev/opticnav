@@ -47,7 +47,7 @@ public class Moving implements MarkerState {
 
         if (srcD && dstD) {
             // interpolate between the directions
-            return lerp(this.src.getDirection(), this.dst.getDirection(), easeErp(phase));
+            return lerpWrap(this.src.getDirection(), this.dst.getDirection(), easeErp(phase));
         } else if (srcD && !dstD) {
             // marker is losing direction, keep direction of source
             return this.src.getDirection();
@@ -69,6 +69,43 @@ public class Moving implements MarkerState {
         return (float)Math.sin(in*Math.PI/2);
     }
 
+    /**
+     * Perform a linear interpolation in such a way it travels the least amount possible if it wraps 0..1
+     * @param begin The beginning value, a float in the range 0..1
+     * @param end The ending value, float in the range 0..1
+     * @param phase The phase value, float in the range 0..1
+     */
+    private static float lerpWrap(float begin, float end, float phase) {
+        if (Math.abs(end-begin) > 0.5) {
+            // wrap around
+            if (begin < end) {
+                // begin -> 0, 1 -> end
+                if (phase < begin) {
+                    return lerp(begin, 0, phase/begin);
+                } else {
+                    return lerp(1, end, (phase-begin)/(1-begin));
+                }
+            } else {
+                // begin -> 1, 0 -> end
+                if (phase < begin) {
+                    return lerp(begin, 1, phase/begin);
+                } else {
+                    return lerp(0, end, (phase-begin)/(1-begin));
+                }
+            }
+        } else {
+            // don't wrap around
+            return lerp(begin, end, phase);
+        }
+    }
+
+    /**
+     * Linear intERPolation
+     *
+     * @param begin The beginning value, a float in the range 0..1
+     * @param end The ending value, float in the range 0..1
+     * @param phase The phase value, float in the range 0..1
+     */
     private static float lerp(float begin, float end, float phase) {
         return (end-begin)*phase + begin;
     }

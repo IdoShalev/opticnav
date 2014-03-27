@@ -101,16 +101,18 @@ public class MapView extends View implements MapModelObserver {
     protected void onDraw(Canvas canvas) {
         final int STROKE_COLOR = Color.rgb(255, 255, 255);
 
-        Paint paint = new Paint();
+        Paint basePaint = new Paint();
+        basePaint.setAntiAlias(true);
         final float density = getResources().getDisplayMetrics().density;
 
         // TODO - no image
 
         final Matrix matrix = calculateViewMatrix(density);
 
-        canvas.drawBitmap(model.getBitmap(), matrix, paint);
+        canvas.drawBitmap(model.getBitmap(), matrix, basePaint);
 
         for (Map.Entry<Integer, MarkerState> p: markerStates.entrySet()) {
+            Paint paint = new Paint(basePaint);
             final int markerID = p.getKey();
             final MarkerState markerState = p.getValue();
 
@@ -118,18 +120,19 @@ public class MapView extends View implements MapModelObserver {
             final Coordinate coordinate = markerState.getCurrentCoordinate();
             final float x = (float)coordinate.getX();
             final float y = (float)coordinate.getY();
+            float[] transformedPoints = {x, y};
+            matrix.mapPoints(transformedPoints);
 
             final float radius = 15*visibilityErp(markerState.getCurrentVisibility());
 
             if (direction == null) {
                 // marker has no direction
-                float[] transformedPoints = {x, y};
-                matrix.mapPoints(transformedPoints);
+                final float circle_ratio = 0.8f;
 
                 paint.setColor(STROKE_COLOR);
-                canvas.drawCircle(transformedPoints[0], transformedPoints[1], radius * density * 1.125f, paint);
+                canvas.drawCircle(transformedPoints[0], transformedPoints[1], circle_ratio * radius * density * 1.125f, paint);
                 paint.setColor(colorFromMarkerID(markerID));
-                canvas.drawCircle(transformedPoints[0], transformedPoints[1], radius * density, paint);
+                canvas.drawCircle(transformedPoints[0], transformedPoints[1], circle_ratio * radius * density, paint);
             } else {
                 // marker has a direction
                 float[] anglePoints = {-radius, radius, 0, -radius,
@@ -153,7 +156,44 @@ public class MapView extends View implements MapModelObserver {
                 paint.setStrokeWidth(density*3);
                 canvas.drawLines(anglePoints, paint);
             }
+
+            // draw text overlay
+            final String markerName = markerState.getMarker().getName();
+            final PointF textPosition = new PointF(transformedPoints[0]+10*density, transformedPoints[1]+10*density);
+            Paint textPaint = new Paint(basePaint);
+            textPaint.setTextSize(12*density);
+            drawTextOverlay(canvas, textPaint, density, textPosition, markerName);
         }
+    }
+
+    private static void drawTextOverlay(Canvas canvas, Paint paint, float density, PointF position, String text) {
+        final PointF size = getTextSize(paint, text);
+        final float padding = 5*density;
+        final RectF textRect = new RectF(position.x, position.y, position.x+size.x + padding*2, position.y+size.y + padding*2);
+
+        paint.setColor(Color.argb(192, 255, 255, 255));
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawRoundRect(textRect, density * 2, density * 2, paint);
+
+        paint.setColor(Color.argb(255, 0, 0, 0));
+        paint.setStyle(Paint.Style.STROKE);
+
+        drawTextInBox(canvas, paint, text, textRect);
+    }
+
+    private static PointF getTextSize(Paint paint, String text) {
+        return new PointF(paint.measureText(text), paint.descent() - paint.ascent());
+    }
+
+    private static void drawTextInBox(Canvas canvas, Paint paint, String text, RectF rect) {
+        RectF bounds = new RectF(rect);
+        bounds.right = paint.measureText(text, 0, text.length());
+        bounds.bottom = paint.descent() - paint.ascent();
+
+        bounds.left += (rect.width() - bounds.right) / 2.0f;
+        bounds.top += (rect.height() - bounds.bottom) / 2.0f;
+
+        canvas.drawText(text, bounds.left, bounds.top - paint.ascent(), paint);
     }
 
     /**

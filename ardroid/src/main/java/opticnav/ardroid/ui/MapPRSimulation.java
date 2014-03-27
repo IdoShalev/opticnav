@@ -41,7 +41,7 @@ public class MapPRSimulation implements Runnable {
 
         try {
             int markers = 0;
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 150; i++) {
             int mode = random.nextInt(10);
             int x = random.nextInt(900);
             int y = random.nextInt(900);
@@ -49,11 +49,13 @@ public class MapPRSimulation implements Runnable {
             System.out.println(x+", "+y);
             if (mode == 0) {
                 // create
-                mapModel.addMarker(markers++, new Marker("test", coord));
+                mapModel.addMarker(markers, new Marker("test-"+markers, coord));
+                markers++;
             } else if (mode == 1) {
                 // create with direction
                 float direction = random.nextFloat();
-                mapModel.addMarker(markers++, new Marker("test", coord, direction));
+                mapModel.addMarker(markers, new Marker("test-"+markers, coord, direction));
+                markers++;
             } else if (mode == 2) {
                 // remove marker
                 int num = random.nextInt(markers+1);
@@ -71,7 +73,7 @@ public class MapPRSimulation implements Runnable {
                         mapModel.moveMarker(num, coord);
                     }
             }
-            Thread.sleep(200);
+            Thread.sleep(100);
         }
         } catch (InterruptedException e) {
         }
