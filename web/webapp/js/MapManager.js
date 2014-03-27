@@ -5,6 +5,7 @@
 //TODO Anchor Save
 
 function loadMapsList() {
+	var messagable = createElemMessagable("#MapMessage");
     var mapList = $("#map-list");
     
     function addEntry(name, id) {
@@ -17,7 +18,7 @@ function loadMapsList() {
     mapList.hide();
     mapList.empty();
 
-    loadMapsListAJAX($("#MapMessage"), function(maps) {
+    loadMapsListAJAX(messagable, function(maps) {
 	    for (var i = 0; i < maps.length; i++) {
 		    var map = maps[i];
 		    addEntry(map.name, map.id);
@@ -43,6 +44,7 @@ function deleteMap() {
 }
 
 $(function() {
+	var messagable = createElemMessagable("#MapMessage");
     var modal_backdrop = $("#modal-backdrop");
     var map_creation = $("#map-creation");
 
@@ -147,7 +149,7 @@ $(function() {
 		    cache: false,
 		    contentType: false,
 		    processData: false,
-			complete: ajaxMessageClosureOnError($("#MapMessage"), function() {
+			complete: ajaxMessageClosureOnError(messagable, function() {
 				loadMapsList();
 				modal_backdrop.fadeOut();
 		        map_creation.fadeOut();

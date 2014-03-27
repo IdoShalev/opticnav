@@ -1,45 +1,68 @@
-function showMessage(elem, ok, message) {
-	if (ok) {
-		showOkMessage(elem, message);
+function createElemMessagable(elem) {
+	var jQueryElem;
+	
+	if (elem.substring) {
+		// a JavaScript hack to check if a type is a string
+		// create a jQuery element out of it
+		jQueryElem = $(elem);
 	} else {
-		showErrorMessage(elem, message);
+		// assume it's a jQuery element
+		jQueryElem = elem;
 	}
+	
+	function showMessage(ok, message) {
+		jQueryElem.text(message);
+		jQueryElem.fadeIn();
+		if (ok) {
+			jQueryElem.removeClass("message_error");
+			jQueryElem.addClass("message_ok");
+		} else {
+			jQueryElem.removeClass("message_ok");
+			jQueryElem.addClass("message_error");
+		}
+	}
+	
+	function clearMessage() {
+		jQueryElem.fadeOut();
+	}
+	
+	return {"showMessage": showMessage, "clearMessage": clearMessage};
 }
 
-function showErrorMessage(elem, message) {
-	elem.text(message);
-	elem.fadeIn();
-    elem.removeClass("message_ok");
-    elem.addClass("message_error");
+function createAlertMessagable() {
+	function showMessage(ok, message) {
+		alert(message);
+	}
+	
+	return {"showMessage": showMessage};
 }
 
-function showOkMessage(elem, message) {
-	elem.text(message);
-	elem.fadeIn();
-    elem.removeClass("message_error");
-    elem.addClass("message_ok");
+function showMessage(messagable, ok, message) {
+	messagable.showMessage(ok, message);
 }
 
-function clearMessage(elem) {
-	elem.fadeOut();
+function showErrorMessage(messagable, message) {
+	messagable.showMessage(false, message);
 }
 
-function ajaxMessageClosure(elem) {
+function showOkMessage(messagable, message) {
+	messagable.showMessage(true, message);
+}
+
+function ajaxMessageClosure(messagable) {
 	return function(data) {
 		var ok = data.status >= 200 && data.status <= 299;
 		var json = data.responseJSON;
 		
 		if (json != null && json.message !== undefined) {
-			showMessage(elem, ok, json.message);
+			messagable.showMessage(ok, json.message);
 		} else {
-			showErrorMessage(elem, data.status + ": " + data.statusText);
+			messagable.showMessage(false, data.status + ": " + data.statusText);
 		}
 	}
 }
 
-
-
-function ajaxMessageClosureRedirectOnSuccess(elem, location, messageParam) {
+function ajaxMessageClosureRedirectOnSuccess(messagable, location, messageParam) {
 	return function(data) {
 		var ok = data.status >= 200 && data.status <= 299;
 		var json = data.responseJSON;
@@ -52,27 +75,30 @@ function ajaxMessageClosureRedirectOnSuccess(elem, location, messageParam) {
 					+"&"+messageParam+"="+json.message;
 		} else {
 			if (json != null && json.message !== undefined) {
-				showMessage(elem, ok, json.message);
+				messagable.showMessage(ok, json.message);
 			} else {
-				showErrorMessage(elem, data.status + ": " + data.statusText);
+				messagable.showMessage(false, data.status + ": " + data.statusText);
 			}
 		}
 	}
 }
 
-function ajaxMessageClosureOnError(elem, success){
+function ajaxMessageClosureOnError(messagable, success){
 	return function(data) {
 		var ok = data.status >= 200 && data.status <= 299;
 		var json = data.responseJSON;
 		
 		if (ok) {
-			clearMessage(elem);
+			if (messagable.clearMessage) {
+				// if the messagable can be cleared, do so
+				messagable.clearMessage();
+			}
 			success(json);
 		} else {
 			if (json != null && json.message !== undefined) {
-				showMessage(elem, ok, json.message);
+				messagable.showMessage(ok, json.message);
 			} else {
-				showErrorMessage(elem, data.status + ": " + data.statusText);
+				messagable.showMessage(false, data.status + ": " + data.statusText);
 			}
 		}
 	}

@@ -1,5 +1,5 @@
 $(function() {
-	var messageElem = $("#message");
+	var messagable = createElemMessagable("#message");
 	$("#register_Account").submit(function(event) {
 		object = new Object();
 
@@ -11,11 +11,11 @@ $(function() {
 		object.password = password;
 		
 		if (password != confirmPassword) {
-			showErrorMessage(messageElem, "Passwords do not match");
+			showErrorMessage(messagable, "Passwords do not match");
 		}
 		
 		else if(username == "" || password == "" || confirmPassword == "") {
-			showErrorMessage(messageElem, "One or more fields are missing");
+			showErrorMessage(messagable, "One or more fields are missing");
 		}
 		else{
 			$.ajax({
@@ -23,7 +23,7 @@ $(function() {
 				 url: ctx+"/api/account/register",
 				 data: JSON.stringify(object),
 				 contentType: "application/json; charset=utf-8",
-				 complete: ajaxMessageClosureRedirectOnSuccess(messageElem, "/", "message")
+				 complete: ajaxMessageClosureRedirectOnSuccess(messagable, "/", "message")
 				});
 		}
 		event.preventDefault();

@@ -1,11 +1,11 @@
 var MapAJAX = function(id) {
 	return {
-		load : function(map, loader, errorElem, onComplete) {
+		load : function(map, loader, messagable, onComplete) {
 			$.ajax({
 				type : "GET",
 				url : ctx + "/api/map/" + id,
 				contentType : "application/json; charset=utf-8",
-				complete : ajaxMessageClosureOnError(errorElem, function(json) {
+				complete : ajaxMessageClosureOnError(messagable, function(json) {
 					loader.loadMarkers(json.marker);
 					// loader.loadAnchors(json.anchor);
 					var anchors = [ {
@@ -79,12 +79,12 @@ var MapAJAX = function(id) {
 	};
 };
 
-function loadMapsListAJAX(errorElem, mapsListCallback) {
+function loadMapsListAJAX(messagable, mapsListCallback) {
 	$.ajax({
 		type : "GET",
 		url : ctx + "/api/map",
 		contentType : "application/json; charset=utf-8",
-		complete : ajaxMessageClosureOnError(errorElem, function(maps) {
+		complete : ajaxMessageClosureOnError(messagable, function(maps) {
 			mapsListCallback(maps);
 		})
 	});

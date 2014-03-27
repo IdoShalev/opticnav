@@ -1,9 +1,9 @@
 $(function(){
 	var usersList = [];
-	var errorElem = $("#message");
+	var messagable = createElemMessagable("#message");
 	var mapSelection = $("#mapSelection");
 	
-	loadMapsListAJAX(errorElem, function(maps) {
+	loadMapsListAJAX(messagable, function(maps) {
 		for (var i = 0; i < maps.length; i++) {
 			var map = maps[i];
 			
@@ -30,7 +30,7 @@ $(function(){
 			type : "GET",
 			url : ctx + "/api/account/query/" + encodeURIComponent(username),
 			contentType : "application/json; charset=utf-8",
-			complete : ajaxMessageClosureOnError(errorElem, function(json) {
+			complete : ajaxMessageClosureOnError(messagable, function(json) {
 				for (var i = 0; i < usersList.length; i++) {
 					if (json.username == usersList[i]) {
 						inList = "2";

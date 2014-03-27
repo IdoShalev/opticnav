@@ -2,7 +2,12 @@
  * The MapController class drives the view (HTML elements).
  * It handles all button clicks, marker clicks, updating the elements, etc.
  */
-// TODO - this is broken
+
+var messagable;
+$(function() {
+	// hack, hack!
+	messagable = createElemMessagable("#MapMessage");
+});
 
 var MapController = function() {
     var selectedMapId;
@@ -251,7 +256,7 @@ var MapController = function() {
                     
                     // show the map
                     view.fadeIn();
-                }, $("#MapMessage"));
+                }, messagable);
 
             	var elem = $("#map-"+id);
             	if (selectedMapId != undefined) {
@@ -267,7 +272,7 @@ var MapController = function() {
         saveMap: function() {
             if (currentMap !== null) {
                 currentMap.save(function(ok, message) {
-                	showMessage($("#MapMessage"), ok, message);
+                	showMessage(messagable, ok, message);
                 });
             }
         },
@@ -279,8 +284,8 @@ var MapController = function() {
     				type : "DELETE",
     				url : ctx + "/api/map/" + selectedMapId,
     				contentType : "application/json; charset=utf-8",
-    				complete : ajaxMessageClosureOnError($("#MapMessage"), function(ok, json) {
-    					showOkMessage($("#MapMessage"), "Map deleted");
+    				complete : ajaxMessageClosureOnError(messagable, function(ok, json) {
+    					showOkMessage(messagable, "Map deleted");
     					clearMap();
     					onDeleteMap();
     				})

@@ -1,4 +1,6 @@
 $(function() {
+	var messagable = createElemMessagable("#message");
+	
 	$("#login").submit(function(event) {
 		object = new Object();
 
@@ -13,7 +15,7 @@ $(function() {
 		 url: ctx+"/api/account/login",
 		 data: JSON.stringify(object),
 		 contentType: "application/json; charset=utf-8",
-		 complete: ajaxMessageClosureOnError($("#message"), function() {
+		 complete: ajaxMessageClosureOnError(messagable, function() {
 			 window.location.replace(ctx);
 		 })
 		});

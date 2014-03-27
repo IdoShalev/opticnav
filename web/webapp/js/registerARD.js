@@ -1,4 +1,6 @@
 $(function() {
+	var messagable = createElemMessagable("#message");
+	
 	$("#device-register").click(function() {
 		var code = $("#code").val();
 		
@@ -7,7 +9,7 @@ $(function() {
 			url: ctx+"/api/ard",
 			data: code,
 			contentType: "text/plain",
-			complete: ajaxMessageClosure($("#message"))
+			complete: ajaxMessageClosure(messagable)
 		});
 	});
 	
@@ -16,7 +18,7 @@ $(function() {
 			type: "DELETE",
 			url: ctx+"/api/ard",
 			contentType : "application/json; charset=utf-8",
-			complete: ajaxMessageClosure($("#message"))
+			complete: ajaxMessageClosure(messagable)
 		});
 	});
 	
@@ -25,7 +27,7 @@ $(function() {
 			type: "GET",
 			url: ctx+"/api/ard",
 			contentType : "application/json; charset=utf-8",
-			complete: ajaxMessageClosure($("#message"))
+			complete: ajaxMessageClosure(messagable)
 		});
 	}
 	
