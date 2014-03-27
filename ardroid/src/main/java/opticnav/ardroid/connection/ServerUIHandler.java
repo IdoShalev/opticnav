@@ -160,6 +160,7 @@ public class ServerUIHandler {
 
                             // If a Cancellable is found, cancel it
                             if (cancellable.first) {
+                                ServerUIHandler.this.cancellableSocket.empty();
                                 cancellable.second.cancel();
                             }
 
@@ -172,6 +173,9 @@ public class ServerUIHandler {
         } else if (this.server.isPresent()) {
             // hmmm... try to disconnect the server then
             tryDisconnect(source);
+        } else {
+            // nope, didn't even try to connect
+            event.cancel();
         }
     }
 
