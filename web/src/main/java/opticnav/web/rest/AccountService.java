@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import opticnav.persistence.web.PublicBroker;
 import opticnav.web.components.UserSession;
+import opticnav.web.components.UserSession.User;
 import opticnav.web.rest.pojo.Account;
 import opticnav.web.rest.pojo.Message;
 
@@ -22,6 +23,16 @@ public class AccountService extends Controller {
         public int id;
         
         public QueryPOJO(String username, int id) {
+            this.username = username;
+            this.id = id;
+        }
+    }
+    
+    public static final class AccountPOJO {
+        public String username;
+        public int id;
+        
+        public AccountPOJO(String username, int id) {
             this.username = username;
             this.id = id;
         }
@@ -75,7 +86,7 @@ public class AccountService extends Controller {
         }
     }
     
-    @RequestMapping(value="query/{username}", method=RequestMethod.GET)
+    @RequestMapping(value="/query/{username}", method=RequestMethod.GET)
     public QueryPOJO query(@PathVariable String username) throws Exception {
         int id;
         try (PublicBroker broker = new PublicBroker(dbDataSource)) {
@@ -87,5 +98,11 @@ public class AccountService extends Controller {
         }
         
         return new QueryPOJO(username, id);
+    }
+    
+    @RequestMapping(value="/current", method=RequestMethod.GET)
+    public AccountPOJO getCurrentAccount() {
+        final User user = userSession.getUser();
+        return new AccountPOJO(user.getUsername(), user.getId());
     }
 }

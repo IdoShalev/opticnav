@@ -5,6 +5,7 @@
 // TODO - this is broken
 
 var MapController = function() {
+    var selectedMapId;
     var currentMap = null;
     var anchorMode = false;
     var unsavedMapMessage = "The current map has unsaved changes. Do you want to discard all map changes?";
@@ -184,6 +185,14 @@ var MapController = function() {
         this.recalculateAnchorPositions();
     }
     
+    function clearMap() {
+		currentMap = null;
+		selectedMapId = undefined;
+		$("#map-image").hide();
+		$("#map-markers").empty();
+		$("#map-anchors").empty();
+    }
+    
     return {
     	removeCurrentMarker: function() {
             currentMap.removeMarker(getCurrentMarker());
@@ -230,6 +239,7 @@ var MapController = function() {
                     currentMap = map;
                     setAnchorMode.call(that, false);
                     $("#map-image").replaceWith(image);
+                    $("#map-image").show();
                     $("#map-image").click(function(e) {
                         var img = $(this);
                         var x = (e.pageX - img.offset().left)*(this.naturalWidth/this.width);
@@ -242,13 +252,39 @@ var MapController = function() {
                     // show the map
                     view.fadeIn();
                 }, $("#MapMessage"));
+
+            	var elem = $("#map-"+id);
+            	if (selectedMapId != undefined) {
+            		var selectedElem = $("#map-"+selectedMapId);
+            		selectedElem.removeClass("selected");
+            	}
+                elem.addClass("selected");
+                selectedMapId = id;
             }
+
         },
+        
         saveMap: function() {
             if (currentMap !== null) {
                 currentMap.save(function(ok, message) {
                 	showMessage($("#MapMessage"), ok, message);
                 });
+            }
+        },
+        
+        delMap: function(onDeleteMap) {
+        	if (currentMap !== null) {
+        		var that = this;
+    			$.ajax({
+    				type : "DELETE",
+    				url : ctx + "/api/map/" + selectedMapId,
+    				contentType : "application/json; charset=utf-8",
+    				complete : ajaxMessageClosureOnError($("#MapMessage"), function(ok, json) {
+    					showOkMessage($("#MapMessage"), "Map deleted");
+    					clearMap();
+    					onDeleteMap();
+    				})
+    			});
             }
         },
         

@@ -11,7 +11,7 @@ function loadMapsList() {
         /* Append a <entry> surrounded by an <a>
          * Example output: <a href="javascript:loadMap(1)"><entry>Map 1</entry></a> */
         mapList.append($('<a>', {href:'javascript:MapController.loadMap('+id+')'})
-                        .append($('<entry>', {}).text(name)));
+                        .append($('<entry>', {"id":"map-"+id}).text(name)));
     }
     
     mapList.hide();
@@ -32,6 +32,14 @@ function createMap() {
     var map_creation = $("#map-creation");
     modal_backdrop.fadeIn();
     map_creation.fadeIn();
+}
+
+function deleteMap() {
+	MapController.delMap(function() {
+		// map is deleted
+		// regenerate the list
+		loadMapsList();
+	});
 }
 
 $(function() {

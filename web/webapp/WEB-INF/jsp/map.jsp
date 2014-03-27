@@ -20,6 +20,9 @@
     <a href="javascript:MapController.saveMap()"><div id="save-button" class="save-button">
     Save Changes
     </div></a>
+    <a href="javascript:deleteMap()"><div id="del-button" class="del-button">
+    Delete Map
+    </div></a>
     <div id="map-list"></div>
     <a href="javascript:MapController.toggleAnchorMode()"><div id="placement-mode" class="anchor-mode-button">
     Anchor Placement mode: OFF
