@@ -6,4 +6,8 @@ public class AccountBrokerException extends Exception {
     public AccountBrokerException(Throwable exception) {
         super(exception);
     }
+
+    public AccountBrokerException(String message) {
+        super(message);
+    }
 }

@@ -110,17 +110,6 @@ public class PublicBroker implements AutoCloseable {
         return list;
     }
     
-    public String getAccountNameByID(int id)throws PublicBrokerException {
-        try (CallableStatement cs = conn.prepareCall("{? = call getAccountNameByID(?)}")) {
-            cs.registerOutParameter(1, Types.VARCHAR);
-            cs.setInt(2, id);
-            cs.execute();
-            return cs.getString(1);
-        } catch (SQLException e) {
-            throw new PublicBrokerException(e);
-        }
-    }
-
     private boolean checkUsername(String username) {
         boolean flag = true;
         if (username == null || username.equals("")) {

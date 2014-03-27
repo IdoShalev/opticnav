@@ -10,6 +10,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import opticnav.persistence.web.exceptions.AccountBrokerException;
+import opticnav.persistence.web.exceptions.PublicBrokerException;
 import opticnav.persistence.web.map.Anchor;
 import opticnav.persistence.web.map.GetMap;
 import opticnav.persistence.web.map.MapsListEntry;
@@ -21,9 +22,24 @@ public class AccountBroker implements AutoCloseable {
     private int accountID;
 
     public AccountBroker(DataSource dataSource, int accountID)
-            throws SQLException {
+            throws SQLException, AccountBrokerException {
         this.conn = DBUtil.getConnectionFromDataSource(dataSource);
         this.accountID = accountID;
+        validateUserID();
+    }
+    
+    private void validateUserID() throws AccountBrokerException {
+        try (CallableStatement cs = conn.prepareCall("{? = call validateUserID(?)}")) {
+            cs.registerOutParameter(1, Types.BOOLEAN);
+            cs.setInt(2, this.accountID);
+            cs.execute();
+            if(!cs.getBoolean(1))
+            {
+                throw new AccountBrokerException("User id does not exist");
+            }
+        }catch (SQLException e) {
+            throw new AccountBrokerException(e);
+        }
     }
 
     @Override
@@ -228,5 +244,16 @@ public class AccountBroker implements AutoCloseable {
             throw new AccountBrokerException(e);
         }
         return list;
+    }
+    
+    public String getUserNameByID()throws PublicBrokerException {
+        try (CallableStatement cs = conn.prepareCall("{? = call getUsernameByID(?)}")) {
+            cs.registerOutParameter(1, Types.VARCHAR);
+            cs.setInt(2, this.accountID);
+            cs.execute();
+            return cs.getString(1);
+        } catch (SQLException e) {
+            throw new PublicBrokerException(e);
+        }
     }
 }
