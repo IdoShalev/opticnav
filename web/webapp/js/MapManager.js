@@ -65,7 +65,6 @@ $(function() {
     });
     $("#marker-popup").hide();
     $("#anchor-popup").hide();
-    $("#alert-popup").hide();
     
     $("#anchor-save").click(function() {
         var popup = $("#anchor-popup");
@@ -124,7 +123,7 @@ $(function() {
     
     $("#alert-ok").click(function(){
     	modal_backdrop.fadeOut();
-    	$("#alert-popup").text("");
+    	$("#alert-message").text("");
     	$("#alert-popup").fadeOut();
     });
 

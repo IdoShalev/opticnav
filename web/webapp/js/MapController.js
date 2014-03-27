@@ -103,15 +103,7 @@ var MapController = function() {
     	} else {
     		// place marker
 	        var transform = currentMap.getMapTransform();
-	        
-	        /* Broken, don't know if we'll use JACKY TODO
-	        if(transform == null){
-		        $("#modal_backdrop").fadeIn();
-		        $("#alert-message").append("You need three anchors to place markers");
-	        	$("#alert-popup").fadeIn();
-	        	
-	        }*/
-	        
+       
             var gps = transform.imageLocalToGPS(x, y);
 	        currentMap.addMarker("Untitled marker", gps);
 	        generateMarkerElements.call(this);
@@ -294,9 +286,18 @@ var MapController = function() {
         },
         
         toggleAnchorMode: function() {
-            if (currentMap !== null) {
-                setAnchorMode.call(this, !anchorMode);
-            }
+        	var list = currentMap.getAnchorList();
+        	
+        	if(list.length < 3){
+        		$("#modal-backdrop").fadeIn();
+    	        $("#alert-message").text("You can't place markers with less" +
+    	        		" than three anchors");
+            	$("#alert-popup").fadeIn();
+        	}else{
+        		 if (currentMap !== null) {
+                     setAnchorMode.call(this, !anchorMode);
+                 }
+        	}
         },
 
         // Markers have moved and the view need to be updated. This is called
