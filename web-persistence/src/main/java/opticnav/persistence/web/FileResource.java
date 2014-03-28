@@ -19,4 +19,13 @@ public class FileResource extends Resource {
     public InputStream getInputStream() throws FileNotFoundException {
         return new FileInputStream(file);
     }
+
+    @Override
+    public int getSize() {
+        long length = this.file.length();
+        if (length < 0 || length > Integer.MAX_VALUE) {
+            throw new IllegalStateException("File size is out of range (too large)");
+        }
+        return (int)length;
+    }
 }

@@ -35,10 +35,6 @@ public class InstanceService {
     
     public static class InstanceIDPOJO {
         public int instance_id;
-        
-        public InstanceIDPOJO(int id) {
-            this.instance_id = id;
-        }
     }
     
     @Autowired
@@ -56,10 +52,10 @@ public class InstanceService {
     @RequestMapping(method=RequestMethod.POST)
     public InstanceIDPOJO startInstance(@RequestBody StartInstancePOJO startInstancePOJO)
             throws Exception {
-        final int instanceID;
         
         final String mapName;
         final MimeType mapImageType;
+        final int mapImageSize;
         final InputStream mapImageInput;
         final List<InstanceDeployment.Marker> mapMarkers;
         final List<InstanceDeployment.Anchor> mapAnchors;
@@ -99,6 +95,7 @@ public class InstanceService {
             try (WebResourceDAO resDao = new WebResourceDAO(resourcePath, dbDataSource)) {
                 final Resource res = resDao.getResource(imageResourceID);
                 mapImageType = res.getMimeType();
+                mapImageSize = res.getSize();
                 mapImageInput = res.getInputStream();
             }
         }
@@ -107,14 +104,14 @@ public class InstanceService {
             final InstanceDeploymentBuilder builder = new InstanceDeploymentBuilder();
             
             InstanceDeployment deployment = builder.setMapName(mapName)
-                                                   .setMapImage(mapImageType, mapImageInput, mapAnchors)
+                                                   .setMapImage(mapImageType, mapImageSize, mapImageInput, mapAnchors)
                                                    .setMapMarkers(mapMarkers)
                                                    .setARDList(ardList)
                                                    .build();
             
-            instanceID = broker.deployInstance(deployment);
+            InstanceIDPOJO pojo = new InstanceIDPOJO();
+            pojo.instance_id = broker.deployInstance(deployment);
+            return pojo;
         }
-        
-        return new InstanceIDPOJO(instanceID);
     }
 }

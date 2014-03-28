@@ -17,4 +17,6 @@ public abstract class Resource {
     }
 
     public abstract InputStream getInputStream() throws IOException;
+
+    public abstract int getSize();
 }

@@ -9,18 +9,20 @@ import javax.activation.MimeType;
 public class InstanceDeployment {
     private final String mapName;
     private final MimeType mapImageType;
+    private final int mapImageSize;
     private final InputStream mapImageInput;
     private final List<InstanceDeployment.Anchor> mapAnchors;
     private final List<InstanceDeployment.Marker> mapMarkers;
     private final List<InstanceDeployment.ARDIdentifier> ardList;
 
     public InstanceDeployment(String mapName,
-            MimeType mapImageType, InputStream mapImageInput,
+            MimeType mapImageType, int mapImageSize, InputStream mapImageInput,
             List<InstanceDeployment.Anchor> mapAnchors,
             List<InstanceDeployment.Marker> mapMarkers,
             List<InstanceDeployment.ARDIdentifier> ardList) {
         this.mapName       = mapName;
         this.mapImageType  = mapImageType;
+        this.mapImageSize  = mapImageSize;
         this.mapImageInput = mapImageInput;
         this.mapAnchors    = Collections.unmodifiableList(mapAnchors);
         this.mapMarkers    = Collections.unmodifiableList(mapMarkers);
@@ -28,7 +30,8 @@ public class InstanceDeployment {
     }
     
     public boolean hasMapImage() {
-        return this.mapImageType != null && this.mapImageInput != null && this.mapAnchors != null;
+        return this.mapImageType != null && this.mapImageSize != 0 &&
+               this.mapImageInput != null && this.mapAnchors != null;
     }
 
     public String getMapName() {
@@ -37,6 +40,10 @@ public class InstanceDeployment {
 
     public MimeType getMapImageType() {
         return mapImageType;
+    }
+
+    public int getMapImageSize() {
+        return mapImageSize;
     }
 
     public InputStream getMapImageInput() {

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.admin.AdminConnectionException;
+import opticnav.ardd.admin.AdminStartInstanceState;
 import opticnav.ardd.admin.InstanceDeployment;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PrimitiveReader;
@@ -37,9 +38,46 @@ public class AdminBroker implements AdminConnection {
     }
     
     @Override
-    public int deployInstance(InstanceDeployment deployment) {
-        // TODO - do some work!
-        return 0;
+    public AdminStartInstanceState deployInstance(InstanceDeployment d)
+            throws AdminConnectionException {
+        try {
+            final boolean hasMapImage = d.hasMapImage();
+            
+            this.output.writeString(d.getMapName());
+            this.output.writeUInt8(hasMapImage?1:0);
+            if (hasMapImage) {
+                this.output.writeString(d.getMapImageType().getPrimaryType());
+                this.output.writeBlobFromInputStream(d.getMapImageSize(), d.getMapImageInput());
+                
+                assert d.getMapAnchors().size() == 3;
+                for (InstanceDeployment.Anchor anchor: d.getMapAnchors()) {
+                    this.output.writeSInt32(anchor.getLng());
+                    this.output.writeSInt32(anchor.getLat());
+                    this.output.writeSInt32(anchor.getLocalX());
+                    this.output.writeSInt32(anchor.getLocalY());
+                }
+            }
+            
+            this.output.writeUInt31(d.getMapMarkers().size());
+            for (InstanceDeployment.Marker marker: d.getMapMarkers()) {
+                this.output.writeString(marker.getName());
+                this.output.writeSInt32(marker.getLng());
+                this.output.writeSInt32(marker.getLat());
+            }
+            
+            this.output.flush();
+            int result = this.input.readUInt8();
+            
+            // TODO - replace with constants
+            if (result == 0) {
+                int instanceID = this.input.readUInt31();
+                return new AdminStartInstanceState();
+            } else {
+                
+            }
+        } catch (IOException e) {
+            throw new AdminConnectionException(e);
+        }
     }
 
     @Override

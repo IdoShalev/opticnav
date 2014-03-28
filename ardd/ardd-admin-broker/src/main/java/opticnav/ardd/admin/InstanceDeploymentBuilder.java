@@ -17,6 +17,7 @@ import opticnav.ardd.admin.InstanceDeployment.Marker;
 public class InstanceDeploymentBuilder {
     private String mapName;
     private MimeType mapImageType;
+    private int mapImageSize;
     private InputStream mapImageInput;
     private List<Anchor> mapAnchors;
     private List<Marker> mapMarkers;
@@ -27,7 +28,7 @@ public class InstanceDeploymentBuilder {
     }
     
     public InstanceDeployment build() {
-        return new InstanceDeployment(mapName, mapImageType, mapImageInput, mapAnchors,
+        return new InstanceDeployment(mapName, mapImageType, mapImageSize, mapImageInput, mapAnchors,
                                       mapMarkers, ardList);
     }
 
@@ -36,11 +37,12 @@ public class InstanceDeploymentBuilder {
         return this;
     }
 
-    public InstanceDeploymentBuilder setMapImage(MimeType mapImageType, InputStream mapImageInput,
+    public InstanceDeploymentBuilder setMapImage(MimeType mapImageType, int mapImageSize, InputStream mapImageInput,
             List<InstanceDeployment.Anchor> mapAnchors) {
-        this.mapImageType = mapImageType;
+        this.mapImageType  = mapImageType;
+        this.mapImageSize  = mapImageSize;
         this.mapImageInput = mapImageInput;
-        this.mapAnchors = mapAnchors;
+        this.mapAnchors    = mapAnchors;
         return this;
     }
 

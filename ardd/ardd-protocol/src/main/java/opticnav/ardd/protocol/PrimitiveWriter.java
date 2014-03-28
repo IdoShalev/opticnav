@@ -3,7 +3,10 @@ package opticnav.ardd.protocol;
 import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+
+import org.apache.commons.io.IOUtils;
 
 /**
  * PrimitiveWriter can write any data type from the ardd protocols.
@@ -76,5 +79,12 @@ public final class PrimitiveWriter implements Flushable, Closeable {
     @Override
     public void close() throws IOException {
         this.out.close();
+    }
+
+    public void writeBlobFromInputStream(int length, InputStream input) throws IOException {
+        long writeLength = IOUtils.copyLarge(input, this.out, 0, length);
+        if (length != writeLength) {
+            throw new IOException("Expected to write " + length + " bytes, got " + writeLength);
+        }
     }
 }
