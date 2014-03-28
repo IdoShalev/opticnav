@@ -1,8 +1,20 @@
+var usersList = [];
 $(function(){
-	var usersList = [];
 	var messagable = createElemMessagable("#message");
 	var mapSelection = $("#mapSelection");
 	
+	var currentUser;
+	
+	$.ajax({
+		type : "GET",
+		url : ctx + "/api/account/current",
+		contentType : "application/json; charset=utf-8",
+		complete : ajaxMessageClosureOnError(messagable, function(json) {
+			// XXX - race condition
+			currentUser = {"username": json.username, "id": json.id};
+		})
+	});
+
 	loadMapsListAJAX(messagable, function(maps) {
 		for (var i = 0; i < maps.length; i++) {
 			var map = maps[i];
@@ -22,32 +34,69 @@ $(function(){
 	});
 	
 	$("#inst-invite").click(function() {
-		var inList = "1";
 		var username = $("#invite-to-inst").val();
-		var selectedUsers = $("#inst-select-users");
+		if (username === "") {
+			showErrorMessage(messagable,"A username is required");
+		}else {
 		// GET /account/query/{username}
-		$.ajax({
-			type : "GET",
-			url : ctx + "/api/account/query/" + encodeURIComponent(username),
-			contentType : "application/json; charset=utf-8",
-			complete : ajaxMessageClosureOnError(messagable, function(json) {
-				for (var i = 0; i < usersList.length; i++) {
-					if (json.username == usersList[i]) {
-						inList = "2";
+			$.ajax({
+				type : "GET",
+				url : ctx + "/api/account/query/" + encodeURIComponent(username),
+				contentType : "application/json; charset=utf-8",
+				complete : ajaxMessageClosureOnError(messagable, function(json) {
+					if (json.id == currentUser.id) {
+						showErrorMessage(messagable,"You can't invite yourself");
+					} else {
+						var isInList = false;
+						for (var i = 0; i < usersList.length; i++) {
+							if (json.id == usersList[i].id) {
+								isInList = true;
+								break;
+							}
+						}
+						if (!isInList) {
+							usersList.push({"username": json.username, "id": json.id});
+							createList(usersList);
+						}
 					}
-				}
-				if (inList != "2") {
-					var li = $("<li>");
-					li.text(json.username);
-					selectedUsers.append(li);
-					usersList.push(json.username);
-				}
-			})
-		});
+				})
+			});
+		}
 	});
 	
-var mapList = $("#map-list");
-    
+	function createList(usersList) {
+		var selectedUsers = $("#inst-select-users");
+		selectedUsers.empty();
+		for (var i = 0; i < usersList.length; i++) {
+			var $li = $("<li>");
+			$li.text(usersList[i].username);
+			var $delete = $li.append($("<span>", {"class":"del"}));
+			new function() {
+				var id = usersList[i].id;
+				$delete.bind({
+					click: function() {
+						removeFromList(id,usersList);
+					},
+					mousehover: function() {
+						
+					}
+				});
+			}();
+			selectedUsers.append($li);	
+		}
+	}
+	
+	function removeFromList(id, usersList) {
+		for (var i = 0; i < usersList.length; i++) {
+			if (id === usersList[i].id) {
+				usersList.splice(i,1);
+				createList(usersList);
+			}
+		}
+	}
+	
+	var mapList = $("#map-list");
+	    
     function addEntry(name, id) {
         /* Append a <entry> surrounded by an <a>
          * Example output: <a href="javascript:loadMap(1)"><entry>Map 1</entry></a> */

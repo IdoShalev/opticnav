@@ -104,3 +104,13 @@
 #map-list entry.selected {
     background-color: #ccc;
 }
+
+.del {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	right: 50px;
+	top: 8.2px;
+	background: url("../css/images/x.svg") no-repeat scroll 0% 0% / contain transparent;
+	cursor: pointer;
+}
