@@ -1,4 +1,4 @@
-package opticnav.web.rest.pojo;
+package opticnav.web.controllers.rest.pojo;
 
 import org.springframework.context.MessageSource;
 

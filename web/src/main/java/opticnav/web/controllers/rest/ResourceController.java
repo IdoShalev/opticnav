@@ -1,4 +1,4 @@
-package opticnav.web.rest;
+package opticnav.web.controllers.rest;
 
 import java.io.InputStream;
 
@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 
 import opticnav.persistence.web.Resource;
 import opticnav.persistence.web.WebResourceDAO;
-import opticnav.web.rest.pojo.Message;
+import opticnav.web.controllers.rest.pojo.Message;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/resource/**")
-public class ResourceService extends Controller {
+public class ResourceController extends Controller {
     @Autowired
     private DataSource dbDataSource;
     

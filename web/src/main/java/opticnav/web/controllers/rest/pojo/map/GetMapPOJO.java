@@ -1,4 +1,4 @@
-package opticnav.web.rest.pojo.map;
+package opticnav.web.controllers.rest.pojo.map;
 
 import java.util.LinkedList;
 import java.util.List;

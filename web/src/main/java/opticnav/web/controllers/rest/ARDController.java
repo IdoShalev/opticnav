@@ -1,4 +1,4 @@
-package opticnav.web.rest;
+package opticnav.web.controllers.rest;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -7,7 +7,7 @@ import opticnav.ardd.protocol.ConfCode;
 import opticnav.persistence.web.WebAccountDAO;
 import opticnav.web.arddbrokerpool.ARDdAdminPool;
 import opticnav.web.components.UserSession;
-import opticnav.web.rest.pojo.Message;
+import opticnav.web.controllers.rest.pojo.Message;
 import opticnav.web.util.InputUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/ard")
-public class ARDService extends Controller {
+public class ARDController extends Controller {
     @Autowired
     private javax.sql.DataSource dbDataSource;
     

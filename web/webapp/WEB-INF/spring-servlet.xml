@@ -16,7 +16,6 @@
    <mvc:resources location="/js/" mapping="/js/**" />
    <mvc:resources location="/css/" mapping="/css/**" />
   
-   <context:component-scan base-package="opticnav.web.rest" />
    <context:component-scan base-package="opticnav.web.controllers" />
    <mvc:annotation-driven />
    

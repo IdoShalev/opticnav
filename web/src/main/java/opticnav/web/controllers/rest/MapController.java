@@ -1,4 +1,4 @@
-package opticnav.web.rest;
+package opticnav.web.controllers.rest;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,8 +13,8 @@ import opticnav.persistence.web.map.MapsListEntry;
 import opticnav.persistence.web.map.Marker;
 import opticnav.persistence.web.map.ModifyMap;
 import opticnav.web.components.UserSession;
-import opticnav.web.rest.pojo.Message;
-import opticnav.web.rest.pojo.map.*;
+import opticnav.web.controllers.rest.pojo.Message;
+import opticnav.web.controllers.rest.pojo.map.*;
 import opticnav.web.util.InputUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/map")
-public class MapService extends Controller {
+public class MapController extends Controller {
     @Autowired
     private javax.sql.DataSource dbDataSource;
     

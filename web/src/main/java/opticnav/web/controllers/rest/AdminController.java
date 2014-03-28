@@ -1,4 +1,4 @@
-package opticnav.web.rest;
+package opticnav.web.controllers.rest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/admin")
-public class AdminService extends Controller {
-    public static class AccountPOJO {
+public class AdminController extends Controller {
+    private static class AccountPOJO {
         public final int id;
         public final String name;
         public final String passCode;

@@ -1,12 +1,12 @@
-package opticnav.web.rest;
+package opticnav.web.controllers.rest;
 
 import javax.servlet.http.HttpServletResponse;
 
 import opticnav.persistence.web.WebAccountPublicDAO;
 import opticnav.web.components.UserSession;
 import opticnav.web.components.UserSession.User;
-import opticnav.web.rest.pojo.Account;
-import opticnav.web.rest.pojo.Message;
+import opticnav.web.controllers.rest.pojo.Account;
+import opticnav.web.controllers.rest.pojo.Message;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/account/**")
-public class AccountService extends Controller {
+public class AccountController extends Controller {
     public static final class QueryPOJO {
         public String username;
         public int id;

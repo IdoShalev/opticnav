@@ -1,4 +1,4 @@
-package opticnav.web.rest;
+package opticnav.web.controllers.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +14,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import opticnav.persistence.web.WebResourceDAO;
 import opticnav.persistence.web.exceptions.WebResourceDAOExcpetion;
-import opticnav.web.rest.Controller.MessageException;
+import opticnav.web.controllers.rest.Controller.MessageException;
 
 public class ResourceUploadUtil {
     public static int upload(Controller c, WebResourceDAO resourceDAO,

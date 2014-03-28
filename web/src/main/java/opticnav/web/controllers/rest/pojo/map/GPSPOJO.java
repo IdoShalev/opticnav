@@ -1,4 +1,4 @@
-package opticnav.web.rest.pojo.map;
+package opticnav.web.controllers.rest.pojo.map;
 
 public class GPSPOJO {
     public int lng, lat;

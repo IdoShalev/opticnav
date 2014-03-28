@@ -1,4 +1,4 @@
-package opticnav.web.rest.pojo;
+package opticnav.web.controllers.rest.pojo;
 
 public class Message {
     public String message;

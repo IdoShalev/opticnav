@@ -1,11 +1,11 @@
-package opticnav.web.rest;
+package opticnav.web.controllers.rest;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import opticnav.ardd.admin.AdminConnectionException;
-import opticnav.web.rest.pojo.LocaleMessage;
-import opticnav.web.rest.pojo.Message;
+import opticnav.web.controllers.rest.pojo.LocaleMessage;
+import opticnav.web.controllers.rest.pojo.Message;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;

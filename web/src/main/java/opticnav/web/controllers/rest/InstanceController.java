@@ -1,4 +1,4 @@
-package opticnav.web.rest;
+package opticnav.web.controllers.rest;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/instance")
-public class InstanceService {
+public class InstanceController {
     public static class StartInstancePOJO {
         public int map_id;
         public List<Integer> accounts;
