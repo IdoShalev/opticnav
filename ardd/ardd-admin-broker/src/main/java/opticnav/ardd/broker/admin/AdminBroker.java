@@ -24,7 +24,7 @@ public class AdminBroker implements AdminConnection {
      * @return 0 if no ARD was registered, ARD ID (1+) if registered
      */
     @Override
-    public int registerARDWithConfCode(ConfCode code)
+    public int registerARD(ConfCode code)
             throws AdminConnectionException {
         try {
             this.output.writeUInt8(Commands.REGARD);

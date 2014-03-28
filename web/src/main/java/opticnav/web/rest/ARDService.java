@@ -42,7 +42,7 @@ public class ARDService extends Controller {
                     ConfCode code = new ConfCode(confirmationCode);
                     
                     try (AdminConnection b = this.pool.getAdminBroker()) {
-                        int ardID = b.registerARDWithConfCode(code);
+                        int ardID = b.registerARD(code);
                         boolean successful = ardID != 0;
                         
                         if (successful) {

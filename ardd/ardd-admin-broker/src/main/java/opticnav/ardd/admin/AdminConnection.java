@@ -13,7 +13,7 @@ public interface AdminConnection extends AutoCloseable {
      * @return The ARD id identifying the device (not the passCode)
      * @throws AdminConnectionException
      */
-    public int registerARDWithConfCode(ConfCode confcode) throws AdminConnectionException;
+    public int registerARD(ConfCode confcode) throws AdminConnectionException;
     
     /**
      * Deploys an instance to ARDd

@@ -17,7 +17,7 @@ public class RegARDCommand implements Command<AdminConnection> {
             if (ConfCode.isStringCodeValid(confcodeString)) {
                 ConfCode confcode = new ConfCode(args[0]);
                 
-                int ard_id = conn.registerARDWithConfCode(confcode);
+                int ard_id = conn.registerARD(confcode);
                 boolean registered = ard_id != 0;
                 
                 if (registered) {
