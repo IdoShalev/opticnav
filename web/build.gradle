@@ -8,7 +8,7 @@ configurations {
 
 dependencies {
     compile project(':ardd-admin-broker')
-    compile project(':web-db-broker')
+    compile project(':web-persistence')
     
     compile 'org.springframework:spring-webmvc:4.0.2.RELEASE'
     compile 'org.springframework:spring-jdbc:4.0.2.RELEASE'

@@ -7,7 +7,7 @@ include 'ardd-ard-broker'
 include 'ardd-terminal-shared'
 include 'ardd-terminal-admin'
 include 'ardroid'
-include 'web-db-broker'
+include 'web-persistence'
 include 'web'
 
 project(":ardd").projectDir = file("ardd/ardd")
@@ -17,5 +17,5 @@ project(":ardd-ard-broker").projectDir = file("ardd/ardd-ard-broker")
 project(":ardd-terminal-shared").projectDir = file("ardd/ardd-terminal-shared")
 project(":ardd-terminal-admin").projectDir = file("ardd/ardd-terminal-admin")
 
-project(":web-db-broker").projectDir = file("persistence/web-db-broker")
+project(":web-persistence").projectDir = file("web-persistence")
 
