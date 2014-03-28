@@ -246,7 +246,7 @@ public class AccountBroker implements AutoCloseable {
         return list;
     }
     
-    public String getUserNameByID()throws PublicBrokerException {
+    public String getUsername() throws PublicBrokerException {
         try (CallableStatement cs = conn.prepareCall("{? = call getUsernameByID(?)}")) {
             cs.registerOutParameter(1, Types.VARCHAR);
             cs.setInt(2, this.accountID);

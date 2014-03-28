@@ -84,6 +84,13 @@ public class ResourceBroker implements AutoCloseable {
         }
     }
     
+    /**
+     * Get a Resource (type and InputStream of Resource, as if it were a file).
+     * 
+     * @param id The ID of the resource
+     * @return A Resource object, or null if not found
+     * @throws ResourceBrokerExcpetion
+     */
     public Resource getResource(int id)
             throws ResourceBrokerExcpetion {
         // read row in DB first to get mimetype and that it's

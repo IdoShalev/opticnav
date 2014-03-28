@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.admin.AdminConnectionException;
+import opticnav.ardd.admin.InstanceDeployment;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
@@ -33,6 +34,12 @@ public class AdminBroker implements AdminConnection {
         } catch (IOException e) {
             throw new AdminConnectionException(e);
         }
+    }
+    
+    @Override
+    public int deployInstance(InstanceDeployment deployment) {
+        // TODO - do some work!
+        return 0;
     }
 
     @Override
