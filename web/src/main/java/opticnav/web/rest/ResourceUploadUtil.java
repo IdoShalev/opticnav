@@ -17,7 +17,7 @@ import opticnav.persistence.web.exceptions.WebResourceDAOExcpetion;
 import opticnav.web.rest.Controller.MessageException;
 
 public class ResourceUploadUtil {
-    public static int upload(Controller c, WebResourceDAO resourceBroker,
+    public static int upload(Controller c, WebResourceDAO resourceDAO,
             HttpServletRequest request)
             throws MessageException, IOException, FileUploadException,
             WebResourceDAOExcpetion {
@@ -43,7 +43,7 @@ public class ResourceUploadUtil {
         int resourceID;
         
         try (InputStream input = item.openStream()) {
-            resourceID = resourceBroker.createResource(contentType, input);
+            resourceID = resourceDAO.createResource(contentType, input);
         }
         
         return resourceID;
