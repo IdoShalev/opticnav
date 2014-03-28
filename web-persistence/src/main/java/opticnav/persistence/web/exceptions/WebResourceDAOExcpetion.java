@@ -1,9 +1,9 @@
 package opticnav.persistence.web.exceptions;
 
-public class PublicBrokerException extends Exception {
+public class WebResourceDAOExcpetion extends Exception {
     private static final long serialVersionUID = 1L;
 
-    public PublicBrokerException(Throwable exception) {
+    public WebResourceDAOExcpetion(Throwable exception) {
         super(exception);
     }
 }

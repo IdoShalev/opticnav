@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import opticnav.persistence.web.AccountBroker;
-import opticnav.persistence.web.ResourceBroker;
+import opticnav.persistence.web.WebAccountDAO;
+import opticnav.persistence.web.WebResourceDAO;
 import opticnav.persistence.web.map.Anchor;
 import opticnav.persistence.web.map.GetMap;
 import opticnav.persistence.web.map.MapsListEntry;
@@ -40,16 +40,16 @@ public class MapService extends Controller {
     
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
     public GetMapPOJO getMap(@PathVariable("id") int id) throws Exception {
-        try (AccountBroker broker = new AccountBroker(dbDataSource, userSession.getUser().getId())) {
-            GetMap map = broker.getMap(id);
+        try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, userSession.getUser().getId())) {
+            GetMap map = dao.getMap(id);
             return new GetMapPOJO(map);
         }
     }
     
     @RequestMapping(method=RequestMethod.GET)
     public List<GetMapsListEntryPOJO> getMapsList() throws Exception {
-        try (AccountBroker broker = new AccountBroker(dbDataSource, userSession.getUser().getId())) {
-            List<MapsListEntry> mapsList = broker.getMapsList();
+        try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, userSession.getUser().getId())) {
+            List<MapsListEntry> mapsList = dao.getMapsList();
             List<GetMapsListEntryPOJO> list = new LinkedList<>();
             
             for (MapsListEntry entry: mapsList) {
@@ -73,11 +73,11 @@ public class MapService extends Controller {
             throw new BadRequest("map.noname");
         }
         
-        try (ResourceBroker broker = new ResourceBroker(resourcePath, dbDataSource)) {
-            imageResourceID = ResourceUploadUtil.upload(this, broker, request);
+        try (WebResourceDAO dao = new WebResourceDAO(resourcePath, dbDataSource)) {
+            imageResourceID = ResourceUploadUtil.upload(this, dao, request);
         }
-        try (AccountBroker broker = new AccountBroker(dbDataSource, userSession.getUser().getId())) {
-            mapID = broker.createMap(name, imageResourceID);
+        try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, userSession.getUser().getId())) {
+            mapID = dao.createMap(name, imageResourceID);
         }
         
         return new CreateMapPOJO(mapID);
@@ -86,7 +86,7 @@ public class MapService extends Controller {
     @RequestMapping(value="/{id}", method=RequestMethod.PUT)
     public Message modifyMap(@PathVariable("id") int id,
             @RequestBody ModifyMapPOJO map) throws Exception {
-        try (AccountBroker broker = new AccountBroker(dbDataSource, userSession.getUser().getId())) {
+        try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, userSession.getUser().getId())) {
             ModifyMap pMap = new ModifyMap();
             for (MarkerPOJO m: map.markers) {
                 // TODO - resource
@@ -97,7 +97,7 @@ public class MapService extends Controller {
                 Anchor anchor = new Anchor(a.gps.lng, a.gps.lat, a.local.x, a.local.y);
                 pMap.addAnchor(anchor);
             }
-            broker.modifyMap(id, pMap);
+            dao.modifyMap(id, pMap);
             
             return ok("map.saved");
         }
@@ -105,8 +105,8 @@ public class MapService extends Controller {
 
     @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
     public Message deleteMap(@PathVariable("id") int id) throws Exception {
-        try (AccountBroker broker = new AccountBroker(dbDataSource, userSession.getUser().getId())) {
-            broker.deleteMap(id);
+        try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, userSession.getUser().getId())) {
+            dao.deleteMap(id);
             return ok("map.deleted");
         }
     }

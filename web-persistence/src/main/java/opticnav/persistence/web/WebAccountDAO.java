@@ -9,49 +9,49 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import opticnav.persistence.web.exceptions.AccountBrokerException;
-import opticnav.persistence.web.exceptions.PublicBrokerException;
+import opticnav.persistence.web.exceptions.WebAccountDAOException;
+import opticnav.persistence.web.exceptions.WebAccountPublicDAOException;
 import opticnav.persistence.web.map.Anchor;
 import opticnav.persistence.web.map.GetMap;
 import opticnav.persistence.web.map.MapsListEntry;
 import opticnav.persistence.web.map.Marker;
 import opticnav.persistence.web.map.ModifyMap;
 
-public class AccountBroker implements AutoCloseable {
+public class WebAccountDAO implements AutoCloseable {
     private java.sql.Connection conn;
     private int accountID;
 
-    public AccountBroker(DataSource dataSource, int accountID)
-            throws SQLException, AccountBrokerException {
+    public WebAccountDAO(DataSource dataSource, int accountID)
+            throws SQLException, WebAccountDAOException {
         this.conn = DBUtil.getConnectionFromDataSource(dataSource);
         this.accountID = accountID;
         validateUserID();
     }
     
-    private void validateUserID() throws AccountBrokerException {
+    private void validateUserID() throws WebAccountDAOException {
         try (CallableStatement cs = conn.prepareCall("{? = call validateUserID(?)}")) {
             cs.registerOutParameter(1, Types.BOOLEAN);
             cs.setInt(2, this.accountID);
             cs.execute();
             if(!cs.getBoolean(1))
             {
-                throw new AccountBrokerException("User id does not exist");
+                throw new WebAccountDAOException("User id does not exist");
             }
         }catch (SQLException e) {
-            throw new AccountBrokerException(e);
+            throw new WebAccountDAOException(e);
         }
     }
 
     @Override
-    public void close() throws AccountBrokerException {
+    public void close() throws WebAccountDAOException {
         try {
             this.conn.close();
         } catch (SQLException e) {
-            throw new AccountBrokerException(e);
+            throw new WebAccountDAOException(e);
         }
     }
 
-    public int getARD() throws AccountBrokerException {
+    public int getARD() throws WebAccountDAOException {
         try (CallableStatement cs = conn.prepareCall("{? = call getARD(?)}")) {
             cs.setInt(2, accountID);
             cs.registerOutParameter(1, Types.INTEGER);
@@ -60,16 +60,16 @@ public class AccountBroker implements AutoCloseable {
             int ard_id = cs.getInt(1);
             return ard_id;
         } catch (SQLException e) {
-            throw new AccountBrokerException(e);
+            throw new WebAccountDAOException(e);
         }
 
     }
 
-    public boolean hasARD() throws AccountBrokerException {
+    public boolean hasARD() throws WebAccountDAOException {
         return getARD() != 0;
     }
 
-    public void setARD(int ardID) throws AccountBrokerException {
+    public void setARD(int ardID) throws WebAccountDAOException {
         try (CallableStatement cs = conn.prepareCall("{call setARD(?, ?)}")) {
             cs.setInt(1, accountID);
             cs.setInt(2, ardID);
@@ -77,23 +77,23 @@ public class AccountBroker implements AutoCloseable {
             cs.execute();
             conn.commit();
         } catch (SQLException e) {
-            throw new AccountBrokerException(e);
+            throw new WebAccountDAOException(e);
         }
     }
 
-    public void removeARD() throws AccountBrokerException {
+    public void removeARD() throws WebAccountDAOException {
         try (CallableStatement cs = conn.prepareCall("{call deleteARD(?)}")) {
             cs.setInt(1, accountID);
 
             cs.execute();
             conn.commit();
         } catch (SQLException e) {
-            throw new AccountBrokerException(e);
+            throw new WebAccountDAOException(e);
         }
     }
 
     public int createMap(String name, int imageResource)
-            throws AccountBrokerException {
+            throws WebAccountDAOException {
         try (CallableStatement cs = conn
                 .prepareCall("{? = call createMap(?, ?, ?)}")) {
             cs.registerOutParameter(1, Types.INTEGER);
@@ -107,22 +107,22 @@ public class AccountBroker implements AutoCloseable {
 
             return id;
         } catch (SQLException e) {
-            throw new AccountBrokerException(e);
+            throw new WebAccountDAOException(e);
         }
     }
 
-    public void modifyMap(int id, ModifyMap map) throws AccountBrokerException {
+    public void modifyMap(int id, ModifyMap map) throws WebAccountDAOException {
         try (CallableStatement cs = conn.prepareCall("{call deleteMarker(?)}")) {
             cs.setInt(1, id);
             cs.execute();
         } catch (SQLException e) {
-            throw new AccountBrokerException(e);
+            throw new WebAccountDAOException(e);
         }
         try (CallableStatement cs = conn.prepareCall("{call deleteAnchor(?)}")) {
             cs.setInt(1, id);
             cs.execute();
         } catch (SQLException e) {
-            throw new AccountBrokerException(e);
+            throw new WebAccountDAOException(e);
         }
         try (CallableStatement cs = conn
                 .prepareCall("{call createMarker(?, ?, ?, ?, ?)}")) {
@@ -137,7 +137,7 @@ public class AccountBroker implements AutoCloseable {
                 cs.execute();
             }
         } catch (SQLException e) {
-            throw new AccountBrokerException(e);
+            throw new WebAccountDAOException(e);
         }
         try (CallableStatement cs = conn
                 .prepareCall("{call createAnchor(?, ?, ?, ?, ?)}")) {
@@ -152,27 +152,27 @@ public class AccountBroker implements AutoCloseable {
                 cs.execute();
             }
         } catch (SQLException e) {
-            throw new AccountBrokerException(e);
+            throw new WebAccountDAOException(e);
         }
         try {
             conn.commit();
         } catch (SQLException e) {
-            throw new AccountBrokerException(e);
+            throw new WebAccountDAOException(e);
         }
     }
 
-    public void deleteMap(int id) throws AccountBrokerException {
+    public void deleteMap(int id) throws WebAccountDAOException {
         try (CallableStatement cs = conn.prepareCall("{call deleteMap(?)}")) {
             cs.setInt(1, id);
             cs.execute();
             conn.commit();
         } catch (SQLException e) {
-            throw new AccountBrokerException(e);
+            throw new WebAccountDAOException(e);
         }
 
     }
 
-    public GetMap getMap(int id) throws AccountBrokerException {
+    public GetMap getMap(int id) throws WebAccountDAOException {
         String name;
         int imageResource;
         try {
@@ -221,11 +221,11 @@ public class AccountBroker implements AutoCloseable {
             }
             return map;
         } catch (SQLException e) {
-            throw new AccountBrokerException(e);
+            throw new WebAccountDAOException(e);
         }
     }
 
-    public List<MapsListEntry> getMapsList() throws AccountBrokerException {
+    public List<MapsListEntry> getMapsList() throws WebAccountDAOException {
         List<MapsListEntry> list = new LinkedList<>();
         try {
             try (CallableStatement cs = conn
@@ -241,19 +241,19 @@ public class AccountBroker implements AutoCloseable {
                 }
             }
         } catch (SQLException e) {
-            throw new AccountBrokerException(e);
+            throw new WebAccountDAOException(e);
         }
         return list;
     }
     
-    public String getUsername() throws PublicBrokerException {
+    public String getUsername() throws WebAccountPublicDAOException {
         try (CallableStatement cs = conn.prepareCall("{? = call getUsernameByID(?)}")) {
             cs.registerOutParameter(1, Types.VARCHAR);
             cs.setInt(2, this.accountID);
             cs.execute();
             return cs.getString(1);
         } catch (SQLException e) {
-            throw new PublicBrokerException(e);
+            throw new WebAccountPublicDAOException(e);
         }
     }
 }

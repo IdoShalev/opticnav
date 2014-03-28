@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/admin")
 public class AdminService extends Controller {
-    private static class AccountPOJO {
+    public static class AccountPOJO {
         public final int id;
         public final String name;
         public final String passCode;

@@ -6,12 +6,12 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.List;
 
-import opticnav.persistence.web.AccountBroker;
+import opticnav.persistence.web.WebAccountDAO;
 import opticnav.persistence.web.DBUtil;
-import opticnav.persistence.web.PublicBroker;
-import opticnav.persistence.web.ResourceBroker;
-import opticnav.persistence.web.exceptions.AccountBrokerException;
-import opticnav.persistence.web.exceptions.PublicBrokerException;
+import opticnav.persistence.web.WebAccountPublicDAO;
+import opticnav.persistence.web.WebResourceDAO;
+import opticnav.persistence.web.exceptions.WebAccountDAOException;
+import opticnav.persistence.web.exceptions.WebAccountPublicDAOException;
 import opticnav.persistence.web.map.Anchor;
 import opticnav.persistence.web.map.GetMap;
 import opticnav.persistence.web.map.MapsListEntry;
@@ -26,11 +26,11 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 
 public class DatabaseTest {
-    static private PublicBroker publicBroker;
-    static private AccountBroker accountBroker1;
-    static private AccountBroker accountBroker2;
-    static private AccountBroker accountBroker3;
-    static private ResourceBroker resourceBroker;
+    static private WebAccountPublicDAO publicBroker;
+    static private WebAccountDAO accountBroker1;
+    static private WebAccountDAO accountBroker2;
+    static private WebAccountDAO accountBroker3;
+    static private WebResourceDAO resourceBroker;
     static private MysqlDataSource ds;
     static private Connection conn;
 
@@ -44,10 +44,10 @@ public class DatabaseTest {
         //TODO
         //create the database
         
-        publicBroker = new PublicBroker(ds);
-        accountBroker1 = new AccountBroker(ds, 1);
-        accountBroker2 = new AccountBroker(ds, 2);
-        accountBroker3 = new AccountBroker(ds, 3);
+        publicBroker = new WebAccountPublicDAO(ds);
+        accountBroker1 = new WebAccountDAO(ds, 1);
+        accountBroker2 = new WebAccountDAO(ds, 2);
+        accountBroker3 = new WebAccountDAO(ds, 3);
         //resourceBroker = new ResourceBroker(path, ds);
         conn = DBUtil.getConnectionFromDataSource(ds);
     }
@@ -66,7 +66,7 @@ public class DatabaseTest {
     }
 
     @Test
-    public void test() throws PublicBrokerException, AccountBrokerException{
+    public void test() throws WebAccountPublicDAOException, WebAccountDAOException{
         //User registration
         assertEquals(true, publicBroker.registerAccount("user1", "password"));
         assertEquals(true, publicBroker.registerAccount("user2", "password"));

@@ -14,17 +14,17 @@ import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 import javax.sql.DataSource;
 
-import opticnav.persistence.web.exceptions.ResourceBrokerExcpetion;
+import opticnav.persistence.web.exceptions.WebResourceDAOExcpetion;
 
 import org.apache.commons.io.IOUtils;
 
-public class ResourceBroker implements AutoCloseable {
+public class WebResourceDAO implements AutoCloseable {
     private static final int GROUP_SIZE = 100;
     
     private String resourcePath;
     private Connection conn;
     
-    public ResourceBroker(String resourcePath, DataSource dataSource)
+    public WebResourceDAO(String resourcePath, DataSource dataSource)
             throws IOException, SQLException {
         File path = new File(resourcePath).getCanonicalFile();
         if (!path.exists()) {
@@ -39,25 +39,25 @@ public class ResourceBroker implements AutoCloseable {
     }
     
     @Override
-    public void close() throws ResourceBrokerExcpetion {
+    public void close() throws WebResourceDAOExcpetion {
         try {
             this.conn.close();
         } catch (SQLException e) {
-            throw new ResourceBrokerExcpetion(e);
+            throw new WebResourceDAOExcpetion(e);
         }
     }
 
     public int createResource(String mimeType, InputStream input)
-            throws ResourceBrokerExcpetion {
+            throws WebResourceDAOExcpetion {
         try {
             return createResource(new MimeType(mimeType), input);
         } catch (MimeTypeParseException e) {
-            throw new ResourceBrokerExcpetion(e);
+            throw new WebResourceDAOExcpetion(e);
         }
     }
 
     public int createResource(MimeType mimeType, InputStream input)
-            throws ResourceBrokerExcpetion {
+            throws WebResourceDAOExcpetion {
         try (CallableStatement cs = conn.prepareCall("{? = call addResource(?)}")){
             // store entry and get ID from database
             // mimeType.getBaseType() for storing in DB
@@ -80,7 +80,7 @@ public class ResourceBroker implements AutoCloseable {
             
             return id;
         } catch (IOException | SQLException e) {
-            throw new ResourceBrokerExcpetion(e);
+            throw new WebResourceDAOExcpetion(e);
         }
     }
     
@@ -89,10 +89,10 @@ public class ResourceBroker implements AutoCloseable {
      * 
      * @param id The ID of the resource
      * @return A Resource object, or null if not found
-     * @throws ResourceBrokerExcpetion
+     * @throws WebResourceDAOExcpetion
      */
     public Resource getResource(int id)
-            throws ResourceBrokerExcpetion {
+            throws WebResourceDAOExcpetion {
         // read row in DB first to get mimetype and that it's
         // supposed to exist
         String type = null;
@@ -105,7 +105,7 @@ public class ResourceBroker implements AutoCloseable {
             
             
         } catch (SQLException e1) {
-            throw new ResourceBrokerExcpetion(e1);
+            throw new WebResourceDAOExcpetion(e1);
         }
         
         File file = getFileFromResourceID(id);
@@ -113,7 +113,7 @@ public class ResourceBroker implements AutoCloseable {
         try {
             return new FileResource(new MimeType(type), file);
         } catch (MimeTypeParseException e) {
-            throw new ResourceBrokerExcpetion(e);
+            throw new WebResourceDAOExcpetion(e);
         }
     }
     

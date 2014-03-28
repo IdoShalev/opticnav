@@ -9,28 +9,28 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import opticnav.persistence.web.exceptions.PublicBrokerException;
+import opticnav.persistence.web.exceptions.WebAccountPublicDAOException;
 
-public class PublicBroker implements AutoCloseable {
+public class WebAccountPublicDAO implements AutoCloseable {
     public static final int ACCOUNT_ID_NONE = 0;
     
     private java.sql.Connection conn;
 
-    public PublicBroker(DataSource dataSource) throws SQLException {
+    public WebAccountPublicDAO(DataSource dataSource) throws SQLException {
         this.conn = DBUtil.getConnectionFromDataSource(dataSource);
     }
 
     @Override
-    public void close() throws PublicBrokerException {
+    public void close() throws WebAccountPublicDAOException {
         try {
             this.conn.close();
         } catch (SQLException e) {
-            throw new PublicBrokerException(e);
+            throw new WebAccountPublicDAOException(e);
         }
     }
 
     public boolean registerAccount(String username, String password)
-            throws PublicBrokerException {
+            throws WebAccountPublicDAOException {
         if (!checkUsername(username) || !checkPassword(password)) {
             return false;
         } else {
@@ -46,13 +46,13 @@ public class PublicBroker implements AutoCloseable {
 
                 return flag;
             } catch (SQLException e) {
-                throw new PublicBrokerException(e);
+                throw new WebAccountPublicDAOException(e);
             }
         }
     }
 
     public int verify(String username, String password)
-            throws PublicBrokerException {
+            throws WebAccountPublicDAOException {
         if (!checkUsername(username) || !checkPassword(password)) {
             return 0;
         } else {
@@ -66,7 +66,7 @@ public class PublicBroker implements AutoCloseable {
                 int id = cs.getInt(1);
                 return id;
             } catch (SQLException e) {
-                throw new PublicBrokerException(e);
+                throw new WebAccountPublicDAOException(e);
             }
         }
     }
@@ -76,9 +76,9 @@ public class PublicBroker implements AutoCloseable {
      * 
      * @param username The username to be query
      * @return A valid account ID, or 0 if none was found
-     * @throws PublicBrokerException
+     * @throws WebAccountPublicDAOException
      */
-    public int findName(String username) throws PublicBrokerException {
+    public int findName(String username) throws WebAccountPublicDAOException {
         try (CallableStatement cs = conn
                 .prepareCall("{? = call findAccount(?)}")) {
             cs.registerOutParameter(1, Types.INTEGER);
@@ -89,11 +89,11 @@ public class PublicBroker implements AutoCloseable {
 
             return id;
         } catch (SQLException e) {
-            throw new PublicBrokerException(e);
+            throw new WebAccountPublicDAOException(e);
         }
     }
 
-    public List<UserARDListEntry> getUserList() throws PublicBrokerException {
+    public List<UserARDListEntry> getUserList() throws WebAccountPublicDAOException {
         List<UserARDListEntry> list = new LinkedList<>();
         try {
             try (CallableStatement cs = conn.prepareCall("{call getUserList()}")) {
@@ -105,7 +105,7 @@ public class PublicBroker implements AutoCloseable {
                 }
             }
         } catch (SQLException e) {
-            throw new PublicBrokerException(e);
+            throw new WebAccountPublicDAOException(e);
         }
         return list;
     }

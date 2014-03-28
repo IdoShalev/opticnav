@@ -1,7 +1,7 @@
 import static org.junit.Assert.*;
-import opticnav.persistence.web.AccountBroker;
-import opticnav.persistence.web.PublicBroker;
-import opticnav.persistence.web.exceptions.PublicBrokerException;
+import opticnav.persistence.web.WebAccountDAO;
+import opticnav.persistence.web.WebAccountPublicDAO;
+import opticnav.persistence.web.exceptions.WebAccountPublicDAOException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 public class AccountTest {
-    static private PublicBroker publicBroker;
+    static private WebAccountPublicDAO publicBroker;
     static private MysqlDataSource ds;
     
     @BeforeClass
@@ -24,7 +24,7 @@ public class AccountTest {
         ds.setServerName("localhost");
         ds.setDatabaseName("OpticNavDB");
         
-        publicBroker = new PublicBroker(ds);
+        publicBroker = new WebAccountPublicDAO(ds);
     }
     
     @AfterClass
@@ -33,7 +33,7 @@ public class AccountTest {
     }
     
     @Test
-    public void testregisterAccount() throws PublicBrokerException {
+    public void testregisterAccount() throws WebAccountPublicDAOException {
         assertEquals(true, publicBroker.registerAccount("java", "password"));
         assertEquals(false, publicBroker.registerAccount("java", "password"));
         assertEquals(true, publicBroker.registerAccount("doublepass", "password"));
@@ -43,7 +43,7 @@ public class AccountTest {
     }
     
     @Test
-    public void testverify() throws PublicBrokerException {
+    public void testverify() throws WebAccountPublicDAOException {
         assertEquals(1, publicBroker.verify("Kay", "kaypass"));
         assertEquals(2, publicBroker.verify("Ido", "idopass"));
         assertEquals(3, publicBroker.verify("Danny", "dannypass"));
@@ -54,7 +54,7 @@ public class AccountTest {
     }
     
     @Test
-    public void testfindName() throws PublicBrokerException {
+    public void testfindName() throws WebAccountPublicDAOException {
         assertEquals(1, publicBroker.findName("Kay"));
         assertEquals(2, publicBroker.findName("Ido"));
         assertEquals(3, publicBroker.findName("Danny"));
@@ -65,10 +65,10 @@ public class AccountTest {
     
     @Test
     public void testSetRemoveGetARD() throws Exception {
-        AccountBroker ab1 = new AccountBroker(ds, 1);
-        AccountBroker ab2 = new AccountBroker(ds, 2);
-        AccountBroker ab3 = new AccountBroker(ds, 3);
-        AccountBroker ab4 = new AccountBroker(ds, 4);
+        WebAccountDAO ab1 = new WebAccountDAO(ds, 1);
+        WebAccountDAO ab2 = new WebAccountDAO(ds, 2);
+        WebAccountDAO ab3 = new WebAccountDAO(ds, 3);
+        WebAccountDAO ab4 = new WebAccountDAO(ds, 4);
         
         try {
             ab1.setARD(1234);

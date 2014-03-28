@@ -4,7 +4,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import opticnav.ardd.admin.AdminConnectionException;
-import opticnav.ardd.broker.admin.AdminBroker;
 import opticnav.web.rest.pojo.LocaleMessage;
 import opticnav.web.rest.pojo.Message;
 

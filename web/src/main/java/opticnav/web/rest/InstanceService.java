@@ -9,9 +9,9 @@ import javax.activation.MimeType;
 import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.admin.InstanceDeployment;
 import opticnav.ardd.admin.InstanceDeploymentBuilder;
-import opticnav.persistence.web.AccountBroker;
+import opticnav.persistence.web.WebAccountDAO;
 import opticnav.persistence.web.Resource;
-import opticnav.persistence.web.ResourceBroker;
+import opticnav.persistence.web.WebResourceDAO;
 import opticnav.persistence.web.map.Anchor;
 import opticnav.persistence.web.map.GetMap;
 import opticnav.persistence.web.map.Marker;
@@ -70,12 +70,12 @@ public class InstanceService {
         ardList   = new ArrayList<>();
         
         for (int account_id: startInstancePOJO.accounts) {
-            try (AccountBroker dao = new AccountBroker(dbDataSource, account_id)) {
+            try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, account_id)) {
                 ardList.add(new InstanceDeployment.ARDIdentifier(dao.getARD(), dao.getUsername()));
             }
         }
         
-        try (AccountBroker dao = new AccountBroker(dbDataSource, userSession.getUser().getId())) {
+        try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, userSession.getUser().getId())) {
             final GetMap map = dao.getMap(startInstancePOJO.map_id);
             int imageResourceID = map.getImageResource();
             
@@ -96,7 +96,7 @@ public class InstanceService {
                 mapAnchors.add(instAnchor);
             }
             
-            try (ResourceBroker resDao = new ResourceBroker(resourcePath, dbDataSource)) {
+            try (WebResourceDAO resDao = new WebResourceDAO(resourcePath, dbDataSource)) {
                 final Resource res = resDao.getResource(imageResourceID);
                 mapImageType = res.getMimeType();
                 mapImageInput = res.getInputStream();

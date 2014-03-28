@@ -12,15 +12,15 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import opticnav.persistence.web.ResourceBroker;
-import opticnav.persistence.web.exceptions.ResourceBrokerExcpetion;
+import opticnav.persistence.web.WebResourceDAO;
+import opticnav.persistence.web.exceptions.WebResourceDAOExcpetion;
 import opticnav.web.rest.Controller.MessageException;
 
 public class ResourceUploadUtil {
-    public static int upload(Controller c, ResourceBroker resourceBroker,
+    public static int upload(Controller c, WebResourceDAO resourceBroker,
             HttpServletRequest request)
             throws MessageException, IOException, FileUploadException,
-            ResourceBrokerExcpetion {
+            WebResourceDAOExcpetion {
         if (!ServletFileUpload.isMultipartContent(request)) {
             throw c.new BadRequest("resource.nofile");
         }

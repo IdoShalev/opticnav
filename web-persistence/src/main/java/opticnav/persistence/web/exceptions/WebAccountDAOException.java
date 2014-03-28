@@ -1,13 +1,13 @@
 package opticnav.persistence.web.exceptions;
 
-public class AccountBrokerException extends Exception {
+public class WebAccountDAOException extends Exception {
     private static final long serialVersionUID = 1L;
 
-    public AccountBrokerException(Throwable exception) {
+    public WebAccountDAOException(Throwable exception) {
         super(exception);
     }
 
-    public AccountBrokerException(String message) {
+    public WebAccountDAOException(String message) {
         super(message);
     }
 }

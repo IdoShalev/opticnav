@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.protocol.ConfCode;
-import opticnav.persistence.web.AccountBroker;
+import opticnav.persistence.web.WebAccountDAO;
 import opticnav.web.arddbrokerpool.ARDdAdminPool;
 import opticnav.web.components.UserSession;
 import opticnav.web.rest.pojo.Message;
@@ -32,8 +32,8 @@ public class ARDService extends Controller {
     @RequestMapping(method=RequestMethod.POST)
     public Message register(@RequestBody String confirmationCode, HttpServletResponse resp)
             throws Exception {
-        try (AccountBroker ab = new AccountBroker(dbDataSource, userSession.getUser().getId())) {
-            if (ab.hasARD()) {
+        try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, userSession.getUser().getId())) {
+            if (dao.hasARD()) {
                 throw new Conflict("registerard.existing");
             }
             
@@ -46,7 +46,7 @@ public class ARDService extends Controller {
                         boolean successful = ardID != 0;
                         
                         if (successful) {
-                            ab.setARD(ardID);
+                            dao.setARD(ardID);
                             
                             return ok("registerard.successful");
                         } else {
@@ -67,8 +67,8 @@ public class ARDService extends Controller {
     public Message getRegisteredARD() throws Exception {
         boolean hasRegistered;
         
-        try (AccountBroker b = new AccountBroker(dbDataSource, userSession.getUser().getId())) {
-            hasRegistered = b.hasARD();
+        try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, userSession.getUser().getId())) {
+            hasRegistered = dao.hasARD();
         }
         
         if (hasRegistered) {
@@ -81,8 +81,8 @@ public class ARDService extends Controller {
     @RequestMapping(method=RequestMethod.DELETE)
     @ResponseBody
     public Message unregisterARD() throws Exception {
-        try (AccountBroker b = new AccountBroker(dbDataSource, userSession.getUser().getId())) {
-            b.removeARD();
+        try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, userSession.getUser().getId())) {
+            dao.removeARD();
         }
         
         return ok("ard.unregistered");

@@ -2,7 +2,7 @@ package opticnav.web.rest;
 
 import javax.servlet.http.HttpServletResponse;
 
-import opticnav.persistence.web.PublicBroker;
+import opticnav.persistence.web.WebAccountPublicDAO;
 import opticnav.web.components.UserSession;
 import opticnav.web.components.UserSession.User;
 import opticnav.web.rest.pojo.Account;
@@ -50,11 +50,11 @@ public class AccountService extends Controller {
         boolean valid;
         int accountID;
         
-        try (PublicBroker broker = new PublicBroker(dbDataSource)) {
-            accountID = broker.verify(account.username, account.password);
+        try (WebAccountPublicDAO dao = new WebAccountPublicDAO(dbDataSource)) {
+            accountID = dao.verify(account.username, account.password);
         }
         
-        valid = accountID != PublicBroker.ACCOUNT_ID_NONE;
+        valid = accountID != WebAccountPublicDAO.ACCOUNT_ID_NONE;
         
         if (valid) {
             this.userSession.setUser(account.username, accountID);
@@ -75,8 +75,8 @@ public class AccountService extends Controller {
             throws Exception {
         boolean registered;
 
-        try (PublicBroker broker = new PublicBroker(dbDataSource)) {
-            registered = broker.registerAccount(account.username, account.password);
+        try (WebAccountPublicDAO dao = new WebAccountPublicDAO(dbDataSource)) {
+            registered = dao.registerAccount(account.username, account.password);
         }
         
         if (registered) {
@@ -89,11 +89,11 @@ public class AccountService extends Controller {
     @RequestMapping(value="/query/{username}", method=RequestMethod.GET)
     public QueryPOJO query(@PathVariable String username) throws Exception {
         int id;
-        try (PublicBroker broker = new PublicBroker(dbDataSource)) {
-            id = broker.findName(username);
+        try (WebAccountPublicDAO dao = new WebAccountPublicDAO(dbDataSource)) {
+            id = dao.findName(username);
         }
         
-        if (id == PublicBroker.ACCOUNT_ID_NONE) {
+        if (id == WebAccountPublicDAO.ACCOUNT_ID_NONE) {
             throw new NotFound("account.query.notfound", username);
         }
         

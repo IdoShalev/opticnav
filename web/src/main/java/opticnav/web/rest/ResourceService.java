@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import opticnav.persistence.web.Resource;
-import opticnav.persistence.web.ResourceBroker;
+import opticnav.persistence.web.WebResourceDAO;
 import opticnav.web.rest.pojo.Message;
 
 import org.apache.commons.io.IOUtils;
@@ -33,8 +33,8 @@ public class ResourceService extends Controller {
             throws Exception {
         int resourceID;
         
-        try (ResourceBroker broker = new ResourceBroker(resourcePath, dbDataSource)) {
-            resourceID = ResourceUploadUtil.upload(this, broker, request);
+        try (WebResourceDAO dao = new WebResourceDAO(resourcePath, dbDataSource)) {
+            resourceID = ResourceUploadUtil.upload(this, dao, request);
         }
         
         return new Message("Resource uploaded: " + resourceID);
@@ -45,8 +45,8 @@ public class ResourceService extends Controller {
             HttpServletResponse resp) throws Exception {
         Resource resource;
 
-        try (ResourceBroker broker = new ResourceBroker(resourcePath, dbDataSource)) {
-            resource = broker.getResource(id);
+        try (WebResourceDAO dao = new WebResourceDAO(resourcePath, dbDataSource)) {
+            resource = dao.getResource(id);
         }
         
         resp.setContentType(resource.getMimeType().getBaseType());
