@@ -41,10 +41,8 @@ public class WebAccountPublicDAO implements AutoCloseable {
                 cs.registerOutParameter(1, Types.BOOLEAN);
 
                 cs.execute();
-                boolean flag = cs.getBoolean(1);
                 conn.commit();
-
-                return flag;
+                return cs.getBoolean(1);
             } catch (SQLException e) {
                 throw new WebAccountPublicDAOException(e);
             }

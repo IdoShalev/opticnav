@@ -37,7 +37,7 @@ public class DatabaseTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         ds = new MysqlDataSource();
-        ds.setUser("root");
+        ds.setUser("test");
         ds.setPassword("password");
         ds.setServerName("localhost");
         ds.setDatabaseName("testDB");
@@ -45,9 +45,9 @@ public class DatabaseTest {
         //create the database
         
         publicBroker = new WebAccountPublicDAO(ds);
-        accountBroker1 = new WebAccountDAO(ds, 1);
-        accountBroker2 = new WebAccountDAO(ds, 2);
-        accountBroker3 = new WebAccountDAO(ds, 3);
+        //accountBroker1 = new WebAccountDAO(ds, 1);
+        //accountBroker2 = new WebAccountDAO(ds, 2);
+        //accountBroker3 = new WebAccountDAO(ds, 3);
         //resourceBroker = new ResourceBroker(path, ds);
         conn = DBUtil.getConnectionFromDataSource(ds);
     }
@@ -66,7 +66,7 @@ public class DatabaseTest {
     }
 
     @Test
-    public void test() throws WebAccountPublicDAOException, WebAccountDAOException{
+    public void test() throws WebAccountPublicDAOException, WebAccountDAOException, SQLException{
         //User registration
         assertEquals(true, publicBroker.registerAccount("user1", "password"));
         assertEquals(true, publicBroker.registerAccount("user2", "password"));
@@ -75,6 +75,10 @@ public class DatabaseTest {
         assertEquals(false, publicBroker.registerAccount("", ""));
         assertEquals(false, publicBroker.registerAccount("", "password"));
         assertEquals(false, publicBroker.registerAccount("user9", ""));
+        
+        accountBroker1 = new WebAccountDAO(ds, 1);
+        accountBroker2 = new WebAccountDAO(ds, 2);
+        accountBroker3 = new WebAccountDAO(ds, 3);
         
         //username and password validation
         assertEquals(1, publicBroker.verify("user1", "password"));
