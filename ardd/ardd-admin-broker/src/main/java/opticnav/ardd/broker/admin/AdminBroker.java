@@ -73,7 +73,7 @@ public class AdminBroker implements AdminConnection {
                 int instanceID = this.input.readUInt31();
                 return new AdminStartInstanceState();
             } else {
-                
+                return null;
             }
         } catch (IOException e) {
             throw new AdminConnectionException(e);

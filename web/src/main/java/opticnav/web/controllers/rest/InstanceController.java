@@ -110,7 +110,7 @@ public class InstanceController {
                                                    .build();
             
             InstanceIDPOJO pojo = new InstanceIDPOJO();
-            pojo.instance_id = broker.deployInstance(deployment);
+            broker.deployInstance(deployment);
             return pojo;
         }
     }

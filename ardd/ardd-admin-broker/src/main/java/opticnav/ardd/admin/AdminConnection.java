@@ -21,9 +21,8 @@ public interface AdminConnection extends AutoCloseable {
      * @see InstanceDeploymentBuilder
      * 
      * @param deployment The InstanceDeployment object
-     * @return The instance ID as returned by the server
      */
-    public int deployInstance(InstanceDeployment deployment) throws AdminConnectionException;
+    public AdminStartInstanceState deployInstance(InstanceDeployment deployment) throws AdminConnectionException;
     
     /**
      * Shuts down any resources used by the connection object.
