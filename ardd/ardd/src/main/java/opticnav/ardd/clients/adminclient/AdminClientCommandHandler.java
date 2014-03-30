@@ -18,7 +18,8 @@ import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.Protocol;
-import opticnav.ardd.protocol.Protocol.AdminClient.Commands;
+import opticnav.ardd.protocol.consts.ARDdAdminProtocol;
+import opticnav.ardd.protocol.consts.ARDdAdminProtocol.Commands;
 
 public class AdminClientCommandHandler extends AnnotatedCommandHandler {
     private static final XLogger LOG = XLoggerFactory
@@ -60,7 +61,7 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
             
             mapImageType = in.readString();
             mapImageSize = in.readUInt31();
-            if (mapImageSize > Protocol.AdminClient.MAX_MAP_IMAGE_SIZE) {
+            if (mapImageSize > ARDdAdminProtocol.MAX_MAP_IMAGE_SIZE) {
                 throw new IllegalArgumentException("Image exceed max size");
             }
             

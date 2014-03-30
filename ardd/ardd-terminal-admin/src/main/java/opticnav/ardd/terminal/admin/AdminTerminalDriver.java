@@ -9,18 +9,39 @@ import java.util.Scanner;
 import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.broker.admin.AdminBroker;
 import opticnav.ardd.protocol.Protocol;
+import opticnav.ardd.protocol.consts.ARDdAdminProtocol.Commands;
 import opticnav.ardd.protocol.chan.ChannelUtil;
 import opticnav.ardd.terminal.shared.Command;
 import opticnav.ardd.terminal.shared.TerminalDriver;
-import static opticnav.ardd.protocol.Protocol.AdminClient.CommandsText.*;
 
 public class AdminTerminalDriver {
+    public enum CommandsText {
+        REGARD(Commands.REGARD, "regard"),
+        ARDINFO(Commands.ARDINFO, "ardinfo");
+        
+        private int code;
+        private String command;
+
+        private CommandsText(int code, String command) {
+            this.code = code;
+            this.command = command;
+        }
+        
+        public int getCode() {
+            return this.code;
+        }
+
+        public String getCommand() {
+            return this.command;
+        }
+    }
+    
     public static void main(String[] args) throws Exception {
         String host = "localhost";
         int port = Protocol.DEFAULT_ADMIN_PORT;
         Map<String, Command<AdminConnection>> commandMap = new HashMap<>();
         
-        commandMap.put(REGARD.getCommand(), new RegARDCommand());
+        commandMap.put(CommandsText.REGARD.getCommand(), new RegARDCommand());
         
         Scanner in = new Scanner(System.in);
         PrintWriter out = new PrintWriter(System.out, true);

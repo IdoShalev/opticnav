@@ -7,9 +7,9 @@ import java.util.concurrent.Future;
 import opticnav.ardd.ARDConnection;
 import opticnav.ardd.ARDListsManager;
 import opticnav.ardd.clients.ClientCommandDispatcher;
-import opticnav.ardd.protocol.Protocol;
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelMultiplexer;
+import opticnav.ardd.protocol.consts.ARDdARDProtocol;
 
 public class ARDChannelsManager implements Callable<Void> {
     private final ExecutorService threadPool;
@@ -30,7 +30,7 @@ public class ARDChannelsManager implements Callable<Void> {
         this.channel = channel;
         
         this.mpxr = new ChannelMultiplexer(this.channel);
-        this.gatekeeper = this.mpxr.createChannel(Protocol.ARDClient.CHANNEL_GATEKEEPER);
+        this.gatekeeper = this.mpxr.createChannel(ARDdARDProtocol.Channels.GATEKEEPER);
         
         this.gatekeeperConn = new ClientCommandDispatcher(this.gatekeeper,
                 new GatekeeperCommandHandler(ardListsManager, this));
@@ -40,7 +40,7 @@ public class ARDChannelsManager implements Callable<Void> {
     
     public void startLobbyConnection(ARDConnection connection) {
         this.connection = connection;
-        this.connectedChannel = this.mpxr.createChannel(Protocol.ARDClient.CHANNEL_LOBBY);
+        this.connectedChannel = this.mpxr.createChannel(ARDdARDProtocol.Channels.LOBBY);
         
         this.connectedCommandDispatcher =
                 new ClientCommandDispatcher(this.connectedChannel, new ConnectedCommandHandler());

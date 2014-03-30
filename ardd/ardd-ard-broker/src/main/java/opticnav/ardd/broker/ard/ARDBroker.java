@@ -20,7 +20,7 @@ import opticnav.ardd.protocol.Protocol;
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelMultiplexer;
 import opticnav.ardd.protocol.chan.ChannelMultiplexer.Listener;
-import static opticnav.ardd.protocol.Protocol.ARDClient.*;
+import static opticnav.ardd.protocol.consts.ARDdARDProtocol.*;
 
 public class ARDBroker implements ARDConnection {
     private static final XLogger LOG = XLoggerFactory
@@ -38,7 +38,7 @@ public class ARDBroker implements ARDConnection {
         this.threadPool = threadPool;
         
         // Channel 0 is the pre-established gatekeeper channel
-        this.gatekeeperChannel = this.mpxr.createChannel(CHANNEL_GATEKEEPER);
+        this.gatekeeperChannel = this.mpxr.createChannel(Channels.GATEKEEPER);
         
         Listener listener = this.mpxr.createListener();
         listenerResult = this.threadPool.submit(listener);
@@ -118,7 +118,7 @@ public class ARDBroker implements ARDConnection {
             int response = input.readUInt8();
             if (response == 0) {
                 // passcode acknowledged, can connect to lobby
-                Channel lobbyChannel = mpxr.createChannel(CHANNEL_LOBBY);
+                Channel lobbyChannel = mpxr.createChannel(Channels.LOBBY);
                 return new ARDLobbyConnectionStatus(new ARDLobbyConnectionImpl(lobbyChannel));
             } else if (response == 1) {
                 // passcode doesn't exist

@@ -6,7 +6,7 @@ import opticnav.ardd.ard.InstanceInfo;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveUtil;
 import opticnav.ardd.protocol.PrimitiveWriter;
-import static opticnav.ardd.protocol.Protocol.ARDClient.Connected.*;
+import static opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.*;
 import opticnav.ardd.protocol.chan.Channel;
 
 import java.io.IOException;

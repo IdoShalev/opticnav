@@ -3,7 +3,7 @@ package opticnav.ardd.clients.ardclient;
 import opticnav.ardd.clients.AnnotatedCommandHandler;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
-import static opticnav.ardd.protocol.Protocol.ARDClient.Connected.*;
+import static opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.*;
 
 public class ConnectedCommandHandler extends AnnotatedCommandHandler {
     public ConnectedCommandHandler() {

@@ -5,6 +5,7 @@ import java.io.IOException;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.Protocol;
+import opticnav.ardd.protocol.consts.ARDdARDProtocol;
 
 import org.apache.commons.math3.random.RandomGenerator;
 import org.apache.commons.math3.util.Pair;
@@ -76,13 +77,13 @@ public final class ARDListsManager {
             
             if (pw == null) {
                 // could not find an entry with confcode
-                return Protocol.ARDClient.NO_ARD;
+                return ARDdARDProtocol.NO_ARD;
             } else {
                 synchronized (this.persisted) {
                     ardID = this.persisted.registerARD(pw.getFirst());
                 }
 
-                pw.getSecond().set(Protocol.ARDClient.ReqCodes.REGISTERED);
+                pw.getSecond().set(ARDdARDProtocol.ReqCodes.REGISTERED);
 
                 return ardID;
             }

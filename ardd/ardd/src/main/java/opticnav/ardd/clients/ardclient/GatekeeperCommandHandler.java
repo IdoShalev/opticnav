@@ -12,7 +12,7 @@ import opticnav.ardd.ARDListsManager;
 import opticnav.ardd.BlockingValue;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
-import static opticnav.ardd.protocol.Protocol.ARDClient.*;
+import static opticnav.ardd.protocol.consts.ARDdARDProtocol.*;
 
 public class GatekeeperCommandHandler extends AnnotatedCommandHandler {
     private ARDListsManager ardListsManager;

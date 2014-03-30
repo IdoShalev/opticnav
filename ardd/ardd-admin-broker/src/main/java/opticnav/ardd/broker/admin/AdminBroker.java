@@ -10,7 +10,8 @@ import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.Protocol;
-import opticnav.ardd.protocol.Protocol.AdminClient.Commands;
+import opticnav.ardd.protocol.consts.ARDdAdminProtocol;
+import opticnav.ardd.protocol.consts.ARDdAdminProtocol.Commands;
 import opticnav.ardd.protocol.chan.Channel;
 
 public class AdminBroker implements AdminConnection {
@@ -41,7 +42,7 @@ public class AdminBroker implements AdminConnection {
     @Override
     public AdminStartInstanceStatus deployInstance(InstanceDeployment d)
             throws AdminConnectionException {
-        if (d.getMapImageSize() > Protocol.AdminClient.MAX_MAP_IMAGE_SIZE) {
+        if (d.getMapImageSize() > ARDdAdminProtocol.MAX_MAP_IMAGE_SIZE) {
             return new AdminStartInstanceStatus(AdminStartInstanceStatus.Status.IMAGE_TOO_BIG);
         }
         
