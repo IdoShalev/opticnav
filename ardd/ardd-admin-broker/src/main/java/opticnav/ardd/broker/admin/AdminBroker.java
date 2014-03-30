@@ -4,11 +4,12 @@ import java.io.IOException;
 
 import opticnav.ardd.admin.AdminConnection;
 import opticnav.ardd.admin.AdminConnectionException;
-import opticnav.ardd.admin.AdminStartInstanceState;
+import opticnav.ardd.admin.AdminStartInstanceStatus;
 import opticnav.ardd.admin.InstanceDeployment;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
+import opticnav.ardd.protocol.Protocol;
 import opticnav.ardd.protocol.Protocol.AdminClient.Commands;
 import opticnav.ardd.protocol.chan.Channel;
 
@@ -38,17 +39,24 @@ public class AdminBroker implements AdminConnection {
     }
     
     @Override
-    public AdminStartInstanceState deployInstance(InstanceDeployment d)
+    public AdminStartInstanceStatus deployInstance(InstanceDeployment d)
             throws AdminConnectionException {
+        if (d.getMapImageSize() > Protocol.AdminClient.MAX_MAP_IMAGE_SIZE) {
+            return new AdminStartInstanceStatus(AdminStartInstanceStatus.Status.IMAGE_TOO_BIG);
+        }
+        
         try {
             final boolean hasMapImage = d.hasMapImage();
             
+            this.output.writeUInt8(Commands.DEPLOY_INSTANCE);
             this.output.writeString(d.getMapName());
             this.output.writeUInt8(hasMapImage?1:0);
             if (hasMapImage) {
                 this.output.writeString(d.getMapImageType().getPrimaryType());
-                this.output.writeBlobFromInputStream(d.getMapImageSize(), d.getMapImageInput());
+                this.output.writeUInt31(d.getMapImageSize());
+                this.output.writeFixedBlobFromInputStream(d.getMapImageSize(), d.getMapImageInput());
                 
+                // Anchors
                 assert d.getMapAnchors().size() == 3;
                 for (InstanceDeployment.Anchor anchor: d.getMapAnchors()) {
                     this.output.writeSInt32(anchor.getLng());
@@ -58,6 +66,7 @@ public class AdminBroker implements AdminConnection {
                 }
             }
             
+            // Markers
             this.output.writeUInt31(d.getMapMarkers().size());
             for (InstanceDeployment.Marker marker: d.getMapMarkers()) {
                 this.output.writeString(marker.getName());
@@ -66,14 +75,17 @@ public class AdminBroker implements AdminConnection {
             }
             
             this.output.flush();
-            int result = this.input.readUInt8();
+            
+            final int result = this.input.readUInt8();
             
             // TODO - replace with constants
             if (result == 0) {
-                int instanceID = this.input.readUInt31();
-                return new AdminStartInstanceState();
+                // instance deployment successful
+                final int instanceID = this.input.readUInt31();
+                return new AdminStartInstanceStatus(instanceID);
             } else {
-                return null;
+                // TODO
+                throw new UnsupportedOperationException();
             }
         } catch (IOException e) {
             throw new AdminConnectionException(e);

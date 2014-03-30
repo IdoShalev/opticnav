@@ -7,6 +7,7 @@ import java.util.List;
 import javax.activation.MimeType;
 
 import opticnav.ardd.admin.AdminConnection;
+import opticnav.ardd.admin.AdminStartInstanceStatus;
 import opticnav.ardd.admin.InstanceDeployment;
 import opticnav.ardd.admin.InstanceDeploymentBuilder;
 import opticnav.persistence.web.WebAccountDAO;
@@ -27,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/instance")
-public class InstanceController {
+public class InstanceController extends Controller {
     public static class StartInstancePOJO {
         public int map_id;
         public List<Integer> accounts;
@@ -52,7 +53,6 @@ public class InstanceController {
     @RequestMapping(method=RequestMethod.POST)
     public InstanceIDPOJO startInstance(@RequestBody StartInstancePOJO startInstancePOJO)
             throws Exception {
-        
         final String mapName;
         final MimeType mapImageType;
         final int mapImageSize;
@@ -100,18 +100,25 @@ public class InstanceController {
             }
         }
         
+        final AdminStartInstanceStatus status;
+        final InstanceDeployment deployment = new InstanceDeploymentBuilder()
+                                                  .setMapName(mapName)
+                                                  .setMapImage(mapImageType, mapImageSize, mapImageInput, mapAnchors)
+                                                  .setMapMarkers(mapMarkers)
+                                                  .setARDList(ardList)
+                                                  .build();
+        
         try (AdminConnection broker = this.pool.getAdminBroker()) {
-            final InstanceDeploymentBuilder builder = new InstanceDeploymentBuilder();
-            
-            InstanceDeployment deployment = builder.setMapName(mapName)
-                                                   .setMapImage(mapImageType, mapImageSize, mapImageInput, mapAnchors)
-                                                   .setMapMarkers(mapMarkers)
-                                                   .setARDList(ardList)
-                                                   .build();
-            
+            status = broker.deployInstance(deployment);
+        }
+        
+        if (status.getStatus() == AdminStartInstanceStatus.Status.DEPLOYED) {
             InstanceIDPOJO pojo = new InstanceIDPOJO();
-            broker.deployInstance(deployment);
+            pojo.instance_id = status.getInstanceID();
             return pojo;
+        } else {
+            // XXX - should throw a not-an-Exception exception, maybe
+            throw new Exception("Could not start instance: " + status.getStatus());
         }
     }
 }

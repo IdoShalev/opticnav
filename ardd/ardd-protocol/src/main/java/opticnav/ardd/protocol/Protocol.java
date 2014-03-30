@@ -8,9 +8,12 @@ public final class Protocol {
     public static final int PASSCODE_BYTES = 16;
     
     public static final class AdminClient {
+        public static final int MAX_MAP_IMAGE_SIZE = 16 * 1024 * 1024;
+        
         public static class Commands {
             public static final int REGARD = 0;
             public static final int ARDINFO = 1;
+            public static final int DEPLOY_INSTANCE = 2;
         }
         
         public enum CommandsText {

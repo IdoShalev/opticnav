@@ -19,6 +19,10 @@ public class ARDLobbyConnectionStatus {
     }
     
     public ARDLobbyConnection getConnection() {
+        if (this.status != Status.CONNECTED) {
+            throw new IllegalStateException("Cannot get connection - Status is " + this.status);
+        }
+        
         return this.connection;
     }
     

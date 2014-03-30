@@ -31,36 +31,23 @@ public class InstanceDeployment {
     
     public boolean hasMapImage() {
         return this.mapImageType != null && this.mapImageSize != 0 &&
-               this.mapImageInput != null && this.mapAnchors != null;
+               this.mapImageInput != null && this.mapAnchors != null &&
+               this.mapAnchors.size() == 3;
     }
 
-    public String getMapName() {
-        return mapName;
-    }
+    public String getMapName() { return mapName; }
 
-    public MimeType getMapImageType() {
-        return mapImageType;
-    }
+    public MimeType getMapImageType() { return mapImageType; }
 
-    public int getMapImageSize() {
-        return mapImageSize;
-    }
+    public int getMapImageSize() { return mapImageSize; }
 
-    public InputStream getMapImageInput() {
-        return mapImageInput;
-    }
+    public InputStream getMapImageInput() { return mapImageInput; }
 
-    public List<Anchor> getMapAnchors() {
-        return mapAnchors;
-    }
+    public List<Anchor> getMapAnchors() { return mapAnchors; }
 
-    public List<Marker> getMapMarkers() {
-        return mapMarkers;
-    }
+    public List<Marker> getMapMarkers() { return mapMarkers; }
 
-    public List<ARDIdentifier> getArdList() {
-        return ardList;
-    }
+    public List<ARDIdentifier> getArdList() { return ardList; }
 
     public static class ARDIdentifier {
         private final int ardID;
@@ -71,13 +58,9 @@ public class InstanceDeployment {
             this.name = name;
         }
 
-        public int getArdID() {
-            return ardID;
-        }
+        public int getArdID() { return ardID; }
 
-        public String getName() {
-            return name;
-        }
+        public String getName() { return name; }
     }
 
     public static class Marker {
@@ -91,17 +74,11 @@ public class InstanceDeployment {
             this.lat = lat;
         }
     
-        public String getName() {
-            return name;
-        }
+        public String getName() { return name; }
     
-        public int getLng() {
-            return lng;
-        }
+        public int getLng() { return lng; }
     
-        public int getLat() {
-            return lat;
-        }
+        public int getLat() { return lat; }
     }
 
     public static class Anchor {
@@ -117,20 +94,12 @@ public class InstanceDeployment {
             this.localY = localY;
         }
 
-        public int getLng() {
-            return lng;
-        }
+        public int getLng() { return lng; }
 
-        public int getLat() {
-            return lat;
-        }
+        public int getLat() { return lat; }
 
-        public int getLocalX() {
-            return localX;
-        }
+        public int getLocalX() { return localX; }
 
-        public int getLocalY() {
-            return localY;
-        }
+        public int getLocalY() { return localY; }
     }
 }

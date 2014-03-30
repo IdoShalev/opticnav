@@ -2,6 +2,9 @@ package opticnav.ardd.protocol;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+
+import org.apache.commons.io.IOUtils;
 
 /**
  * PrimitiveReader can read any data type from the ardd protocols.
@@ -79,5 +82,12 @@ public final class PrimitiveReader {
         }
         
         return value;
+    }
+
+    public void readFixedBlobToOutputStream(int length, OutputStream output) throws IOException {
+        long writeLength = IOUtils.copyLarge(this.in, output, 0, length);
+        if (writeLength != length) {
+            throw new IOException("Expected to copy " + length + " bytes, copied  " + writeLength);
+        }
     }
 }

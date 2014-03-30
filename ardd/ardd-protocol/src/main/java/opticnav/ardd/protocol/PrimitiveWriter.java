@@ -81,7 +81,7 @@ public final class PrimitiveWriter implements Flushable, Closeable {
         this.out.close();
     }
 
-    public void writeBlobFromInputStream(int length, InputStream input) throws IOException {
+    public void writeFixedBlobFromInputStream(int length, InputStream input) throws IOException {
         long writeLength = IOUtils.copyLarge(input, this.out, 0, length);
         if (length != writeLength) {
             throw new IOException("Expected to write " + length + " bytes, got " + writeLength);

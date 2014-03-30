@@ -65,7 +65,7 @@ public class Controller {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Message handleException(Exception ex) {
         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-        return new Message(ex.getMessage());
+        return new Message(ex.getClass().getName() + ": " + ex.getMessage());
     }
     
     @ExceptionHandler(NotFound.class)

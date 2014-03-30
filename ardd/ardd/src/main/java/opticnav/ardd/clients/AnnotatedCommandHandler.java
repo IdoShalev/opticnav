@@ -12,10 +12,10 @@ import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 
 /**
- * AnnotatedCommandHandler makes implementing commands MUCH nicer. Each command would be a method annotated
+ * AnnotatedCommandHandler makes implementing commands MUCH nicer. Each command is a method annotated
  * with the @Command annotation.
  * 
- * This is essentially an nice alternative to implementing long if/else chains.
+ * This is essentially an cleaner alternative to implementing long if/else chains.
  */
 public class AnnotatedCommandHandler implements ClientCommandDispatcher.CommandHandler {
     @Retention(RetentionPolicy.RUNTIME)
