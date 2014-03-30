@@ -44,7 +44,8 @@ public class BlockingInputStream extends InputStream {
         int sz = 0;
         
         while (sz < len) {
-            int ret = this.in.read(b, sz+off, b.length-sz);
+            int bytesToRead = Math.min(len, b.length-sz);
+            int ret = this.in.read(b, sz+off, bytesToRead);
             if (ret < 0) {
                 throw new EOFException();
             } else {
