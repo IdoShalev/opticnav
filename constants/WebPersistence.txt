@@ -1,0 +1,6 @@
+MaxLength
+    USERNAME: 25
+    RESOURCE_TYPE: 127
+    MAP_NAME: 64
+    MARKER_NAME: 64
+

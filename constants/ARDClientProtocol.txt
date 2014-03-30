@@ -1,0 +1,19 @@
+# Something
+NO_ARD: 0
+
+Channels
+    GATEKEEPER
+    LOBBY
+
+ReqCodes
+    REGISTERED
+    COULDNOTREGISTER
+    CANCELLED
+
+Commands
+    REQCODES
+    CONNECT
+
+Connected
+    Commands
+        LIST_INSTANCES
