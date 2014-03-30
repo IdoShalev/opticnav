@@ -2,6 +2,7 @@ package opticnav.web.controllers.rest;
 
 import javax.servlet.http.HttpServletResponse;
 
+import opticnav.persistence.web.WebAccountDAO;
 import opticnav.persistence.web.WebAccountPublicDAO;
 import opticnav.web.components.UserSession;
 import opticnav.web.components.UserSession.User;
@@ -89,15 +90,18 @@ public class AccountController extends Controller {
     @RequestMapping(value="/query/{username}", method=RequestMethod.GET)
     public QueryPOJO query(@PathVariable String username) throws Exception {
         int id;
+        String name;
         try (WebAccountPublicDAO dao = new WebAccountPublicDAO(dbDataSource)) {
             id = dao.findName(username);
         }
-        
+        try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, id)) {
+            name = dao.getUsername();
+        }
         if (id == WebAccountPublicDAO.ACCOUNT_ID_NONE) {
             throw new NotFound("account.query.notfound", username);
         }
         
-        return new QueryPOJO(username, id);
+        return new QueryPOJO(name, id);
     }
     
     @RequestMapping(value="/current", method=RequestMethod.GET)
