@@ -78,3 +78,21 @@ header,footer {
 	display: table;
 	margin: 0 auto;
 }
+input[type=text],input[type=password] {
+    /* nice animations. :3 */
+    transition: box-shadow 0.25s;
+    /* disable textbox outline in Chrome */
+    outline: none;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    background: #fff;
+    padding: 4px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    width: 200px;
+}
+
+input[type=text]:focus,input[type=password]:focus {
+    box-shadow: 0 0 4px rgba(0,0,0,0.5);
+}
