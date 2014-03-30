@@ -1,5 +1,6 @@
 package opticnav.web.controllers.rest;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,6 +11,8 @@ import opticnav.web.controllers.rest.pojo.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -84,6 +87,17 @@ public class Controller {
     @ResponseStatus(HttpStatus.CONFLICT)
     public Message handleConflict(MessageException ex) {
         return ex.getMessageObject();
+    }
+    
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Message handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        List<FieldError> errors = ex.getBindingResult().getFieldErrors();
+        String message = "";
+        for (FieldError fieldError: errors) {
+            message += fieldError.getField() + ": " + fieldError.getDefaultMessage() + "\n";
+        }
+        return new Message(message);
     }
 
     public Message ok(String key, Object...params) {

@@ -4,9 +4,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 
 import opticnav.persistence.web.WebAccountDAO;
 import opticnav.persistence.web.WebResourceDAO;
+import opticnav.persistence.web.consts.WebPersistenceConsts;
 import opticnav.persistence.web.map.Anchor;
 import opticnav.persistence.web.map.GetMap;
 import opticnav.persistence.web.map.MapsListEntry;
@@ -65,7 +68,10 @@ public class MapController extends Controller {
     
     @RequestMapping(method=RequestMethod.POST,
             headers="content-type=multipart/form-data")
-    public CreateMapPOJO createMap(HttpServletRequest request, @RequestParam String name)
+    public CreateMapPOJO createMap(HttpServletRequest request, @RequestParam
+            @Valid
+            @Size(min=1, max=WebPersistenceConsts.MaxLength.MAP_NAME)
+            String name)
             throws Exception {
         int imageResourceID, mapID;
         

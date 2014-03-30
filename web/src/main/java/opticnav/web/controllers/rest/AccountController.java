@@ -1,12 +1,14 @@
 package opticnav.web.controllers.rest;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 
 import opticnav.persistence.web.WebAccountDAO;
 import opticnav.persistence.web.WebAccountPublicDAO;
+import opticnav.persistence.web.consts.WebPersistenceConsts;
 import opticnav.web.components.UserSession;
 import opticnav.web.components.UserSession.User;
-import opticnav.web.controllers.rest.pojo.Account;
 import opticnav.web.controllers.rest.pojo.Message;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/account/**")
 public class AccountController extends Controller {
     public static final class QueryPOJO {
+        @Size(min=1, max=WebPersistenceConsts.MaxLength.USERNAME)
         public String username;
         public int id;
         
@@ -30,6 +33,7 @@ public class AccountController extends Controller {
     }
     
     public static final class AccountPOJO {
+        @Size(min=1, max=WebPersistenceConsts.MaxLength.USERNAME)
         public String username;
         public int id;
         
@@ -39,6 +43,13 @@ public class AccountController extends Controller {
         }
     }
     
+    public static final class UsernamePasswordPOJO {
+        @Size(min=1, max=WebPersistenceConsts.MaxLength.USERNAME)
+        public String username;
+        @Size(min=1, max=WebPersistenceConsts.MaxLength.PASSWORD)
+        public String password;
+    }
+    
     @Autowired
     private javax.sql.DataSource dbDataSource;
     
@@ -46,7 +57,7 @@ public class AccountController extends Controller {
     private UserSession userSession;
     
     @RequestMapping(value="login", method=RequestMethod.POST)
-    public Message login(@RequestBody Account account)
+    public Message login(@RequestBody @Valid UsernamePasswordPOJO account)
             throws Exception {
         boolean valid;
         int accountID;
@@ -72,7 +83,7 @@ public class AccountController extends Controller {
     }
     
     @RequestMapping(value="register", method=RequestMethod.POST)
-    public Message register(@RequestBody Account account, HttpServletResponse resp)
+    public Message register(@RequestBody @Valid UsernamePasswordPOJO account, HttpServletResponse resp)
             throws Exception {
         boolean registered;
 
@@ -88,7 +99,10 @@ public class AccountController extends Controller {
     }
     
     @RequestMapping(value="/query/{username}", method=RequestMethod.GET)
-    public QueryPOJO query(@PathVariable String username) throws Exception {
+    public QueryPOJO query(@PathVariable
+            @Valid
+            @Size(min=1, max=WebPersistenceConsts.MaxLength.USERNAME)
+            String username) throws Exception {
         int id;
         String name;
         try (WebAccountPublicDAO dao = new WebAccountPublicDAO(dbDataSource)) {
