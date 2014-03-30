@@ -3,4 +3,3 @@
  * is created in its place. */
 DROP DATABASE IF EXISTS OpticNavDB;
 CREATE DATABASE OpticNavDB;
-use OpticNavDB;

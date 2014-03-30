@@ -8,7 +8,7 @@ DROP PROCEDURE IF EXISTS deleteARD;
 DELIMITER //
 
 CREATE PROCEDURE deleteARD 
-(p_acc_id VARCHAR(25))
+(p_acc_id INT(4))
 BEGIN
     UPDATE WEB_ACCOUNT
     SET ard_id = NULL

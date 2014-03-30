@@ -1,7 +1,7 @@
 CREATE TABLE WEB_ACCOUNT
 (
     web_account_id      INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    username            VARCHAR(25) NOT NULL UNIQUE,
+    username            VARCHAR(Web__MaxLength__USERNAME) NOT NULL UNIQUE,
     ard_id              INT(4),
     pass                BINARY(20)  NOT NULL
 );
@@ -9,14 +9,14 @@ CREATE TABLE WEB_ACCOUNT
 CREATE TABLE RESOURCE
 (
     resource_id         INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    resource_type       VARCHAR(127) NOT NULL
+    resource_type       VARCHAR(Web__MaxLength__RESOURCE_TYPE) NOT NULL
 );
 
 CREATE TABLE MAP
 (
     map_id              INT(4)      AUTO_INCREMENT PRIMARY KEY,
     web_account_id      INT(4)      NOT NULL,
-    name                VARCHAR(64) NOT NULL,
+    name                VARCHAR(Web__MaxLength__MAP_NAME) NOT NULL,
     resource_id         INT(4)      NOT NULL,
     CONSTRAINT          fk_map_resource FOREIGN KEY (resource_id) REFERENCES RESOURCE(resource_id),
     CONSTRAINT          fk_map_web_account FOREIGN KEY (web_account_id) REFERENCES WEB_ACCOUNT(web_account_id)
@@ -24,7 +24,7 @@ CREATE TABLE MAP
 
 CREATE TABLE MARKER
 (
-    marker_name         VARCHAR(64) ,
+    marker_name         VARCHAR(Web__MaxLength__MARKER_NAME) ,
     map_id              INT(4)      NOT NULL,
     resource_id         INT(4)      ,
     lat                 INT(4)      NOT NULL,

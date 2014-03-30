@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-MYSQL_USER=root
-MYSQL_PASS=password
+export MYSQL_DB=testDB
 
-# Concatenates all .sql files and feeds the output into MySQL
-cat create_test_db.sql tables.sql Procedures/*.sql Triggers/*.sql | mysql --user=$MYSQL_USER --password=$MYSQL_PASS
-
+./run_sql create_test_db.sql
+./run_sql tables.sql
+./run_sql Procedures/*.sql
+./run_sql Triggers/*.sql

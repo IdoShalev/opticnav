@@ -2,7 +2,7 @@ genconst.py
 ===========
 2014 - Dan Spencer
 
-Generate constants for Java, JavaScript and MySQL
+Generate constants for Java, JavaScript and more
 
 Scenario
 --------
@@ -59,7 +59,7 @@ Use a shared constant value declared elsewhere
 
 ### MySQL ###
     CREATE TABLE WEB_ACCOUNT(
-        username VARCHAR(@Constants.WebAccount.USERNAME_MAXLENGTH) NOT NULL UNIQUE,
+        username VARCHAR(Constants__WebAccount__USERNAME_MAXLENGTH) NOT NULL UNIQUE,
         ...
     );
 
@@ -87,10 +87,13 @@ Generating constants
         }
     }
 
-### MySQL ###
-    SET @Constants.WebAccount.USERNAME_MAXLENGTH = 25;
-    SET @Constants.Map.MAPNAME_MINLENGTH = 5;
-    SET @Constants.Map.MAPNAME_MAXLENGTH = 50;
+### MySQL (m4) ###
+Because MySQL really sucks at using global variables of any kind in SQL
+statements, we have to resort to a macro preprocessor such as m4.
+
+    define(Constants__WebAccount__USERNAME_MAXLENGTH,25)dnl
+    define(Constants__Map__MAPNAME_MINLENGTH,5)dnl
+    define(Constants.Map.MAPNAME_MAXLENGTH,50)dnl
 
 ### JavaScript ###
     var Constants = {

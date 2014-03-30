@@ -1,5 +1,5 @@
 /* *********************************************************************
-**	Description:    Stores the mine type and the id of a Resource
+**	Description:    Stores the mime type and the id of a Resource
 **
 **  Returns:        The ID of the Resource
 **********************************************************************/
@@ -9,7 +9,7 @@ DROP FUNCTION IF EXISTS addResource;
 DELIMITER //
 
 CREATE FUNCTION addResource 
-(p_type VARCHAR(127))
+(p_type VARCHAR(Web__MaxLength__RESOURCE_TYPE))
 RETURNS INT
 DETERMINISTIC
 BEGIN

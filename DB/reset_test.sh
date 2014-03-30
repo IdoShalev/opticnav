@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-MYSQL_USER=root
-MYSQL_PASS=password
+export MYSQL_DB=OpticNavDB
 
-# Concatenates all .sql files and feeds the output into MySQL
-cat create_db.sql tables.sql Procedures/*.sql Data/*.sql Triggers/*.sql | mysql --user=$MYSQL_USER --password=$MYSQL_PASS
+./create.sh
+./run_sql Data/*.sql
 

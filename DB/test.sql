@@ -78,7 +78,7 @@ SELECT getResourceType (3);                         ''
 SELECT getResourceType (4);                         NULL
 SELECT getResourceType ();                          ERROR 1318 (42000)
 
-creating maps (p_map_name VARCHAR(64), p_res_id INT(4), p_acc_id INT(4))
+creating maps (p_map_name VARCHAR(Web__MaxLength__MAP_NAME), p_res_id INT(4), p_acc_id INT(4))
 
 SELECT createMap('mapName0', 1, 1);                 returns number > 0
 SELECT createMap('mapName2', 2, 2);                 returns number > 0
@@ -106,7 +106,7 @@ SELECT getMapResource(2);                           2
 SELECT getMapResource(9);                           NULL
 SELECT getMapResource();                            ERROR 1318 (42000)
 
-creating some markers (p_name VARCHAR(64), p_map_id INT(4), p_res_id INT(4), p_lat INT(4), p_long INT(4))
+creating some markers (p_name VARCHAR(Web__MaxLength__MARKER_NAME), p_map_id INT(4), p_res_id INT(4), p_lat INT(4), p_long INT(4))
 
 CALL createMarker('marker1', 1, 0, 10, 10);         -
 CALL createMarker('marker2', 1, 0, 10, 10);         -

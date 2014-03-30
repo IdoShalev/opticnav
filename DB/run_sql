@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+MYSQL_USER=root
+MYSQL_PASS=password
+
+for input in "$@"
+do
+    echo "Reading $input"
+    (echo "changequote()dnl"; cat constants.m4 "$input") | m4 |
+        mysql -p $MYSQL_DB --user=$MYSQL_USER -p$MYSQL_PASS || break
+    echo
+done
+

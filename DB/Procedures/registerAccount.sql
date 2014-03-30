@@ -12,7 +12,7 @@ DROP FUNCTION IF EXISTS registerAccount;
 DELIMITER //
 
 CREATE FUNCTION registerAccount 
-(p_accountName VARCHAR(25), p_password VARCHAR(20))
+(p_accountName VARCHAR(Web__MaxLength__USERNAME), p_password VARCHAR(Web__MaxLength__PASSWORD))
 RETURNS BOOLEAN
 DETERMINISTIC
 BEGIN
