@@ -1,10 +1,11 @@
 var usersList = [];
+var selectedMapId;
 $(function(){
 	var messagable = createElemMessagable("#message");
 	var mapSelection = $("#mapSelection");
 	
 	var currentUser;
-	
+	useInstanceController();
 	$.ajax({
 		type : "GET",
 		url : ctx + "/api/account/current",
@@ -14,6 +15,45 @@ $(function(){
 			currentUser = {"username": json.username, "id": json.id};
 		})
 	});
+    $("#stop-instance").click(function() {
+    	useInstanceController();
+    })
+    $("#instaB").click(function() {
+    	var invited = $("inst-selected-users");
+    	var invitedList = [];
+    	for (var i = 0; i < usersList.length; i++) {
+    		invitedList.push(usersList[i].id);
+    	}
+    	var instance_data = {"map_id":selectedMapId,"accounts":invitedList};
+    	// TODO: load the instance
+		// POST /api/instance/
+		$.ajax({
+			type : "POST",
+			url : ctx + "/api/instance/",
+			data : JSON.stringify(instance_data),
+			contentType : "application/json; charset=utf-8",
+			complete : ajaxMessageClosureOnError(messagable, function(json) {
+				useInstanceInfo();
+		    	var d = new Date();
+		    	var hours = d.getHours();
+		    	var minutes = d.getMinutes();
+		    	if (minutes < 10) {
+		    		minutes = "0" + minutes;
+		    	}
+		    	var seconds = d.getSeconds();
+		    	if (seconds < 10) {
+		    		seconds = "0" + seconds;
+		    	}
+		    	var inst = $("#inst-start-time");
+		    	inst.empty();
+		    	if (hours > 12) {
+		        	var currentTime = (hours + ":"  + minutes + ":" + seconds + "PM");
+		    	} else {
+		        	var currentTime = (hours + ":"  + minutes + ":" + seconds + "AM");
+		    	}
+			})
+		});
+    });
 
 	loadMapsListAJAX(messagable, function(maps) {
 		for (var i = 0; i < maps.length; i++) {
@@ -29,8 +69,7 @@ $(function(){
 	mapSelection.change(function() {
 		var id = parseInt($(this).val());
 		console.log("Changed to " + id);
-		// TODO: load the instance
-		// GET /api/instance/{id}
+		
 	});
 	
 	$("#inst-invite").click(function() {
@@ -70,16 +109,12 @@ $(function(){
 		for (var i = 0; i < usersList.length; i++) {
 			var $li = $("<li>");
 			$li.text(usersList[i].username);
-			var $delete = $li.append($("<span>", {"class":"del"}));
+			var $delete = $("<span>", {"class":"del"});
+			$li.append($delete);
 			new function() {
 				var id = usersList[i].id;
-				$delete.bind({
-					click: function() {
-						removeFromList(id,usersList);
-					},
-					mousehover: function() {
-						
-					}
+				$delete.click(function() {
+					removeFromList(id,usersList);
 				});
 			}();
 			selectedUsers.append($li);	
@@ -115,9 +150,15 @@ $(function(){
 
 		mapList.fadeIn();
     });
-    
+    function useInstanceController() {
+    	$("#info-modal").show();
+    	$("#controller-modal").hide();
+    }
+    function useInstanceInfo() {
+    	$("#info-modal").hide();
+    	$("#controller-modal").show();
+    }
 });
-var selectedMapId;
 function selectMap(id) {
 	var elem = $("#map-"+id);
 	if (selectedMapId != undefined) {

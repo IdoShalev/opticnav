@@ -1,6 +1,7 @@
 <t:page title="Instance" css="instance.css" js="MapAJAX.js,instanceManager.js">    
 <div id="instanceContainer">
     <div id="info">
+    <div id="info-modal"></div>
         Instance Information <br/>
         <br/>
         Map: <span id="inst-map-name"></span>
@@ -11,10 +12,10 @@
         <ul id="inst-selected-users">
             
         </ul><br/>
-        <input type="submit" value="Stop Instance">
+        <input type="submit" value="Stop Instance" id="stop-instance">
     </div>
-
     <div id="controller">
+    <div id="controller-modal"></div>
         <div id="leftControl">
         Instance Controller<br/>
         <br/>
