@@ -24,35 +24,39 @@ $(function(){
     	for (var i = 0; i < usersList.length; i++) {
     		invitedList.push(usersList[i].id);
     	}
-    	var instance_data = {"map_id":selectedMapId,"accounts":invitedList};
-    	// TODO: load the instance
-		// POST /api/instance/
-		$.ajax({
-			type : "POST",
-			url : ctx + "/api/instance/",
-			data : JSON.stringify(instance_data),
-			contentType : "application/json; charset=utf-8",
-			complete : ajaxMessageClosureOnError(messagable, function(json) {
-				useInstanceInfo();
-		    	var d = new Date();
-		    	var hours = d.getHours();
-		    	var minutes = d.getMinutes();
-		    	if (minutes < 10) {
-		    		minutes = "0" + minutes;
-		    	}
-		    	var seconds = d.getSeconds();
-		    	if (seconds < 10) {
-		    		seconds = "0" + seconds;
-		    	}
-		    	var inst = $("#inst-start-time");
-		    	inst.empty();
-		    	if (hours > 12) {
-		        	var currentTime = (hours + ":"  + minutes + ":" + seconds + "PM");
-		    	} else {
-		        	var currentTime = (hours + ":"  + minutes + ":" + seconds + "AM");
-		    	}
-			})
-		});
+    	if (selectedMapId == undefined) {
+			showErrorMessage(messagable,"A map is required");
+		}else {
+	    	var instance_data = {"map_id":selectedMapId,"accounts":invitedList};
+	    	// TODO: load the instance
+			// POST /api/instance/
+			$.ajax({
+				type : "POST",
+				url : ctx + "/api/instance/",
+				data : JSON.stringify(instance_data),
+				contentType : "application/json; charset=utf-8",
+				complete : ajaxMessageClosureOnError(messagable, function(json) {
+					useInstanceInfo();
+			    	var d = new Date();
+			    	var hours = d.getHours();
+			    	var minutes = d.getMinutes();
+			    	if (minutes < 10) {
+			    		minutes = "0" + minutes;
+			    	}
+			    	var seconds = d.getSeconds();
+			    	if (seconds < 10) {
+			    		seconds = "0" + seconds;
+			    	}
+			    	var inst = $("#inst-start-time");
+			    	inst.empty();
+			    	if (hours > 12) {
+			        	var currentTime = (hours + ":"  + minutes + ":" + seconds + "PM");
+			    	} else {
+			        	var currentTime = (hours + ":"  + minutes + ":" + seconds + "AM");
+			    	}
+				})
+			});
+		}
     });
 
 	loadMapsListAJAX(messagable, function(maps) {
