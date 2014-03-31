@@ -2,7 +2,6 @@
  * For more on OO JavaScript, take a gander:
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript
  */
-//TODO Anchor Save
 
 function loadMapsList() {
 	var messagable = createElemMessagable("#MapMessage");

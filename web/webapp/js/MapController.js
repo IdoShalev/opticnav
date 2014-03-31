@@ -228,13 +228,20 @@ var MapController = function() {
             if (this.tryCloseMap()) {
             	var persistence = new MapAJAX(id);
                 var view = $("#map-view");
+
                 view.hide();
                 // load the map...
                 var that = this;
                 new Map(persistence, function(map, image) {
                     image.id = "map-image";
                     currentMap = map;
-                    setAnchorMode.call(that, false);
+                    var anchorNumber = currentMap.getAnchorList();
+                    var toggle = anchorNumber.length < 3;
+                    
+                    //TODO Test
+                    toggle ? setAnchorMode.call(that, toggle): 
+                    	setAnchorMode.call(that, toggle);
+                    
                     $("#map-image").replaceWith(image);
                     $("#map-image").show();
                     $("#map-image").click(function(e) {
