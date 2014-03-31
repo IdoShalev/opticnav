@@ -72,7 +72,18 @@ $(function(){
 		
 	});
 	
+	$("#invite-to-inst").keyup(function(e){
+	    if(e.keyCode == 13)
+	    {
+	    	instanceInvite();
+	    }
+	});
+	
 	$("#inst-invite").click(function() {
+		instanceInvite();
+	});
+	
+	function instanceInvite(){
 		var username = $("#invite-to-inst").val();
 		if (username === "") {
 			showErrorMessage(messagable,"A username is required");
@@ -101,7 +112,7 @@ $(function(){
 				})
 			});
 		}
-	});
+	}
 	
 	function createList(usersList) {
 		var selectedUsers = $("#inst-select-users");
