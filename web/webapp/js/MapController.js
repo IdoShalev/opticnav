@@ -271,17 +271,22 @@ var MapController = function() {
         
         delMap: function(onDeleteMap) {
         	if (currentMap !== null) {
-        		var that = this;
-    			$.ajax({
-    				type : "DELETE",
-    				url : ctx + "/api/map/" + selectedMapId,
-    				contentType : "application/json; charset=utf-8",
-    				complete : ajaxMessageClosureOnError(messagable, function(ok, json) {
-    					showOkMessage(messagable, "Map deleted");
-    					clearMap();
-    					onDeleteMap();
-    				})
-    			});
+        		var messagable = createElemMessagable("#message");
+
+        		var r = confirm("Are you sure you want to delete this map");
+        		if(r === true){
+        			var that = this;
+        			$.ajax({
+        				type : "DELETE",
+        				url : ctx + "/api/map/" + selectedMapId,
+        				contentType : "application/json; charset=utf-8",
+        				complete : ajaxMessageClosureOnError(messagable, function(ok, json) {
+        					showOkMessage(messagable, "Map deleted");
+        					clearMap();
+        					onDeleteMap();
+        				})
+        			});
+        		}
             }
         },
         

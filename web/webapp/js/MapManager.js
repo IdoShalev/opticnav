@@ -75,6 +75,8 @@ $(function() {
         	lng = $("#anchor-lng").val();
         	lat = $("#anchor-lat").val();
         }else{
+        	//var messagable = createElemMessagable("#message");
+        	
         	$("#modal-backdrop").fadeIn();
 	        $("#alert-message").append("You can't save an anchor that doesn't have" +
 	        		" both longitude and latitude values");
