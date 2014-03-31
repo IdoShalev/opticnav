@@ -56,8 +56,12 @@ public final class PrimitiveWriter implements Flushable, Closeable {
         writeUInt(value, 4);
     }
 
+    public void writeSInt64(long value) throws IOException {
+        writeUInt(value, 8);
+    }
+
     private void writeUInt(long value, int bytes) throws IOException {
-        assert bytes < 8;
+        assert bytes <= 8;
         
         byte[] buf = new byte[bytes];
         

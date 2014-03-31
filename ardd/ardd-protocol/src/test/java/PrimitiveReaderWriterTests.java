@@ -32,6 +32,7 @@ public class PrimitiveReaderWriterTests {
         PrimitiveWriter w = new PrimitiveWriter(bout);
         w.writeUInt8(100);
         w.flush();
+        w.close();
         
         assertEquals(bout.toByteArray()[0], 100);
     }
@@ -42,6 +43,7 @@ public class PrimitiveReaderWriterTests {
         PrimitiveWriter w = new PrimitiveWriter(bout);
         w.writeUInt8(100);
         w.flush();
+        w.close();
         ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
         PrimitiveReader r = new PrimitiveReader(bin);
         assertEquals(100, r.readUInt8());
@@ -91,6 +93,28 @@ public class PrimitiveReaderWriterTests {
         
         out.writeSInt32(-1);
         assertEquals(-1, in.readSInt32());
+    }
+    
+    @Test
+    public void sint64() throws IOException {
+        out.writeSInt64(0);
+        assertEquals(0, in.readSInt64());
+        
+        out.writeSInt64(-1);
+        assertEquals(-1, in.readSInt64());
+        
+        out.writeSInt64(1);
+        assertEquals(1, in.readSInt64());
+        
+        out.writeSInt64(Long.MIN_VALUE);
+        assertEquals(Long.MIN_VALUE, in.readSInt64());
+        
+        out.writeSInt64(Long.MAX_VALUE);
+        assertEquals(Long.MAX_VALUE, in.readSInt64());
+        
+        final long magic = 423094893205893563L;
+        out.writeSInt64(magic);
+        assertEquals(magic, in.readSInt64());
     }
     
     @Test

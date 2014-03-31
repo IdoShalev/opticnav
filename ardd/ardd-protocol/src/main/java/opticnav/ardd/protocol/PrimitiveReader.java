@@ -68,9 +68,13 @@ public final class PrimitiveReader {
     public int readSInt32() throws IOException {
         return (int)readUInt(4);
     }
+
+    public long readSInt64() throws IOException {
+        return readUInt(8);
+    }
     
     private long readUInt(int bytes) throws IOException {
-        assert bytes > 0 && bytes < 8;
+        assert bytes > 0 && bytes <= 8;
         
         byte[] buf = new byte[bytes];
         this.in.read(buf);
@@ -78,7 +82,7 @@ public final class PrimitiveReader {
         long value = (int)buf[0] & 0xFF;
         
         for (int i = 1; i < bytes; i++) {
-            value |= ((int)buf[i] & 0xFF) << (i*8);
+            value |= ((long)buf[i] & 0xFF) << (i*8);
         }
         
         return value;
