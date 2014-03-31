@@ -7,10 +7,10 @@ import android.content.DialogInterface;
 import android.os.Handler;
 import android.util.Pair;
 import android.widget.Toast;
-import opticnav.ardd.ard.ARDConnection;
-import opticnav.ardd.ard.ARDConnectionException;
-import opticnav.ardd.ard.ARDLobbyConnection;
-import opticnav.ardd.ard.ARDLobbyConnectionStatus;
+import opticnav.ardd.ard.ARDGatekeeper;
+import opticnav.ardd.ard.ARDGatekeeperException;
+import opticnav.ardd.ard.ARDConnected;
+import opticnav.ardd.ard.ARDConnectionStatus;
 import opticnav.ardd.broker.ard.ARDBroker;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
@@ -41,7 +41,7 @@ public class ServerUIHandler {
      * Server is separated from any Android UI-isms and has no UI code.
      */
     private static class Server {
-        public final ARDConnection broker;
+        public final ARDGatekeeper broker;
 
         private final Channel channel;
         private final ExecutorService threadPool;
@@ -70,7 +70,7 @@ public class ServerUIHandler {
         /** The server authenticated the device successfully. authenticate() runs on the Android UI thread. */
         public void authenticate();
 
-        public void confCode(final ConfCode confCode, ARDConnection.Cancellation cancellation);
+        public void confCode(final ConfCode confCode, ARDGatekeeper.Cancellation cancellation);
         public void registered(final PassCode passCode);
         public void couldNotRegister();
         public void confCodeCancelled();
@@ -220,7 +220,7 @@ public class ServerUIHandler {
 
 
     private void tryConnectToLobby(final PassCode passCode, final ConnectEvents connectEvents)
-            throws ARDConnectionException {
+            throws ARDGatekeeperException {
         // runs in background thread
 
         if (passCode == null) {
@@ -231,7 +231,7 @@ public class ServerUIHandler {
 
             final Handler handler = new Handler(context.getMainLooper());
             final Server server = this.server.get();
-            final ARDLobbyConnectionStatus status = server.broker.connectToLobby(passCode);
+            final ARDConnectionStatus status = server.broker.connect(passCode);
 
             switch (status.getStatus()) {
             case NOPASSCODE:
@@ -261,14 +261,14 @@ public class ServerUIHandler {
         }
     }
 
-    private void requestCodes(final ConnectEvents connectEvents) throws ARDConnectionException {
+    private void requestCodes(final ConnectEvents connectEvents) throws ARDGatekeeperException {
         // runs in background thread
 
         final Handler handler = new Handler(context.getMainLooper());
         Server server = this.server.get();
-        server.broker.requestPassConfCodes(new ARDConnection.RequestPassConfCodesCallback() {
+        server.broker.requestPassConfCodes(new ARDGatekeeper.RequestPassConfCodesCallback() {
             @Override
-            public void confCode(final ConfCode confCode, final ARDConnection.Cancellation cancellation) {
+            public void confCode(final ConfCode confCode, final ARDGatekeeper.Cancellation cancellation) {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {

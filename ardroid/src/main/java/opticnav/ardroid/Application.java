@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.widget.Toast;
-import opticnav.ardd.ard.ARDConnection;
+import opticnav.ardd.ard.ARDGatekeeper;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.Protocol;
@@ -118,7 +118,7 @@ public class Application extends android.app.Application {
                     }
 
                     @Override
-                    public void confCode(ConfCode confCode, ARDConnection.Cancellation cancellation) {
+                    public void confCode(ConfCode confCode, ARDGatekeeper.Cancellation cancellation) {
                         Intent intent = new Intent(context, ConfCodeActivity.class);
                         intent.putExtra("confcode", confCode.getString());
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
