@@ -22,10 +22,7 @@ public class AdminBroker implements AdminConnection {
         this.input = new PrimitiveReader(channel.getInputStream());
         this.output = new PrimitiveWriter(channel.getOutputStream());
     }
-
-    /**
-     * @return 0 if no ARD was registered, ARD ID (1+) if registered
-     */
+    
     @Override
     public int registerARD(ConfCode code)
             throws AdminConnectionException {
@@ -40,7 +37,7 @@ public class AdminBroker implements AdminConnection {
     }
     
     @Override
-    public AdminStartInstanceStatus deployInstance(InstanceDeployment d)
+    public AdminStartInstanceStatus deployInstance(final InstanceDeployment d)
             throws AdminConnectionException {
         if (d.getMapImageSize() > ARDdAdminProtocol.MAX_MAP_IMAGE_SIZE) {
             return new AdminStartInstanceStatus(AdminStartInstanceStatus.Status.IMAGE_TOO_BIG);
@@ -73,6 +70,13 @@ public class AdminBroker implements AdminConnection {
                 this.output.writeString(marker.getName());
                 this.output.writeSInt32(marker.getLng());
                 this.output.writeSInt32(marker.getLat());
+            }
+            
+            // Invited ARDs
+            this.output.writeUInt31(d.getArdList().size());
+            for (InstanceDeployment.ARDIdentifier ard: d.getArdList()) {
+                this.output.writeUInt31(ard.getArdID());
+                this.output.writeString(ard.getName());
             }
             
             this.output.flush();

@@ -1,19 +1,18 @@
 package opticnav.ardd.clients.adminclient;
 
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.output.NullOutputStream;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.ARDListsManager;
 import opticnav.ardd.Instance;
+import opticnav.ardd.TemporaryResourceUtil;
+import opticnav.ardd.TemporaryResourceUtil.TemporaryResource;
+import opticnav.ardd.TemporaryResourceUtil.TemporaryResourceBuilder;
 import opticnav.ardd.clients.AnnotatedCommandHandler;
-import opticnav.ardd.clients.AnnotatedCommandHandler.Command;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
@@ -46,13 +45,14 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
     
     @Command(Commands.DEPLOY_INSTANCE)
     public void deployInstance(PrimitiveReader in, PrimitiveWriter out) throws Exception {
-        final String mapName;
+        final String instName;
         final boolean hasMapImage;
-        final Instance.Anchor[] anchors = new Instance.Anchor[3];
+        final TemporaryResource mapImage;
+        final Instance.Anchor[] mapAnchors = new Instance.Anchor[3];
         
-        mapName = in.readString();
+        instName = in.readString();
         hasMapImage = in.readUInt8() != 0;
-        LOG.debug("Map name: " + mapName);
+        LOG.debug("Instance name: " + instName);
         LOG.debug("Has map image: " + hasMapImage);
         
         if (hasMapImage) {
@@ -62,13 +62,17 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
             mapImageType = in.readString();
             mapImageSize = in.readUInt31();
             if (mapImageSize > ARDdAdminProtocol.MAX_MAP_IMAGE_SIZE) {
-                throw new IllegalArgumentException("Image exceed max size");
+                throw new IllegalArgumentException("Image exceeds max size");
             }
             
-            // TODO - save to a temporary file
-            try (OutputStream mapImageOutput = new NullOutputStream()) {
+            final TemporaryResourceBuilder imageResBuilder;
+            imageResBuilder = TemporaryResourceUtil.createTemporaryResourceBuilder(mapImageType);
+            
+            try (OutputStream mapImageOutput = imageResBuilder.getOutputStream()) {
                 in.readFixedBlobToOutputStream(mapImageSize, mapImageOutput);
             }
+            
+            mapImage = imageResBuilder.build();
             
             // Anchors
             for (int i = 0; i < 3; i++) {
@@ -76,12 +80,14 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
                 final int lat = in.readSInt32();
                 final int localX = in.readSInt32();
                 final int localY = in.readSInt32();
-                anchors[i] = new Instance.Anchor(lng, lat, localX, localY);
+                mapAnchors[i] = new Instance.Anchor(lng, lat, localX, localY);
             }
+        } else {
+            mapImage = null;
         }
         
         // Markers
-        int markerSize = in.readUInt31();
+        final int markerSize = in.readUInt31();
         LOG.debug(markerSize + " markers");
         final List<Instance.StaticMarker> staticMarkers;
         staticMarkers = new ArrayList<>(markerSize);
@@ -92,9 +98,28 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
             staticMarkers.add(new Instance.StaticMarker(markerName, lng, lat));
         }
         
-        // TODO - replace with constants
+        // Invited ARDs
+        final int ardSize = in.readUInt31();
+        LOG.debug(ardSize + " invited ARDs");
+        if (ardSize == 0) {
+            LOG.warn(String.format("There are no invited ARDs for this instance (%s). " + 
+                                   "We'll allow it, but how will anyone join it?", instName));
+        }
+        final List<Instance.ARDIdentifier> ards;
+        ards = new ArrayList<>(ardSize);
+        for (int i = 0; i < ardSize; i++) {
+            final int ardID = in.readUInt31();
+            final String name = in.readString();
+            ards.add(new Instance.ARDIdentifier(ardID, name));
+        }
+        
+        // Create the instance!
+        final Instance instance = new Instance(instName, mapImage, mapAnchors, staticMarkers, ards);
+        final int instanceID = ardListsManager.getInstancesList().addInstance(instance);
+        
+        // TODO - replace with constant
         out.writeUInt8(0);
-        out.writeUInt31(111);
+        out.writeUInt31(instanceID);
         out.flush();
     }
 }

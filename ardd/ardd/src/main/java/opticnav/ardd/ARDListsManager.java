@@ -15,12 +15,15 @@ public final class ARDListsManager {
     private final ARDPersistedList persisted;
     private final ARDConnectedList connected;
     private final RandomGenerator randomGen;
+    private final InstancesList instances;
 
-    public ARDListsManager(ARDPendingList pending, ARDPersistedList persisted, ARDConnectedList connected,
+    public ARDListsManager(ARDPendingList pending, ARDPersistedList persisted,
+            ARDConnectedList connected, InstancesList instances,
             RandomGenerator randomGen) {
         this.pending = pending;
         this.persisted = persisted;
         this.connected = connected;
+        this.instances = instances;
         this.randomGen = randomGen;
     }
 
@@ -30,6 +33,10 @@ public final class ARDListsManager {
 
     public ARDConnectedList getConnectedList() {
         return this.connected;
+    }
+
+    public InstancesList getInstancesList() {
+        return this.instances;
     }
     
     public Pair<Pair<PassCode, ConfCode>, BlockingValue<Integer>> generatePassConfCodes() {

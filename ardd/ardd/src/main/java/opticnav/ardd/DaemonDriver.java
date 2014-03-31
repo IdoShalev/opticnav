@@ -28,10 +28,11 @@ public class DaemonDriver {
         final ARDPendingList   pending   = new ARDPendingList();
         final ARDPersistedList persisted = new ARDPersistedList(persistence);
         final ARDConnectedList connected = new ARDConnectedList(persisted);
+        final InstancesList    instances = new InstancesList(persistence);
         final RandomGenerator  randomGen = new ISAACRandom();
         
         final ARDListsManager ardListsManager;
-        ardListsManager = new ARDListsManager(pending, persisted, connected, randomGen);
+        ardListsManager = new ARDListsManager(pending, persisted, connected, instances, randomGen);
         
         AdminListener adminServer = new AdminListener(adminPort, ardListsManager);
         ARDListener   ardServer   = new ARDListener(ardPort, ardListsManager);
