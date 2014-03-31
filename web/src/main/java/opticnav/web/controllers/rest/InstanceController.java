@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.activation.MimeType;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import opticnav.ardd.admin.ARDdAdmin;
 import opticnav.ardd.admin.ARDdAdminStartInstanceStatus;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class InstanceController extends Controller {
     public static class StartInstancePOJO {
         public int map_id;
+        @NotNull
         public List<Integer> accounts;
     }
     
@@ -51,7 +54,7 @@ public class InstanceController extends Controller {
     private ARDdAdminPool pool;
     
     @RequestMapping(method=RequestMethod.POST)
-    public InstanceIDPOJO startInstance(@RequestBody StartInstancePOJO startInstancePOJO)
+    public InstanceIDPOJO startInstance(@RequestBody @Valid StartInstancePOJO startInstancePOJO)
             throws Exception {
         final String mapName;
         final MimeType mapImageType;
@@ -60,11 +63,8 @@ public class InstanceController extends Controller {
         final List<InstanceDeployment.Marker> mapMarkers;
         final List<InstanceDeployment.Anchor> mapAnchors;
         final List<InstanceDeployment.ARDIdentifier> ardList;
-        
-        mapMarkers = new ArrayList<>();
-        mapAnchors = new ArrayList<>();
-        ardList   = new ArrayList<>();
-        
+
+        ardList = new ArrayList<>(startInstancePOJO.accounts.size());
         for (int account_id: startInstancePOJO.accounts) {
             try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, account_id)) {
                 ardList.add(new InstanceDeployment.ARDIdentifier(dao.getARD(), dao.getUsername()));
@@ -73,11 +73,16 @@ public class InstanceController extends Controller {
         
         try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, userSession.getUser().getId())) {
             final GetMap map = dao.getMap(startInstancePOJO.map_id);
+            if (map == null) {
+                // map not found
+                throw new NotFound("instance.mapnotfound", startInstancePOJO.map_id);
+            }
             int imageResourceID = map.getImageResource();
             
             mapName = map.getName();
             
             // We need to re-add markers as InstanceDeployment.Marker objects because they're in separate layers
+            mapMarkers = new ArrayList<>(map.getMarkers().size());
             for (Marker marker: map.getMarkers()) {
                 final InstanceDeployment.Marker instMarker;
                 instMarker = new InstanceDeployment.Marker(marker.getName(), marker.getLng(), marker.getLat());
@@ -85,6 +90,7 @@ public class InstanceController extends Controller {
             }
 
             // We need to re-add anchors as InstanceDeployment.Anchor objects because they're in separate layers
+            mapAnchors = new ArrayList<>(map.getAnchors().size());
             for (Anchor anchor: map.getAnchors()) {
                 final InstanceDeployment.Anchor instAnchor;
                 instAnchor = new InstanceDeployment.Anchor(anchor.getLng(), anchor.getLat(),

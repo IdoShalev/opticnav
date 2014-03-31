@@ -95,7 +95,7 @@ public class WebResourceDAO implements AutoCloseable {
             throws WebResourceDAOExcpetion {
         // read row in DB first to get mimetype and that it's
         // supposed to exist
-        String type = null;
+        final String type;
         try (CallableStatement cs = conn.prepareCall("{? = call getResourceType(?)}")){
             cs.setInt(2, id);
             cs.registerOutParameter(1, Types.VARCHAR);

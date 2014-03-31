@@ -1,7 +1,0 @@
-CREATE TABLE WEB_ACCOUNT
-(
-    web_account_id      INT(4)      AUTO_INCREMENT PRIMARY KEY,
-    username            VARCHAR(@Web.MaxLength.USERNAME) NOT NULL UNIQUE,
-    ard_id              INT(4),
-    pass                BINARY(20)  NOT NULL
-);

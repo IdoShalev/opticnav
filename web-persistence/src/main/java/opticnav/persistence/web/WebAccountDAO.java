@@ -51,6 +51,12 @@ public class WebAccountDAO implements AutoCloseable {
         }
     }
 
+    /**
+     * Get the ID of the currently registered device
+     * 
+     * @return The ID number identifying the device, or 0 if there is no currently registered device
+     * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
+     */
     public int getARD() throws WebAccountDAOException {
         try (CallableStatement cs = conn.prepareCall("{? = call getARD(?)}")) {
             cs.setInt(2, accountID);
@@ -62,13 +68,24 @@ public class WebAccountDAO implements AutoCloseable {
         } catch (SQLException e) {
             throw new WebAccountDAOException(e);
         }
-
     }
 
+    /**
+     * Does the account have a currently registered device?
+     * 
+     * @return True if account has a currently registered device, false if not
+     * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
+     */
     public boolean hasARD() throws WebAccountDAOException {
         return getARD() != 0;
     }
 
+    /**
+     * Assign a device to the account.
+     * 
+     * @param ardID The ID number identifying the device
+     * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
+     */
     public void setARD(int ardID) throws WebAccountDAOException {
         try (CallableStatement cs = conn.prepareCall("{call setARD(?, ?)}")) {
             cs.setInt(1, accountID);
@@ -81,6 +98,12 @@ public class WebAccountDAO implements AutoCloseable {
         }
     }
 
+    /**
+     * Remove the currently registered device (ARD) from the account.
+     * Note that this will not unregister the device from ardd, but only unbinds it from the web account.
+     * 
+     * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
+     */
     public void removeARD() throws WebAccountDAOException {
         try (CallableStatement cs = conn.prepareCall("{call deleteARD(?)}")) {
             cs.setInt(1, accountID);
@@ -92,6 +115,14 @@ public class WebAccountDAO implements AutoCloseable {
         }
     }
 
+    /**
+     * Create a new map, initialized with a name and an image resource. No markers or anchors are added here.
+     * 
+     * @param name The map name
+     * @param imageResource The ID number identifying the image resource
+     * @return The ID number identifying the newly created map
+     * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
+     */
     public int createMap(String name, int imageResource)
             throws WebAccountDAOException {
         try (CallableStatement cs = conn
@@ -111,6 +142,15 @@ public class WebAccountDAO implements AutoCloseable {
         }
     }
 
+    /**
+     * Modifies (replaces) the entirety of a specific map, excluding the map name and image.
+     * The map must belong to the account.
+     * Note that old marker and anchor data not specified in the ModifyMap object will become lost!
+     * 
+     * @param id The ID number identifying the map
+     * @param map The payload used to replace the map
+     * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
+     */
     public void modifyMap(int id, ModifyMap map) throws WebAccountDAOException {
         try (CallableStatement cs = conn.prepareCall("{call deleteMarker(?)}")) {
             cs.setInt(1, id);
@@ -161,6 +201,14 @@ public class WebAccountDAO implements AutoCloseable {
         }
     }
 
+    /**
+     * Delete a specific map.
+     * The map must belong to the account.
+     * Note that the image resource associated with the map does NOT also get deleted!
+     * 
+     * @param id The ID number identifying the map
+     * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
+     */
     public void deleteMap(int id) throws WebAccountDAOException {
         try (CallableStatement cs = conn.prepareCall("{call deleteMap(?)}")) {
             cs.setInt(1, id);
@@ -169,12 +217,19 @@ public class WebAccountDAO implements AutoCloseable {
         } catch (SQLException e) {
             throw new WebAccountDAOException(e);
         }
-
     }
 
+    /**
+     * Get all information about a specific map (Name, markers, anchors, image).
+     * The map must belong to the account, or else null will be returned.
+     * 
+     * @param id The ID number identifying the map
+     * @return A GetMap object, or null if not found
+     * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
+     */
     public GetMap getMap(int id) throws WebAccountDAOException {
-        String name;
-        int imageResource;
+        final String name;
+        final int imageResource;
         try {
             try (CallableStatement cs = conn
                     .prepareCall("{? = call getMapName(?)}")) {
@@ -192,7 +247,12 @@ public class WebAccountDAO implements AutoCloseable {
                 cs.execute();
                 imageResource = cs.getInt(1);
             }
-            GetMap map = new GetMap(name, imageResource);
+            
+            if (name == null || imageResource == 0) {
+                return null;
+            }
+            
+            final GetMap map = new GetMap(name, imageResource);
             try (CallableStatement cs = conn
                     .prepareCall("{call getMapMarkers(?)}")) {
                 cs.setInt(1, id);
@@ -225,6 +285,12 @@ public class WebAccountDAO implements AutoCloseable {
         }
     }
 
+    /**
+     * Get a list of all maps---by name and map ID---belonging to the account.
+     * 
+     * @return A list of all maps belonging to the account
+     * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
+     */
     public List<MapsListEntry> getMapsList() throws WebAccountDAOException {
         List<MapsListEntry> list = new LinkedList<>();
         try {
@@ -246,6 +312,12 @@ public class WebAccountDAO implements AutoCloseable {
         return list;
     }
     
+    /**
+     * Get the username of the account
+     * 
+     * @return The username of the account
+     * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
+     */
     public String getUsername() throws WebAccountPublicDAOException {
         try (CallableStatement cs = conn.prepareCall("{? = call getUsernameByID(?)}")) {
             cs.registerOutParameter(1, Types.VARCHAR);
