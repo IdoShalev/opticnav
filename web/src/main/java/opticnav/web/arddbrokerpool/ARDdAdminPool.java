@@ -3,13 +3,13 @@ package opticnav.web.arddbrokerpool;
 import java.io.IOException;
 import java.net.Socket;
 
-import opticnav.ardd.admin.AdminConnection;
-import opticnav.ardd.admin.AdminConnectionException;
-import opticnav.ardd.broker.admin.AdminBroker;
+import opticnav.ardd.admin.ARDdAdmin;
+import opticnav.ardd.admin.ARDdAdminException;
+import opticnav.ardd.broker.admin.ARDdAdminBroker;
 import opticnav.ardd.protocol.chan.ChannelUtil;
 
 public class ARDdAdminPool implements AutoCloseable {
-    public static class BrokerNotAvailableException extends AdminConnectionException {
+    public static class BrokerNotAvailableException extends ARDdAdminException {
         private static final long serialVersionUID = 1L;
         
         public BrokerNotAvailableException(Throwable e) {
@@ -25,12 +25,12 @@ public class ARDdAdminPool implements AutoCloseable {
         this.port = port;
     }
     
-    public AdminConnection getAdminBroker()
+    public ARDdAdmin getAdminBroker()
             throws BrokerNotAvailableException {
         try {
             Socket socket = new Socket(host, port);
             
-            return new AdminBroker(ChannelUtil.fromSocket(socket));
+            return new ARDdAdminBroker(ChannelUtil.fromSocket(socket));
         } catch (IOException e) {
             throw new BrokerNotAvailableException(e);
         }

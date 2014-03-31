@@ -3,7 +3,7 @@ NO_ARD: 0
 
 Channels
     GATEKEEPER
-    LOBBY
+    CONNECTED
 
 ReqCodes
     REGISTERED

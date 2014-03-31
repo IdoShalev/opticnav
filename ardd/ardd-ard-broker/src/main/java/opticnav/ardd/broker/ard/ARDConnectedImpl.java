@@ -1,7 +1,8 @@
 package opticnav.ardd.broker.ard;
 
-import opticnav.ardd.ard.ARDConnectionException;
-import opticnav.ardd.ard.ARDLobbyConnection;
+import opticnav.ardd.ard.ARDConnectedException;
+import opticnav.ardd.ard.ARDGatekeeperException;
+import opticnav.ardd.ard.ARDConnected;
 import opticnav.ardd.ard.InstanceInfo;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveUtil;
@@ -12,15 +13,15 @@ import opticnav.ardd.protocol.chan.Channel;
 import java.io.IOException;
 import java.util.List;
 
-class ARDLobbyConnectionImpl implements ARDLobbyConnection {
-    private Channel lobbyChannel;
+class ARDConnectedImpl implements ARDConnected {
+    private Channel connectedChannel;
     private PrimitiveReader input;
     private PrimitiveWriter output;
 
-    public ARDLobbyConnectionImpl(Channel lobbyChannel) {
-        this.lobbyChannel = lobbyChannel;
-        this.input  = PrimitiveUtil.reader(lobbyChannel);
-        this.output = PrimitiveUtil.writer(lobbyChannel);
+    public ARDConnectedImpl(Channel connectedChannel) {
+        this.connectedChannel = connectedChannel;
+        this.input  = PrimitiveUtil.reader(connectedChannel);
+        this.output = PrimitiveUtil.writer(connectedChannel);
     }
 
     /**
@@ -29,10 +30,10 @@ class ARDLobbyConnectionImpl implements ARDLobbyConnection {
      * instanceList is never cleared by this method.
      *
      * @param instanceList The list of InstanceInfo to be appended to
-     * @throws ARDConnectionException
+     * @throws ARDConnectedException
      */
     @Override
-    public void listInstances(List<InstanceInfo> instanceList) throws ARDConnectionException {
+    public void listInstances(List<InstanceInfo> instanceList) throws ARDConnectedException {
         try {
             output.writeUInt8(Commands.LIST_INSTANCES);
             output.flush();
@@ -45,7 +46,7 @@ class ARDLobbyConnectionImpl implements ARDLobbyConnection {
                 instanceList.add(info);
             }
         } catch (IOException e) {
-            throw new ARDConnectionException(e);
+            throw new ARDConnectedException(e);
         }
     }
 }

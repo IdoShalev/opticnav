@@ -64,11 +64,11 @@ public class GatekeeperCommandHandler extends AnnotatedCommandHandler {
             connection = this.ardListsManager.getConnectedList().createConnected(passCode);
             if (connection != null) {
                 // no ongoing connection
-                this.ardChannelsManager.startLobbyConnection(connection);
+                this.ardChannelsManager.startConnection(connection);
                 // TODO - replace 0 with constant
                 out.writeUInt8(0);
             } else {
-                // there's an ongoing lobby connection
+                // there's an ongoing connection
                 // TODO - replace 2 with constant
                 out.writeUInt8(2);
             }

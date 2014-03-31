@@ -1,6 +1,6 @@
 package opticnav.ardd.admin;
 
-public class AdminStartInstanceStatus {
+public class ARDdAdminStartInstanceStatus {
     public enum Status {
         IMAGE_TOO_BIG, DEPLOYED 
     }
@@ -8,11 +8,11 @@ public class AdminStartInstanceStatus {
     private final Status status;
     private int instanceID;
     
-    public AdminStartInstanceStatus(Status status) {
+    public ARDdAdminStartInstanceStatus(Status status) {
         this.status = status;
     }
 
-    public AdminStartInstanceStatus(int instanceID) {
+    public ARDdAdminStartInstanceStatus(int instanceID) {
         this.status = Status.DEPLOYED;
         this.instanceID = instanceID;
     }

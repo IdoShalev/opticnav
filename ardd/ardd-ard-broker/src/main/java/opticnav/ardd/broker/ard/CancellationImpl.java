@@ -3,10 +3,10 @@ package opticnav.ardd.broker.ard;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import opticnav.ardd.ard.ARDConnection;
+import opticnav.ardd.ard.ARDGatekeeper;
 import opticnav.ardd.protocol.chan.Channel;
 
-public class CancellationImpl implements ARDConnection.Cancellation {
+public class CancellationImpl implements ARDGatekeeper.Cancellation {
     private OutputStream output;
 
     public CancellationImpl(OutputStream output) {

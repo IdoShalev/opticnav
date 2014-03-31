@@ -5,7 +5,7 @@ import java.io.IOException;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 
-public interface ARDConnection extends AutoCloseable {
+public interface ARDGatekeeper extends AutoCloseable {
     public interface Cancellation {
         public void cancel();
     }
@@ -21,9 +21,9 @@ public interface ARDConnection extends AutoCloseable {
      * Blocks until a passcode+ARD id is received, or an error occurs
      */
     public void requestPassConfCodes(RequestPassConfCodesCallback c)
-            throws ARDConnectionException;
+            throws ARDGatekeeperException;
 
-    public ARDLobbyConnectionStatus connectToLobby(PassCode passCode) throws ARDConnectionException;
+    public ARDConnectionStatus connect(PassCode passCode) throws ARDGatekeeperException;
 
     public void close() throws IOException;
 }

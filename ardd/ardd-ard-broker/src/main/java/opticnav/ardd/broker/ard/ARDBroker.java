@@ -8,9 +8,9 @@ import java.util.concurrent.Future;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
-import opticnav.ardd.ard.ARDConnection;
-import opticnav.ardd.ard.ARDConnectionException;
-import opticnav.ardd.ard.ARDLobbyConnectionStatus;
+import opticnav.ardd.ard.ARDGatekeeper;
+import opticnav.ardd.ard.ARDGatekeeperException;
+import opticnav.ardd.ard.ARDConnectionStatus;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.PrimitiveReader;
@@ -22,7 +22,7 @@ import opticnav.ardd.protocol.chan.ChannelMultiplexer;
 import opticnav.ardd.protocol.chan.ChannelMultiplexer.Listener;
 import static opticnav.ardd.protocol.consts.ARDdARDProtocol.*;
 
-public class ARDBroker implements ARDConnection {
+public class ARDBroker implements ARDGatekeeper {
     private static final XLogger LOG = XLoggerFactory
             .getXLogger(ARDBroker.class);
     
@@ -61,7 +61,7 @@ public class ARDBroker implements ARDConnection {
     
     @Override
     public void requestPassConfCodes(RequestPassConfCodesCallback c)
-            throws ARDConnectionException {
+            throws ARDGatekeeperException {
         try {
             PrimitiveReader input  = PrimitiveUtil.reader(gatekeeperChannel);
             PrimitiveWriter output = PrimitiveUtil.writer(gatekeeperChannel);
@@ -101,12 +101,12 @@ public class ARDBroker implements ARDConnection {
                 throw new IllegalStateException("Invalid response code: " + response);
             }
         } catch (IOException e) {
-            throw new ARDConnectionException(e);
+            throw new ARDGatekeeperException(e);
         }
     }
 
     @Override
-    public ARDLobbyConnectionStatus connectToLobby(PassCode passCode) throws ARDConnectionException {
+    public ARDConnectionStatus connect(PassCode passCode) throws ARDGatekeeperException {
         try {
             PrimitiveReader input  = PrimitiveUtil.reader(gatekeeperChannel);
             PrimitiveWriter output = PrimitiveUtil.writer(gatekeeperChannel);
@@ -117,20 +117,20 @@ public class ARDBroker implements ARDConnection {
 
             int response = input.readUInt8();
             if (response == 0) {
-                // passcode acknowledged, can connect to lobby
-                Channel lobbyChannel = mpxr.createChannel(Channels.LOBBY);
-                return new ARDLobbyConnectionStatus(new ARDLobbyConnectionImpl(lobbyChannel));
+                // passcode acknowledged, can connect
+                Channel connectedChannel = mpxr.createChannel(Channels.CONNECTED);
+                return new ARDConnectionStatus(new ARDConnectedImpl(connectedChannel));
             } else if (response == 1) {
                 // passcode doesn't exist
-                return new ARDLobbyConnectionStatus(ARDLobbyConnectionStatus.Status.NOPASSCODE);
+                return new ARDConnectionStatus(ARDConnectionStatus.Status.NOPASSCODE);
             } else if (response == 2) {
-                // there's an ongoing lobby connection
-                return new ARDLobbyConnectionStatus(ARDLobbyConnectionStatus.Status.ALREADYCONNECTED);
+                // there's an ongoing connection
+                return new ARDConnectionStatus(ARDConnectionStatus.Status.ALREADYCONNECTED);
             } else {
                 throw new IllegalStateException("Invalid response code: " + response);
             }
         } catch (IOException e) {
-            throw new ARDConnectionException(e);
+            throw new ARDGatekeeperException(e);
         }
     }
 }

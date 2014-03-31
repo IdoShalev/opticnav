@@ -2,9 +2,9 @@ package opticnav.ardd.broker.admin;
 
 import java.io.IOException;
 
-import opticnav.ardd.admin.AdminConnection;
-import opticnav.ardd.admin.AdminConnectionException;
-import opticnav.ardd.admin.AdminStartInstanceStatus;
+import opticnav.ardd.admin.ARDdAdmin;
+import opticnav.ardd.admin.ARDdAdminException;
+import opticnav.ardd.admin.ARDdAdminStartInstanceStatus;
 import opticnav.ardd.admin.InstanceDeployment;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PrimitiveReader;
@@ -14,33 +14,33 @@ import opticnav.ardd.protocol.consts.ARDdAdminProtocol;
 import opticnav.ardd.protocol.consts.ARDdAdminProtocol.Commands;
 import opticnav.ardd.protocol.chan.Channel;
 
-public class AdminBroker implements AdminConnection {
+public class ARDdAdminBroker implements ARDdAdmin {
     private PrimitiveReader input;
     private PrimitiveWriter output;
     
-    public AdminBroker(Channel channel) {
+    public ARDdAdminBroker(Channel channel) {
         this.input = new PrimitiveReader(channel.getInputStream());
         this.output = new PrimitiveWriter(channel.getOutputStream());
     }
     
     @Override
     public int registerARD(ConfCode code)
-            throws AdminConnectionException {
+            throws ARDdAdminException {
         try {
             this.output.writeUInt8(Commands.REGARD);
             this.output.writeFixedBlob(code.getByteArray());
             this.output.flush();
             return this.input.readUInt31();
         } catch (IOException e) {
-            throw new AdminConnectionException(e);
+            throw new ARDdAdminException(e);
         }
     }
     
     @Override
-    public AdminStartInstanceStatus deployInstance(final InstanceDeployment d)
-            throws AdminConnectionException {
+    public ARDdAdminStartInstanceStatus deployInstance(final InstanceDeployment d)
+            throws ARDdAdminException {
         if (d.getMapImageSize() > ARDdAdminProtocol.MAX_MAP_IMAGE_SIZE) {
-            return new AdminStartInstanceStatus(AdminStartInstanceStatus.Status.IMAGE_TOO_BIG);
+            return new ARDdAdminStartInstanceStatus(ARDdAdminStartInstanceStatus.Status.IMAGE_TOO_BIG);
         }
         
         try {
@@ -87,13 +87,13 @@ public class AdminBroker implements AdminConnection {
             if (result == 0) {
                 // instance deployment successful
                 final int instanceID = this.input.readUInt31();
-                return new AdminStartInstanceStatus(instanceID);
+                return new ARDdAdminStartInstanceStatus(instanceID);
             } else {
                 // TODO
                 throw new UnsupportedOperationException();
             }
         } catch (IOException e) {
-            throw new AdminConnectionException(e);
+            throw new ARDdAdminException(e);
         }
     }
 

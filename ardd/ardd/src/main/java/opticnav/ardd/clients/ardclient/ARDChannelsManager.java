@@ -38,9 +38,9 @@ public class ARDChannelsManager implements Callable<Void> {
         this.listener = this.mpxr.createListener();
     }
     
-    public void startLobbyConnection(ARDConnection connection) {
+    public void startConnection(ARDConnection connection) {
         this.connection = connection;
-        this.connectedChannel = this.mpxr.createChannel(ARDdARDProtocol.Channels.LOBBY);
+        this.connectedChannel = this.mpxr.createChannel(ARDdARDProtocol.Channels.CONNECTED);
         
         this.connectedCommandDispatcher =
                 new ClientCommandDispatcher(this.connectedChannel, new ConnectedCommandHandler());
@@ -56,7 +56,7 @@ public class ARDChannelsManager implements Callable<Void> {
             listenerResult.get();
             gk.get();
         } finally {
-            // In all cases, any lobby connection should be closed
+            // In all cases, any connected should be closed
             if (this.connection != null) {
                 this.connection.close();
             }

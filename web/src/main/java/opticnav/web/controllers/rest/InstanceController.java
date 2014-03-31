@@ -6,8 +6,8 @@ import java.util.List;
 
 import javax.activation.MimeType;
 
-import opticnav.ardd.admin.AdminConnection;
-import opticnav.ardd.admin.AdminStartInstanceStatus;
+import opticnav.ardd.admin.ARDdAdmin;
+import opticnav.ardd.admin.ARDdAdminStartInstanceStatus;
 import opticnav.ardd.admin.InstanceDeployment;
 import opticnav.ardd.admin.InstanceDeploymentBuilder;
 import opticnav.persistence.web.WebAccountDAO;
@@ -100,7 +100,7 @@ public class InstanceController extends Controller {
             }
         }
         
-        final AdminStartInstanceStatus status;
+        final ARDdAdminStartInstanceStatus status;
         final InstanceDeployment deployment = new InstanceDeploymentBuilder()
                                                   .setMapName(mapName)
                                                   .setMapImage(mapImageType, mapImageSize, mapImageInput, mapAnchors)
@@ -108,11 +108,11 @@ public class InstanceController extends Controller {
                                                   .setARDList(ardList)
                                                   .build();
         
-        try (AdminConnection broker = this.pool.getAdminBroker()) {
+        try (ARDdAdmin broker = this.pool.getAdminBroker()) {
             status = broker.deployInstance(deployment);
         }
         
-        if (status.getStatus() == AdminStartInstanceStatus.Status.DEPLOYED) {
+        if (status.getStatus() == ARDdAdminStartInstanceStatus.Status.DEPLOYED) {
             InstanceIDPOJO pojo = new InstanceIDPOJO();
             pojo.instance_id = status.getInstanceID();
             return pojo;

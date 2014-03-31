@@ -2,7 +2,7 @@ package opticnav.web.controllers.rest;
 
 import javax.servlet.http.HttpServletResponse;
 
-import opticnav.ardd.admin.AdminConnection;
+import opticnav.ardd.admin.ARDdAdmin;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.persistence.web.WebAccountDAO;
 import opticnav.web.arddbrokerpool.ARDdAdminPool;
@@ -41,7 +41,7 @@ public class ARDController extends Controller {
                 if (ConfCode.isStringCodeValid(confirmationCode)) {
                     ConfCode code = new ConfCode(confirmationCode);
                     
-                    try (AdminConnection b = this.pool.getAdminBroker()) {
+                    try (ARDdAdmin b = this.pool.getAdminBroker()) {
                         int ardID = b.registerARD(code);
                         boolean successful = ardID != 0;
                         

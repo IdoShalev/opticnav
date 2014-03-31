@@ -2,15 +2,15 @@ package opticnav.ardd.terminal.admin;
 
 import java.io.PrintWriter;
 
-import opticnav.ardd.admin.AdminConnection;
-import opticnav.ardd.admin.AdminConnectionException;
+import opticnav.ardd.admin.ARDdAdmin;
+import opticnav.ardd.admin.ARDdAdminException;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.terminal.shared.Command;
 
-public class RegARDCommand implements Command<AdminConnection> {
+public class RegARDCommand implements Command<ARDdAdmin> {
     @Override
-    public void execute(AdminConnection conn, PrintWriter out, String[] args)
-            throws AdminConnectionException {
+    public void execute(ARDdAdmin conn, PrintWriter out, String[] args)
+            throws ARDdAdminException {
         if (args.length == 1) {
             String confcodeString = args[0];
             

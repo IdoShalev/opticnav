@@ -6,7 +6,7 @@ public final class ARDdARDProtocol {
     public static final int NO_ARD=0;
     public static final class Channels {
         public static final int GATEKEEPER=0;
-        public static final int LOBBY=1;
+        public static final int CONNECTED=1;
     }
     public static final class ReqCodes {
         public static final int REGISTERED=0;

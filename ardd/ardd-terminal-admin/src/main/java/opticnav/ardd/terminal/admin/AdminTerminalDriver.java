@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import opticnav.ardd.admin.AdminConnection;
-import opticnav.ardd.broker.admin.AdminBroker;
+import opticnav.ardd.admin.ARDdAdmin;
+import opticnav.ardd.broker.admin.ARDdAdminBroker;
 import opticnav.ardd.protocol.Protocol;
 import opticnav.ardd.protocol.consts.ARDdAdminProtocol.Commands;
 import opticnav.ardd.protocol.chan.ChannelUtil;
@@ -39,7 +39,7 @@ public class AdminTerminalDriver {
     public static void main(String[] args) throws Exception {
         String host = "localhost";
         int port = Protocol.DEFAULT_ADMIN_PORT;
-        Map<String, Command<AdminConnection>> commandMap = new HashMap<>();
+        Map<String, Command<ARDdAdmin>> commandMap = new HashMap<>();
         
         commandMap.put(CommandsText.REGARD.getCommand(), new RegARDCommand());
         
@@ -47,8 +47,8 @@ public class AdminTerminalDriver {
         PrintWriter out = new PrintWriter(System.out, true);
         Socket socket = new Socket(host, port);
         
-        try (AdminBroker conn = new AdminBroker(ChannelUtil.fromSocket(socket))) {
-            TerminalDriver<AdminConnection> driver;
+        try (ARDdAdminBroker conn = new ARDdAdminBroker(ChannelUtil.fromSocket(socket))) {
+            TerminalDriver<ARDdAdmin> driver;
             driver = new TerminalDriver<>(in, out, commandMap, conn);
             driver.run();
         }

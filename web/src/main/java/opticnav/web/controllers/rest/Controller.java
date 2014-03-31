@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import opticnav.ardd.admin.AdminConnectionException;
+import opticnav.ardd.admin.ARDdAdminException;
 import opticnav.web.controllers.rest.pojo.LocaleMessage;
 import opticnav.web.controllers.rest.pojo.Message;
 
@@ -56,9 +56,9 @@ public class Controller {
     }
 
     
-    @ExceptionHandler(AdminConnectionException.class)
+    @ExceptionHandler(ARDdAdminException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Message handleAdminConnectionException(AdminConnectionException ex) {
+    public Message handleAdminConnectionException(ARDdAdminException ex) {
         Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
         return new LocaleMessage(msg, "adminconnection.broken");
     }
