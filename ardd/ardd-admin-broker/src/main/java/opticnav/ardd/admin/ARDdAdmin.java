@@ -1,10 +1,17 @@
 package opticnav.ardd.admin;
 
 import java.io.IOException;
+import java.util.List;
 
 import opticnav.ardd.protocol.ConfCode;
+import opticnav.ardd.protocol.InstanceInfo;
 
 public interface ARDdAdmin extends AutoCloseable {
+    /**
+     * Shuts down any resources used by the connection object.
+     */
+    public void close() throws IOException;
+    
     /**
      * Registers an ARD using the confirmation code generated for said device.
      * This allows ARDd to authorize the device for future connections.
@@ -20,13 +27,18 @@ public interface ARDdAdmin extends AutoCloseable {
      * 
      * @see InstanceDeploymentBuilder
      * 
+     * @param owner An ID number identifying the owner. This is an implementation-defined number as
+     *              determined by the host application (ie. web account id).
      * @param deployment The InstanceDeployment object
      */
-    public ARDdAdminStartInstanceStatus deployInstance(InstanceDeployment deployment)
+    public ARDdAdminStartInstanceStatus deployInstance(long owner, InstanceDeployment deployment)
             throws ARDdAdminException;
-    
+
     /**
-     * Shuts down any resources used by the connection object.
+     * Get a list of actively running instances associated with an owner identifier
+     * @param owner An ID number identifying the owner. This is an implementation-defined number as
+     *              determined by the host application (ie. web account id).
+     * @throws ARDdAdminException 
      */
-    public void close() throws IOException;
+    public List<InstanceInfo> listInstancesByOwner(long owner) throws ARDdAdminException;
 }

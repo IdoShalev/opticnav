@@ -65,7 +65,7 @@ public class TemporaryResourceUtil {
         private final String mimeType;
         
         public FileTemporaryResource(File tempFile, String mimeType) {
-            if (this.mimeType == null) {
+            if (mimeType == null) {
                 throw new IllegalArgumentException("Must provide a MIME type");
             }
             this.tempFile = tempFile;
@@ -95,7 +95,7 @@ public class TemporaryResourceUtil {
         private boolean acquiredOutputStream;
         
         public FileTemporaryResourceBuilder(String mimeType) throws IOException {
-            if (this.mimeType == null) {
+            if (mimeType == null) {
                 throw new IllegalArgumentException("Must provide a MIME type");
             }
             this.mimeType = mimeType;

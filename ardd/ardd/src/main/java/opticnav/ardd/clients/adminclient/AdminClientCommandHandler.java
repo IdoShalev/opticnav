@@ -14,6 +14,7 @@ import opticnav.ardd.TemporaryResourceUtil.TemporaryResource;
 import opticnav.ardd.TemporaryResourceUtil.TemporaryResourceBuilder;
 import opticnav.ardd.clients.AnnotatedCommandHandler;
 import opticnav.ardd.protocol.ConfCode;
+import opticnav.ardd.protocol.InstanceInfo;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.Protocol;
@@ -45,13 +46,16 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
     
     @Command(Commands.DEPLOY_INSTANCE)
     public void deployInstance(PrimitiveReader in, PrimitiveWriter out) throws Exception {
+        final long owner;
         final String instName;
         final boolean hasMapImage;
         final TemporaryResource mapImage;
         final Instance.Anchor[] mapAnchors = new Instance.Anchor[3];
         
+        owner = in.readSInt64();
         instName = in.readString();
         hasMapImage = in.readUInt8() != 0;
+        LOG.debug("Owner: " + owner);
         LOG.debug("Instance name: " + instName);
         LOG.debug("Has map image: " + hasMapImage);
         
@@ -60,6 +64,7 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
             final int mapImageSize;
             
             mapImageType = in.readString();
+            LOG.debug("Map image type: " + mapImageType);
             mapImageSize = in.readUInt31();
             if (mapImageSize > ARDdAdminProtocol.MAX_MAP_IMAGE_SIZE) {
                 throw new IllegalArgumentException("Image exceeds max size");
@@ -115,11 +120,36 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
         
         // Create the instance!
         final Instance instance = new Instance(instName, mapImage, mapAnchors, staticMarkers, ards);
-        final int instanceID = ardListsManager.getInstancesList().addInstance(instance);
+        final int instanceID = ardListsManager.getInstancesList().addInstance(owner, instance);
         
         // TODO - replace with constant
         out.writeUInt8(0);
         out.writeUInt31(instanceID);
+        out.flush();
+    }
+    
+    @Command(Commands.LIST_INSTANCES_BY_OWNER)
+    public void listInstancesByOwner(PrimitiveReader in, PrimitiveWriter out) throws Exception {
+        final long owner;
+        owner = in.readSInt64();
+        
+        final List<InstanceInfo> instances;
+        instances = this.ardListsManager.getInstancesList().listInstancesByOwner(owner);
+        
+        out.writeUInt8(instances.size());
+        for (InstanceInfo inst: instances) {
+            out.writeUInt31(inst.getId());
+            out.writeSInt64(inst.getOwner());
+            out.writeString(inst.getName());
+            out.writeSInt64(inst.getStartTime());
+            
+            out.writeUInt31(inst.getArds().size());
+            for (InstanceInfo.ARDIdentifier ard: inst.getArds()) {
+                out.writeUInt31(ard.getId());
+                out.writeString(ard.getName());
+            }
+        }
+        
         out.flush();
     }
 }

@@ -1,6 +1,7 @@
 package opticnav.ardd;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Instance implements AutoCloseable {
     private final List<ARDIdentifier> invitedARDs;
 
     public Instance(String name, TemporaryResource mapImage, Anchor[] mapAnchors,
-            List<StaticMarker> staticMarkers, List<ARDIdentifier> ards) {
+            List<StaticMarker> staticMarkers, List<ARDIdentifier> invitedARDs) {
         if ((mapImage != null) != (mapAnchors != null)) {
             throw new IllegalArgumentException("mapImage and mapAnchors should both either be null or not-null");
         }
@@ -32,7 +33,7 @@ public class Instance implements AutoCloseable {
         this.mapImage = mapImage;
         this.mapAnchors = mapAnchors;
         this.staticMarkers = staticMarkers;
-        this.invitedARDs = ards;
+        this.invitedARDs = Collections.unmodifiableList(invitedARDs);
     }
     
     @Override
@@ -47,6 +48,10 @@ public class Instance implements AutoCloseable {
     public Date getStartTime() {
         // create a clone that can't mutate the original
         return (Date)this.startTime.clone();
+    }
+    
+    public List<ARDIdentifier> getInvitedARDs() {
+        return this.invitedARDs;
     }
 
     public boolean hasInvitedARD(int ardID) {

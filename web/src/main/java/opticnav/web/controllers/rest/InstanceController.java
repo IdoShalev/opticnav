@@ -12,6 +12,7 @@ import opticnav.ardd.admin.ARDdAdmin;
 import opticnav.ardd.admin.ARDdAdminStartInstanceStatus;
 import opticnav.ardd.admin.InstanceDeployment;
 import opticnav.ardd.admin.InstanceDeploymentBuilder;
+import opticnav.ardd.protocol.InstanceInfo;
 import opticnav.persistence.web.WebAccountDAO;
 import opticnav.persistence.web.Resource;
 import opticnav.persistence.web.WebResourceDAO;
@@ -41,6 +42,17 @@ public class InstanceController extends Controller {
         public int instance_id;
     }
     
+    public static class InstanceInfoPOJO {
+        public static class ARD {
+            public int ard_id;
+            public String name;
+        }
+        
+        public int instance_id;
+        public long start_time;
+        public List<ARD> ards;
+    }
+    
     @Autowired
     private javax.sql.DataSource dbDataSource;
     
@@ -53,9 +65,37 @@ public class InstanceController extends Controller {
     @Autowired
     private ARDdAdminPool pool;
     
+    @RequestMapping(method=RequestMethod.GET)
+    public List<InstanceInfoPOJO> getCurrentInstances() throws Exception {
+        try (ARDdAdmin broker = this.pool.getAdminBroker()) {
+            final long owner = userSession.getUser().getId();
+            final List<InstanceInfo> instances = broker.listInstancesByOwner(owner);
+            
+            final List<InstanceInfoPOJO> list = new ArrayList<>(instances.size());
+            for (InstanceInfo info: instances) {
+                final InstanceInfoPOJO pojo = new InstanceInfoPOJO();
+                pojo.instance_id = info.getId();
+                pojo.start_time = info.getStartTime();
+                pojo.ards = new ArrayList<>(info.getArds().size());
+                
+                for (InstanceInfo.ARDIdentifier ard: info.getArds()) {
+                    final InstanceInfoPOJO.ARD ardPOJO = new InstanceInfoPOJO.ARD();
+                    ardPOJO.ard_id = ard.getId();
+                    ardPOJO.name = ard.getName();
+                    
+                    pojo.ards.add(ardPOJO);
+                }
+                
+                list.add(pojo);
+            }
+            return list;
+        }
+    }
+    
     @RequestMapping(method=RequestMethod.POST)
     public InstanceIDPOJO startInstance(@RequestBody @Valid StartInstancePOJO startInstancePOJO)
             throws Exception {
+        final long owner;
         final String mapName;
         final MimeType mapImageType;
         final int mapImageSize;
@@ -64,6 +104,7 @@ public class InstanceController extends Controller {
         final List<InstanceDeployment.Anchor> mapAnchors;
         final List<InstanceDeployment.ARDIdentifier> ardList;
 
+        owner = userSession.getUser().getId();
         ardList = new ArrayList<>(startInstancePOJO.accounts.size());
         for (int account_id: startInstancePOJO.accounts) {
             try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, account_id)) {
@@ -115,7 +156,7 @@ public class InstanceController extends Controller {
                                                   .build();
         
         try (ARDdAdmin broker = this.pool.getAdminBroker()) {
-            status = broker.deployInstance(deployment);
+            status = broker.deployInstance(owner, deployment);
         }
         
         if (status.getStatus() == ARDdAdminStartInstanceStatus.Status.DEPLOYED) {

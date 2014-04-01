@@ -1,12 +1,15 @@
 package opticnav.ardd.broker.admin;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import opticnav.ardd.admin.ARDdAdmin;
 import opticnav.ardd.admin.ARDdAdminException;
 import opticnav.ardd.admin.ARDdAdminStartInstanceStatus;
 import opticnav.ardd.admin.InstanceDeployment;
 import opticnav.ardd.protocol.ConfCode;
+import opticnav.ardd.protocol.InstanceInfo;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.Protocol;
@@ -21,6 +24,11 @@ public class ARDdAdminBroker implements ARDdAdmin {
     public ARDdAdminBroker(Channel channel) {
         this.input = new PrimitiveReader(channel.getInputStream());
         this.output = new PrimitiveWriter(channel.getOutputStream());
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.output.close();
     }
     
     @Override
@@ -37,7 +45,7 @@ public class ARDdAdminBroker implements ARDdAdmin {
     }
     
     @Override
-    public ARDdAdminStartInstanceStatus deployInstance(final InstanceDeployment d)
+    public ARDdAdminStartInstanceStatus deployInstance(final long owner, final InstanceDeployment d)
             throws ARDdAdminException {
         if (d.getMapImageSize() > ARDdAdminProtocol.MAX_MAP_IMAGE_SIZE) {
             return new ARDdAdminStartInstanceStatus(ARDdAdminStartInstanceStatus.Status.IMAGE_TOO_BIG);
@@ -47,6 +55,7 @@ public class ARDdAdminBroker implements ARDdAdmin {
             final boolean hasMapImage = d.hasMapImage();
             
             this.output.writeUInt8(Commands.DEPLOY_INSTANCE);
+            this.output.writeSInt64(owner);
             this.output.writeString(d.getMapName());
             this.output.writeUInt8(hasMapImage?1:0);
             if (hasMapImage) {
@@ -98,7 +107,41 @@ public class ARDdAdminBroker implements ARDdAdmin {
     }
 
     @Override
-    public void close() throws IOException {
-        this.output.close();
+    public List<InstanceInfo> listInstancesByOwner(final long owner) throws ARDdAdminException {
+        try {
+            output.writeSInt64(owner);
+            output.flush();
+            
+            final int instancesSize = input.readUInt8();
+            final List<InstanceInfo> instances = new ArrayList<>(instancesSize);
+            
+            for (int i = 0; i < instancesSize; i++) {
+                final int id;
+                final long instOwner;
+                final String name;
+                final long startTime;
+                final int invitedArdsSize;
+                final List<InstanceInfo.ARDIdentifier> invitedArds;
+                
+                id        = input.readUInt31();
+                instOwner = input.readSInt64();
+                name      = input.readString();
+                startTime = input.readSInt64();
+                
+                invitedArdsSize = input.readUInt31();
+                invitedArds     = new ArrayList<>(invitedArdsSize);
+                for (int j = 0; j < invitedArdsSize; j++) {
+                    final int ardID = input.readUInt31();
+                    final String ardName = input.readString();
+                    invitedArds.add(new InstanceInfo.ARDIdentifier(ardID, ardName));
+                }
+                
+                final InstanceInfo inst = new InstanceInfo(id, instOwner, name, startTime, invitedArds);
+                instances.add(inst);
+            }
+            return instances;
+        } catch (IOException e) {
+            throw new ARDdAdminException(e);
+        }
     }
 }
