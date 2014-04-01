@@ -21,13 +21,23 @@ public class Instance implements AutoCloseable {
     // TODO - make this a map
     private final List<ARDIdentifier> invitedARDs;
 
-    public Instance(String name, TemporaryResource mapImage, Anchor[] mapAnchors,
-            List<StaticMarker> staticMarkers, List<ARDIdentifier> invitedARDs) {
+    /**
+     * @param startTime The start time. This is passed as a parameter so that the constructor remains deterministic.
+     * @param name The name of the instance
+     * @param mapImage The resource representing the map image. Can be null if no map image is needed.
+     *                 If null, mapAnchors must also be null.
+     * @param mapAnchors The list of map anchors. Can be null if no map image is needed.
+     *                   If null, mapImage must also be null.
+     * @param staticMarkers The list of static markers. If there are none, an empty list must be passed (not null).
+     * @param invitedARDs The list of invited devices.
+     */
+    public Instance(Date startTime, String name, TemporaryResource mapImage, Anchor[] mapAnchors,
+            List<StaticMarker> staticMarkers, List<ARDIdentifier> invitedARDs) throws IllegalArgumentException {
         if ((mapImage != null) != (mapAnchors != null)) {
             throw new IllegalArgumentException("mapImage and mapAnchors should both either be null or not-null");
         }
         
-        this.startTime = new Date();
+        this.startTime = startTime;
         this.name = name;
         this.hasMapImage = mapImage != null && mapAnchors != null;
         this.mapImage = mapImage;

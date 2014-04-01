@@ -8,14 +8,26 @@ package opticnav.ardd;
  */
 public class ARDConnection implements AutoCloseable {
     private final int ardID;
+    /** Only used for closing */
     private final ARDConnectedList connectedList;
+    private Instance currentInstance;
     
     public ARDConnection(int ardID, ARDConnectedList connectedList) {
         this.ardID = ardID;
         this.connectedList = connectedList;
+        this.currentInstance = null;
     }
 
+    @Override
     public void close() {
         this.connectedList.removeConnectedByID(ardID);
+    }
+    
+    public int getARDID() {
+        return this.ardID;
+    }
+    
+    public Instance getCurrentInstance() {
+        return this.currentInstance;
     }
 }

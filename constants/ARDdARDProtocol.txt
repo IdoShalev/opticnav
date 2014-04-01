@@ -17,3 +17,4 @@ Commands
 Connected
     Commands
         LIST_INSTANCES
+        JOIN_INSTANCE

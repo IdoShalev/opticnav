@@ -20,6 +20,7 @@ public final class ARDdARDProtocol {
 	public static final class Connected {
 		public static final class Commands {
 			public static final int LIST_INSTANCES=0;
+			public static final int JOIN_INSTANCE=1;
 		}
 	}
 }

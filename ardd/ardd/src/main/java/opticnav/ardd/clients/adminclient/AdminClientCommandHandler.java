@@ -2,6 +2,7 @@ package opticnav.ardd.clients.adminclient;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.ext.XLogger;
@@ -119,7 +120,8 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
         }
         
         // Create the instance!
-        final Instance instance = new Instance(instName, mapImage, mapAnchors, staticMarkers, ards);
+        final Date now = new Date();
+        final Instance instance = new Instance(now, instName, mapImage, mapAnchors, staticMarkers, ards);
         final int instanceID = ardListsManager.getInstancesList().addInstance(owner, instance);
         
         // TODO - replace with constant
