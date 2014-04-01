@@ -16,8 +16,7 @@ import opticnav.ardd.terminal.shared.TerminalDriver;
 
 public class AdminTerminalDriver {
     public enum CommandsText {
-        REGARD(Commands.REGARD, "regard"),
-        ARDINFO(Commands.ARDINFO, "ardinfo");
+        REGARD(Commands.REGARD, "regard");
         
         private int code;
         private String command;
