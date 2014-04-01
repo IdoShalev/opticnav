@@ -104,12 +104,17 @@ public class WebAccountDAO implements AutoCloseable {
      * 
      * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
      */
-    public void removeARD() throws WebAccountDAOException {
-        try (CallableStatement cs = conn.prepareCall("{call deleteARD(?)}")) {
-            cs.setInt(1, accountID);
+    public boolean removeARD() throws WebAccountDAOException {
+        try (CallableStatement cs = conn.prepareCall("{? = call deleteARD(?)}")) {
+            cs.registerOutParameter(1, Types.BOOLEAN);
+            cs.setInt(2, accountID);
 
             cs.execute();
+            if (!cs.getBoolean(1)){
+                return false;
+            }
             conn.commit();
+            return true;
         } catch (SQLException e) {
             throw new WebAccountDAOException(e);
         }
@@ -152,15 +157,14 @@ public class WebAccountDAO implements AutoCloseable {
      * @param map The payload used to replace the map
      * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
      */
-    public void modifyMap(int id, ModifyMap map) throws WebAccountDAOException {
-        boolean flag = true;
+    public boolean modifyMap(int id, ModifyMap map) throws WebAccountDAOException {
         try (CallableStatement cs = conn.prepareCall("{? = call deleteMarker(?, ?)}")) {
             cs.registerOutParameter(1, Types.BOOLEAN);
             cs.setInt(2, id);
             cs.setInt(3, this.accountID);
             cs.execute();
             if (!cs.getBoolean(1)){
-                flag = false;
+                return false;
             }
         } catch (SQLException e) {
             throw new WebAccountDAOException(e);
@@ -171,7 +175,7 @@ public class WebAccountDAO implements AutoCloseable {
             cs.setInt(3, this.accountID);
             cs.execute();
             if (!cs.getBoolean(1)){
-                flag = false;
+                return false;
             }
         } catch (SQLException e) {
             throw new WebAccountDAOException(e);
@@ -211,7 +215,7 @@ public class WebAccountDAO implements AutoCloseable {
         } catch (SQLException e) {
             throw new WebAccountDAOException(e);
         }
-       //return flag;
+        return true;
     }
 
     /**
@@ -222,14 +226,17 @@ public class WebAccountDAO implements AutoCloseable {
      * @param id The ID number identifying the map
      * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
      */
-    public void deleteMap(int id) throws WebAccountDAOException {
+    public boolean deleteMap(int id) throws WebAccountDAOException {
         try (CallableStatement cs = conn.prepareCall("{? = call deleteMap(?, ?)}")) {
             cs.registerOutParameter(1, Types.BOOLEAN);
             cs.setInt(2, id);
             cs.setInt(3, this.accountID);
             cs.execute();
-            boolean flag = cs.getBoolean(1);
+            if (!cs.getBoolean(1)){
+                return false;
+            }
             conn.commit();
+            return true;
         } catch (SQLException e) {
             throw new WebAccountDAOException(e);
         }
