@@ -6,5 +6,5 @@ export CONSTANTS=$(mktemp)
 ./constants > $CONSTANTS
 
 ./create.sh
-./run_sql Data/*.sql
+./run_sql Data/opticnavDB_user_data.sql
 

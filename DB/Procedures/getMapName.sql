@@ -1,19 +1,19 @@
 /* *********************************************************************
-**	Description:    Gets the resource ID of the specified MAP
+**	Description:    Returns the name of a map
 **
-**  Returns:        The resource ID
+**  Returns:        The name
 ********************************************************************* */
 
-DROP FUNCTION IF EXISTS getMapResource;
+DROP FUNCTION IF EXISTS getMapName;
 
 DELIMITER //
 
-CREATE FUNCTION getMapResource 
+CREATE FUNCTION getMapName 
 (p_map_id INT(4), p_acc_id INT(4))
-RETURNS INT
+RETURNS VARCHAR(Web__MaxLength__MAP_NAME)
 READS SQL DATA
 BEGIN    
-    RETURN (SELECT resource_id
+    RETURN (SELECT name
             FROM MAP
             WHERE p_map_id = map_id
             AND p_acc_id = web_account_id);

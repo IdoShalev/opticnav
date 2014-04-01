@@ -9,3 +9,4 @@ export CONSTANTS=$(mktemp)
 ./run_sql tables.sql
 ./run_sql Procedures/*.sql
 ./run_sql Triggers/*.sql
+./run_sql Data/testDB_test_data.sql
