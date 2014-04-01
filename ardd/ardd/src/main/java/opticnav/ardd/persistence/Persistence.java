@@ -14,7 +14,5 @@ public interface Persistence extends AutoCloseable {
 
     int nextARDID() throws IOException;
 
-    int nextInstanceID() throws IOException;
-
     public void close() throws IOException;
 }

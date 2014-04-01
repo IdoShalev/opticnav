@@ -24,7 +24,7 @@ public class FilePersistence implements Persistence {
     private static final XLogger LOG = XLoggerFactory.getXLogger(FilePersistence.class);
     
     private final File ardListFile, indexesFile;
-    private int index_ardID, index_instanceID;
+    private int index_ardID;
 
     public FilePersistence(File ardListFile, File indexesFile)
             throws IOException {
@@ -34,16 +34,14 @@ public class FilePersistence implements Persistence {
         if (this.indexesFile.exists()) {
             try (Scanner in = new Scanner(indexesFile)) {
                 this.index_ardID = in.nextInt();
-                this.index_instanceID = in.nextInt();
             } catch (NoSuchElementException e) {
                 throw new IOException("Could not read index file - malformed data");
             }
-            LOG.info("Read index values: " + this.index_ardID + " " + this.index_instanceID);
+            LOG.info("Read index values: " + this.index_ardID);
         } else {
             // Files don't exist - set indices to default
             LOG.info("Index file doesn't exist - default indices");
             this.index_ardID = 1;
-            this.index_instanceID = 1;
         }
     }
 
@@ -107,18 +105,11 @@ public class FilePersistence implements Persistence {
     }
 
     @Override
-    public int nextInstanceID() throws IOException {
-        final int id = index_instanceID++;
-        flushIndexes();
-        return id;
-    }
-
-    @Override
     public void close() throws IOException {
     }
 
     private void flushIndexes() throws IOException {
-        final String content = index_ardID + " " + index_instanceID;
+        final String content = Integer.toString(index_ardID);
         LOG.info("Flushing indexes file: " + content);
         
         // Overwrite any existing file

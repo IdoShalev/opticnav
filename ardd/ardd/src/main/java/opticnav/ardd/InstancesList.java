@@ -9,23 +9,22 @@ import java.util.Map;
 
 import org.apache.commons.collections4.map.MultiValueMap;
 
-import opticnav.ardd.persistence.Persistence;
 import opticnav.ardd.protocol.InstanceInfo;
 
 public class InstancesList {
     /** One owner to many instances */
     private final MultiValueMap<Long, Integer> owner_instance;
     private final Map<Integer, Instance> instances;
-    private final Persistence persistence;
+    private int instanceIndex;
     
-    public InstancesList(Persistence persistence) {
+    public InstancesList() {
         this.owner_instance = new MultiValueMap<>();
         this.instances = new HashMap<>();
-        this.persistence = persistence;
+        this.instanceIndex = 1;
     }
     
     public synchronized int addInstance(long owner, Instance instance) throws IOException {
-        final int instanceID = this.persistence.nextInstanceID();
+        final int instanceID = instanceIndex++;
         owner_instance.put(owner, instanceID);
         instances.put(instanceID, instance);
         return instanceID;
