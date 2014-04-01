@@ -68,6 +68,10 @@ header,footer {
 	border-color: #4b4;
 }
 
+#messageConstraint {
+	max-width: 30%;
+}
+
 .container {
 	text-align: center;
 	width: 100%;
