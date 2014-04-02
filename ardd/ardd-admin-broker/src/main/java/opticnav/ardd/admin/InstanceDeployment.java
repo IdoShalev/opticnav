@@ -1,6 +1,7 @@
 package opticnav.ardd.admin;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class InstanceDeployment {
         this.mapImageType  = mapImageType;
         this.mapImageSize  = mapImageSize;
         this.mapImageInput = mapImageInput;
-        this.mapAnchors    = Collections.unmodifiableList(mapAnchors);
+        this.mapAnchors    = mapAnchors != null ? Collections.unmodifiableList(mapAnchors) : null;
         this.mapMarkers    = Collections.unmodifiableList(mapMarkers);
         this.ardList       = Collections.unmodifiableList(ardList);
     }

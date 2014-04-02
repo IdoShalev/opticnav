@@ -33,8 +33,9 @@ public class InstancesList {
         return instanceID;
     }
     
-    public synchronized void getInstancesForARD(int ardID, Map<Integer, Instance> list) {
+    public synchronized Map<Integer, Instance> getInstancesForARD(int ardID) {
         // It could be more "efficient", sure.
+        Map<Integer, Instance> list = new HashMap<>();
         for (Map.Entry<Integer, Instance> entry: instances.entrySet()) {
             final int instanceID = entry.getKey();
             final Instance instance = entry.getValue();
@@ -43,6 +44,8 @@ public class InstancesList {
                 list.put(instanceID, instance);
             }
         }
+        
+        return list;
     }
 
     /**

@@ -54,6 +54,8 @@ class ARDConnectedImpl implements ARDConnected {
         try {
             output.writeUInt8(Commands.JOIN_INSTANCE);
             output.writeUInt31(instanceID);
+            output.writeSInt32(initialLocation.getLongitudeInt());
+            output.writeSInt32(initialLocation.getLatitudeInt());
             output.flush();
             
             final int response = input.readUInt8();

@@ -1,6 +1,8 @@
 package opticnav.ardd.clients.ardclient;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.math3.util.Pair;
 
@@ -9,6 +11,8 @@ import opticnav.ardd.InstancesList;
 import opticnav.ardd.clients.AnnotatedCommandHandler;
 import opticnav.ardd.instance.EntitySubscriber;
 import opticnav.ardd.instance.Instance;
+import opticnav.ardd.instance.InstanceInfo;
+import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import static opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.*;
@@ -28,15 +32,21 @@ public class ConnectedCommandHandler extends AnnotatedCommandHandler {
     
     @Command(Commands.LIST_INSTANCES)
     public void listInstances(PrimitiveReader in, PrimitiveWriter out) throws Exception {
-        // TODO
-        int count = 2;
+        final Map<Integer, Instance> list;
+        final int ardID = this.connection.getARDID();
+        final int count;
+        
+        list = this.instances.getInstancesForARD(ardID);
+        count = list.size();
 
         out.writeUInt16(count);
 
-        for (int i = 0; i < count; i++) {
-            // TODO - write instances
-            out.writeString("Instance name");
-            out.writeUInt16(i);
+        for (Map.Entry<Integer, Instance> i: list.entrySet()) {
+            final int instanceID = i.getKey();
+            final InstanceInfo info = i.getValue().getInfo();
+            
+            out.writeString(info.name);
+            out.writeUInt16(instanceID);
         }
         out.flush();
     }
@@ -44,6 +54,11 @@ public class ConnectedCommandHandler extends AnnotatedCommandHandler {
     @Command(Commands.JOIN_INSTANCE)
     public void joinInstance(PrimitiveReader in, final PrimitiveWriter out) throws Exception {
         final int instanceID = in.readUInt31();
+        
+        final int lng = in.readSInt32();
+        final int lat = in.readSInt32();
+        
+        final GeoCoordFine initialLocation = new GeoCoordFine(lng, lat);
         
         instances.joinInstance(instanceID, connection.getARDID(), new InstancesList.JoinInstanceCallbacks() {
             @Override

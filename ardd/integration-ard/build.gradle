@@ -8,6 +8,7 @@ configurations {
 }
 
 dependencies {
+    compile project(':ardd-admin-broker')
     compile project(':ardd-ard-broker')
     compile 'ch.qos.logback:logback-classic:1.1.1'
     compile 'org.apache.commons:commons-collections4:4.0'

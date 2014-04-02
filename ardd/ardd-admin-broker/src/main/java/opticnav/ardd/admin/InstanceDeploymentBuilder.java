@@ -1,6 +1,7 @@
 package opticnav.ardd.admin;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.activation.MimeType;
@@ -25,9 +26,11 @@ public class InstanceDeploymentBuilder {
     
     public InstanceDeploymentBuilder() {
         this.mapName = "Untitled";
+        this.mapMarkers = new ArrayList<>();
     }
     
     public InstanceDeployment build() {
+        
         return new InstanceDeployment(mapName, mapImageType, mapImageSize, mapImageInput, mapAnchors,
                                       mapMarkers, ardList);
     }

@@ -45,7 +45,12 @@ public class InstanceInfo {
     }
 
     public boolean hasInvitedARD(int ardID) {
-        return this.invitedARDs.contains(ardID);
+        for (ARDIdentifier identifier: this.invitedARDs) {
+            if (identifier.getArdID() == ardID) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static class ARDIdentifier {
@@ -60,6 +65,11 @@ public class InstanceInfo {
         public int getArdID() { return ardID; }
 
         public String getName() { return name; }
+        
+        @Override
+        public String toString() {
+            return String.format("ID: %d; Name: %s", ardID, name);
+        }
     }
 
     public static class StaticMarker {

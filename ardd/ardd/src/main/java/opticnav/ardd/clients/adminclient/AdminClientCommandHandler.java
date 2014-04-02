@@ -52,7 +52,7 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
         final String instName;
         final boolean hasMapImage;
         final TemporaryResource mapImage;
-        final InstanceInfo.Anchor[] mapAnchors = new InstanceInfo.Anchor[3];
+        final InstanceInfo.Anchor[] mapAnchors;
         
         owner = in.readSInt64();
         instName = in.readString();
@@ -82,6 +82,7 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
             mapImage = imageResBuilder.build();
             
             // Anchors
+            mapAnchors = new InstanceInfo.Anchor[3];
             for (int i = 0; i < 3; i++) {
                 final int lng = in.readSInt32();
                 final int lat = in.readSInt32();
@@ -91,6 +92,7 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
             }
         } else {
             mapImage = null;
+            mapAnchors = null;
         }
         
         // Markers
@@ -108,16 +110,18 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
         // Invited ARDs
         final int ardSize = in.readUInt31();
         LOG.debug(ardSize + " invited ARDs");
-        if (ardSize == 0) {
-            LOG.warn(String.format("There are no invited ARDs for this instance (%s). " + 
-                                   "We'll allow it, but how will anyone join it?", instName));
-        }
         final List<InstanceInfo.ARDIdentifier> ards;
         ards = new ArrayList<>(ardSize);
         for (int i = 0; i < ardSize; i++) {
             final int ardID = in.readUInt31();
             final String name = in.readString();
             ards.add(new InstanceInfo.ARDIdentifier(ardID, name));
+        }
+        if (ardSize == 0) {
+            LOG.warn(String.format("There are no invited ARDs for this instance (%s). " + 
+                                   "We'll allow it, but how will anyone join it?", instName));
+        } else {
+            LOG.debug("Invited ARDs: " + ards);
         }
         
         // Create the instance!
