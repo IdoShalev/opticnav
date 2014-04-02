@@ -53,6 +53,9 @@ public class ARDChannelsManager implements Callable<Void> {
         this.connectedCommandDispatcher =
                 new ClientCommandDispatcher(this.connectedChannel,
                                             new ConnectedCommandHandler(this, this.instances, connection));
+        
+        // TODO - wait for this to finish on close
+        threadPool.submit(this.connectedCommandDispatcher);
     }
     
     public Pair<Integer, EntitySubscriber> startInstanceConnection(Instance instance) {

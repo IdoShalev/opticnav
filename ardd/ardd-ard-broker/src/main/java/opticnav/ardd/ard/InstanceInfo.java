@@ -16,4 +16,9 @@ public class InstanceInfo {
     public int getId() {
         return id;
     }
+    
+    @Override
+    public String toString() {
+        return String.format("Name: %s, ID: %s", this.name, this.id);
+    }
 }

@@ -11,6 +11,7 @@ import static opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.*;
 import opticnav.ardd.protocol.chan.Channel;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 class ARDConnectedImpl implements ARDConnected {
@@ -26,25 +27,26 @@ class ARDConnectedImpl implements ARDConnected {
 
     /**
      * Queries the server for a list of instances the device can connect to.
-     * All available instances will be appended to instanceList.
-     * instanceList is never cleared by this method.
      *
-     * @param instanceList The list of InstanceInfo to be appended to
+     * @return The entire list of instances available for the device
      * @throws ARDConnectedException
      */
     @Override
-    public void listInstances(List<InstanceInfo> instanceList) throws ARDConnectedException {
+    public List<InstanceInfo> listInstances() throws ARDConnectedException {
         try {
             output.writeUInt8(Commands.LIST_INSTANCES);
             output.flush();
 
             int count = input.readUInt16();
+            List<InstanceInfo> instanceList = new ArrayList<>(count);
             for (int i = 0; i < count; i++) {
                 String name = input.readString();
                 int id      = input.readUInt16();
                 InstanceInfo info = new InstanceInfo(name, id);
                 instanceList.add(info);
             }
+            
+            return instanceList;
         } catch (IOException e) {
             throw new ARDConnectedException(e);
         }
