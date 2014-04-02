@@ -8,7 +8,7 @@ import java.util.List;
  * deployment info never changes! In turn, this class is immutable.
  *
  */
-public final class InstanceInfo {
+public final class InstanceDeploymentInfo {
     public static final class ARDIdentifier {
         private int id;
         private String name;
@@ -40,7 +40,7 @@ public final class InstanceInfo {
      * @param startTime The UNIX timestamp*1000 (milliseconds elapsed since January 1, 1970)
      * @param invitedArds The list of invited devices by their IDs
      */
-    public InstanceInfo(int id, long owner, String name, long startTime, List<ARDIdentifier> invitedArds) {
+    public InstanceDeploymentInfo(int id, long owner, String name, long startTime, List<ARDIdentifier> invitedArds) {
         this.id = id;
         this.owner = owner;
         this.name = name;

@@ -12,7 +12,7 @@ import opticnav.ardd.admin.ARDdAdmin;
 import opticnav.ardd.admin.ARDdAdminStartInstanceStatus;
 import opticnav.ardd.admin.InstanceDeployment;
 import opticnav.ardd.admin.InstanceDeploymentBuilder;
-import opticnav.ardd.protocol.InstanceInfo;
+import opticnav.ardd.protocol.InstanceDeploymentInfo;
 import opticnav.persistence.web.WebAccountDAO;
 import opticnav.persistence.web.Resource;
 import opticnav.persistence.web.WebResourceDAO;
@@ -69,16 +69,16 @@ public class InstanceController extends Controller {
     public List<InstanceInfoPOJO> getCurrentInstances() throws Exception {
         try (ARDdAdmin broker = this.pool.getAdminBroker()) {
             final long owner = userSession.getUser().getId();
-            final List<InstanceInfo> instances = broker.listInstancesByOwner(owner);
+            final List<InstanceDeploymentInfo> instances = broker.listInstancesByOwner(owner);
             
             final List<InstanceInfoPOJO> list = new ArrayList<>(instances.size());
-            for (InstanceInfo info: instances) {
+            for (InstanceDeploymentInfo info: instances) {
                 final InstanceInfoPOJO pojo = new InstanceInfoPOJO();
                 pojo.instance_id = info.getId();
                 pojo.start_time = info.getStartTime();
                 pojo.ards = new ArrayList<>(info.getArds().size());
                 
-                for (InstanceInfo.ARDIdentifier ard: info.getArds()) {
+                for (InstanceDeploymentInfo.ARDIdentifier ard: info.getArds()) {
                     final InstanceInfoPOJO.ARD ardPOJO = new InstanceInfoPOJO.ARD();
                     ardPOJO.ard_id = ard.getId();
                     ardPOJO.name = ard.getName();

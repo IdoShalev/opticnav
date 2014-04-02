@@ -9,7 +9,7 @@ import opticnav.ardd.admin.ARDdAdminException;
 import opticnav.ardd.admin.ARDdAdminStartInstanceStatus;
 import opticnav.ardd.admin.InstanceDeployment;
 import opticnav.ardd.protocol.ConfCode;
-import opticnav.ardd.protocol.InstanceInfo;
+import opticnav.ardd.protocol.InstanceDeploymentInfo;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.Protocol;
@@ -107,13 +107,13 @@ public class ARDdAdminBroker implements ARDdAdmin {
     }
 
     @Override
-    public List<InstanceInfo> listInstancesByOwner(final long owner) throws ARDdAdminException {
+    public List<InstanceDeploymentInfo> listInstancesByOwner(final long owner) throws ARDdAdminException {
         try {
             output.writeSInt64(owner);
             output.flush();
             
             final int instancesSize = input.readUInt8();
-            final List<InstanceInfo> instances = new ArrayList<>(instancesSize);
+            final List<InstanceDeploymentInfo> instances = new ArrayList<>(instancesSize);
             
             for (int i = 0; i < instancesSize; i++) {
                 final int id;
@@ -121,7 +121,7 @@ public class ARDdAdminBroker implements ARDdAdmin {
                 final String name;
                 final long startTime;
                 final int invitedArdsSize;
-                final List<InstanceInfo.ARDIdentifier> invitedArds;
+                final List<InstanceDeploymentInfo.ARDIdentifier> invitedArds;
                 
                 id        = input.readUInt31();
                 instOwner = input.readSInt64();
@@ -133,10 +133,10 @@ public class ARDdAdminBroker implements ARDdAdmin {
                 for (int j = 0; j < invitedArdsSize; j++) {
                     final int ardID = input.readUInt31();
                     final String ardName = input.readString();
-                    invitedArds.add(new InstanceInfo.ARDIdentifier(ardID, ardName));
+                    invitedArds.add(new InstanceDeploymentInfo.ARDIdentifier(ardID, ardName));
                 }
                 
-                final InstanceInfo inst = new InstanceInfo(id, instOwner, name, startTime, invitedArds);
+                final InstanceDeploymentInfo inst = new InstanceDeploymentInfo(id, instOwner, name, startTime, invitedArds);
                 instances.add(inst);
             }
             return instances;

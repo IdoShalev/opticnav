@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import opticnav.ardd.protocol.ConfCode;
-import opticnav.ardd.protocol.InstanceInfo;
+import opticnav.ardd.protocol.InstanceDeploymentInfo;
 
 public interface ARDdAdmin extends AutoCloseable {
     /**
@@ -40,5 +40,5 @@ public interface ARDdAdmin extends AutoCloseable {
      *              determined by the host application (ie. web account id).
      * @throws ARDdAdminException 
      */
-    public List<InstanceInfo> listInstancesByOwner(long owner) throws ARDdAdminException;
+    public List<InstanceDeploymentInfo> listInstancesByOwner(long owner) throws ARDdAdminException;
 }

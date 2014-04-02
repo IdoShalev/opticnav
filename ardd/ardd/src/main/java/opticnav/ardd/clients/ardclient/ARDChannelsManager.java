@@ -8,9 +8,11 @@ import org.apache.commons.math3.util.Pair;
 
 import opticnav.ardd.ARDConnection;
 import opticnav.ardd.ARDListsManager;
-import opticnav.ardd.Instance;
 import opticnav.ardd.InstancesList;
 import opticnav.ardd.clients.ClientCommandDispatcher;
+import opticnav.ardd.instance.EntitySubscriber;
+import opticnav.ardd.instance.GeoCoordFine;
+import opticnav.ardd.instance.Instance;
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelMultiplexer;
 import opticnav.ardd.protocol.consts.ARDdARDProtocol;
@@ -53,15 +55,16 @@ public class ARDChannelsManager implements Callable<Void> {
                                             new ConnectedCommandHandler(this, this.instances, connection));
     }
     
-    public int startInstanceConnection(Instance instance) {
+    public Pair<Integer, EntitySubscriber> startInstanceConnection(Instance instance) {
         // TODO - proper channel ID
         final int channelID = 55;
         
         final Channel instanceChannel = this.mpxr.createChannel(channelID);
+        final EntitySubscriber subscriber = new ARDInstanceWriter(instanceChannel.getOutputStream());
         
         new InstanceCommandHandler(connection, instance);
         
-        return channelID;
+        return new Pair<Integer, EntitySubscriber>(channelID, subscriber);
     }
 
     @Override

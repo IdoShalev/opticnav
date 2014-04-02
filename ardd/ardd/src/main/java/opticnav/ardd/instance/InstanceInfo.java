@@ -1,6 +1,5 @@
-package opticnav.ardd;
+package opticnav.ardd.instance;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -8,18 +7,17 @@ import java.util.List;
 import opticnav.ardd.TemporaryResourceUtil.TemporaryResource;
 
 /**
- * The Instance class represents an _active_ instance (the amalgamation of a map and its static/dynamic markers)
- *
+ * All properties about an instance, as determined on deployment. Instance.Info is immutable and doesn't change
+ * for the lifetime of an instance.
  */
-public class Instance implements AutoCloseable {
-    private final Date startTime;
-    private final String name;
-    private final boolean hasMapImage;
-    private final TemporaryResource mapImage;
-    private final Anchor[] mapAnchors;
-    private final List<StaticMarker> staticMarkers;
-    // TODO - make this a map
-    private final List<ARDIdentifier> invitedARDs;
+public class InstanceInfo {
+    public final Date startTime;
+    public final String name;
+    public final boolean hasMapImage;
+    public final TemporaryResource mapImage;
+    public final InstanceInfo.Anchor[] mapAnchors;
+    public final List<InstanceInfo.StaticMarker> staticMarkers;
+    public final List<InstanceInfo.ARDIdentifier> invitedARDs;
 
     /**
      * @param startTime The start time. This is passed as a parameter so that the constructor remains deterministic.
@@ -31,8 +29,8 @@ public class Instance implements AutoCloseable {
      * @param staticMarkers The list of static markers. If there are none, an empty list must be passed (not null).
      * @param invitedARDs The list of invited devices.
      */
-    public Instance(Date startTime, String name, TemporaryResource mapImage, Anchor[] mapAnchors,
-            List<StaticMarker> staticMarkers, List<ARDIdentifier> invitedARDs) throws IllegalArgumentException {
+    public InstanceInfo(Date startTime, String name, TemporaryResource mapImage, InstanceInfo.Anchor[] mapAnchors,
+            List<InstanceInfo.StaticMarker> staticMarkers, List<InstanceInfo.ARDIdentifier> invitedARDs) throws IllegalArgumentException {
         if ((mapImage != null) != (mapAnchors != null)) {
             throw new IllegalArgumentException("mapImage and mapAnchors should both either be null or not-null");
         }
@@ -45,40 +43,9 @@ public class Instance implements AutoCloseable {
         this.staticMarkers = staticMarkers;
         this.invitedARDs = Collections.unmodifiableList(invitedARDs);
     }
-    
-    @Override
-    public void close() throws IOException {
-        this.mapImage.delete();
-    }
-    
-    public String getName() {
-        return this.name;
-    }
-    
-    public Date getStartTime() {
-        // create a clone that can't mutate the original
-        return (Date)this.startTime.clone();
-    }
-    
-    public List<ARDIdentifier> getInvitedARDs() {
-        return this.invitedARDs;
-    }
 
     public boolean hasInvitedARD(int ardID) {
-        for (ARDIdentifier i: invitedARDs) {
-            if (ardID == i.getArdID()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * A location updater observable - used by an entity that is moving (such as an ARD).
-     * Notifying this observable will in turn notify other ARDs of this event.
-     */
-    public interface LocationUpdate {
-        public void updateLocation(int lng, int lat);
+        return this.invitedARDs.contains(ardID);
     }
 
     public static class ARDIdentifier {

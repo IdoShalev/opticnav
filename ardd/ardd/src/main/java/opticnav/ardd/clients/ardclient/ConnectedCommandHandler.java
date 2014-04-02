@@ -1,14 +1,16 @@
 package opticnav.ardd.clients.ardclient;
 
+import java.io.IOException;
+
 import org.apache.commons.math3.util.Pair;
 
 import opticnav.ardd.ARDConnection;
-import opticnav.ardd.Instance;
 import opticnav.ardd.InstancesList;
 import opticnav.ardd.clients.AnnotatedCommandHandler;
+import opticnav.ardd.instance.EntitySubscriber;
+import opticnav.ardd.instance.Instance;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
-import opticnav.ardd.protocol.chan.Channel;
 import static opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.*;
 
 public class ConnectedCommandHandler extends AnnotatedCommandHandler {
@@ -40,17 +42,29 @@ public class ConnectedCommandHandler extends AnnotatedCommandHandler {
     }
     
     @Command(Commands.JOIN_INSTANCE)
-    public void joinInstance(PrimitiveReader in, PrimitiveWriter out) throws Exception {
+    public void joinInstance(PrimitiveReader in, final PrimitiveWriter out) throws Exception {
         final int instanceID = in.readUInt31();
-        final Instance instance = instances.joinInstance(connection, instanceID);
-        final boolean joined = instance != null;
         
-        out.writeUInt8(joined?1:0);
-        if (joined) {
-            final int channelID = this.ardChannelsManager.startInstanceConnection(instance);
-            // write the channel ID
-            out.writeUInt8(channelID);
-        }
-        out.flush();
+        instances.joinInstance(instanceID, connection.getARDID(), new InstancesList.JoinInstanceCallbacks() {
+            @Override
+            public EntitySubscriber joining(Instance instance) throws IOException {
+                final Pair<Integer, EntitySubscriber> p = ardChannelsManager.startInstanceConnection(instance);
+                final int instanceChannelID = p.getFirst();
+                
+                // result: joined
+                out.writeUInt8(1);
+                out.writeUInt8(instanceChannelID);
+                out.flush();
+                
+                return p.getSecond();
+            }
+            
+            @Override
+            public void noInstanceFound() throws IOException {
+                // result: could not join
+                out.writeUInt8(0);
+                out.flush();
+            }
+        });
     }
 }

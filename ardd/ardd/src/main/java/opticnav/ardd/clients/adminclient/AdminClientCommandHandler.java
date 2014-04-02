@@ -9,13 +9,14 @@ import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.ARDListsManager;
-import opticnav.ardd.Instance;
 import opticnav.ardd.TemporaryResourceUtil;
 import opticnav.ardd.TemporaryResourceUtil.TemporaryResource;
 import opticnav.ardd.TemporaryResourceUtil.TemporaryResourceBuilder;
 import opticnav.ardd.clients.AnnotatedCommandHandler;
+import opticnav.ardd.instance.Instance;
+import opticnav.ardd.instance.InstanceInfo;
 import opticnav.ardd.protocol.ConfCode;
-import opticnav.ardd.protocol.InstanceInfo;
+import opticnav.ardd.protocol.InstanceDeploymentInfo;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.Protocol;
@@ -51,7 +52,7 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
         final String instName;
         final boolean hasMapImage;
         final TemporaryResource mapImage;
-        final Instance.Anchor[] mapAnchors = new Instance.Anchor[3];
+        final InstanceInfo.Anchor[] mapAnchors = new InstanceInfo.Anchor[3];
         
         owner = in.readSInt64();
         instName = in.readString();
@@ -86,7 +87,7 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
                 final int lat = in.readSInt32();
                 final int localX = in.readSInt32();
                 final int localY = in.readSInt32();
-                mapAnchors[i] = new Instance.Anchor(lng, lat, localX, localY);
+                mapAnchors[i] = new InstanceInfo.Anchor(lng, lat, localX, localY);
             }
         } else {
             mapImage = null;
@@ -95,13 +96,13 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
         // Markers
         final int markerSize = in.readUInt31();
         LOG.debug(markerSize + " markers");
-        final List<Instance.StaticMarker> staticMarkers;
+        final List<InstanceInfo.StaticMarker> staticMarkers;
         staticMarkers = new ArrayList<>(markerSize);
         for (int i = 0; i < markerSize; i++) {
             final String markerName = in.readString();
             final int lng = in.readSInt32();
             final int lat = in.readSInt32();
-            staticMarkers.add(new Instance.StaticMarker(markerName, lng, lat));
+            staticMarkers.add(new InstanceInfo.StaticMarker(markerName, lng, lat));
         }
         
         // Invited ARDs
@@ -111,17 +112,18 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
             LOG.warn(String.format("There are no invited ARDs for this instance (%s). " + 
                                    "We'll allow it, but how will anyone join it?", instName));
         }
-        final List<Instance.ARDIdentifier> ards;
+        final List<InstanceInfo.ARDIdentifier> ards;
         ards = new ArrayList<>(ardSize);
         for (int i = 0; i < ardSize; i++) {
             final int ardID = in.readUInt31();
             final String name = in.readString();
-            ards.add(new Instance.ARDIdentifier(ardID, name));
+            ards.add(new InstanceInfo.ARDIdentifier(ardID, name));
         }
         
         // Create the instance!
         final Date now = new Date();
-        final Instance instance = new Instance(now, instName, mapImage, mapAnchors, staticMarkers, ards);
+        final InstanceInfo instanceInfo = new InstanceInfo(now, instName, mapImage, mapAnchors, staticMarkers, ards);
+        final Instance instance = new Instance(instanceInfo);
         final int instanceID = ardListsManager.getInstancesList().addInstance(owner, instance);
         
         // TODO - replace with constant
@@ -135,18 +137,18 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
         final long owner;
         owner = in.readSInt64();
         
-        final List<InstanceInfo> instances;
+        final List<InstanceDeploymentInfo> instances;
         instances = this.ardListsManager.getInstancesList().listInstancesByOwner(owner);
         
         out.writeUInt8(instances.size());
-        for (InstanceInfo inst: instances) {
+        for (InstanceDeploymentInfo inst: instances) {
             out.writeUInt31(inst.getId());
             out.writeSInt64(inst.getOwner());
             out.writeString(inst.getName());
             out.writeSInt64(inst.getStartTime());
             
             out.writeUInt31(inst.getArds().size());
-            for (InstanceInfo.ARDIdentifier ard: inst.getArds()) {
+            for (InstanceDeploymentInfo.ARDIdentifier ard: inst.getArds()) {
                 out.writeUInt31(ard.getId());
                 out.writeString(ard.getName());
             }

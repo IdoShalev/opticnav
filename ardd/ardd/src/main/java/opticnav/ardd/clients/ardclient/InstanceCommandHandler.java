@@ -1,8 +1,8 @@
 package opticnav.ardd.clients.ardclient;
 
 import opticnav.ardd.ARDConnection;
-import opticnav.ardd.Instance;
 import opticnav.ardd.clients.AnnotatedCommandHandler;
+import opticnav.ardd.instance.Instance;
 
 public class InstanceCommandHandler extends AnnotatedCommandHandler {
     private final ARDConnection connection;
