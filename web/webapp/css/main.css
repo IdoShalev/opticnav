@@ -69,7 +69,8 @@ header,footer {
 }
 
 #messageConstraint {
-	max-width: 30%;
+	width: auto%;
+	display: inline-block;
 }
 
 .container {
