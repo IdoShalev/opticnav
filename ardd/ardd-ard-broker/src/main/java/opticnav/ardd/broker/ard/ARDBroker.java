@@ -26,18 +26,15 @@ public class ARDBroker implements ARDGatekeeper {
     private static final XLogger LOG = XLoggerFactory
             .getXLogger(ARDBroker.class);
     
-    final private Channel channel;
     final private ChannelMultiplexer mpxr;
     final private ExecutorService threadPool;
     final private Future<Void> listenerResult;
     final private Channel gatekeeperChannel;
     
     public ARDBroker(Channel channel, ExecutorService threadPool) {
-        this.channel = channel;
         this.mpxr = new ChannelMultiplexer(channel);
         this.threadPool = threadPool;
         
-        // Channel 0 is the pre-established gatekeeper channel
         this.gatekeeperChannel = this.mpxr.createChannel(Channels.GATEKEEPER);
         
         Listener listener = this.mpxr.createListener();
@@ -119,7 +116,7 @@ public class ARDBroker implements ARDGatekeeper {
             if (response == 0) {
                 // passcode acknowledged, can connect
                 Channel connectedChannel = mpxr.createChannel(Channels.CONNECTED);
-                return new ARDConnectionStatus(new ARDConnectedImpl(connectedChannel));
+                return new ARDConnectionStatus(new ARDConnectedImpl(connectedChannel, this.mpxr));
             } else if (response == 1) {
                 // passcode doesn't exist
                 return new ARDConnectionStatus(ARDConnectionStatus.Status.NOPASSCODE);

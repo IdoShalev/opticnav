@@ -3,6 +3,8 @@ package opticnav.ardd.instance;
 import java.util.HashSet;
 import java.util.Set;
 
+import opticnav.ardd.protocol.GeoCoordFine;
+
 public class Entity {
     private final int markerID;
     private final EntitySubscriber subscriber;

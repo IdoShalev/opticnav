@@ -1,4 +1,4 @@
-package opticnav.ardd.instance;
+package opticnav.ardd.protocol;
 
 /**
  * 32x more fine-grained than the standard geocoordinate representation (ISO 6709). Still fits in an integer.

@@ -8,9 +8,12 @@ import java.util.concurrent.Executors;
 import opticnav.ardd.ard.ARDConnected;
 import opticnav.ardd.ard.ARDConnectionStatus;
 import opticnav.ardd.ard.ARDGatekeeper;
+import opticnav.ardd.ard.ARDInstance;
+import opticnav.ardd.ard.ARDInstanceJoinStatus;
 import opticnav.ardd.ard.InstanceInfo;
 import opticnav.ardd.broker.ard.ARDBroker;
 import opticnav.ardd.protocol.ConfCode;
+import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.Protocol;
 import opticnav.ardd.protocol.chan.Channel;
@@ -71,6 +74,18 @@ public class ARDIntegrationDriver {
             } else {
                 System.out.print("Enter the instance ID to join: ");
                 final int instanceID = Integer.parseInt(in.nextLine());
+                joinInstance(connected, instanceID);
+            }
+        }
+    }
+    
+    private static void joinInstance(ARDConnected connected, int instanceID) throws Exception {
+        final GeoCoordFine initialLocation = new GeoCoordFine(-10000, +10000);
+        ARDInstanceJoinStatus status = connected.joinInstance(instanceID, initialLocation);
+        
+        System.out.println("Status: " + status.getStatus());
+        if (status.getStatus() == ARDInstanceJoinStatus.Status.JOINED) {
+            try (ARDInstance instance = status.getInstance()) {
                 // TODO
             }
         }

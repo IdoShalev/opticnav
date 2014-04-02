@@ -3,7 +3,7 @@ package opticnav.ardd.clients.ardclient;
 import java.io.OutputStream;
 
 import opticnav.ardd.instance.EntitySubscriber;
-import opticnav.ardd.instance.GeoCoordFine;
+import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PrimitiveWriter;
 
 public class ARDInstanceWriter implements EntitySubscriber {
