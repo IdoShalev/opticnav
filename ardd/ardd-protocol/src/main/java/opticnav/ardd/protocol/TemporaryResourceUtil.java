@@ -1,4 +1,4 @@
-package opticnav.ardd;
+package opticnav.ardd.protocol;
 
 import java.io.File;
 import java.io.FileInputStream;

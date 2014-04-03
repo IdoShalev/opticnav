@@ -9,9 +9,6 @@ import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.ARDListsManager;
-import opticnav.ardd.TemporaryResourceUtil;
-import opticnav.ardd.TemporaryResourceUtil.TemporaryResource;
-import opticnav.ardd.TemporaryResourceUtil.TemporaryResourceBuilder;
 import opticnav.ardd.clients.AnnotatedCommandHandler;
 import opticnav.ardd.instance.Instance;
 import opticnav.ardd.instance.InstanceInfo;
@@ -20,6 +17,9 @@ import opticnav.ardd.protocol.InstanceDeploymentInfo;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.Protocol;
+import opticnav.ardd.protocol.TemporaryResourceUtil;
+import opticnav.ardd.protocol.TemporaryResourceUtil.TemporaryResource;
+import opticnav.ardd.protocol.TemporaryResourceUtil.TemporaryResourceBuilder;
 import opticnav.ardd.protocol.consts.ARDdAdminProtocol;
 import opticnav.ardd.protocol.consts.ARDdAdminProtocol.Commands;
 

@@ -21,6 +21,12 @@ public class GeoCoordFine {
         this.lat = lat;
     }
     
+    public static GeoCoordFine fromDouble(double lng, double lat) {
+        final int x = (int)Math.round((lng/180)*LNG_MAX);
+        final int y = (int)Math.round((lat/90)*LAT_MAX);
+        return new GeoCoordFine(x, y);
+    }
+    
     public double getLongitudeDouble() {
         return (double)this.lng/LNG_MAX;
     }

@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import opticnav.ardd.TemporaryResourceUtil.TemporaryResource;
+import opticnav.ardd.protocol.TemporaryResourceUtil.TemporaryResource;
 
 /**
  * All properties about an instance, as determined on deployment. Instance.Info is immutable and doesn't change

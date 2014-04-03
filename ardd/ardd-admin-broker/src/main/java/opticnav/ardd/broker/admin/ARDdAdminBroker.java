@@ -9,6 +9,7 @@ import opticnav.ardd.admin.ARDdAdminException;
 import opticnav.ardd.admin.ARDdAdminStartInstanceStatus;
 import opticnav.ardd.admin.InstanceDeployment;
 import opticnav.ardd.protocol.ConfCode;
+import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.InstanceDeploymentInfo;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
@@ -66,8 +67,9 @@ public class ARDdAdminBroker implements ARDdAdmin {
                 // Anchors
                 assert d.getMapAnchors().size() == 3;
                 for (InstanceDeployment.Anchor anchor: d.getMapAnchors()) {
-                    this.output.writeSInt32(anchor.getLng());
-                    this.output.writeSInt32(anchor.getLat());
+                    final GeoCoordFine geoCoord = anchor.getGeoCoordFine();
+                    this.output.writeSInt32(geoCoord.getLongitudeInt());
+                    this.output.writeSInt32(geoCoord.getLatitudeInt());
                     this.output.writeSInt32(anchor.getLocalX());
                     this.output.writeSInt32(anchor.getLocalY());
                 }

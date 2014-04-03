@@ -1,10 +1,12 @@
 package opticnav.ardd.ard;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.List;
 
 import opticnav.ardd.protocol.GeoCoordFine;
 
-public interface ARDConnected {
+public interface ARDConnected extends Closeable {
     /**
      * Queries the server for a list of instances the device can connect to.
      *
@@ -12,5 +14,8 @@ public interface ARDConnected {
      * @throws ARDConnectedException
      */
     public List<InstanceInfo> listInstances() throws ARDConnectedException;
-    public ARDInstanceJoinStatus joinInstance(int instanceID, GeoCoordFine initialLocation) throws ARDConnectedException;
+    public ARDInstanceJoinStatus joinInstance(int instanceID, GeoCoordFine initialLocation,
+            ARDInstanceSubscriber subscriber) throws ARDConnectedException;
+    
+    public void close() throws IOException;
 }

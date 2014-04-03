@@ -116,7 +116,7 @@ public class ARDBroker implements ARDGatekeeper {
             if (response == 0) {
                 // passcode acknowledged, can connect
                 Channel connectedChannel = mpxr.createChannel(Channels.CONNECTED);
-                return new ARDConnectionStatus(new ARDConnectedImpl(connectedChannel, this.mpxr));
+                return new ARDConnectionStatus(new ARDConnectedImpl(connectedChannel, this.mpxr, this.threadPool));
             } else if (response == 1) {
                 // passcode doesn't exist
                 return new ARDConnectionStatus(ARDConnectionStatus.Status.NOPASSCODE);

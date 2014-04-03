@@ -12,6 +12,7 @@ import opticnav.ardd.admin.ARDdAdmin;
 import opticnav.ardd.admin.ARDdAdminStartInstanceStatus;
 import opticnav.ardd.admin.InstanceDeployment;
 import opticnav.ardd.admin.InstanceDeploymentBuilder;
+import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.InstanceDeploymentInfo;
 import opticnav.persistence.web.WebAccountDAO;
 import opticnav.persistence.web.Resource;
@@ -133,8 +134,11 @@ public class InstanceController extends Controller {
             // We need to re-add anchors as InstanceDeployment.Anchor objects because they're in separate layers
             mapAnchors = new ArrayList<>(map.getAnchors().size());
             for (Anchor anchor: map.getAnchors()) {
+                final GeoCoordFine geoCoord;
+                geoCoord = new GeoCoordFine(anchor.getLng()*32, anchor.getLat()*32);
+                
                 final InstanceDeployment.Anchor instAnchor;
-                instAnchor = new InstanceDeployment.Anchor(anchor.getLng(), anchor.getLat(),
+                instAnchor = new InstanceDeployment.Anchor(geoCoord,
                                                            anchor.getLocalX(), anchor.getLocalY());
                 mapAnchors.add(instAnchor);
             }

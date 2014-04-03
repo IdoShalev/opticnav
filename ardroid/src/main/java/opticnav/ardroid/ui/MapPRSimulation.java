@@ -22,16 +22,6 @@ public class MapPRSimulation implements Runnable {
             IOUtils.closeQuietly(in);
         }
 
-        // hard-coded anchor points for SAIT
-        final int[] local = {463,346, 714,409, 937,200};
-        final int[] internalGPS = {-41072424,18383378, -41071669,18383259, -41071005,18383656};
-        final Anchor[] anchors = new Anchor[3];
-
-        for (int i = 0; i < anchors.length; i++) {
-            anchors[i] = new Anchor(local[i*2+0], local[i*2+1], GPSCoordinate.fromInternalInt(internalGPS[i * 2 + 0], internalGPS[i * 2 + 1]));
-        }
-
-        final MapTransform mapTransform = new MapTransform(anchors[0], anchors[1], anchors[2]);
         mapModel = new MapModel(bitmap);
     }
 

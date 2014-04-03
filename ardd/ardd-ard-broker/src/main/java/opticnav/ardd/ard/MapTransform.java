@@ -1,6 +1,28 @@
-package opticnav.ardroid.model;
+package opticnav.ardd.ard;
 
-public class MapTransform {
+import opticnav.ardd.protocol.GeoCoordFine;
+
+public final class MapTransform {
+    public static final class Anchor {
+        public final int localX, localY;
+        public final GeoCoordFine geoCoord;
+
+        public Anchor(int localX, int localY, GeoCoordFine geoCoord) {
+            this.localX = localX;
+            this.localY = localY;
+            this.geoCoord = geoCoord;
+        }
+    }
+
+    public static final class Coordinate {
+        public final double x, y;
+
+        public Coordinate(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
     private final double m00,m01,m02,
                          m10,m11,m12;
 
@@ -8,19 +30,19 @@ public class MapTransform {
         final double px0, py0, px1, py1, px2, py2;
         final double gx0, gy0, gx1, gy1, gx2, gy2;
 
-        px0 = p0.getLocalX();
-        py0 = p0.getLocalY();
-        px1 = p1.getLocalX();
-        py1 = p1.getLocalY();
-        px2 = p2.getLocalX();
-        py2 = p2.getLocalY();
+        px0 = p0.localX;
+        py0 = p0.localY;
+        px1 = p1.localX;
+        py1 = p1.localY;
+        px2 = p2.localX;
+        py2 = p2.localY;
 
-        gx0 = p0.getGPSCoordinate().getLongitudeDouble();
-        gy0 = p0.getGPSCoordinate().getLatitudeDouble();
-        gx1 = p1.getGPSCoordinate().getLongitudeDouble();
-        gy1 = p1.getGPSCoordinate().getLatitudeDouble();
-        gx2 = p2.getGPSCoordinate().getLongitudeDouble();
-        gy2 = p2.getGPSCoordinate().getLatitudeDouble();
+        gx0 = p0.geoCoord.getLongitudeInt();
+        gy0 = p0.geoCoord.getLatitudeInt();
+        gx1 = p1.geoCoord.getLongitudeInt();
+        gy1 = p1.geoCoord.getLatitudeInt();
+        gx2 = p2.geoCoord.getLongitudeInt();
+        gy2 = p2.geoCoord.getLatitudeInt();
 
         // Some very complicated formulas churned out by wxMaxima.
         /*
@@ -43,19 +65,20 @@ public class MapTransform {
         m11=-(gy0*(px2-px1)-gy1*px2+gy2*px1+(gy1-gy2)*px0)/(px0*(py2-py1)-px1*py2+px2*py1+(px1-px2)*py0);
         m12=(gy0*(px2*py1-px1*py2)+px0*(gy1*py2-gy2*py1)+(gy2*px1-gy1*px2)*py0)/(px0*(py2-py1)-px1*py2+px2*py1+(px1-px2)*py0);
     }
-
-    public Coordinate imageLocalToGPS(Coordinate coordinate) {
-        final double x = coordinate.getX();
-        final double y = coordinate.getY();
-
+    
+    public GeoCoordFine imageLocalToGeo(double x, double y) {
         final double lat = m00*x + m01*y + m02;
         final double lng = m10*x + m11*y + m12;
-        return new Coordinate(lat, lng);
+        return new GeoCoordFine((int)Math.round(lat), (int)Math.round(lng));
     }
 
-    public Coordinate gpsToImageLocal(GPSCoordinate coordinate) {
-        final double lat = coordinate.getLatitudeDouble();
-        final double lng = coordinate.getLongitudeDouble();
+    public GeoCoordFine imageLocalToGeo(Coordinate coordinate) {
+        return imageLocalToGeo(coordinate.x, coordinate.y);
+    }
+
+    public Coordinate geoToImageLocal(GeoCoordFine coordinate) {
+        final double lng = coordinate.getLongitudeInt();
+        final double lat = coordinate.getLatitudeInt();
 
         // More formulas churned out by wxMaxima
         // It's the inverse of a matrix multiplication

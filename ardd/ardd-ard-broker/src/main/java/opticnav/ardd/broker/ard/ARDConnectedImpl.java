@@ -4,7 +4,9 @@ import opticnav.ardd.ard.ARDConnectedException;
 import opticnav.ardd.ard.ARDConnected;
 import opticnav.ardd.ard.ARDInstance;
 import opticnav.ardd.ard.ARDInstanceJoinStatus;
+import opticnav.ardd.ard.ARDInstanceSubscriber;
 import opticnav.ardd.ard.InstanceInfo;
+import opticnav.ardd.ard.InstanceMap;
 import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveUtil;
@@ -16,18 +18,27 @@ import opticnav.ardd.protocol.chan.ChannelMultiplexer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 class ARDConnectedImpl implements ARDConnected {
     private final PrimitiveReader input;
     private final PrimitiveWriter output;
     private final ChannelMultiplexer mpxr;
+    private final ExecutorService threadPool;
 
-    public ARDConnectedImpl(Channel connectedChannel, ChannelMultiplexer mpxr) {
+    public ARDConnectedImpl(Channel connectedChannel, ChannelMultiplexer mpxr, ExecutorService threadPool) {
         this.input  = PrimitiveUtil.reader(connectedChannel);
         this.output = PrimitiveUtil.writer(connectedChannel);
         this.mpxr = mpxr;
+        this.threadPool = threadPool;
     }
     
+    @Override
+    public void close() throws IOException {
+        // TODO Auto-generated method stub
+        
+    }
+
     @Override
     public List<InstanceInfo> listInstances() throws ARDConnectedException {
         try {
@@ -50,7 +61,8 @@ class ARDConnectedImpl implements ARDConnected {
     }
 
     @Override
-    public ARDInstanceJoinStatus joinInstance(int instanceID, GeoCoordFine initialLocation) throws ARDConnectedException {
+    public ARDInstanceJoinStatus joinInstance(int instanceID, GeoCoordFine initialLocation,
+            ARDInstanceSubscriber subscriber) throws ARDConnectedException {
         try {
             output.writeUInt8(Commands.JOIN_INSTANCE);
             output.writeUInt31(instanceID);
@@ -65,10 +77,19 @@ class ARDConnectedImpl implements ARDConnected {
                 return new ARDInstanceJoinStatus(ARDInstanceJoinStatus.Status.NOINSTANCE);
             } else if (response == 1) {
                 // joined
+                final InstanceMap instanceMap;
+                
+                // TODO - fix this
+                instanceMap = new InstanceMap(null, null, 0, 0);
+                
                 final int instanceChannelID = input.readUInt8();
                 final Channel channel = this.mpxr.createChannel(instanceChannelID);
+                
+                
+                
+                
                 final ARDInstance instance;
-                instance = new ARDInstanceImpl(channel);
+                instance = new ARDInstanceImpl(channel, instanceMap, subscriber, this.threadPool);
                 
                 return new ARDInstanceJoinStatus(instance);
             } else {

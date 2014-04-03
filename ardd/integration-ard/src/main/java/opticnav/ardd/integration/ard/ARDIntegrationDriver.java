@@ -10,7 +10,9 @@ import opticnav.ardd.ard.ARDConnectionStatus;
 import opticnav.ardd.ard.ARDGatekeeper;
 import opticnav.ardd.ard.ARDInstance;
 import opticnav.ardd.ard.ARDInstanceJoinStatus;
+import opticnav.ardd.ard.ARDInstanceSubscriber;
 import opticnav.ardd.ard.InstanceInfo;
+import opticnav.ardd.ard.MapTransform;
 import opticnav.ardd.broker.ard.ARDBroker;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.GeoCoordFine;
@@ -79,14 +81,47 @@ public class ARDIntegrationDriver {
         }
     }
     
+    private static class LogARDInstanceSubscriber implements ARDInstanceSubscriber {
+        @Override
+        public void markerCreate(int id, GeoCoordFine geoCoord) {
+            System.out.println("Marker created: " + id + ", " + geoCoord);
+        }
+
+        @Override
+        public void markerMove(int id, GeoCoordFine geoCoord) {
+            System.out.println("Marker moved: " + id + ", " + geoCoord);
+        }
+
+        @Override
+        public void markerRemove(int id) {
+            System.out.println("Marker removed: " + id);
+        }
+    }
+    
     private static void joinInstance(ARDConnected connected, int instanceID) throws Exception {
         final GeoCoordFine initialLocation = new GeoCoordFine(-10000, +10000);
-        ARDInstanceJoinStatus status = connected.joinInstance(instanceID, initialLocation);
+        final ARDInstanceSubscriber subscriber;
+        subscriber = new LogARDInstanceSubscriber();
+        
+        ARDInstanceJoinStatus status = connected.joinInstance(instanceID, initialLocation, subscriber);
         
         System.out.println("Status: " + status.getStatus());
         if (status.getStatus() == ARDInstanceJoinStatus.Status.JOINED) {
             try (ARDInstance instance = status.getInstance()) {
-                // TODO
+                // move in a circle across the dimensions of the map
+                final MapTransform transform = instance.getMap().getTransform();
+                
+                final int imageWidth = instance.getMap().getImageWidth();
+                final int imageHeight = instance.getMap().getImageHeight();
+                
+                for (int i = 0; i < 180; i++) {
+                    double r = 2*Math.PI * (double)i/180;
+                    double x = (Math.cos(r)+1)/2 * imageWidth;
+                    double y = (Math.sin(r)+1)/2 * imageHeight;
+                    
+                    instance.move(transform.imageLocalToGeo(x, y));
+                    Thread.sleep(200);
+                }
             }
         }
     }
