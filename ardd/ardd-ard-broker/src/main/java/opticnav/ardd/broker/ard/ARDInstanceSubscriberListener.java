@@ -27,10 +27,11 @@ public class ARDInstanceSubscriberListener implements Callable<Void> {
             // TODO - replace with constants
             if (commandCode == SubscriberCommands.CREATE_MARKER) {
                 final int id = this.input.readUInt31();
+                final String name = this.input.readString();
                 final int lng = this.input.readSInt32();
                 final int lat = this.input.readSInt32();
                 
-                this.subscriber.markerCreate(id, new GeoCoordFine(lng, lat));
+                this.subscriber.markerCreate(id, name, new GeoCoordFine(lng, lat));
             } else if (commandCode == SubscriberCommands.MOVE_MARKER) {
                 final int id = this.input.readUInt31();
                 final int lng = this.input.readSInt32();

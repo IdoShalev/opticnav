@@ -28,11 +28,11 @@ public class GeoCoordFine {
     }
     
     public double getLongitudeDouble() {
-        return (double)this.lng/LNG_MAX;
+        return (double)this.lng*180/LNG_MAX;
     }
     
     public double getLatitudeDouble() {
-        return (double)this.lat/LAT_MAX;
+        return (double)this.lat*90/LAT_MAX;
     }
     
     public int getLongitudeInt() {
@@ -41,5 +41,10 @@ public class GeoCoordFine {
     
     public int getLatitudeInt() {
         return this.lat;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("%+.7f N/S %+.7f E/W", getLatitudeDouble(), getLongitudeDouble());
     }
 }

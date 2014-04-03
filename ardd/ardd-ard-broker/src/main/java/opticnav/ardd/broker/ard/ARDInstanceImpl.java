@@ -46,6 +46,15 @@ public class ARDInstanceImpl implements ARDInstance {
 
     @Override
     public void move(GeoCoordFine geoCoord) throws ARDInstanceException {
+        try {
+            this.output.writeUInt8(Commands.MOVE);
+            
+            this.output.writeSInt32(geoCoord.getLongitudeInt());
+            this.output.writeSInt32(geoCoord.getLatitudeInt());
+            this.output.flush();
+        } catch (IOException e) {
+            throw new ARDInstanceException(e);
+        }
     }
 
     @Override

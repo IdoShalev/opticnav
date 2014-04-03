@@ -10,6 +10,7 @@ import opticnav.ardd.ARDConnection;
 import opticnav.ardd.ARDListsManager;
 import opticnav.ardd.InstancesList;
 import opticnav.ardd.clients.ClientCommandDispatcher;
+import opticnav.ardd.instance.Entity;
 import opticnav.ardd.instance.EntitySubscriber;
 import opticnav.ardd.instance.Instance;
 import opticnav.ardd.protocol.GeoCoordFine;
@@ -61,14 +62,14 @@ public class ARDChannelsManager implements Callable<Void> {
         threadPool.submit(this.connectedCommandDispatcher);
     }
     
-    public Pair<Integer, EntitySubscriber> startInstanceConnection(Instance instance) {
+    public Pair<Integer, EntitySubscriber> startInstanceConnection(Instance instance, Future<Entity> entity) {
         // TODO - proper channel ID
         final int channelID = 55;
         
         final Channel instanceChannel = this.mpxr.createChannel(channelID);
         final EntitySubscriber subscriber = new ARDInstanceWriter(instanceChannel.getOutputStream());
         
-        InstanceCommandHandler instanceCommandHandler = new InstanceCommandHandler(connection, instance);
+        InstanceCommandHandler instanceCommandHandler = new InstanceCommandHandler(connection, entity);
         this.instanceCommandDispatcher = new ClientCommandDispatcher(instanceChannel, instanceCommandHandler);
         
         this.threadPool.submit(instanceCommandDispatcher);

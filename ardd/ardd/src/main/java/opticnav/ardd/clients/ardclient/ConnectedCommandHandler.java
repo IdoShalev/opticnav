@@ -3,12 +3,14 @@ package opticnav.ardd.clients.ardclient;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 import org.apache.commons.math3.util.Pair;
 
 import opticnav.ardd.ARDConnection;
 import opticnav.ardd.InstancesList;
 import opticnav.ardd.clients.AnnotatedCommandHandler;
+import opticnav.ardd.instance.Entity;
 import opticnav.ardd.instance.EntitySubscriber;
 import opticnav.ardd.instance.Instance;
 import opticnav.ardd.instance.InstanceInfo;
@@ -28,6 +30,11 @@ public class ConnectedCommandHandler extends AnnotatedCommandHandler {
         this.ardChannelsManager = ardChannelsManager;
         this.instances = instances;
         this.connection = connection;
+    }
+
+    @Override
+    public void close() throws IOException {
+        // do nothing
     }
     
     @Command(Commands.LIST_INSTANCES)
@@ -67,11 +74,12 @@ public class ConnectedCommandHandler extends AnnotatedCommandHandler {
         
         final GeoCoordFine initialLocation = new GeoCoordFine(lng, lat);
         
-        instances.joinInstance(instanceID, connection.getARDID(), new InstancesList.JoinInstanceCallbacks() {
+        instances.joinInstance(instanceID, connection.getARDID(),
+                initialLocation, new InstancesList.JoinInstanceCallbacks() {
             @Override
-            public EntitySubscriber joining(Instance instance) throws IOException {
+            public EntitySubscriber joining(Instance instance, Future<Entity> entity) throws IOException {
                 final InstanceInfo info = instance.getInfo();
-                final Pair<Integer, EntitySubscriber> p = ardChannelsManager.startInstanceConnection(instance);
+                final Pair<Integer, EntitySubscriber> p = ardChannelsManager.startInstanceConnection(instance, entity);
                 final int instanceChannelID = p.getFirst();
                 
                 // result: joined

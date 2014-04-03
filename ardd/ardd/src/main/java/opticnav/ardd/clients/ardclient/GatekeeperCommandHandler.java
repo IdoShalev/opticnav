@@ -1,5 +1,7 @@
 package opticnav.ardd.clients.ardclient;
 
+import java.io.IOException;
+
 import opticnav.ardd.clients.AnnotatedCommandHandler;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
@@ -23,6 +25,11 @@ public class GatekeeperCommandHandler extends AnnotatedCommandHandler {
         super(GatekeeperCommandHandler.class);
         this.ardListsManager = ardListsManager;
         this.ardChannelsManager = ardChannelsManager;
+    }
+
+    @Override
+    public void close() throws IOException {
+        // do nothing
     }
     
     @Command(Commands.REQCODES)

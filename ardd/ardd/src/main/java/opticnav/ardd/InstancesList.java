@@ -6,12 +6,20 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.collections4.map.MultiValueMap;
 
+import opticnav.ardd.instance.Entity;
 import opticnav.ardd.instance.EntitySubscriber;
 import opticnav.ardd.instance.Instance;
 import opticnav.ardd.instance.InstanceInfo;
+import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.InstanceDeploymentInfo;
 
 public class InstancesList {
@@ -85,20 +93,23 @@ public class InstancesList {
      * @param callbacks
      * @throws Exception XXX Any exception thrown by any method in JoinInstanceCallbacks. It's nasty, we know...
      */
-    public synchronized void joinInstance(int instanceID, int ardID, JoinInstanceCallbacks callbacks)
+    public synchronized void joinInstance(int instanceID, final int ardID, final GeoCoordFine initialLocation,
+            final JoinInstanceCallbacks callbacks)
             throws Exception {
         final Instance instance = instances.get(instanceID);
         if (instance == null) {
             callbacks.noInstanceFound();
         } else {
             final EntitySubscriber subscriber;
-            subscriber = callbacks.joining(instance);
-            instance.createEntity(ardID, subscriber);
+            final SettableFuture<Entity> entityFuture = new SettableFuture<>();
+            subscriber = callbacks.joining(instance, entityFuture);
+            final Entity entity = instance.createEntity(ardID, initialLocation, subscriber);
+            entityFuture.set(entity);
         }
     }
     
     public interface JoinInstanceCallbacks {
-        public EntitySubscriber joining(Instance instance) throws Exception;
+        public EntitySubscriber joining(Instance instance, Future<Entity> entity) throws Exception;
         public void noInstanceFound() throws Exception;
     }
 }

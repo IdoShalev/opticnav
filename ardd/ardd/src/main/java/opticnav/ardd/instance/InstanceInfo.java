@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import opticnav.ardd.protocol.InstanceDeploymentInfo.ARDIdentifier;
 import opticnav.ardd.protocol.TemporaryResourceUtil.TemporaryResource;
 
 /**
@@ -45,12 +46,16 @@ public class InstanceInfo {
     }
 
     public boolean hasInvitedARD(int ardID) {
+        return getARD(ardID) != null;
+    }
+
+    public ARDIdentifier getARD(int ardID) {
         for (ARDIdentifier identifier: this.invitedARDs) {
             if (identifier.getArdID() == ardID) {
-                return true;
+                return identifier;
             }
         }
-        return false;
+        return null;
     }
 
     public static class ARDIdentifier {

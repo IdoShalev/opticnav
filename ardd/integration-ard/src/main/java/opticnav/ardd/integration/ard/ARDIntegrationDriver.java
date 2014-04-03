@@ -83,8 +83,8 @@ public class ARDIntegrationDriver {
     
     private static class LogARDInstanceSubscriber implements ARDInstanceSubscriber {
         @Override
-        public void markerCreate(int id, GeoCoordFine geoCoord) {
-            System.out.println("Marker created: " + id + ", " + geoCoord);
+        public void markerCreate(int id, String name, GeoCoordFine geoCoord) {
+            System.out.println("Marker created: " + id + ", " + name + ", " + geoCoord);
         }
 
         @Override
@@ -103,7 +103,8 @@ public class ARDIntegrationDriver {
         final ARDInstanceSubscriber subscriber;
         subscriber = new LogARDInstanceSubscriber();
         
-        ARDInstanceJoinStatus status = connected.joinInstance(instanceID, initialLocation, subscriber);
+        final ARDInstanceJoinStatus status;
+        status = connected.joinInstance(instanceID, initialLocation, subscriber);
         
         System.out.println("Status: " + status.getStatus());
         if (status.getStatus() == ARDInstanceJoinStatus.Status.JOINED) {

@@ -17,7 +17,7 @@ import opticnav.ardd.protocol.PrimitiveWriter;
  * 
  * This is essentially an cleaner alternative to implementing long if/else chains.
  */
-public class AnnotatedCommandHandler implements ClientCommandDispatcher.CommandHandler {
+public abstract class AnnotatedCommandHandler implements ClientCommandDispatcher.CommandHandler {
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Command {
         int value();

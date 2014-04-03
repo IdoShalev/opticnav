@@ -1,5 +1,6 @@
 package opticnav.ardd.clients.adminclient;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +33,11 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
     public AdminClientCommandHandler(ARDListsManager ardListsManager) {
         super(AdminClientCommandHandler.class);
         this.ardListsManager = ardListsManager;
+    }
+
+    @Override
+    public void close() throws IOException {
+        // do nothing
     }
     
     @Command(Commands.REGARD)
