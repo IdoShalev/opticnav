@@ -1,6 +1,5 @@
 package opticnav.ardd.broker.ard;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;

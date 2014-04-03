@@ -8,14 +8,10 @@ import opticnav.ardd.protocol.TemporaryResourceUtil.TemporaryResource;
 public class InstanceMap {
     private final MapTransform transform;
     private final TemporaryResource imageResource;
-    private final int imageWidth;
-    private final int imageHeight;
     
-    public InstanceMap(MapTransform transform, TemporaryResource imageResource, int imageWidth, int imageHeight) {
+    public InstanceMap(MapTransform transform, TemporaryResource imageResource) {
         this.transform = transform;
         this.imageResource = imageResource;
-        this.imageWidth = imageWidth;
-        this.imageHeight = imageHeight;
     }
     
     public InputStream getImageInputStream() throws IOException {
@@ -28,13 +24,5 @@ public class InstanceMap {
     
     public MapTransform getTransform() {
         return this.transform;
-    }
-
-    public int getImageWidth() {
-        return this.imageWidth;
-    }
-    
-    public int getImageHeight() {
-        return this.imageHeight;
     }
 }

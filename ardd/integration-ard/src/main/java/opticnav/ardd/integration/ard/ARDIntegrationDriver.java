@@ -111,8 +111,8 @@ public class ARDIntegrationDriver {
                 // move in a circle across the dimensions of the map
                 final MapTransform transform = instance.getMap().getTransform();
                 
-                final int imageWidth = instance.getMap().getImageWidth();
-                final int imageHeight = instance.getMap().getImageHeight();
+                final int imageWidth = 1000;
+                final int imageHeight = 1000;
                 
                 for (int i = 0; i < 180; i++) {
                     double r = 2*Math.PI * (double)i/180;
@@ -120,7 +120,7 @@ public class ARDIntegrationDriver {
                     double y = (Math.sin(r)+1)/2 * imageHeight;
                     
                     instance.move(transform.imageLocalToGeo(x, y));
-                    Thread.sleep(200);
+                    Thread.sleep(100);
                 }
             }
         }

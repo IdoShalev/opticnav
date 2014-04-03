@@ -39,6 +39,14 @@ public class TemporaryResourceUtil {
          * @throws IOException Thrown if there's a problem deleting the resource
          */
         public void delete() throws IOException;
+        
+        /**
+         * Get the total size of the resource. E.g. if the input stream is read fully, the total bytes until EOF should
+         * be this number.
+         * 
+         * @return The size of the resource in bytes
+         */
+        public int getSize();
     }
     
     public interface TemporaryResourceBuilder {
@@ -87,6 +95,15 @@ public class TemporaryResourceUtil {
             this.tempFile.delete();
             LOG.debug("Deleted temporary resource file: " + this.tempFile.getAbsolutePath());
         }
+        
+        @Override
+        public int getSize() {
+            long length = this.tempFile.length();
+            if (length < 0 || length > Integer.MAX_VALUE) {
+                throw new IllegalStateException();
+            }
+            return (int)length;
+        }
     }
     
     private static final class FileTemporaryResourceBuilder implements TemporaryResourceBuilder {
@@ -127,7 +144,7 @@ public class TemporaryResourceUtil {
         }
     }
     
-    public static TemporaryResourceBuilder createTemporaryResourceBuilder(String mapImageType) throws IOException {
-        return new FileTemporaryResourceBuilder(mapImageType);
+    public static TemporaryResourceBuilder createTemporaryResourceBuilder(String mimeType) throws IOException {
+        return new FileTemporaryResourceBuilder(mimeType);
     }
 }

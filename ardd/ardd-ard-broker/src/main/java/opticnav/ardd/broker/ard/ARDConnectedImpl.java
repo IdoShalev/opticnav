@@ -7,10 +7,14 @@ import opticnav.ardd.ard.ARDInstanceJoinStatus;
 import opticnav.ardd.ard.ARDInstanceSubscriber;
 import opticnav.ardd.ard.InstanceInfo;
 import opticnav.ardd.ard.InstanceMap;
+import opticnav.ardd.ard.MapTransform;
 import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveUtil;
 import opticnav.ardd.protocol.PrimitiveWriter;
+import opticnav.ardd.protocol.TemporaryResourceUtil;
+import opticnav.ardd.protocol.TemporaryResourceUtil.TemporaryResource;
+import opticnav.ardd.protocol.TemporaryResourceUtil.TemporaryResourceBuilder;
 import static opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.*;
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelMultiplexer;
@@ -59,6 +63,15 @@ class ARDConnectedImpl implements ARDConnected {
             throw new ARDConnectedException(e);
         }
     }
+    
+    private MapTransform.Anchor readAnchor() throws IOException {
+        final int localX = input.readUInt31();
+        final int localY = input.readUInt31();
+        final int lng = input.readSInt32();
+        final int lat = input.readSInt32();
+        
+        return new MapTransform.Anchor(localX, localY, new GeoCoordFine(lng, lat));
+    }
 
     @Override
     public ARDInstanceJoinStatus joinInstance(int instanceID, GeoCoordFine initialLocation,
@@ -78,15 +91,35 @@ class ARDConnectedImpl implements ARDConnected {
             } else if (response == 1) {
                 // joined
                 final InstanceMap instanceMap;
+                final boolean hasMapImage;
                 
-                // TODO - fix this
-                instanceMap = new InstanceMap(null, null, 0, 0);
+                hasMapImage = input.readUInt8() != 0;
+                
+                if (hasMapImage) {
+                    final String mapImageType;
+                    final int mapImageSize;
+                    mapImageType = input.readString();
+                    mapImageSize = input.readUInt31();
+
+                    final TemporaryResourceBuilder builder;
+                    builder = TemporaryResourceUtil.createTemporaryResourceBuilder(mapImageType);
+                    input.readFixedBlobToOutputStream(mapImageSize, builder.getOutputStream());
+                    final TemporaryResource mapImageResource = builder.build();
+                    
+                    final MapTransform.Anchor a1, a2, a3;
+                    a1 = readAnchor();
+                    a2 = readAnchor();
+                    a3 = readAnchor();
+                    
+                    final MapTransform mapTransform = new MapTransform(a1, a2, a3);
+                    
+                    instanceMap = new InstanceMap(mapTransform, mapImageResource);
+                } else {
+                    instanceMap = null;
+                }
                 
                 final int instanceChannelID = input.readUInt8();
                 final Channel channel = this.mpxr.createChannel(instanceChannelID);
-                
-                
-                
                 
                 final ARDInstance instance;
                 instance = new ARDInstanceImpl(channel, instanceMap, subscriber, this.threadPool);

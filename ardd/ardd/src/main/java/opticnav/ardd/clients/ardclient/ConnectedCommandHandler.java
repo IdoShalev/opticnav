@@ -1,7 +1,7 @@
 package opticnav.ardd.clients.ardclient;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.io.InputStream;
 import java.util.Map;
 
 import org.apache.commons.math3.util.Pair;
@@ -51,6 +51,13 @@ public class ConnectedCommandHandler extends AnnotatedCommandHandler {
         out.flush();
     }
     
+    private static void writeAnchor(PrimitiveWriter out, InstanceInfo.Anchor anchor) throws IOException {
+        out.writeUInt31(anchor.getLocalX());
+        out.writeUInt31(anchor.getLocalY());
+        out.writeSInt32(anchor.getLng());
+        out.writeSInt32(anchor.getLat());
+    }
+    
     @Command(Commands.JOIN_INSTANCE)
     public void joinInstance(PrimitiveReader in, final PrimitiveWriter out) throws Exception {
         final int instanceID = in.readUInt31();
@@ -63,11 +70,29 @@ public class ConnectedCommandHandler extends AnnotatedCommandHandler {
         instances.joinInstance(instanceID, connection.getARDID(), new InstancesList.JoinInstanceCallbacks() {
             @Override
             public EntitySubscriber joining(Instance instance) throws IOException {
+                final InstanceInfo info = instance.getInfo();
                 final Pair<Integer, EntitySubscriber> p = ardChannelsManager.startInstanceConnection(instance);
                 final int instanceChannelID = p.getFirst();
                 
                 // result: joined
                 out.writeUInt8(1);
+
+                out.writeUInt8(instance.getInfo().hasMapImage ? 1:0);
+                
+                if (info.hasMapImage) {
+                    final String mapImageType = info.mapImage.getMimeType();
+                    final int mapImageSize = info.mapImage.getSize();
+                    final InputStream mapImageInput = info.mapImage.getInputStream();
+                    
+                    out.writeString(mapImageType);
+                    out.writeUInt31(mapImageSize);
+                    out.writeFixedBlobFromInputStream(mapImageSize, mapImageInput);
+
+                    writeAnchor(out, info.mapAnchors[0]);
+                    writeAnchor(out, info.mapAnchors[1]);
+                    writeAnchor(out, info.mapAnchors[2]);
+                }
+                
                 out.writeUInt8(instanceChannelID);
                 out.flush();
                 
