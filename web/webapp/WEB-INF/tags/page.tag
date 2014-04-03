@@ -14,7 +14,7 @@
         <c:if test="${!empty user}">Welcome, <c:out value="${user.username}"/>
         <br/><t:link href="/logout">Logout</t:link></c:if></div>
         <div class="logodiv"><t:link href="/"><img class="logo" src="${pageContext.request.contextPath}/css/images/OpticNavLogo.png"></t:link></div>
-        <div class="container">
+        <div id="headContainer">
     <div id="nav">
 		<ul>
 		    <c:if test="${!empty user}">
@@ -28,7 +28,7 @@
 		    <li><t:link href="/register"><div class="buttons">Register</div></t:link></li>
 		    </c:if>
 		    <li><t:link href="/download"><div class="buttons">Get Application</div></t:link></li>
-		    <li><t:link href="/help"><div class="buttons">Help</div></t:link></li>
+		    <li><t:link href="/support"><div class="buttons">Support</div></t:link></li>
 		</ul></div></div>
 </header>
 

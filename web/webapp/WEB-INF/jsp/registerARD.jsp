@@ -1,4 +1,5 @@
-<t:page title="Register Device" js="registerARD.js">
+<t:page title="Register Device" js="registerARD.js" css="registerDevice.css">
+<div id="registerDeviceContainer">
     <h2>Device Manager</h2>
     <p>To register a device follow the instruction on your Device.</p>
     <p>For more help please refer to the FAQ in the Help page or contact us.</p>
@@ -11,4 +12,5 @@
     <input id="device-register" type="submit" value="Register">
     </form>
     </div>
+</div>
 </t:page>
