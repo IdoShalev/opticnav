@@ -40,12 +40,12 @@ public class BlockingInputStream extends InputStream {
     /**
      * Private implementation of read, so that it doesn't get overridden
      */
-    public int read_s(byte[] b, int off, int len) throws IOException {
+    public int read_s(byte[] buffer, int off, int len) throws IOException {
         int sz = 0;
         
         while (sz < len) {
-            int bytesToRead = Math.min(len, b.length-sz);
-            int ret = this.in.read(b, sz+off, bytesToRead);
+            int bytesToRead = Math.min(len-sz, buffer.length-off);
+            int ret = this.in.read(buffer, sz+off, bytesToRead);
             if (ret < 0) {
                 throw new EOFException();
             } else {
