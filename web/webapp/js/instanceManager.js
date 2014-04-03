@@ -168,10 +168,12 @@ $(function(){
     function useInstanceController() {
     	$("#info-modal").show();
     	$("#controller-modal").hide();
+    	$("#stop-instance").attr("disabled", true);
     }
     function useInstanceInfo() {
     	$("#info-modal").hide();
     	$("#controller-modal").show();
+    	$("#instaB").attr("disabled", true);
     }
 });
 function selectMap(id) {

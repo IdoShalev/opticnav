@@ -1,5 +1,7 @@
 <t:page title="Welcome to OpticNav" js="login.js" css="front.css">
 <div id="contentHolder">
+<h2>Welcome to OpticNav</h2>
+<hr></hr>
  <div id="rightLogin">
          <form id="login" action="index.jsp">
              <input type="text" placeholder="Username" id="username"><br/>
@@ -10,7 +12,6 @@
          <t:message name="message" />
     </div>
     <div id="leftContent">
-        <h2>Welcome to OpticNav</h2>
         <div id="slideShow">
             <div id="img1"></div>
             <div id="img2"></div>

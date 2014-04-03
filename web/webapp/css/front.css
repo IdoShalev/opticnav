@@ -35,3 +35,7 @@
     background: url('../css/images/hub.png') no-repeat center;
     background-size: contain;
 }
+
+h2 {
+	text-align:center;
+}

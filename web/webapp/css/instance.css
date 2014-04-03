@@ -122,3 +122,6 @@
 	left:0;
 	z-index:9999;
 }
+input[type="submit"]:disabled {
+	background-color: rgba(0,0,0,0.55);
+}
