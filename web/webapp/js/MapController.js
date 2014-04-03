@@ -6,7 +6,19 @@
 var messagable;
 $(function() {
 	// hack, hack!
-	messagable = createElemMessagable("#MapMessage");
+
+	var m = createElemMessagable("#MapMessage");
+	
+	messagable = {"showMessage": function(ok, message) {
+		m.showMessage(ok, message);
+		$('#map-message-container').css("margin-top","10px");
+		setTimeout(function() {
+			$('#map-message-container').css("margin-top","0px");
+			m.clearMessage();
+		}, 3000);
+	}, "clearMessage": function() {
+		m.clearMessage();
+	}};
 });
 
 var MapController = function() {
