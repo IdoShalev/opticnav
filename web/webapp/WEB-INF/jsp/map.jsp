@@ -1,5 +1,4 @@
 <t:page title="Maps Manager" css="map.css" js="Map.js,MapController.js,MapCoordHelper.js,MapManager.js,MapAJAX.js,jquery.ba-resize.min.js">
-<t:message name="MapMessage"/>
 <div id="map-manager-container">
 <div id="map-manager">
 <div id="map-creation" class="modal-dialog">
@@ -29,6 +28,9 @@
     </div></a>
 </sidebar>
 <div id="map-view">
+	<div id="map-message-container">
+	<t:message name="MapMessage"/>
+	</div>
     <div id="map-popups">
         <div id="anchor-popup">
         <button id="anchor-delete">Delete</button>

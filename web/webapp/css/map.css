@@ -1,3 +1,12 @@
+#map-message-container {
+	position: absolute;
+	text-align: center; 
+	display: inline-block;
+	z-index: 100;
+	left: 50%;
+	margin-top: 10px;
+}
+
 #map-manager-container {
 	position: absolute;
 	overflow: hidden;
