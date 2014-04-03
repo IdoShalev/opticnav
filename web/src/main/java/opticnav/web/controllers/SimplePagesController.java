@@ -32,11 +32,6 @@ public class SimplePagesController {
         return "registerAccount";
     }
     
-    @RequestMapping("/about")
-    public String about() {
-        return "about";
-    }
-    
     @RequestMapping("/contact")
     public String contact() {
         return "contact";
@@ -47,9 +42,9 @@ public class SimplePagesController {
         return "download";
     }
     
-    @RequestMapping("/help")
-    public String help() {
-        return "help";
+    @RequestMapping("/support")
+    public String support() {
+        return "support";
     }
     @RequestMapping("/map")
     public String map() {
