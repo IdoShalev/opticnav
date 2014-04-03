@@ -237,6 +237,9 @@
 		rgba(255, 255, 255, 0.15);
 	border: 1px solid #2d4373;
 }
+#map-creation input[type=text] {
+    height:auto;
+}
 /*hides and shows an image for delete map*/
 .myButtonLink {
 	display: block;
