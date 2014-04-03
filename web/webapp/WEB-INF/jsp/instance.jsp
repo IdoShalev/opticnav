@@ -26,6 +26,7 @@
         </div>
         
         <div id="rightControl">
+        <div id="rightForm">
         Invite<br/>
         <input type="text" id="invite-to-inst"><br/>
         <input type="button" value="Invite" id="inst-invite"><br/>
@@ -33,7 +34,10 @@
             
         </ul><br/>
         <input type="submit" value="Start Instance" id="instaB">
+        </div>
+        <div id="messageConstraint">
         <t:message name="message" />
+        </div>
         </div>
     </div>
 </div>
