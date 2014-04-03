@@ -16,6 +16,7 @@ import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PrimitiveUtil;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.chan.Channel;
+import opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.Instance.Commands;
 
 public class ARDInstanceImpl implements ARDInstance {
     private static final XLogger LOG = XLoggerFactory
@@ -45,8 +46,6 @@ public class ARDInstanceImpl implements ARDInstance {
 
     @Override
     public void move(GeoCoordFine geoCoord) throws ARDInstanceException {
-        // TODO Auto-generated method stub
-
     }
 
     @Override

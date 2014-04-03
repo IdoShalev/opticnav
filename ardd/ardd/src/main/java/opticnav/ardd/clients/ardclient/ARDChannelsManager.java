@@ -30,6 +30,9 @@ public class ARDChannelsManager implements Callable<Void> {
     private ARDConnection connection;
     private Channel connectedChannel;
     private ClientCommandDispatcher connectedCommandDispatcher;
+
+    // TODO - wtf?
+    private ClientCommandDispatcher instanceCommandDispatcher;
     
     public ARDChannelsManager(Channel channel, ExecutorService threadPool,
             ARDListsManager ardListsManager) {
@@ -65,7 +68,10 @@ public class ARDChannelsManager implements Callable<Void> {
         final Channel instanceChannel = this.mpxr.createChannel(channelID);
         final EntitySubscriber subscriber = new ARDInstanceWriter(instanceChannel.getOutputStream());
         
-        new InstanceCommandHandler(connection, instance);
+        InstanceCommandHandler instanceCommandHandler = new InstanceCommandHandler(connection, instance);
+        this.instanceCommandDispatcher = new ClientCommandDispatcher(instanceChannel, instanceCommandHandler);
+        
+        this.threadPool.submit(instanceCommandDispatcher);
         
         return new Pair<Integer, EntitySubscriber>(channelID, subscriber);
     }

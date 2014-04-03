@@ -18,6 +18,16 @@ public final class ARDdARDProtocol {
 		public static final int CONNECT=1;
 	}
 	public static final class Connected {
+		public static final class Instance {
+			public static final class SubscriberCommands {
+				public static final int CREATE_MARKER=0;
+				public static final int MOVE_MARKER=1;
+				public static final int REMOVE_MARKER=2;
+			}
+			public static final class Commands {
+				public static final int MOVE=0;
+			}
+		}
 		public static final class Commands {
 			public static final int LIST_INSTANCES=0;
 			public static final int JOIN_INSTANCE=1;

@@ -15,6 +15,13 @@ Commands
     CONNECT
 
 Connected
+    Instance
+        SubscriberCommands
+            CREATE_MARKER
+            MOVE_MARKER
+            REMOVE_MARKER
+        Commands
+            MOVE
     Commands
         LIST_INSTANCES
         JOIN_INSTANCE

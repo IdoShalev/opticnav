@@ -7,6 +7,7 @@ import java.util.concurrent.Callable;
 import opticnav.ardd.ard.ARDInstanceSubscriber;
 import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PrimitiveReader;
+import opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.Instance.SubscriberCommands;
 
 public class ARDInstanceSubscriberListener implements Callable<Void> {
     private final PrimitiveReader input;
@@ -24,22 +25,19 @@ public class ARDInstanceSubscriberListener implements Callable<Void> {
             final int commandCode = this.input.readUInt8();
             
             // TODO - replace with constants
-            if (commandCode == 0) {
-                // create
+            if (commandCode == SubscriberCommands.CREATE_MARKER) {
                 final int id = this.input.readUInt31();
                 final int lng = this.input.readSInt32();
                 final int lat = this.input.readSInt32();
                 
                 this.subscriber.markerCreate(id, new GeoCoordFine(lng, lat));
-            } else if (commandCode == 1) {
-                // move
+            } else if (commandCode == SubscriberCommands.MOVE_MARKER) {
                 final int id = this.input.readUInt31();
                 final int lng = this.input.readSInt32();
                 final int lat = this.input.readSInt32();
                 
                 this.subscriber.markerMove(id, new GeoCoordFine(lng, lat));
-            } else if (commandCode == 2) {
-                // remove
+            } else if (commandCode == SubscriberCommands.REMOVE_MARKER) {
                 final int id = this.input.readUInt31();
                 
                 this.subscriber.markerRemove(id);
