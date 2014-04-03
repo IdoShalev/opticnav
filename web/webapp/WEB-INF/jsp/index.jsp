@@ -11,11 +11,13 @@
     </div>
     <div id="leftContent">
         <h2>Welcome to OpticNav</h2>
-        <ul>
-            <li>Upload your own maps</li>
-            <li>Create your own instances</li>
-            <li>Free to use</li>
-        </ul>
+        <div id="slideShow">
+            <div id="img1"></div>
+            <div id="img2"></div>
+            <div id="img3"></div>
+            <div id="img4"></div>
+            <div id="img5"></div>
+        </div>
     </div>
 </div>
 </t:page>

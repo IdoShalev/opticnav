@@ -7,3 +7,31 @@
     padding-left:150px;
     padding-right:150px;
 }
+#slideShow {
+	position:relative; width:420px; height:220px; border-style:solid;
+}
+#img1 {
+	position:absolute; left:10px; top:10px; width:400px; height:200px;
+	background: url('../css/images/instanceMenu.png') no-repeat center;
+	background-size: contain;
+}
+#img2 {
+    position:absolute; left:10px; top:10px; width:400px; height:200px;
+    background: url('../css/images/diagram.png') no-repeat center;
+    background-size: contain;
+}
+#img3 {
+    position:absolute; left:10px; top:10px; width:400px; height:200px;
+    background: url('../css/images/recon.jpg') no-repeat center;
+    background-size: contain; 
+}
+#img4 {
+    position:absolute; left:10px; top:10px; width:400px; height:200px;
+    background: url('../css/images/map.png') no-repeat center;
+    background-size: contain;
+}
+#img5 {
+    position:absolute; left:10px; top:10px; width:400px; height:200px;
+    background: url('../css/images/hub.png') no-repeat center;
+    background-size: contain;
+}

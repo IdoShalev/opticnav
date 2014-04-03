@@ -24,3 +24,12 @@ $(function() {
 	});
 });
 	
+$(document).ready(function() {
+	$('#slideShow div:gt(0)').hide();
+	setInterval(function(){
+	  $('#slideShow :first-child').fadeOut()
+	     .next('div').fadeIn()
+	     .end().appendTo('#slideShow');}, 
+	  5000);
+});
+
