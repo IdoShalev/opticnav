@@ -8,11 +8,12 @@
 	margin: 0 auto;
 }
 
-#homeB {
-	background: url(../css/images/home.png) no-repeat;
-	width: 35px;
-	height: 35px;
-	background-size: 100%;
+#headContainer {
+	text-align: center;
+    width: 100%;
+    margin: 0 auto;
+    border-bottom:solid;
+    border-width:2px;
 }
 
 #menuLogo {

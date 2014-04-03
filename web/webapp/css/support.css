@@ -1,0 +1,16 @@
+#developers {
+	float: right;
+	overflow: hidden;
+	display: inline-block;
+	position: relative;
+    padding:20px;
+}
+#supportPage {
+	position: relative;
+	overflow: hidden;
+	float:left;
+}
+#support {
+	margin: 0px auto;
+    width: 100%;
+}

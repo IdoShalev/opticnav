@@ -1,0 +1,9 @@
+/*index centering*/
+#rightLogin {
+    float: right;
+}
+#contentHolder {
+	margin: 0px auto;
+    padding-left:150px;
+    padding-right:150px;
+}

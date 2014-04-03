@@ -1,5 +1,4 @@
 @import "header.css";
-
 @import "buttons.css";
 
 body {
@@ -7,10 +6,7 @@ body {
 	background: #FFFAFA;
 	margin: 0;
 }
-/*index centering*/
-#rightLogin {
-	float: right;
-}
+
 
 header,footer {
 	margin: 0;
@@ -21,26 +17,11 @@ header,footer {
 	z-index: 10;
 }
 
-#footer {
-	bottom: 0;
-	vertical-align: middle;
-	clear: both;
-}
-
 #content {
 	margin: 3em;
 	padding-left: 6em;
 	padding-right: 6em;
 	background-color: #FFFAFA;
-}
-
-.registered_ard {
-	border: 0px solid;
-	border-radius: 4px;
-	padding: 1em;
-	margin: 1em;
-	background-color: #ccc;
-	width: 200px;
 }
 
 .message {
@@ -51,7 +32,7 @@ header,footer {
 	border-radius: 4px;
 	border: 1px solid;
 	padding: 1em;
-	margin: 1em;
+	margin-bottom: 1em;
 	width: auto;
 	word-wrap: break-word;
 }
@@ -77,53 +58,4 @@ header,footer {
 	text-align: center;
 	width: 100%;
 	margin: 0 auto;
-}
-
-#welcomeToHub {
-	display: table;
-	margin: 0 auto;
-}
-input[type=text],input[type=password] {
-    /* nice animations. :3 */
-    transition: box-shadow 0.25s;
-    /* disable textbox outline in Chrome */
-    outline: none;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-    background: #fff;
-    padding: 4px;
-    margin-top: 3px;
-    margin-bottom: 3px;
-    box-shadow: 0 0 4px rgba(0,0,0,0.1);
-    width: 200px;
-}
-
-input[type=text]:focus,input[type=password]:focus {
-    box-shadow: 0 0 4px rgba(0,0,0,0.5);
-}
-
-input[type="submit"] {
-    background-image: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.05));
-    outline: none;
-    border-radius: 3px;
-    border: 1px solid #000;
-    background-color: #88f;
-    padding: 4px;
-    font-weight: bold;
-    font-size: 14px;
-    color: #fff;
-    width: 100px;
-}
-
-input[type="button"] {
-    background-image: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.05));
-    outline: none;
-    border-radius: 3px;
-    border: 1px solid #000;
-    background-color: #85d47c;
-    padding: 4px;
-    font-weight: bold;
-    font-size: 14px;
-    color: #fff;
-    width: 100px;
 }

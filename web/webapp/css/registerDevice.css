@@ -1,0 +1,13 @@
+#registerDeviceContainer {
+	margin: 0px auto;
+    padding-top:40px;
+    padding-bottom:50px;
+}
+.registered_ard {
+    border: 0px solid;
+    border-radius: 4px;
+    padding: 1em;
+    margin: 1em;
+    background-color: #ccc;
+    width: 200px;
+}

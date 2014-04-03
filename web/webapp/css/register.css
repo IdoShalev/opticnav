@@ -1,0 +1,9 @@
+#registerPage {
+	margin: 0px auto;
+	text-align: center;
+    width: 100%;
+    background-color: rgb(241, 241, 241);
+    border: 1px solid rgb(204, 204, 204);
+    padding-top:40px;
+    padding-bottom:50px;
+}
