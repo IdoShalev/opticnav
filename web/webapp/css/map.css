@@ -52,6 +52,9 @@
 
 .del-button {
 	background-color: #d83345;
+	webkit-transition: margin-top 0.28s linear;
+    -moz-transition: margin 0.28s linear;
+    display:none;
 }
 
 .create-button {
@@ -60,6 +63,9 @@
 
 .save-button {
 	background-color: #85d47c;
+	webkit-transition: margin-top 0.28s linear;
+    -moz-transition: margin 0.28s linear;
+    display:none;
 }
 
 .del-button:hover {

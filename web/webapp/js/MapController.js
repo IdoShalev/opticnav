@@ -242,6 +242,8 @@ var MapController = function() {
                 var view = $("#map-view");
 
                 view.hide();
+                $("#save-button").show();
+                $("#del-button").show()
                 // load the map...
                 var that = this;
                 new Map(persistence, function(map, image) {
