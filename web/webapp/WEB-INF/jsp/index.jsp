@@ -9,7 +9,9 @@
              <input type="submit" value="Login" />
          </form>
          Don't have an account? <t:link href="/register">Register now.</t:link>
-         <t:message name="message" />
+         <div id="messageConstraint">
+         <t:message name="message"/>
+         </div>
     </div>
     <div id="leftContent">
         <div id="slideShow">
