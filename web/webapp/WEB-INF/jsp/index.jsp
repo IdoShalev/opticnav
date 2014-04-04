@@ -1,6 +1,6 @@
 <t:page title="Welcome to OpticNav" js="login.js" css="front.css">
 <div id="contentHolder">
-<h2>Welcome to OpticNav</h2>
+<h1>Welcome to OpticNav</h1>
 <hr></hr>
  <div id="rightLogin">
          <form id="login" action="index.jsp">
@@ -17,7 +17,6 @@
             <div id="img2"></div>
             <div id="img3"></div>
             <div id="img4"></div>
-            <div id="img5"></div>
         </div>
     </div>
 </div>

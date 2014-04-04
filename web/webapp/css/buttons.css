@@ -13,6 +13,10 @@
 	height: 50px;
 }
 
+#selectedId {
+    background: #8194bc;
+}
+
 .buttons {
 	border: 1px solid #2b4479;
 	border: 1px solid #2d4373;

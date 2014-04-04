@@ -18,17 +18,17 @@
     <div id="nav">
 		<ul>
 		    <c:if test="${!empty user}">
-		    <li><t:link href="/"><div class="buttonsS">Hub</div></t:link></li>
-            <li><t:link href="/registerDevice"><div class="buttonsS">Device Manager</div></t:link></li>
-            <li><t:link href="/map"><div class="buttonsS">Maps Manager</div></t:link></li>
-            <li><t:link href="/instance"><div class="buttonsS">Instance Manager</div></t:link></li>
+		    <li><t:link href="/"><div class="buttonsS" id="${cssId}">Hub</div></t:link></li>
+            <li><t:link href="/registerDevice"><div class="buttonsS" id="${cssId}">Device Manager</div></t:link></li>
+            <li><t:link href="/map"><div class="buttonsS" id="${cssId}">Maps Manager</div></t:link></li>
+            <li><t:link href="/instance"><div class="buttonsS" id="${cssId}">Instance Manager</div></t:link></li>
             </c:if>
             <c:if test="${empty user}">
-            <li><t:link href="/"><div class="buttons">Home</div></t:link></li>
-		    <li><t:link href="/register"><div class="buttons">Register</div></t:link></li>
+            <li><t:link href="/"><div class="buttons" id="${cssId}">Home</div></t:link></li>
+		    <li><t:link href="/register"><div class="buttons"id="${cssId}">Register</div></t:link></li>
 		    </c:if>
-		    <li><t:link href="/download"><div class="buttons">Get Application</div></t:link></li>
-		    <li><t:link href="/support"><div class="buttons">Support</div></t:link></li>
+		    <li><t:link href="/download"><div class="buttons"id="${cssId}">Get Application</div></t:link></li>
+		    <li><t:link href="/support"><div class="buttons"id="${cssId}">Support</div></t:link></li>
 		</ul></div></div>
 </header>
 

@@ -16,23 +16,23 @@
     </div>
     <div id="controller">
     <div id="controller-modal"></div>
+    <h2>Instance Controller</h2>
         <div id="leftControl">
-        Instance Controller<br/>
-        <br/>
         <div id="map-container">
+        Select a map
         <div id="map-list"></div>
         </div>
-        <br/>
         </div>
         
         <div id="rightControl">
         <div id="rightForm">
-        Invite<br/>
+        Invite to instance<br/>
         <input type="text" id="invite-to-inst"><br/>
         <input type="button" value="Invite" id="inst-invite"><br/>
+        <div id="selected-list">
         <ul id="inst-select-users">
             
-        </ul><br/>
+        </ul></div><br/>
         <input type="submit" value="Start Instance" id="instaB">
         </div>
         <div id="messageConstraint">

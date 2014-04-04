@@ -169,11 +169,13 @@ $(function(){
     	$("#info-modal").show();
     	$("#controller-modal").hide();
     	$("#stop-instance").attr("disabled", true);
+    	$("#instaB").attr("disabled", false);
     }
     function useInstanceInfo() {
     	$("#info-modal").hide();
     	$("#controller-modal").show();
     	$("#instaB").attr("disabled", true);
+    	$("#stop-instance").attr("disabled", false);
     }
 });
 function selectMap(id) {
