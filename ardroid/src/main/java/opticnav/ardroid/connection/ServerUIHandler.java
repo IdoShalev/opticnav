@@ -6,12 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.util.Pair;
-import android.widget.Toast;
-import opticnav.ardd.ard.ARDGatekeeper;
-import opticnav.ardd.ard.ARDGatekeeperException;
-import opticnav.ardd.ard.ARDConnected;
-import opticnav.ardd.ard.ARDConnectionStatus;
-import opticnav.ardd.broker.ard.ARDBroker;
+import opticnav.ardd.ard.*;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.chan.Channel;
@@ -23,8 +18,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.List;
 
 /**
  * ServerUIHandler is used by Activities in the application to summon Server tasks.
@@ -37,21 +31,6 @@ public class ServerUIHandler {
 
     /** The server connection timeout value in milliseconds */
     private static final int CONNECTION_TIMEOUT = 10 * 1000;
-    /**
-     * Server is separated from any Android UI-isms and has no UI code.
-     */
-    private static class Server {
-        public final ARDGatekeeper broker;
-
-        private final Channel channel;
-        private final ExecutorService threadPool;
-
-        public Server(Channel channel) {
-            this.channel    = channel;
-            this.threadPool = Executors.newCachedThreadPool();
-            this.broker     = new ARDBroker(channel, threadPool);
-        }
-    }
 
     /**
      * The ConnectEvents interface resembles ARDConnection.RequestPassConfCodesCallback.
@@ -85,14 +64,35 @@ public class ServerUIHandler {
         public void onDisconnect();
     }
 
+    public interface ListInstancesEvent {
+        /** The list of actively running instances is received. listInstances() runs on the Android UI thread. */
+        public void listInstances(List<InstanceInfo> list);
+    }
+
     private final Context context;
     private final OnDisconnect onDisconnect;
-    private SynchronizedOptional<Server> server;
+    private final ServerManager serverManager;
     private SynchronizedOptional<CancellableSocket.Cancellable> cancellableSocket;
 
-    public ServerUIHandler(Context context, OnDisconnect onDisconnect) {
-        this.context    = context;
-        this.server = new SynchronizedOptional<Server>();
+    public ServerUIHandler(Context context, final OnDisconnect onDisconnect) {
+        this.context = context;
+        this.serverManager = new ServerManager(new Handler(context.getMainLooper()), new ServerManager.DisconnectEvent() {
+            @Override
+            public void gateKeeperDisconnect() {
+                LOG.trace("gateKeeperDisconnect()");
+                onDisconnect.onDisconnect();
+            }
+
+            @Override
+            public void connectedDisconnect() {
+                LOG.trace("connectedDisconnect()");
+            }
+
+            @Override
+            public void instanceDisconnect() {
+                LOG.trace("instanceDisconnect()");
+            }
+        });
         this.cancellableSocket = new SynchronizedOptional<CancellableSocket.Cancellable>();
         this.onDisconnect = onDisconnect;
     }
@@ -128,21 +128,16 @@ public class ServerUIHandler {
 
             @Override
             public void connected(Socket socket) {
-                LOG.info("Connected to server");
                 try {
                     Channel channel = ChannelUtil.fromSocket(socket);
-                    ServerUIHandler.this.server.set(new Server(channel));
+                    serverManager.connectToServer(channel);
+                    LOG.info("Connected to server");
                     ServerUIHandler.this.cancellableSocket.empty();
 
                     tryConnectToLobby(passCode, connectEvents);
                 } catch (IOException e) {
                     error(e);
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            disconnect();
-                        }
-                    });
+                    serverManager.closeConnections();
                 }
             }
         }));
@@ -170,9 +165,6 @@ public class ServerUIHandler {
                     })
                     .setNegativeButton("No", null)
                     .show();
-        } else if (this.server.isPresent()) {
-            // hmmm... try to disconnect the server then
-            tryDisconnect(source);
         } else {
             // nope, didn't even try to connect
             event.cancel();
@@ -180,47 +172,36 @@ public class ServerUIHandler {
     }
 
     public void tryDisconnect(final Activity source) {
-        if (!this.server.isPresent()) {
-            // If this method is being called in this condition, chances are there's a race condition
-            // (boo) and the UI should do as it normally would
-            onDisconnect.onDisconnect();
-            return;
-        }
-
         new AlertDialog.Builder(source)
                 .setMessage("You are currently connected to a server. Are you sure you want to disconnect?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        disconnect();
+                        serverManager.closeConnections();
                     }
                 })
                 .setNegativeButton("No", null)
                 .show();
     }
-
-    private void disconnect() {
+    
+    public void listInstances(final ListInstancesEvent listInstancesEvent) {
         // runs in UI thread
 
-        new Thread(new Runnable() {
+        serverManager.enqueueConnectedCommand(new ServerManager.CommandWithParam<List<InstanceInfo>, ARDConnected>() {
             @Override
-            public void run() {
-                final Server server = ServerUIHandler.this.server.getAndEmpty();
-                try {
-                    server.broker.close();
-                    LOG.info("Disconnected from server");
-                } catch (IOException e) {
-                    LOG.catching(e);
-                }
+            public List<InstanceInfo> background(ARDConnected connected) throws IOException {
+                return connected.listInstances();
             }
-        }).start();
 
-        onDisconnect.onDisconnect();
+            @Override
+            public void ui(List<InstanceInfo> list) {
+                listInstancesEvent.listInstances(list);
+            }
+        });
     }
 
 
-    private void tryConnectToLobby(final PassCode passCode, final ConnectEvents connectEvents)
-            throws ARDGatekeeperException {
+    private void tryConnectToLobby(final PassCode passCode, final ConnectEvents connectEvents) {
         // runs in background thread
 
         if (passCode == null) {
@@ -230,81 +211,81 @@ public class ServerUIHandler {
             LOG.info("Using passCode: " + passCode.getString());
 
             final Handler handler = new Handler(context.getMainLooper());
-            final Server server = this.server.get();
-            final ARDConnectionStatus status = server.broker.connect(passCode);
+            serverManager.connectWithPassCode(passCode, new ServerManager.ConnectedEvent() {
+                @Override
+                public void noPassCode() {
+                    LOG.info("Could not authenticate with passCode - requesting one...");
+                    requestCodes(connectEvents);
+                }
 
-            switch (status.getStatus()) {
-            case NOPASSCODE:
-                LOG.info("Could not authenticate with passCode - requesting one...");
-                requestCodes(connectEvents);
-                break;
-            case ALREADYCONNECTED:
-                // :(
-                LOG.info("Device with the same passCode already connected");
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        disconnect();
-                    }
-                });
-                break;
-            case CONNECTED:
-                LOG.info("Authenticated with passCode successfully");
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        connectEvents.authenticate();
-                    }
-                });
-                break;
-            }
+                @Override
+                public void alreadyConnected() {
+                    LOG.info("Device with the same passCode already connected");
+                    serverManager.closeConnections();
+                }
+
+                @Override
+                public void connected() {
+                    LOG.info("Authenticated with passCode successfully");
+                    connectEvents.authenticate();
+                }
+            });
         }
     }
 
-    private void requestCodes(final ConnectEvents connectEvents) throws ARDGatekeeperException {
+    private void requestCodes(final ConnectEvents connectEvents) {
         // runs in background thread
 
         final Handler handler = new Handler(context.getMainLooper());
-        Server server = this.server.get();
-        server.broker.requestPassConfCodes(new ARDGatekeeper.RequestPassConfCodesCallback() {
+        serverManager.enqueueGatekeeperCommand(new ServerManager.CommandWithParam<Void, ARDGatekeeper>() {
             @Override
-            public void confCode(final ConfCode confCode, final ARDGatekeeper.Cancellation cancellation) {
-                handler.post(new Runnable() {
+            public Void background(ARDGatekeeper gateKeeper) throws IOException {
+                gateKeeper.requestPassConfCodes(new ARDGatekeeper.RequestPassConfCodesCallback() {
                     @Override
-                    public void run() {
-                        connectEvents.confCode(confCode, cancellation);
+                    public void confCode(final ConfCode confCode, final ARDGatekeeper.Cancellation cancellation) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                connectEvents.confCode(confCode, cancellation);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void registered(final PassCode passCode) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                connectEvents.registered(passCode);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void couldNotRegister() {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                connectEvents.couldNotRegister();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void cancelled() {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                connectEvents.confCodeCancelled();
+                            }
+                        });
                     }
                 });
+                return null;
             }
 
             @Override
-            public void registered(final PassCode passCode) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        connectEvents.registered(passCode);
-                    }
-                });
-            }
-
-            @Override
-            public void couldNotRegister() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        connectEvents.couldNotRegister();
-                    }
-                });
-            }
-
-            @Override
-            public void cancelled() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        connectEvents.confCodeCancelled();
-                    }
-                });
+            public void ui(Void result) {
             }
         });
     }

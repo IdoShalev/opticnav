@@ -1,11 +1,12 @@
 package opticnav.ardd.ard;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 
-public interface ARDGatekeeper extends AutoCloseable {
+public interface ARDGatekeeper extends Closeable {
     public interface Cancellation {
         public void cancel();
     }

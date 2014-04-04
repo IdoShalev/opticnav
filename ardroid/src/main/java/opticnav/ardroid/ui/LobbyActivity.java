@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import opticnav.ardd.ard.InstanceInfo;
 import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
+import opticnav.ardroid.connection.ServerUIHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +25,16 @@ public class LobbyActivity extends Activity {
 
         final ListView listView = (ListView)findViewById(R.id.instances_listview);
 
-        final List<String> list = new ArrayList<String>();
-        list.add("Test");
-        list.add("Hello");
-
-        listView.setAdapter(new MySimpleArrayAdapter(this, list));
+        Application.getInstance().getServerUIHandler().listInstances(new ServerUIHandler.ListInstancesEvent() {
+            @Override
+            public void listInstances(List<InstanceInfo> instancesList) {
+                final List<String> list = new ArrayList<String>();
+                for (InstanceInfo i : instancesList) {
+                    list.add(i.getName());
+                }
+                listView.setAdapter(new MySimpleArrayAdapter(LobbyActivity.this, list));
+            }
+        });
     }
 
     @Override
