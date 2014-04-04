@@ -12,23 +12,23 @@
 <header>
 <div id="loggedin">
         <c:if test="${!empty user}">Welcome, <c:out value="${user.username}"/>
-        <br/><t:link href="/logout">Logout</t:link></c:if></div>
+        <t:link href="/logout">Logout</t:link></c:if></div>
         <div class="logodiv"><t:link href="/"><img class="logo" src="${pageContext.request.contextPath}/css/images/OpticNavLogo.png"></t:link></div>
         <div id="headContainer">
     <div id="nav">
 		<ul>
 		    <c:if test="${!empty user}">
-		    <li><t:link href="/"><div class="buttonsS" id="${cssId}">Hub</div></t:link></li>
-            <li><t:link href="/registerDevice"><div class="buttonsS" id="${cssId}">Device Manager</div></t:link></li>
-            <li><t:link href="/map"><div class="buttonsS" id="${cssId}">Maps Manager</div></t:link></li>
-            <li><t:link href="/instance"><div class="buttonsS" id="${cssId}">Instance Manager</div></t:link></li>
+		    <t:headerLink name="hub" href="/">Hub</t:headerLink>
+            <t:headerLink name="registerDevice" href="/registerDevice">Device Manager</t:headerLink>
+            <t:headerLink name="map" href="/map">Maps Manager</t:headerLink>
+            <t:headerLink name="instance" href="/instance">Instance Manager</t:headerLink>
             </c:if>
             <c:if test="${empty user}">
-            <li><t:link href="/"><div class="buttons" id="${cssId}">Home</div></t:link></li>
-		    <li><t:link href="/register"><div class="buttons"id="${cssId}">Register</div></t:link></li>
+            <li><t:link href="/"><div class="buttons">Home</div></t:link></li>
+		    <li><t:link href="/register"><div class="buttons">Register</div></t:link></li>
 		    </c:if>
-		    <li><t:link href="/download"><div class="buttons"id="${cssId}">Get Application</div></t:link></li>
-		    <li><t:link href="/support"><div class="buttons"id="${cssId}">Support</div></t:link></li>
+		    <li><t:link href="/download"><div class="buttons">Get Application</div></t:link></li>
+		    <li><t:link href="/support"><div class="buttons">Support</div></t:link></li>
 		</ul></div></div>
 </header>
 

@@ -10,8 +10,7 @@ body {
 header {
 	margin: 0;
 	padding-top: 1em;
-	background: url(../css/images/Capture6.png) no-repeat rgba(255,255,255,0.4);
-	background-size: 100%;
+	background: rgba(255,255,255,0.4);
     background-color: rgba(0, 0, 0, 0.3);
 	box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
 	position: relative;

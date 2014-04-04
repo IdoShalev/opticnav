@@ -1,24 +1,8 @@
-.buttonsS {
-	border: 1px solid #2b4479;
-	border: 1px solid #2d4373;
-	background: #3b5998;
-	display: inline-block;
-	color: white;
-	display: table-cell;
-	text-align: center;
-	vertical-align: middle;
-	float: left;
-	line-height: 50px;
-	width: 200px;
-	height: 50px;
-}
-
 #selectedId {
     background: #8194bc;
 }
 
 .buttons {
-	border: 1px solid #2b4479;
 	border: 1px solid #2d4373;
 	background: #3b5998;
 	display: inline-block;
@@ -30,6 +14,10 @@
 	line-height: 50px;
 	width: 200px;
 	height: 50px;
+}
+
+.currentPage {
+    background: black;
 }
 
 #nav li:hover {

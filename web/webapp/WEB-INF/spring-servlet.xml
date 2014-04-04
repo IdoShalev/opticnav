@@ -20,6 +20,7 @@
    <mvc:annotation-driven />
    
    <mvc:interceptors>
+        <bean class="opticnav.web.components.handlers.ViewNameInModelInterceptor" />
 	    <mvc:interceptor>
 	        <mvc:mapping path="/*"/>
 	        <bean class="opticnav.web.components.handlers.UserHandlerInterceptor" />

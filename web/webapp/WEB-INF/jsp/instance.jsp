@@ -28,12 +28,13 @@
         <div id="rightForm">
         Invite to instance<br/>
         <input type="text" id="invite-to-inst"><br/>
-        <input type="button" value="Invite" id="inst-invite"><br/>
+        <input type="button" value="Invite" id="inst-invite">
+        <input type="submit" value="Start Instance" id="instaB">
         <div id="selected-list">
         <ul id="inst-select-users">
             
         </ul></div><br/>
-        <input type="submit" value="Start Instance" id="instaB">
+        
         </div>
         <div id="messageConstraint">
         <t:message name="message" />

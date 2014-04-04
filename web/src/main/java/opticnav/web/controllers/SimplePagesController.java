@@ -4,7 +4,6 @@ import opticnav.web.components.UserSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -29,7 +28,7 @@ public class SimplePagesController {
     
     @RequestMapping("/register")
     public String registerAccount() {
-        return "registerAccount";
+        return "register";
     }
     
     @RequestMapping("/contact")
@@ -56,6 +55,6 @@ public class SimplePagesController {
     }
     @RequestMapping("/registerDevice")
     public String registerARD() {
-        return "registerARD";
+        return "registerDevice";
     }
 }

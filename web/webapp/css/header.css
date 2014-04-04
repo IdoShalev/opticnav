@@ -13,7 +13,8 @@
     width: 100%;
     margin: 0 auto;
     border-bottom:solid;
-    border-width:2px;
+    border-width:1px;
+    border-color:#999;
 }
 
 #menuLogo {
@@ -52,5 +53,4 @@
 #loggedin {
 	right: 50px;
 	position: absolute;
-	color:white;
 }
