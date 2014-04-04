@@ -61,22 +61,23 @@ public class ARDIntegrationDriver {
         
         System.out.println("Status: " + status.getStatus());
         if (status.getStatus() == ARDConnectionStatus.Status.CONNECTED) {
-            final ARDConnected connected = status.getConnection();
-            final List<InstanceInfo> instancesList;
-            instancesList = connected.listInstances();
-            
-            System.out.println("List of instances:");
-            for (InstanceInfo i: instancesList) {
-                System.out.println(i);
-            }
-            System.out.println();
-            
-            if (instancesList.isEmpty()) {
-                System.out.println("No instances to join.");
-            } else {
-                System.out.print("Enter the instance ID to join: ");
-                final int instanceID = Integer.parseInt(in.nextLine());
-                joinInstance(connected, instanceID);
+            try (final ARDConnected connected = status.getConnection()) {
+                final List<InstanceInfo> instancesList;
+                instancesList = connected.listInstances();
+                
+                System.out.println("List of instances:");
+                for (InstanceInfo i: instancesList) {
+                    System.out.println(i);
+                }
+                System.out.println();
+                
+                if (instancesList.isEmpty()) {
+                    System.out.println("No instances to join.");
+                } else {
+                    System.out.print("Enter the instance ID to join: ");
+                    final int instanceID = Integer.parseInt(in.nextLine());
+                    joinInstance(connected, instanceID);
+                }
             }
         }
     }
@@ -108,20 +109,21 @@ public class ARDIntegrationDriver {
         
         System.out.println("Status: " + status.getStatus());
         if (status.getStatus() == ARDInstanceJoinStatus.Status.JOINED) {
-            try (ARDInstance instance = status.getInstance()) {
+            try (final ARDInstance instance = status.getInstance()) {
                 // move in a circle across the dimensions of the map
                 final MapTransform transform = instance.getMap().getTransform();
                 
                 final int imageWidth = 1000;
                 final int imageHeight = 1000;
+                final int STEPS = 40;
                 
-                for (int i = 0; i < 180; i++) {
-                    double r = 2*Math.PI * (double)i/180;
+                for (int i = 0; i < STEPS; i++) {
+                    double r = 2*Math.PI * (double)i/STEPS;
                     double x = (Math.cos(r)+1)/2 * imageWidth;
                     double y = (Math.sin(r)+1)/2 * imageHeight;
                     
                     instance.move(transform.imageLocalToGeo(x, y));
-                    Thread.sleep(100);
+                    Thread.sleep(500);
                 }
             }
         }
@@ -146,6 +148,5 @@ public class ARDIntegrationDriver {
             @Override
             public void cancelled() { unexpected(); }
         });
-        
     }
 }

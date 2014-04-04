@@ -39,8 +39,7 @@ class ARDConnectedImpl implements ARDConnected {
     
     @Override
     public void close() throws IOException {
-        // TODO Auto-generated method stub
-        
+        this.output.close();
     }
 
     @Override
