@@ -292,7 +292,7 @@ var MapController = function() {
         
         delMap: function(onDeleteMap) {
         	if (currentMap !== null) {
-        		var messagable = createElemMessagable("#message");
+        		//var messagable = createElemMessagable("#message");
 
         		var r = confirm("Are you sure you want to delete this map");
         		if(r === true){
@@ -302,7 +302,7 @@ var MapController = function() {
         				url : ctx + "/api/map/" + selectedMapId,
         				contentType : "application/json; charset=utf-8",
         				complete : ajaxMessageClosureOnError(messagable, function(ok, json) {
-        					showOkMessage(messagable, "Map deleted");
+        					showMessage(messagable, ok, "Map Deleted");
         					clearMap();
         					onDeleteMap();
         				})

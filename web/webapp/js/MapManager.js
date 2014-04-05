@@ -2,9 +2,8 @@
  * For more on OO JavaScript, take a gander:
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript
  */
-
 function loadMapsList() {
-	var messagable = createElemMessagable("#MapMessage");
+	//var messagable = createElemMessagable("#MapMessage");
     var mapList = $("#map-list");
     
     function addEntry(name, id) {
@@ -44,6 +43,22 @@ function deleteMap() {
 
 $(function() {
 	var messagable = createElemMessagable("#MapMessage");
+	$(function() {
+		// hack, hack!
+
+		var m = createElemMessagable("#MapMessage");
+		
+		messagable = {"showMessage": function(ok, message) {
+			m.showMessage(ok, message);
+			$('#map-message-container').css("margin-top","10px");
+			setTimeout(function() {
+				$('#map-message-container').css("margin-top","0px");
+				m.clearMessage();
+			}, 3000);
+		}, "clearMessage": function() {
+			m.clearMessage();
+		}};
+	});
     var modal_backdrop = $("#modal-backdrop");
     var map_creation = $("#map-creation");
 
