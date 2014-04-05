@@ -106,11 +106,13 @@
 
 #map-list {
 	position: absolute;
-	top: 180px;
+	top: 60px;
 	bottom: 36px;
 	left: 0;
 	right: 0;
 	overflow: auto;
+	webkit-transition:top 0.28s linear;
+    -moz-transition: top 0.28s linear;
 }
 
 #map-list entry {

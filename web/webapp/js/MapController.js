@@ -200,6 +200,9 @@ var MapController = function() {
 		$("#map-image").hide();
 		$("#map-markers").empty();
 		$("#map-anchors").empty();
+		$("#save-button").hide('200');
+		$("#del-button").hide('200');
+		document.getElementById('map-list').style.top = "60px";
     }
     
     return {
@@ -242,8 +245,9 @@ var MapController = function() {
                 var view = $("#map-view");
 
                 view.hide();
-                $("#save-button").show();
-                $("#del-button").show()
+                $("#save-button").show('200');
+                $("#del-button").show('200');
+                document.getElementById('map-list').style.top = "180px";
                 // load the map...
                 var that = this;
                 new Map(persistence, function(map, image) {
@@ -325,13 +329,13 @@ var MapController = function() {
                  }
         	}
         },
-
+        
         // Markers have moved and the view need to be updated. This is called
-        // when the view is resized or the user moves a marker.
+        // when the view is resized or the user moves a marker. 
         recalculateMarkerPositions: function() {
         	var elements = $("#map-markers .marker");
         	var dataname = "marker";
-
+        	
             function setPosition(elem, x, y) {
                 elem.css({"left": x-elem.width()/2, "top": y-elem.height()});
             }
