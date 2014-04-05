@@ -16,6 +16,7 @@ import org.slf4j.ext.XLoggerFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.List;
@@ -97,6 +98,44 @@ public class ServerUIHandler {
         this.onDisconnect = onDisconnect;
     }
 
+    /**
+     * Connect using a listening port established by "adb forward". This is weird in that the device acts as a
+     * "server" by accepting connections instead of being the client. However, this is needed in order to test the
+     * application on devices without WiFi.
+     *
+     * @param port The listening port on this device
+     * @param passCode
+     * @param connectEvents
+     */
+    public void connectWithADBForward(final int port, final PassCode passCode, final ConnectEvents connectEvents) {
+        final Handler handler = new Handler(context.getMainLooper());
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final ServerSocket serverSocket = new ServerSocket(port);
+                    final Socket socket;
+                    try {
+                        serverSocket.setSoTimeout(10000);
+                        socket = serverSocket.accept();
+                    } finally {
+                        serverSocket.close();
+                    }
+
+                    connectWithSocket(socket, passCode, connectEvents);
+                } catch (final IOException e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            connectEvents.connectionError(e);
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
     public void connect(String host, int port, final PassCode passCode,
                                                  final ConnectEvents connectEvents) {
         // if a passcode is stored and connection works, go to the Lobby activity
@@ -129,18 +168,27 @@ public class ServerUIHandler {
             @Override
             public void connected(Socket socket) {
                 try {
-                    Channel channel = ChannelUtil.fromSocket(socket);
-                    serverManager.connectToServer(channel);
-                    LOG.info("Connected to server");
-                    ServerUIHandler.this.cancellableSocket.empty();
-
-                    tryConnectToLobby(passCode, connectEvents);
+                    connectWithSocket(socket, passCode, connectEvents);
                 } catch (IOException e) {
                     error(e);
-                    serverManager.closeConnections();
                 }
             }
         }));
+    }
+
+    private void connectWithSocket(Socket socket, final PassCode passCode, final ConnectEvents connectEvents)
+            throws IOException {
+        try {
+            Channel channel = ChannelUtil.fromSocket(socket);
+            serverManager.connectToServer(channel);
+            LOG.info("Connected to server");
+            ServerUIHandler.this.cancellableSocket.empty();
+
+            tryConnectToLobby(passCode, connectEvents);
+        } catch (IOException e) {
+            serverManager.closeConnections();
+            throw e;
+        }
     }
 
     public void tryCancelConnection(final Activity source, final ConnectionCancelEvent event) {

@@ -55,7 +55,7 @@ public class WelcomeActivity extends Activity {
 
     // onClick
     public void testingMode(View view) {
-
+        Application.getInstance().connectWithADBForward();
     }
 
     @Override

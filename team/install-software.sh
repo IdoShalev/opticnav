@@ -10,6 +10,7 @@ wireshark \
 aptitude \
 dia \
 m4 \
+socat \
 
 # Gradle is needed for building the project
 # If gradle-1.10 is not available (returns error), install the PPA repo

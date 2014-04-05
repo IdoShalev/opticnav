@@ -59,6 +59,7 @@ public class Application extends android.app.Application {
         return context;
     }
 
+    private static final int ADB_PORT = 6666;
     private static final String PREFS_SERVERHOST = "serverHost";
     private static final String PREFS_SERVERPORT = "serverPort";
     private static final String PREFS_PASSCODE = "passCode";
@@ -91,57 +92,62 @@ public class Application extends android.app.Application {
         return this.serverUIHandler;
     }
 
+    private class ConnectEvents implements ServerUIHandler.ConnectEvents {
+        @Override
+        public void connectionError(Exception e) {
+            LOG.catching(e);
+            Toast.makeText(context, "Connection error\nReason: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void connectionCancelled() {
+            Toast.makeText(context, "Connection cancelled", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void authenticate() {
+            Intent intent = new Intent(context, LobbyActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
+
+        @Override
+        public void confCode(ConfCode confCode, ARDGatekeeper.Cancellation cancellation) {
+            Intent intent = new Intent(context, ConfCodeActivity.class);
+            intent.putExtra("confcode", confCode.getString());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
+
+        @Override
+        public void registered(PassCode passCode) {
+            Toast.makeText(context, "Registered!", Toast.LENGTH_LONG).show();
+            setPassCode(passCode);
+            authenticate();
+        }
+
+        @Override
+        public void couldNotRegister() {
+
+        }
+
+        @Override
+        public void confCodeCancelled() {
+
+        }
+    }
+
+    public void connectWithADBForward() {
+        this.serverUIHandler.connectWithADBForward(ADB_PORT, getPassCode(), new ConnectEvents());
+    }
+
     public void connectToServer(final String host, final int port) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PREFS_SERVERHOST, host);
         editor.putInt(PREFS_SERVERPORT, port);
         editor.commit();
 
-        this.serverUIHandler.connect(host, port, getPassCode(),
-                new ServerUIHandler.ConnectEvents() {
-                    @Override
-                    public void connectionError(Exception e) {
-                        LOG.catching(e);
-                        Toast.makeText(context, "Connection error\nReason: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void connectionCancelled() {
-                        Toast.makeText(context, "Connection cancelled", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void authenticate() {
-                        Intent intent = new Intent(context, LobbyActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
-                    }
-
-                    @Override
-                    public void confCode(ConfCode confCode, ARDGatekeeper.Cancellation cancellation) {
-                        Intent intent = new Intent(context, ConfCodeActivity.class);
-                        intent.putExtra("confcode", confCode.getString());
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(intent);
-                    }
-
-                    @Override
-                    public void registered(PassCode passCode) {
-                        Toast.makeText(context, "Registered!", Toast.LENGTH_LONG).show();
-                        setPassCode(passCode);
-                        authenticate();
-                    }
-
-                    @Override
-                    public void couldNotRegister() {
-
-                    }
-
-                    @Override
-                    public void confCodeCancelled() {
-
-                    }
-                });
+        this.serverUIHandler.connect(host, port, getPassCode(), new ConnectEvents());
     }
 
     public String getPreferencesServerHost() {
