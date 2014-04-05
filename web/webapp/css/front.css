@@ -1,6 +1,7 @@
 /*index centering*/
 #rightLogin {
     float: right;
+    max-width: 300px;
 }
 #contentHolder {
 	margin: 0px auto;
