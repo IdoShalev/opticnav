@@ -24,11 +24,11 @@
             <t:headerLink name="instance" href="/instance">Instance Manager</t:headerLink>
             </c:if>
             <c:if test="${empty user}">
-            <li><t:link href="/"><div class="buttons">Home</div></t:link></li>
-		    <li><t:link href="/register"><div class="buttons">Register</div></t:link></li>
+            <t:headerLink name="index" href="/">Home</t:headerLink>
+            <t:headerLink name="register" href="/register">Register</t:headerLink>
 		    </c:if>
-		    <li><t:link href="/download"><div class="buttons">Get Application</div></t:link></li>
-		    <li><t:link href="/support"><div class="buttons">Support</div></t:link></li>
+            <t:headerLink name="download" href="/download">Get Application</t:headerLink>
+            <t:headerLink name="support" href="/support">Support</t:headerLink>
 		</ul></div></div>
 </header>
 

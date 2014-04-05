@@ -4,7 +4,7 @@
 
 .buttons {
 	border: 1px solid #2d4373;
-	background: #3b5998;
+	background: #2d4373;
 	display: inline-block;
 	color: white;
 	display: table-cell;
@@ -17,7 +17,12 @@
 }
 
 .currentPage {
-    background: black;
+    background-color:  #2B3F6D;
+    background-image: url("../css/images/circle.png");
+    box-shadow: inset 0 0 10px rgba(255,255,255,0.4);
+    background-repeat: no-repeat;
+    background-size: 10px;
+    background-position:center bottom;
 }
 
 #nav li:hover {

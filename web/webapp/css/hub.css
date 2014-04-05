@@ -3,6 +3,19 @@
     margin: 0 auto;
 }
 
+#description {
+    vertical-align: middle;
+    float: left;
+    margin: 5px;
+    width: 320px;
+    height: 200px;
+}
+
+#descContainer {
+    display: table;
+    margin: 0 auto;
+}
+
 #hubB {
     display: inline-block;
     color: white;
