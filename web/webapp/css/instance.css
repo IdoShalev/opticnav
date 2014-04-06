@@ -1,13 +1,9 @@
-#info {
-	/* hidden by default */
-	display: hidden;
-	width: 300px;
-	box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
-	overflow: hidden;
-	top: 0;
-	bottom: 0;
-	position: absolute;
-	padding: 50px;
+#info, #controller {
+	float: left;
+}
+
+#info > *, #controller > * {
+	padding: 20px;
 }
 
 #invite-to-inst {
@@ -27,27 +23,9 @@
 	float: left;
 }
 
-#controller {
-	top: 0;
-	display: inline-block;
-	right: 0;
-	left: 400px;
-	position: absolute;
-	overflow: auto;
-	bottom:0;
-	padding: 25px;
-}
-
-#controller > * {
-}
-
 #instanceContainer {
-	position: fixed;
-	overflow: auto;
-	bottom: 0;
-	top: 132px;
-	left: 0;
-	right: 0;
+    overflow-x: hidden;
+	position: relative;
 }
 
 #map-list, #selected-list {

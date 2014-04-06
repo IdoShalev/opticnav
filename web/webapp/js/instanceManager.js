@@ -1,13 +1,54 @@
 var usersList = [];
 var selectedMapId;
+
+var slided = false;
+
+var sectionsSlider = {
+	init: function() {
+		var wrapper = $("#instance-wrapper");
+		wrapper.hide();
+	},
+	setWidths: function() {
+		var containerWidth = $("#instanceContainer").width();
+		
+		var wrapper = $("#instance-wrapper");
+		var children = $("#instance-wrapper > *");
+		
+		wrapper.css("width", children.length * containerWidth);
+		
+		children.each(function() {
+			$(this).css("width", containerWidth);
+		});
+	},
+	setIndex: function(index) {
+		var wrapper = $("#instance-wrapper");
+		var containerWidth = $("#instanceContainer").width();
+		var v = -index*containerWidth;
+		
+		if (!slided) {
+			wrapper.css("margin-left", v);
+			wrapper.show();
+		} else {
+			wrapper.animate({"margin-left": v});
+		}
+		slided = true;
+	}
+}
+
 $(function(){
+	$(window).resize(function() {
+		sectionsSlider.setWidths();
+	});
+	
+	sectionsSlider.init();
+	sectionsSlider.setWidths();
+	
 	var messagable = createElemMessagable("#message");
 	var inviteMessagable = createElemMessagable("#message", "#invite-loader");
 	var startInstanceMessagable = createElemMessagable("#message", "#start-instance-loader");
 	var mapSelection = $("#mapSelection");
 	
 	var currentUser;
-	useInstanceController();
 	$.ajax({
 		type : "GET",
 		url : ctx + "/api/account/current",
@@ -38,6 +79,8 @@ $(function(){
 					$li.text(instance.ards[i].name);
 					instList.append($li);
 				}
+			} else {
+				useInstanceController();
 			}
 		})
 	});
@@ -188,14 +231,12 @@ $(function(){
 		mapList.fadeIn();
     });
     function useInstanceController() {
-    	$("#info-modal").show();
-    	$("#controller-modal").hide();
+    	sectionsSlider.setIndex(0);
     	$("#stop-instance").attr("disabled", true);
     	$("#instaB").attr("disabled", false);
     }
     function useInstanceInfo() {
-    	$("#info-modal").hide();
-    	$("#controller-modal").show();
+    	sectionsSlider.setIndex(1);
     	$("#instaB").attr("disabled", true);
     	$("#stop-instance").attr("disabled", false);
     }
