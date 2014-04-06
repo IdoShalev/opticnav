@@ -34,6 +34,11 @@
 	z-index: 5;
 }
 
+#map-manager a {
+	color: inherit; /* blue colors for links too */
+	text-decoration: inherit; /* no underline */
+}
+
 .create-button,.save-button,.anchor-mode-button,.del-button {
 	transition: background-color 0.5s;
 	height: 50px;

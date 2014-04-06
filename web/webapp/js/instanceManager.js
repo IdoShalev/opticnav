@@ -43,10 +43,39 @@ $(function(){
 	sectionsSlider.init();
 	sectionsSlider.setWidths();
 	
-	var messagable = createElemMessagable("#message");
-	var inviteMessagable = createElemMessagable("#message", "#invite-loader");
-	var startInstanceMessagable = createElemMessagable("#message", "#start-instance-loader");
+	var messagable = createElemMessagable("#start-instance-message");
+	var inviteMessagable = createElemMessagable("#start-instance-message", "#invite-loader");
+	var startInstanceMessagable = createElemMessagable("#start-instance-message", "#start-instance-loader");
+	var stopInstanceMessagable = createElemMessagable("#instance-info-message", "#stop-instance-loader");
 	var mapSelection = $("#mapSelection");
+	
+	function getCurrentInstances() {
+		$.ajax({
+			type : "GET",
+			url : ctx + "/api/instance",
+			contentType : "application/json; charset=utf-8",
+			complete : ajaxMessageClosureOnError(messagable, function(json) {
+				if (json.length > 0) {
+					useInstanceInfo();
+					var instance = json[0];
+					var mapName = $("#inst-map-name");
+					mapName.text(instance.name);
+					var startTime = $("#inst-start-time");
+					var date = new Date(instance.start_time).format("M d,Y h:i:s A");
+					startTime.text(date);
+					var instList = $("#inst-selected-users");
+					instList.empty();
+					for (var i=0; i < instance.ards.length; i++) {
+						var $li = $("<li>");
+						$li.text(instance.ards[i].name);
+						instList.append($li);
+					}
+				} else {
+					useInstanceController();
+				}
+			})
+		});
+	}
 	
 	var currentUser;
 	$.ajax({
@@ -59,38 +88,14 @@ $(function(){
 		})
 	});
 	
-	$.ajax({
-		type : "GET",
-		url : ctx + "/api/instance",
-		contentType : "application/json; charset=utf-8",
-		complete : ajaxMessageClosureOnError(messagable, function(json) {
-			if (json.length > 0) {
-				useInstanceInfo();
-				var instance = json[0];
-				var mapName = $("#inst-map-name");
-				mapName.text(instance.name);
-				var startTime = $("#inst-start-time");
-				var date = new Date(instance.start_time).format("M d,Y h:i:s A");
-				startTime.text(date);
-				var instList = $("#inst-selected-users");
-				instList.empty();
-				for (var i=0; i < instance.ards.length; i++) {
-					var $li = $("<li>");
-					$li.text(instance.ards[i].name);
-					instList.append($li);
-				}
-			} else {
-				useInstanceController();
-			}
-		})
-	});
+	getCurrentInstances();
 	
     $("#stop-instance").click(function() {
     	$.ajax({
     		type : "DELETE",
     		url : ctx + "/api/instance",
     		contentType : "application/json; charset=utf-8",
-    		complete : ajaxMessageClosureOnError(messagable, function(json) {
+    		complete : ajaxMessageClosureOnError(stopInstanceMessagable, function(json) {
     			useInstanceController();
     		})
     	});
@@ -113,8 +118,7 @@ $(function(){
 				data : JSON.stringify(instance_data),
 				contentType : "application/json; charset=utf-8",
 				complete : ajaxMessageClosureOnError(startInstanceMessagable, function(json) {
-					useInstanceInfo();
-			    	
+					getCurrentInstances();
 				})
 			});
 		}

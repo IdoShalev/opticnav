@@ -6,7 +6,7 @@
 				<h1>Start an instance</h1>
 				<div>
 					<div class="messageConstraint">
-						<t:message name="message" />
+						<t:message name="start-instance-message" />
 					</div>
 					<div>
 						<div id="leftControl">
@@ -40,6 +40,10 @@
 			<div id="info">
 				<h1>Current instance information</h1>
 				<div>
+                    <div class="messageConstraint">
+                        <t:message name="instance-info-message" />
+                    </div>
+                    
 					Instance Information <br /> <br /> Map: <span id="inst-map-name"></span>
 					<br /> Start Time: <span id="inst-start-time"></span> <br />
 					People in the instance<br />
@@ -47,7 +51,10 @@
 
 					</ul>
 					<br />
-					<button type="submit" id="stop-instance">Stop Instance</button>
+					<button type="submit" id="stop-instance">
+						Stop Instance
+						<div id="stop-instance-loader" class="loader-adjacent"></div>
+					</button>
 				</div>
 			</div>
 		</div>
