@@ -1,5 +1,9 @@
 <t:page title="Instance" css="instance.css"
 	js="MapAJAX.js,instanceManager.js,date.format.js">
+
+	<div class="messageConstraint">
+		<t:message name="generic-message" />
+	</div>
 	<div id="instanceContainer">
 		<div id="instance-wrapper">
 			<div id="controller">
@@ -40,10 +44,10 @@
 			<div id="info">
 				<h1>Current instance information</h1>
 				<div>
-                    <div class="messageConstraint">
-                        <t:message name="instance-info-message" />
-                    </div>
-                    
+					<div class="messageConstraint">
+						<t:message name="instance-info-message" />
+					</div>
+
 					Instance Information <br /> <br /> Map: <span id="inst-map-name"></span>
 					<br /> Start Time: <span id="inst-start-time"></span> <br />
 					People in the instance<br />

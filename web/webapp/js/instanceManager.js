@@ -43,7 +43,7 @@ $(function(){
 	sectionsSlider.init();
 	sectionsSlider.setWidths();
 	
-	var messagable = createElemMessagable("#start-instance-message");
+	var messagable = createElemMessagable("#generic-message");
 	var inviteMessagable = createElemMessagable("#start-instance-message", "#invite-loader");
 	var startInstanceMessagable = createElemMessagable("#start-instance-message", "#start-instance-loader");
 	var stopInstanceMessagable = createElemMessagable("#instance-info-message", "#stop-instance-loader");
@@ -124,7 +124,7 @@ $(function(){
 		}
     });
 
-	loadMapsListAJAX(messagable, function(maps) {
+	loadMapsListAJAX(startInstanceMessagable, function(maps) {
 		for (var i = 0; i < maps.length; i++) {
 			var map = maps[i];
 			
@@ -163,7 +163,7 @@ $(function(){
 				contentType : "application/json; charset=utf-8",
 				complete : ajaxMessageClosureOnError(inviteMessagable, function(json) {
 					if (json.id == currentUser.id) {
-						showErrorMessage(messagable,"You can't invite yourself");
+						showErrorMessage(startInstanceMessagable,"You can't invite yourself");
 					} else {
 						var isInList = false;
 						for (var i = 0; i < usersList.length; i++) {
