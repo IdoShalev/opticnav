@@ -1,6 +1,6 @@
 $(function() {
-	var messagable = createElemMessagable("#message");
-	$("#register_Account").submit(function(event) {
+	var messagable = createElemMessagable("#message", "#message-loader");
+	$("#register-account").submit(function(event) {
 		object = new Object();
 
 		var username = $("#username").val();

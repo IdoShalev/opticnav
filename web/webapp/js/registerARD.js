@@ -1,5 +1,5 @@
 $(function() {
-	var messagable = createElemMessagable("#message");
+	var messagable = createElemMessagable("#message", "#message-loader");
 	
 	$("#device-register").click(function() {
 		var code = $("#code").val();

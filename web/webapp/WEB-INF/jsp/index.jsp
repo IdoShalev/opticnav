@@ -12,7 +12,7 @@
 			<form id="login" action="index.jsp">
 				<input type="text" placeholder="Username" id="username"><br />
 				<input type="password" placeholder="Password" id="password"><br />
-				<button type="submit" style="position: relative">
+				<button type="submit">
 					Login
 					<div id="message-loader" class="loader-adjacent"></div>
 				</button>
