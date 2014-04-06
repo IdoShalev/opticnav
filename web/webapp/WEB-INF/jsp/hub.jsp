@@ -8,13 +8,13 @@
 </div>
 <div id="descContainer">
 <div id="description">
-<p>In the Device Manager you can register a device to your account.</p>
+<p>Link a device to your account. This is needed to let the application know that a device is "you".</p>
 </div>
 <div id="description">
-<p>In the Map Manager you can create a map to use in an instance.</p>
+<p>Create new maps, view and modify existing maps for use in instances.</p>
 </div>
 <div id="description">
-<p>In the Instance Manager you can start an instance with your map.</p>
+<p>Your maps come to life! Start instances to allow select devices (users) to participate in your maps.</p>
 </div>
 </div>
 </div>

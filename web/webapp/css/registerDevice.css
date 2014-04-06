@@ -10,3 +10,9 @@
     background-color: #ccc;
     width: 200px;
 }
+#registerARD-form {
+	width:300px;
+}
+#messageConstraint #message{
+	display: inline-block;
+}
