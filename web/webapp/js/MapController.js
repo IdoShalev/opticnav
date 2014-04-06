@@ -3,6 +3,8 @@
  * It handles all button clicks, marker clicks, updating the elements, etc.
  */
 
+var persistenceMessageable;
+
 var messagable;
 $(function() {
 	// hack, hack!
@@ -19,6 +21,18 @@ $(function() {
 	}, "clearMessage": function() {
 		m.clearMessage();
 	}};
+
+	var pm = createElemMessagable("#MapMessage", "#map-loader");
+	persistenceMessageable = {"showMessage": function(ok, message) {
+		pm.showMessage(ok, message);
+		$('#map-message-container').css("margin-top","10px");
+		setTimeout(function() {
+			$('#map-message-container').css("margin-top","0px");
+			pm.clearMessage();
+		}, 3000);
+	}, "clearMessage": function() {
+		pm.clearMessage();
+	}, "loadingMessage": pm.loadingMessage};
 });
 
 var MapController = function() {
@@ -273,7 +287,7 @@ var MapController = function() {
                     
                     // show the map
                     view.fadeIn();
-                }, messagable);
+                }, persistenceMessageable);
 
             	var elem = $("#map-"+id);
             	if (selectedMapId != undefined) {
@@ -289,7 +303,7 @@ var MapController = function() {
         saveMap: function() {
             if (currentMap !== null) {
                 currentMap.save(function(ok, message) {
-                	showMessage(messagable, ok, message);
+                	showMessage(persistenceMessageable, ok, message);
                 });
             }
         },
@@ -305,8 +319,8 @@ var MapController = function() {
         				type : "DELETE",
         				url : ctx + "/api/map/" + selectedMapId,
         				contentType : "application/json; charset=utf-8",
-        				complete : ajaxMessageClosureOnError(messagable, function(ok, json) {
-        					showMessage(messagable, ok, "Map Deleted");
+        				complete : ajaxMessageClosureOnError(persistenceMessageable, function(ok, json) {
+        					showMessage(persistenceMessageable, ok, "Map Deleted");
         					clearMap();
         					onDeleteMap();
         				})

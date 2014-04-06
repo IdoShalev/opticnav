@@ -14,7 +14,7 @@
 				<div id="message-loader" class="loader-adjacent"></div>
 			</button>
 		</form>
-		<div id="messageConstraint">
+		<div class="messageConstraint">
 			<t:message name="message" />
 		</div>
 	</div>

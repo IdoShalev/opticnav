@@ -27,6 +27,7 @@
     Anchor Placement mode: OFF
     </div></a>
 </sidebar>
+<div id="map-loader" class="loader-large"></div>
 <div id="map-view">
 	<div id="map-message-container">
 	<t:message name="MapMessage"/>

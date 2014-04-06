@@ -19,21 +19,12 @@
     width: 260px;
 }
 
-#inst-invite {
-	float:left;
-}
-
 #instaB {
-	float:right;
+	width: auto;
 }
 
 #leftControl {
 	float: left;
-	padding: 25px;
-}
-
-#rightControl {
-	padding: 25px;
 }
 
 #controller {
@@ -44,6 +35,10 @@
 	position: absolute;
 	overflow: auto;
 	bottom:0;
+	padding: 25px;
+}
+
+#controller > * {
 }
 
 #instanceContainer {
@@ -55,21 +50,26 @@
 	right: 0;
 }
 
-#map-list {
-	height: 270px;
-	overflow: auto;
-	width: 250px;
-	border-radius: 4px;
-	border: solid;
-	border-color: #ccc;
+#map-list, #selected-list {
+    overflow: auto;
+    margin: 10px;
+    width: 250px;
+    border-radius: 4px;
+    border: solid;
+    border-color: #888;
+    background-color: #444;
 }
 
-#map-list a {
-	color: inherit; /* blue colors for links too */
-	text-decoration: inherit; /* no underline */
+#map-list {
+	height: 270px;
+}
+
+#selected-list {
+    height: 182px;
 }
 
 #map-list entry {
+	cursor: pointer;
 	display: block;
 	position: relative;
 	transition: background-color 0.25s;
@@ -84,15 +84,6 @@
 
 #map-list entry:hover {
 	background-color: #ccc;
-}
-
-#selected-list {
-    height: 182px;
-    overflow: auto;
-    width: 250px;
-    border-radius: 4px;
-    border: solid;
-    border-color: #ccc;
 }
 
 #inst-select-users {
@@ -147,13 +138,7 @@
 	left:0;
 	z-index:9999;
 }
-input[type="submit"]:disabled {
-	background-color: rgba(0,0,0,0.55);
-}
 h2 {
 	padding-left: 25px;
 	padding-right: 25px;
-}
-input[type="submit"] {
-	width: 110px;
 }

@@ -58,12 +58,11 @@ input[type=text]:focus,input[type=password]:focus {
     box-shadow: 0 0 4px rgba(0,0,0,0.5);
 }
 
-input[type="submit"],button[type="submit"] {
+input[type="submit"],input[type="button"],button {
     background-image: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.05));
     outline: none;
     border-radius: 3px;
     border: 1px solid #000;
-    background-color: #88f;
     padding: 4px;
     font-weight: bold;
     font-size: 14px;
@@ -72,19 +71,13 @@ input[type="submit"],button[type="submit"] {
     margin:4px;
     height: 35px;
     position: relative;
+    background-color: #85d47c;
 }
 
-input[type="button"] {
-    background-image: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.05));
-    outline: none;
-    border-radius: 3px;
-    border: 1px solid #000;
-    background-color: #85d47c;
-    padding: 4px;
-    font-weight: bold;
-    font-size: 14px;
-    color: #fff;
-    width: 100px;
-    margin:4px;
-    height: 35px;
+input[type=submit],button[type=submit] {
+    background-color: #88f;
+}
+
+button:disabled {
+    background-color: rgba(0,0,0,0.55);
 }

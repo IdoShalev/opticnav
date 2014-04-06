@@ -99,11 +99,6 @@
 	right: 0;
 }
 
-#map-manager a {
-	color: inherit; /* blue colors for links too */
-	text-decoration: inherit; /* no underline */
-}
-
 #map-list {
 	position: absolute;
 	top: 60px;
@@ -116,6 +111,7 @@
 }
 
 #map-list entry {
+	cursor: pointer;
 	display: block;
 	position: relative;
 	transition: background-color 0.25s;
@@ -295,4 +291,14 @@
 
 #map-list entry.selected {
     background-color: #ccc;
+}
+
+#map-loader {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	z-index: 200;
 }

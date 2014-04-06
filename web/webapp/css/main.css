@@ -47,8 +47,8 @@ header {
 	border-color: #4b4;
 }
 
-#messageConstraint {
-	width: auto%;
+.messageConstraint {
+	width: auto;
 	display: inline-block;
 }
 
@@ -88,4 +88,29 @@ header {
 	position: absolute;
 	top: 0;
 	right: -40px; 
+}
+
+@-webkit-keyframes loaderSpriteLarge {
+    from { background-position: 0px; }
+    to { background-position: -1700px; }
+}
+
+@-moz-keyframes loaderSpriteLarge {
+    from { background-position: 0px; }
+    to { background-position: -1700px; }
+}
+
+@keyframes loaderSpriteLarge {
+    from { background-position: 0px; }
+    to { background-position: -1700px; }
+}
+
+.loader-large {
+    display: none;
+    width: 100px;
+    height: 100px;
+    background-image: url("../css/images/loader-large.png");
+    -webkit-animation: loaderSpriteLarge 0.5666666666666667s steps(17, end) infinite;
+    -moz-animation: loaderSpriteLarge 0.5666666666666667s steps(17, end) infinite;
+    animation: loaderSpriteLarge 0.5666666666666667s steps(17, end) infinite;
 }

@@ -1,16 +1,14 @@
-/* JavaScript is not object-oriented, but can mimic OOP patterns
- * For more on OO JavaScript, take a gander:
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript
- */
 function loadMapsList() {
 	//var messagable = createElemMessagable("#MapMessage");
     var mapList = $("#map-list");
     
     function addEntry(name, id) {
-        /* Append a <entry> surrounded by an <a>
-         * Example output: <a href="javascript:loadMap(1)"><entry>Map 1</entry></a> */
-        mapList.append($('<a>', {href:'javascript:MapController.loadMap('+id+')'})
-                        .append($('<entry>', {"id":"map-"+id}).text(name)));
+    	var entry = $('<entry>', {"mapID":id});
+    	entry.text(name);
+    	entry.click(function() {
+    		MapController.loadMap(id);
+    	})
+        mapList.append(entry);
     }
     
     mapList.hide();

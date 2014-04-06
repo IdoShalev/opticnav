@@ -2,6 +2,8 @@ var usersList = [];
 var selectedMapId;
 $(function(){
 	var messagable = createElemMessagable("#message");
+	var inviteMessagable = createElemMessagable("#message", "#invite-loader");
+	var startInstanceMessagable = createElemMessagable("#message", "#start-instance-loader");
 	var mapSelection = $("#mapSelection");
 	
 	var currentUser;
@@ -57,7 +59,7 @@ $(function(){
     		invitedList.push(usersList[i].id);
     	}
     	if (selectedMapId == undefined) {
-			showErrorMessage(messagable,"A map is required");
+			showErrorMessage(startInstanceMessagable, "A map must be selected");
 		}else {
 	    	var instance_data = {"map_id":selectedMapId,"accounts":invitedList};
 	    	// TODO: load the instance
@@ -67,7 +69,7 @@ $(function(){
 				url : ctx + "/api/instance/",
 				data : JSON.stringify(instance_data),
 				contentType : "application/json; charset=utf-8",
-				complete : ajaxMessageClosureOnError(messagable, function(json) {
+				complete : ajaxMessageClosureOnError(startInstanceMessagable, function(json) {
 					useInstanceInfo();
 			    	
 				})
@@ -93,8 +95,7 @@ $(function(){
 	});
 	
 	$("#invite-to-inst").keyup(function(e){
-	    if(e.keyCode == 13)
-	    {
+	    if(e.keyCode == 13) {
 	    	instanceInvite();
 	    }
 	});
@@ -106,14 +107,14 @@ $(function(){
 	function instanceInvite(){
 		var username = $("#invite-to-inst").val();
 		if (username === "") {
-			showErrorMessage(messagable,"A username is required");
+			showErrorMessage(inviteMessagable,"A username is required");
 		}else {
 		// GET /account/query/{username}
 			$.ajax({
 				type : "GET",
 				url : ctx + "/api/account/query/" + encodeURIComponent(username),
 				contentType : "application/json; charset=utf-8",
-				complete : ajaxMessageClosureOnError(messagable, function(json) {
+				complete : ajaxMessageClosureOnError(inviteMessagable, function(json) {
 					if (json.id == currentUser.id) {
 						showErrorMessage(messagable,"You can't invite yourself");
 					} else {
@@ -163,17 +164,22 @@ $(function(){
 	
 	var mapList = $("#map-list");
 	    
-    function addEntry(name, id) {
-        /* Append a <entry> surrounded by an <a>
-         * Example output: <a href="javascript:loadMap(1)"><entry>Map 1</entry></a> */
-        mapList.append($('<a>', {href:'javascript:selectMap('+id+')'})
-                        .append($('<entry>', {"id":"map-"+id}).text(name)));
-    }
     
     mapList.hide();
     mapList.empty();
 
     loadMapsListAJAX($("#MapMessage"), function(maps) {
+        function addEntry(name, id) {
+            /* Append a <entry> surrounded by an <a>
+             * Example output: <a href="javascript:loadMap(1)"><entry>Map 1</entry></a> */
+        	var entry = $('<entry>', {"mapID": id});
+        	entry.text(name);
+        	entry.click(function() {
+        		selectMap(id);
+        	});
+        	
+            mapList.append(entry);
+        }
 	    for (var i = 0; i < maps.length; i++) {
 		    var map = maps[i];
 		    addEntry(map.name, map.id);
@@ -195,11 +201,10 @@ $(function(){
     }
 });
 function selectMap(id) {
-	var elem = $("#map-"+id);
-	if (selectedMapId != undefined) {
-		var selectedElem = $("#map-"+selectedMapId);
-		selectedElem.removeClass("selected");
-	}
+	// Unselect all other entries
+	$("entry").removeClass("selected");
+	// Selct a specific entry
+	var elem = $("entry[mapID='"+id+"']")
     elem.addClass("selected");
     selectedMapId = id;
 }

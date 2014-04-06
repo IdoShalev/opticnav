@@ -19,7 +19,7 @@
 			</form>
 			Don't have an account?
 			<t:link href="/register">Register now.</t:link>
-			<div id="messageConstraint">
+			<div class="messageConstraint">
 				<t:message name="message" />
 			</div>
 		</div>
