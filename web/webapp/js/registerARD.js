@@ -16,14 +16,16 @@ $(function() {
 	});
 	
 	$("#device-remove").click(function() {
-		$.ajax({
-			type: "DELETE",
-			url: ctx+"/api/ard",
-			contentType : "application/json; charset=utf-8",
-			complete: ajaxMessageClosure(messagable, function(removed, message) {
-				showRemoveButton(!removed);
-			})
-		});
+		if (confirm("Are you sure you want to unlink this device from your account?")) {
+			$.ajax({
+				type: "DELETE",
+				url: ctx+"/api/ard",
+				contentType : "application/json; charset=utf-8",
+				complete: ajaxMessageClosure(messagable, function(removed, message) {
+					showRemoveButton(!removed);
+				})
+			});
+		}
 	});
 	
 	function updateARD() {

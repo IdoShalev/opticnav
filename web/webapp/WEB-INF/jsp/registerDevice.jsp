@@ -7,8 +7,8 @@
 			contact us.</p>
 		<div class="messageConstraint">
 			<t:message name="message" />
-			<input type="button" id="device-remove" value="Remove">
 		</div>
+		<button id="device-remove" class="remove">Unlink device</button>
 
 		<div>
 			<form onsubmit="return false" id="registerARD-form">
