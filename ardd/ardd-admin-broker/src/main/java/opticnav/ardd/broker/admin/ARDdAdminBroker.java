@@ -111,6 +111,7 @@ public class ARDdAdminBroker implements ARDdAdmin {
     @Override
     public List<InstanceDeploymentInfo> listInstancesByOwner(final long owner) throws ARDdAdminException {
         try {
+            this.output.writeUInt8(Commands.LIST_INSTANCES_BY_OWNER);
             output.writeSInt64(owner);
             output.flush();
             

@@ -68,29 +68,30 @@ public class InstanceController extends Controller {
     
     @RequestMapping(method=RequestMethod.GET)
     public List<InstanceInfoPOJO> getCurrentInstances() throws Exception {
+        final List<InstanceDeploymentInfo> instances;
         try (ARDdAdmin broker = this.pool.getAdminBroker()) {
             final long owner = userSession.getUser().getId();
-            final List<InstanceDeploymentInfo> instances = broker.listInstancesByOwner(owner);
-            
-            final List<InstanceInfoPOJO> list = new ArrayList<>(instances.size());
-            for (InstanceDeploymentInfo info: instances) {
-                final InstanceInfoPOJO pojo = new InstanceInfoPOJO();
-                pojo.instance_id = info.getId();
-                pojo.start_time = info.getStartTime();
-                pojo.ards = new ArrayList<>(info.getArds().size());
-                
-                for (InstanceDeploymentInfo.ARDIdentifier ard: info.getArds()) {
-                    final InstanceInfoPOJO.ARD ardPOJO = new InstanceInfoPOJO.ARD();
-                    ardPOJO.ard_id = ard.getId();
-                    ardPOJO.name = ard.getName();
-                    
-                    pojo.ards.add(ardPOJO);
-                }
-                
-                list.add(pojo);
-            }
-            return list;
+            instances = broker.listInstancesByOwner(owner);
         }
+            
+        final List<InstanceInfoPOJO> list = new ArrayList<>(instances.size());
+        for (InstanceDeploymentInfo info: instances) {
+            final InstanceInfoPOJO pojo = new InstanceInfoPOJO();
+            pojo.instance_id = info.getId();
+            pojo.start_time = info.getStartTime();
+            pojo.ards = new ArrayList<>(info.getArds().size());
+            
+            for (InstanceDeploymentInfo.ARDIdentifier ard: info.getArds()) {
+                final InstanceInfoPOJO.ARD ardPOJO = new InstanceInfoPOJO.ARD();
+                ardPOJO.ard_id = ard.getId();
+                ardPOJO.name = ard.getName();
+                
+                pojo.ards.add(ardPOJO);
+            }
+            
+            list.add(pojo);
+        }
+        return list;
     }
     
     @RequestMapping(method=RequestMethod.POST)

@@ -150,17 +150,22 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
         final List<InstanceDeploymentInfo> instances;
         instances = this.ardListsManager.getInstancesList().listInstancesByOwner(owner);
         
-        out.writeUInt8(instances.size());
-        for (InstanceDeploymentInfo inst: instances) {
-            out.writeUInt31(inst.getId());
-            out.writeSInt64(inst.getOwner());
-            out.writeString(inst.getName());
-            out.writeSInt64(inst.getStartTime());
-            
-            out.writeUInt31(inst.getArds().size());
-            for (InstanceDeploymentInfo.ARDIdentifier ard: inst.getArds()) {
-                out.writeUInt31(ard.getId());
-                out.writeString(ard.getName());
+        if (instances == null) {
+            // no owner was found
+            out.writeUInt8(0);
+        } else {
+            out.writeUInt8(instances.size());
+            for (InstanceDeploymentInfo inst: instances) {
+                out.writeUInt31(inst.getId());
+                out.writeSInt64(inst.getOwner());
+                out.writeString(inst.getName());
+                out.writeSInt64(inst.getStartTime());
+                
+                out.writeUInt31(inst.getArds().size());
+                for (InstanceDeploymentInfo.ARDIdentifier ard: inst.getArds()) {
+                    out.writeUInt31(ard.getId());
+                    out.writeString(ard.getName());
+                }
             }
         }
         
