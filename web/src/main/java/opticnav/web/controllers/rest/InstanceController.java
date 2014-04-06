@@ -12,6 +12,7 @@ import opticnav.ardd.admin.ARDdAdmin;
 import opticnav.ardd.admin.ARDdAdminStartInstanceStatus;
 import opticnav.ardd.admin.InstanceDeployment;
 import opticnav.ardd.admin.InstanceDeploymentBuilder;
+import opticnav.ardd.broker.admin.ARDdAdminBroker;
 import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.InstanceDeploymentInfo;
 import opticnav.persistence.web.WebAccountDAO;
@@ -178,6 +179,20 @@ public class InstanceController extends Controller {
         } else {
             // XXX - should throw a not-an-Exception exception, maybe
             throw new Exception("Could not start instance: " + status.getStatus());
+        }
+    }
+    
+    @RequestMapping(method=RequestMethod.DELETE)
+    public void stopInstance() throws Exception {
+        final long owner;
+        owner = userSession.getUser().getId();
+        
+        try (ARDdAdmin broker = this.pool.getAdminBroker()) {
+            final List<InstanceDeploymentInfo> instances = broker.listInstancesByOwner(owner);
+            
+            for (InstanceDeploymentInfo i: instances) {
+                broker.stopInstance(i.getId());
+            }
         }
     }
 }

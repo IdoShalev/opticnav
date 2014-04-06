@@ -171,4 +171,14 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
         
         out.flush();
     }
+    
+    @Command(Commands.STOP_INSTANCE)
+    public void stopInstance(PrimitiveReader in, PrimitiveWriter out) throws Exception {
+        final int instanceID = in.readUInt31();
+        
+        final boolean existed = ardListsManager.getInstancesList().removeInstance(instanceID);
+        
+        out.writeUInt8(existed?1:0);
+        out.flush();
+    }
 }

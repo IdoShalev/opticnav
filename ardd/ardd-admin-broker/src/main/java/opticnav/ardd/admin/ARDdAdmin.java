@@ -30,6 +30,7 @@ public interface ARDdAdmin extends AutoCloseable {
      * @param owner An ID number identifying the owner. This is an implementation-defined number as
      *              determined by the host application (ie. web account id).
      * @param deployment The InstanceDeployment object
+     * @throws ARDdAdminException 
      */
     public ARDdAdminStartInstanceStatus deployInstance(long owner, InstanceDeployment deployment)
             throws ARDdAdminException;
@@ -41,4 +42,12 @@ public interface ARDdAdmin extends AutoCloseable {
      * @throws ARDdAdminException 
      */
     public List<InstanceDeploymentInfo> listInstancesByOwner(long owner) throws ARDdAdminException;
+
+    /**
+     * Stop the instance identified by the provided instance ID
+     * @param id The ID number identifying the instance
+     * @return True if the instance existed, false if it didn't
+     * @throws ARDdAdminException 
+     */
+    public boolean stopInstance(int id) throws ARDdAdminException;
 }

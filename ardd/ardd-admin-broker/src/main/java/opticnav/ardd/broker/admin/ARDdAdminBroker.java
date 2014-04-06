@@ -147,4 +147,18 @@ public class ARDdAdminBroker implements ARDdAdmin {
             throw new ARDdAdminException(e);
         }
     }
+
+    @Override
+    public boolean stopInstance(int id) throws ARDdAdminException {
+        try {
+            this.output.writeUInt8(Commands.STOP_INSTANCE);
+            this.output.writeUInt31(id);
+            this.output.flush();
+            
+            boolean existed = this.input.readUInt8() != 0;
+            return existed;
+        } catch (IOException e) {
+            throw new ARDdAdminException(e);
+        }
+    }
 }

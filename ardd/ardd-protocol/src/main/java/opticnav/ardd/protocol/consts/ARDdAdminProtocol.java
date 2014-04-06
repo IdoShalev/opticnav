@@ -8,5 +8,6 @@ public final class ARDdAdminProtocol {
 		public static final int REGARD=0;
 		public static final int DEPLOY_INSTANCE=1;
 		public static final int LIST_INSTANCES_BY_OWNER=2;
+		public static final int STOP_INSTANCE=3;
 	}
 }

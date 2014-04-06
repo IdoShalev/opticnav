@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -105,6 +106,30 @@ public class InstancesList {
             subscriber = callbacks.joining(instance, entityFuture);
             final Entity entity = instance.createEntity(ardID, initialLocation, subscriber);
             entityFuture.set(entity);
+        }
+    }
+
+    /**
+     * Remove the instance identified by an instance ID
+     * 
+     * @param instanceID The ID number identifying the instance
+     * @return True if the instance existed and was removed, false if instance didn't exist
+     * @throws IOException Thrown if there was a problem stopping the instance
+     */
+    public synchronized boolean removeInstance(int instanceID) throws IOException {
+        final Instance instance = instances.remove(instanceID);
+        if (instance != null) {
+            // XXX - removing instance ID from owner_instance
+            for (Entry<Long, Object> entry: owner_instance.entrySet()) {
+                @SuppressWarnings("unchecked")
+                Collection<Integer> c = (Collection<Integer>)entry.getValue();
+                
+                c.remove(instanceID);
+            }
+            instance.close();
+            return true;
+        } else {
+            return false;
         }
     }
     
