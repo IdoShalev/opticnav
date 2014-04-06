@@ -19,8 +19,6 @@ header {
 
 #content {
 	margin: 3em;
-	padding-left: 6em;
-	padding-right: 6em;
 	background-color: #FFFAFA;
 }
 
@@ -58,4 +56,36 @@ header {
 	text-align: center;
 	width: 100%;
 	margin: 0 auto;
+}
+
+/* Loader animation, courtesy of https://github.com/padolsey/Sonic */
+@-webkit-keyframes loaderSprite {
+    from { background-position: 0px; }
+    to { background-position: -510px; }
+}
+
+@-moz-keyframes loaderSprite {
+    from { background-position: 0px; }
+    to { background-position: -510px; }
+}
+
+@keyframes loaderSprite {
+    from { background-position: 0px; }
+    to { background-position: -510px; }
+}
+
+.loader, .loader-adjacent {
+	display: none;
+    width: 30px;
+    height: 30px;
+    background-image: url("../css/images/loader.png");
+    -webkit-animation: loaderSprite 0.5666666666666667s steps(17, end) infinite;
+    -moz-animation: loaderSprite 0.5666666666666667s steps(17, end) infinite;
+    animation: loaderSprite 0.5666666666666667s steps(17, end) infinite;
+}
+
+.loader-adjacent {
+	position: absolute;
+	top: 0;
+	right: -40px; 
 }

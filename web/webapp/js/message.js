@@ -1,16 +1,22 @@
-function createElemMessagable(elem) {
+function createElemMessagable(elem, elemLoader) {
 	var jQueryElem;
+	var jQueryElemLoader;
 	
 	if (elem.substring) {
 		// a JavaScript hack to check if a type is a string
 		// create a jQuery element out of it
 		jQueryElem = $(elem);
+		jQueryElemLoader = elemLoader ? $(elemLoader) : undefined;
 	} else {
 		// assume it's a jQuery element
 		jQueryElem = elem;
+		jQueryElemLoader = elemLoader;
 	}
 	
 	function showMessage(ok, message) {
+		if (jQueryElemLoader) {
+			jQueryElemLoader.fadeOut();
+		}
 		jQueryElem.text(message);
 		jQueryElem.fadeIn();
 		if (ok) {
@@ -23,10 +29,19 @@ function createElemMessagable(elem) {
 	}
 	
 	function clearMessage() {
+		if (jQueryElemLoader) {
+			jQueryElemLoader.fadeOut();
+		}
 		jQueryElem.fadeOut();
 	}
 	
-	return {"showMessage": showMessage, "clearMessage": clearMessage};
+	function loadingMessage() {
+		if (jQueryElemLoader) {
+			jQueryElemLoader.fadeIn();
+		}
+	}
+	
+	return {"showMessage": showMessage, "clearMessage": clearMessage, "loadingMessage": loadingMessage};
 }
 
 function createAlertMessagable() {
@@ -50,6 +65,12 @@ function showOkMessage(messagable, message) {
 }
 
 function ajaxMessageClosure(messagable, callback) {
+	// probably shouldn't do this here. what if the closure is not requested the same time as the AJAX request?
+	// (i don't think it ever is, currently)
+	if (messagable.loadingMessage) {
+		messagable.loadingMessage();
+	}
+	
 	return function(data) {
 		var ok = data.status >= 200 && data.status <= 299;
 		var json = data.responseJSON;
@@ -70,6 +91,10 @@ function ajaxMessageClosure(messagable, callback) {
 }
 
 function ajaxMessageClosureRedirectOnSuccess(messagable, location, messageParam) {
+	if (messagable.loadingMessage) {
+		messagable.loadingMessage();
+	}
+	
 	return function(data) {
 		var ok = data.status >= 200 && data.status <= 299;
 		var json = data.responseJSON;
@@ -91,6 +116,10 @@ function ajaxMessageClosureRedirectOnSuccess(messagable, location, messageParam)
 }
 
 function ajaxMessageClosureOnError(messagable, success){
+	if (messagable.loadingMessage) {
+		messagable.loadingMessage();
+	}
+	
 	return function(data) {
 		var ok = data.status >= 200 && data.status <= 299;
 		var json = data.responseJSON;

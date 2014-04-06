@@ -1,5 +1,5 @@
 $(function() {
-	var messagable = createElemMessagable("#message");
+	var messagable = createElemMessagable("#message", "#message-loader");
 	
 	$("#login").submit(function(event) {
 		object = new Object();
