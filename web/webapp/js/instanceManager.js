@@ -22,8 +22,7 @@ var sectionsSlider = {
 	},
 	setIndex: function(index) {
 		var wrapper = $("#instance-wrapper");
-		var containerWidth = $("#instanceContainer").width();
-		var v = -index*containerWidth;
+		var v = -index*100+"%";
 		
 		if (!slided) {
 			wrapper.css("margin-left", v);
