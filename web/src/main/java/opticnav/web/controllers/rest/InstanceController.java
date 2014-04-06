@@ -51,6 +51,7 @@ public class InstanceController extends Controller {
         }
         
         public int instance_id;
+        public String name;
         public long start_time;
         public List<ARD> ards;
     }
@@ -79,6 +80,7 @@ public class InstanceController extends Controller {
         for (InstanceDeploymentInfo info: instances) {
             final InstanceInfoPOJO pojo = new InstanceInfoPOJO();
             pojo.instance_id = info.getId();
+            pojo.name = info.getName();
             pojo.start_time = info.getStartTime();
             pojo.ards = new ArrayList<>(info.getArds().size());
             

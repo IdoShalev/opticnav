@@ -1,4 +1,4 @@
-<t:page title="Instance" css="instance.css" js="MapAJAX.js,instanceManager.js">    
+<t:page title="Instance" css="instance.css" js="MapAJAX.js,instanceManager.js,date.format.js">    
 <div id="instanceContainer">
     <div id="info">
     <div id="info-modal"></div>

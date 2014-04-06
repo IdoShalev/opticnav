@@ -15,8 +15,40 @@ $(function(){
 			currentUser = {"username": json.username, "id": json.id};
 		})
 	});
+	
+	$.ajax({
+		type : "GET",
+		url : ctx + "/api/instance",
+		contentType : "application/json; charset=utf-8",
+		complete : ajaxMessageClosureOnError(messagable, function(json) {
+			if (json.length > 0) {
+				useInstanceInfo();
+				var instance = json[0];
+				var mapName = $("#inst-map-name");
+				mapName.text(instance.name);
+				var startTime = $("#inst-start-time");
+				var date = new Date(instance.start_time).format("M d,Y h:i:s A");
+				startTime.text(date);
+				var instList = $("#inst-selected-users");
+				instList.empty();
+				for (var i=0; i < instance.ards.length; i++) {
+					var $li = $("<li>");
+					$li.text(instance.ards[i].name);
+					instList.append($li);
+				}
+			}
+		})
+	});
+	
     $("#stop-instance").click(function() {
-    	useInstanceController();
+    	$.ajax({
+    		type : "DELETE",
+    		url : ctx + "/api/instance",
+    		contentType : "application/json; charset=utf-8",
+    		complete : ajaxMessageClosureOnError(messagable, function(json) {
+    			useInstanceController();
+    		})
+    	});
     })
     $("#instaB").click(function() {
     	var invited = $("inst-selected-users");
@@ -37,23 +69,7 @@ $(function(){
 				contentType : "application/json; charset=utf-8",
 				complete : ajaxMessageClosureOnError(messagable, function(json) {
 					useInstanceInfo();
-			    	var d = new Date();
-			    	var hours = d.getHours();
-			    	var minutes = d.getMinutes();
-			    	if (minutes < 10) {
-			    		minutes = "0" + minutes;
-			    	}
-			    	var seconds = d.getSeconds();
-			    	if (seconds < 10) {
-			    		seconds = "0" + seconds;
-			    	}
-			    	var inst = $("#inst-start-time");
-			    	inst.empty();
-			    	if (hours > 12) {
-			        	var currentTime = (hours + ":"  + minutes + ":" + seconds + "PM");
-			    	} else {
-			        	var currentTime = (hours + ":"  + minutes + ":" + seconds + "AM");
-			    	}
+			    	
 				})
 			});
 		}
