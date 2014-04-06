@@ -9,7 +9,9 @@ $(function() {
 			url: ctx+"/api/ard",
 			data: code,
 			contentType: "text/plain",
-			complete: ajaxMessageClosure(messagable)
+			complete: ajaxMessageClosure(messagable, function(registered, message) {
+				showRemoveButton(registered);
+			})
 		});
 	});
 	
@@ -18,7 +20,9 @@ $(function() {
 			type: "DELETE",
 			url: ctx+"/api/ard",
 			contentType : "application/json; charset=utf-8",
-			complete: ajaxMessageClosure(messagable)
+			complete: ajaxMessageClosure(messagable, function(removed, message) {
+				showRemoveButton(!removed);
+			})
 		});
 	});
 	
@@ -27,8 +31,18 @@ $(function() {
 			type: "GET",
 			url: ctx+"/api/ard",
 			contentType : "application/json; charset=utf-8",
-			complete: ajaxMessageClosure(messagable)
+			complete: ajaxMessageClosure(messagable, function(hasDevice, message) {
+				showRemoveButton(hasDevice);
+			})
 		});
+	}
+	
+	function showRemoveButton(show) {
+		if (show) {
+			$("#device-remove").show();
+		} else {
+			$("#device-remove").hide();
+		}
 	}
 	
 	updateARD();

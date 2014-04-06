@@ -49,15 +49,22 @@ function showOkMessage(messagable, message) {
 	messagable.showMessage(true, message);
 }
 
-function ajaxMessageClosure(messagable) {
+function ajaxMessageClosure(messagable, callback) {
 	return function(data) {
 		var ok = data.status >= 200 && data.status <= 299;
 		var json = data.responseJSON;
 		
+		var message;
+		
 		if (json != null && json.message !== undefined) {
-			messagable.showMessage(ok, json.message);
+			message = json.message;
 		} else {
-			messagable.showMessage(false, data.status + ": " + data.statusText);
+			ok = false;
+			message = data.status + ": " + data.statusText;
+		}
+		messagable.showMessage(ok, message);
+		if (callback != undefined) {
+			callback(ok, message);
 		}
 	}
 }
