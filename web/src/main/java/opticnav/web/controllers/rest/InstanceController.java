@@ -107,6 +107,8 @@ public class InstanceController extends Controller {
 
         owner = userSession.getUser().getId();
         ardList = new ArrayList<>(startInstancePOJO.accounts.size());
+        
+        // Add the ARD of every user provided
         for (int account_id: startInstancePOJO.accounts) {
             try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, account_id)) {
                 ardList.add(new InstanceDeployment.ARDIdentifier(dao.getARD(), dao.getUsername()));
@@ -114,6 +116,11 @@ public class InstanceController extends Controller {
         }
         
         try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, userSession.getUser().getId())) {
+            // Add the user's ARD (if they have one)
+            if (dao.hasARD()) {
+                ardList.add(new InstanceDeployment.ARDIdentifier(dao.getARD(), dao.getUsername()));
+            }
+            
             final GetMap map = dao.getMap(startInstancePOJO.map_id);
             if (map == null) {
                 // map not found
