@@ -61,7 +61,7 @@ $(function() {
     var map_creation = $("#map-creation");
 
     // When the map view resizes, the marker locations need to change
-    $("#map-view").resize(function() {
+    $(window).resize(function() {
         MapController.recalculatePositions();
     });
     

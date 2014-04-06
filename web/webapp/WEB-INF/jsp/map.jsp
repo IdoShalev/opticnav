@@ -1,4 +1,4 @@
-<t:page title="Maps Manager" css="map.css" js="Map.js,MapController.js,MapCoordHelper.js,MapManager.js,MapAJAX.js,jquery.ba-resize.min.js">
+<t:page title="Maps Manager" css="map.css" js="Map.js,MapController.js,MapCoordHelper.js,MapManager.js,MapAJAX.js">
 <div id="map-manager-container">
 <div id="map-manager">
 <div id="map-creation" class="modal-dialog">

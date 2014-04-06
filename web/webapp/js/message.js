@@ -14,6 +14,8 @@ function createElemMessagable(elem, elemLoader) {
 	}
 	
 	function showMessage(ok, message) {
+		console.debug("showMessage: " + (ok?"ok":"fail") + ": " + message);
+		
 		if (jQueryElemLoader) {
 			jQueryElemLoader.fadeOut();
 		}
@@ -29,6 +31,7 @@ function createElemMessagable(elem, elemLoader) {
 	}
 	
 	function clearMessage() {
+		console.debug("clearMessage");
 		if (jQueryElemLoader) {
 			jQueryElemLoader.fadeOut();
 		}
@@ -36,12 +39,11 @@ function createElemMessagable(elem, elemLoader) {
 	}
 	
 	function loadingMessage() {
-		if (jQueryElemLoader) {
-			jQueryElemLoader.fadeIn();
-		}
+		console.debug("loadingMessage");
+		jQueryElemLoader.fadeIn();
 	}
 	
-	return {"showMessage": showMessage, "clearMessage": clearMessage, "loadingMessage": loadingMessage};
+	return {"showMessage": showMessage, "clearMessage": clearMessage, "loadingMessage": jQueryElemLoader?loadingMessage:undefined};
 }
 
 function createAlertMessagable() {
