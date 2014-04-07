@@ -2,10 +2,12 @@
 <div id="map-manager-container">
 <div id="map-manager">
 <div id="map-creation" class="modal-dialog">
-    <input type="text" id="map-creation-name" placeholder="Map Name" />
-    <input type="file" id="map-creation-file" /><br/>
-    <button id="map-creation-create">Create</button>
-    <button id="map-creation-cancel" style="margin-left:250px">Cancel</button>
+    <div id="boxSize">
+	    <input type="text" id="map-creation-name" placeholder="Map Name" />
+	    <input type="file" id="map-creation-file" /><br/>
+	    <button type="submit" id="map-creation-create">Create</button>
+	    <button class="remove" id="map-creation-cancel">Cancel</button>
+    </div>
 </div>
 <div id="alert-popup" class="modal-dialog">
     <p id="alert-message"></p>
@@ -34,20 +36,20 @@
 	</div>
     <div id="map-popups">
         <div id="anchor-popup">
-        <button id="anchor-delete">Delete</button>
+        <button class="remove" id="anchor-delete">Delete</button>
         <input type="text" id="anchor-lat" placeholder="Latitude" />
         <input type="text" id="anchor-lng" placeholder="Longitude" />
         <button id="anchor-save">Save</button>
-        <button id="anchor-cancel">Cancel</button>
+        <button class="remove" id="anchor-cancel">Cancel</button>
         </div>
         
         <div id="marker-popup">
-        <button id="marker-delete">Delete</button>
+        <button class="remove" id="marker-delete">Delete</button>
         <input type="text" id="marker-name" placeholder="Marker name" /><br/>
         <input type="text" id="marker-lat" placeholder="Latitude" />
         <input type="text" id="marker-lng" placeholder="Longitude" />
         <button id="marker-save">Save</button>
-        <button id="marker-cancel">Cancel</button>
+        <button class="remove" id="marker-cancel">Cancel</button>
         </div>
     </div>
     <div id="map-anchors"></div>

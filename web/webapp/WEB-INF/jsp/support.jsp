@@ -13,7 +13,12 @@
 	    <h3>Is the application and registration free to use?</h3>
 	    <p>Yes, everything is free to use.</p>
 	    
-	    <h3>How do I install it?</h3>
+	    <h3>How does registering a device work?</h3>
+        <p>To register a device you need the application first. The application will give you a</p>
+        <p>passcode to place in the text field, this passcode is unique to your device to allow the</p>
+        <p>server to register your device to your account.</p>
+	    
+	    <h3>How do I install the application on my Android device?</h3>
 	    <p>Follow the procedure in the <t:link href="/download">Get Application</t:link> page</p>
 	    
 	    <h3>How do I use this application?</h3>

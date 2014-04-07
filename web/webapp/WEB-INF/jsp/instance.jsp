@@ -8,59 +8,58 @@
 		<div id="instance-wrapper">
 			<div id="controller">
 				<h1>Start an instance</h1>
-				<div>
-					<div class="messageConstraint">
-						<t:message name="start-instance-message" />
-					</div>
-					<div>
-						<div id="leftControl">
-							<div id="map-container">
-								Maps
-								<div id="map-list"></div>
-							</div>
-						</div>
-
-						<div id="rightControl">
-							<div id="section-invite">
-								<input type="text" id="invite-to-inst" placeholder="Username">
-								<button id="inst-invite">
-									Invite
-									<div id="invite-loader" class="loader-adjacent"></div>
-								</button>
-								<div id="selected-list">
-									<ul id="inst-select-users">
-									</ul>
-								</div>
-								<button type="submit" id="instaB">
-									Start Instance
-									<div id="start-instance-loader" class="loader-adjacent"></div>
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
+				<div id="controlCenter">
+                    <div id="instControlBox">
+					<table>
+					   <tr><td><b>Select a map</b></td><td><b>Invite list:</b></td></tr>
+					   <tr><td><div id="map-container">
+                                <div id="map-list"></div>
+                            </div></td><td><div id="section-invite">
+                                <input type="text" id="invite-to-inst" placeholder="Username">
+                                <button id="inst-invite">
+                                    Invite
+                                    <div id="invite-loader" class="loader-adjacent"></div>
+                                </button><br/><button type="submit" id="instaB">
+                                    Start Instance
+                                    <div id="start-instance-loader" class="loader-adjacent"></div>
+                                </button>
+                                <div id="selected-list">
+                                    <ul id="inst-select-users">
+                                    </ul>
+                                </div></div>
+                              </td></tr><tr><td><div class="messageConstraint">
+                                <t:message name="start-instance-message" />
+                            </div></td></tr>
+					   </table>
+                    </div>
+                 </div>
+            </div>
 			<div id="info">
 				<h1>Current instance information</h1>
-				<div>
-					<div class="messageConstraint">
-						<t:message name="instance-info-message" />
+				<div id="infoCenter">
+					<div id="instInfoBox">
+	                    <table id="instanceInfo">
+	                    <tr><td><b>Map:</b></td><td><span id="inst-map-name"></span></td></tr>
+	                    <tr><td><b>Start Time:</b></td><td><span id="inst-start-time"></span></td></tr>
+	                    <tr><td><b>In the instance:</b></td></tr>
+						</table>
+						<div id="selected-list">
+						<ul id="inst-selected-users">
+	
+						</ul>
+						</div>
+						<br />
+						<button type="submit" id="stop-instance">
+							Stop Instance
+							<div id="stop-instance-loader" class="loader-adjacent"></div>
+						</button>
+						<div class="messageConstraint">
+                            <t:message name="instance-info-message" />
+                        </div>
 					</div>
-
-					Instance Information <br /> <br /> Map: <span id="inst-map-name"></span>
-					<br /> Start Time: <span id="inst-start-time"></span> <br />
-					People in the instance<br />
-					<ul id="inst-selected-users">
-
-					</ul>
-					<br />
-					<button type="submit" id="stop-instance">
-						Stop Instance
-						<div id="stop-instance-loader" class="loader-adjacent"></div>
-					</button>
 				</div>
 			</div>
+			</div>
 		</div>
-	</div>
+	
 </t:page>

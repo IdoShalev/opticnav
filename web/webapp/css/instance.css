@@ -3,11 +3,11 @@
 }
 
 #info > *, #controller > * {
-	padding: 20px;
+	
 }
 
 #invite-to-inst {
-	width:250px;
+	width:243px;
 }
 
 #inst-buttons {
@@ -16,11 +16,36 @@
 }
 
 #instaB {
-	width: auto;
+	width: auto; float:right; padding:0px;
 }
 
 #leftControl {
 	float: left;
+}
+
+#instInfoBox {
+	margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+}
+
+#infoCenter {
+    background-color: rgb(241, 241, 241);
+    border: 1px solid rgb(204, 204, 204);
+    padding-top:40px;
+    padding-bottom:50px;
+}
+
+#instControlBox {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#controlCenter {
+    background-color: rgb(241, 241, 241);
+    border: 1px solid rgb(204, 204, 204);
+    padding-top:40px;
+    padding-bottom:50px;
 }
 
 #instanceContainer {
@@ -30,7 +55,6 @@
 
 #map-list, #selected-list {
     overflow: auto;
-    margin: 10px;
     width: 250px;
     border-radius: 4px;
     border: solid;
@@ -43,7 +67,7 @@
 }
 
 #selected-list {
-    height: 182px;
+    height: 222px;margin:2px;
 }
 
 #map-list entry {
@@ -64,7 +88,7 @@
 	background-color: #ccc;
 }
 
-#inst-select-users {
+#inst-select-users,#inst-selected-users {
 	padding: 0px;
 	margin: 0;
 	/* text should not exceed the width of the entry */
@@ -75,7 +99,7 @@
 	width: 250px;
 }
 
-#inst-select-users li {
+#inst-select-users li,#inst-selected-users li {
 	display: block;
 	position: relative;
 	transition: background-color 0.25s;
@@ -88,7 +112,7 @@
 	width: 250px;
 }
 
-#inst-select-users li:hover {
+#inst-select-users li:hover,#inst-selected-users li:hover {
 	background-color: #ccc;
 }
 
@@ -119,4 +143,17 @@
 h2 {
 	padding-left: 25px;
 	padding-right: 25px;
+}
+h1 {
+	text-align: center;
+}
+#stop-instance {
+	width:120px;margin:10px;
+}
+#instanceInfo {
+	padding-left: 10px;
+    width: 340px;
+}
+table {
+	margin: 0 auto;
 }

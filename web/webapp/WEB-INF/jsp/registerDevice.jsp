@@ -3,7 +3,7 @@
 	<div id="registerDeviceContainer">
 		<h2>Device Manager</h2>
 		<p>To register a device follow the instruction on your Device.</p>
-		<p>For more help please refer to the FAQ in the Help page or
+		<p>For more help please refer to the FAQ in the Support page or
 			contact us.</p>
 		<div class="messageConstraint">
 			<t:message name="message" />

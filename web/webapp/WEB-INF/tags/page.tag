@@ -11,8 +11,8 @@
     <link rel="icon" type="image/png" href="./css/images/Weblogo.png"/>
 <header>
 <div id="loggedin">
-        <c:if test="${!empty user}">Welcome, <c:out value="${user.username}"/>
-        <t:link href="/logout">Logout</t:link></c:if></div>
+        <c:if test="${!empty user}"><div id="headerWelcome">Welcome, <c:out value="${user.username}"/>
+        <span class="logout"><t:link href="/logout">Logout</t:link></span></div></c:if></div>
         <div class="logodiv"><t:link href="/"><img class="logo" src="${pageContext.request.contextPath}/css/images/OpticNavLogo.png"></t:link></div>
         <div id="headContainer">
     <div id="nav">
