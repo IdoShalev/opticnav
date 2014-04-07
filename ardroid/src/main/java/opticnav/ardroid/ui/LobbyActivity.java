@@ -24,15 +24,18 @@ public class LobbyActivity extends Activity {
         setContentView(R.layout.activity_lobby);
 
         final ListView listView = (ListView)findViewById(R.id.instances_listview);
+        final View loadingView = findViewById(R.id.instances_loading);
+        final View noInstancesView = findViewById(R.id.instance_none);
 
         Application.getInstance().getServerUIHandler().listInstances(new ServerUIHandler.ListInstancesEvent() {
             @Override
             public void listInstances(List<InstanceInfo> instancesList) {
-                final List<String> list = new ArrayList<String>();
-                for (InstanceInfo i : instancesList) {
-                    list.add(i.getName());
+                loadingView.setVisibility(View.INVISIBLE);
+                if (instancesList.isEmpty()) {
+                    noInstancesView.setVisibility(View.VISIBLE);
+                } else {
+                    listView.setAdapter(new MySimpleArrayAdapter(LobbyActivity.this, instancesList));
                 }
-                listView.setAdapter(new MySimpleArrayAdapter(LobbyActivity.this, list));
             }
         });
     }
@@ -42,11 +45,40 @@ public class LobbyActivity extends Activity {
         Application.getInstance().getServerUIHandler().tryDisconnect(this);
     }
 
-    private class MySimpleArrayAdapter extends ArrayAdapter<String> {
-        private final Context context;
-        private final List<String> values;
+    private static String timestampToHumanTime(long timestamp_ms) {
+        final long now = System.currentTimeMillis();
+        final long elapsed = now - timestamp_ms;
 
-        public MySimpleArrayAdapter(Context context, List<String> values) {
+        if (elapsed < 5*1000) {
+            // less than 5 seconds ago
+            return "just now";
+        } else if (elapsed < 60*1000) {
+            // less than a minute ago
+            return String.format("%d seconds ago", elapsed/1000);
+        } else if (elapsed < 60*60*1000) {
+            // less than an hour ago
+            final long minutes = elapsed/(60*1000);
+            if (minutes == 1) {
+                return "a minute ago";
+            } else {
+                return String.format("%d minutes ago", minutes);
+            }
+        } else {
+            // who cares, count them in hours
+            final long hours = elapsed/(60*60*1000);
+            if (hours == 1) {
+                return "an hour ago";
+            } else {
+                return String.format("%d hours ago", hours);
+            }
+        }
+    }
+
+    private class MySimpleArrayAdapter extends ArrayAdapter<InstanceInfo> {
+        private final Context context;
+        private final List<InstanceInfo> values;
+
+        public MySimpleArrayAdapter(Context context, List<InstanceInfo> values) {
             super(context, R.layout.instance_list_item, values);
             this.context = context;
             this.values = values;
@@ -54,11 +86,20 @@ public class LobbyActivity extends Activity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            final InstanceInfo info = values.get(position);
+
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.instance_list_item, parent, false);
-            TextView textView = (TextView) rowView.findViewById(R.id.instance_list_item_name);
-            textView.setText(values.get(position));
+
+            final TextView name, numberConnected, startTime;
+            name = (TextView)rowView.findViewById(R.id.instance_list_item_name);
+            numberConnected = (TextView)rowView.findViewById(R.id.instance_list_item_connected);
+            startTime = (TextView)rowView.findViewById(R.id.instance_list_item_startdate);
+
+            name.setText(info.getName());
+            numberConnected.setText(Integer.toString(info.getNumberConnected()));
+            startTime.setText(timestampToHumanTime(info.getStartTime()));
 
             return rowView;
         }

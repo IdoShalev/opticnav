@@ -2,6 +2,7 @@ package opticnav.ardd.instance;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,5 +64,9 @@ public class Instance implements AutoCloseable {
         for (Entity e: this.entities.values()) {
             e.removeSubscriber(entity.getEntitySubscriber());
         }
+    }
+
+    public synchronized Map<Integer, Entity> getEntities() {
+        return Collections.unmodifiableMap(this.entities);
     }
 }

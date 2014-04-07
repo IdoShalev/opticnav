@@ -51,9 +51,11 @@ class ARDConnectedImpl implements ARDConnected {
             int count = input.readUInt16();
             List<InstanceInfo> instanceList = new ArrayList<>(count);
             for (int i = 0; i < count; i++) {
-                String name = input.readString();
-                int id      = input.readUInt16();
-                InstanceInfo info = new InstanceInfo(name, id);
+                int id              = input.readUInt16();
+                String name         = input.readString();
+                int numberConnected = input.readUInt31();
+                long startTime      = input.readSInt64();
+                InstanceInfo info = new InstanceInfo(id, name, numberConnected, startTime);
                 instanceList.add(info);
             }
             

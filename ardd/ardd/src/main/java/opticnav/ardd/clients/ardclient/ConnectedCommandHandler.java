@@ -50,10 +50,16 @@ public class ConnectedCommandHandler extends AnnotatedCommandHandler {
 
         for (Map.Entry<Integer, Instance> i: list.entrySet()) {
             final int instanceID = i.getKey();
-            final InstanceInfo info = i.getValue().getInfo();
+            final Instance instance = i.getValue();
+            final InstanceInfo info = instance.getInfo();
+            final int numberConnected;
             
-            out.writeString(info.name);
+            numberConnected = instance.getEntities().size();
+
             out.writeUInt16(instanceID);
+            out.writeString(info.name);
+            out.writeUInt31(numberConnected);
+            out.writeSInt64(info.startTime.getTime());
         }
         out.flush();
     }
