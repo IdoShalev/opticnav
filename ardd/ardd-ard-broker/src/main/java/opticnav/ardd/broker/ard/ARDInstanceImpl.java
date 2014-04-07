@@ -1,6 +1,7 @@
 package opticnav.ardd.broker.ard;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -22,26 +23,41 @@ public class ARDInstanceImpl implements ARDInstance {
     private static final XLogger LOG = XLoggerFactory
             .getXLogger(ARDInstanceImpl.class);
     
+    private final InputStream input;
     private final PrimitiveWriter output;
+    private final ExecutorService threadPool;
     private final InstanceMap instanceMap;
-    private final Future<Void> subscriberResult;
+    private Future<Void> subscriberResult;
 
-    public ARDInstanceImpl(Channel channel, InstanceMap instanceMap, ARDInstanceSubscriber subscriber,
-            ExecutorService threadPool) {
+    public ARDInstanceImpl(Channel channel, InstanceMap instanceMap, ExecutorService threadPool) {
+        this.input = channel.getInputStream();
         this.output = PrimitiveUtil.writer(channel);
+        this.threadPool = threadPool;
         this.instanceMap = instanceMap;
-        this.subscriberResult = threadPool.submit(new ARDInstanceSubscriberListener(channel.getInputStream(), subscriber));
     }
 
     @Override
     public void close() throws IOException {
-        this.output.close();
+        if (this.subscriberResult != null) {
+            throw new IllegalStateException("A subscriber was never set! This could (or did) cause serious problems!");
+        }
+        
         try {
+            this.output.close();
             this.subscriberResult.get();
         } catch (InterruptedException e) {
         } catch (ExecutionException e) {
             LOG.catching(e);
         }
+    }
+    
+    @Override
+    public void setSubscriber(ARDInstanceSubscriber subscriber) {
+        if (this.subscriberResult != null) {
+            throw new IllegalStateException("A subscriber was already set!");
+        }
+        
+        this.subscriberResult = threadPool.submit(new ARDInstanceSubscriberListener(input, subscriber));
     }
 
     @Override

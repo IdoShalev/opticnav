@@ -75,8 +75,7 @@ class ARDConnectedImpl implements ARDConnected {
     }
 
     @Override
-    public ARDInstanceJoinStatus joinInstance(int instanceID, GeoCoordFine initialLocation,
-            ARDInstanceSubscriber subscriber) throws ARDConnectedException {
+    public ARDInstanceJoinStatus joinInstance(int instanceID, GeoCoordFine initialLocation) throws ARDConnectedException {
         try {
             output.writeUInt8(Commands.JOIN_INSTANCE);
             output.writeUInt31(instanceID);
@@ -123,7 +122,7 @@ class ARDConnectedImpl implements ARDConnected {
                 final Channel channel = this.mpxr.createChannel(instanceChannelID);
                 
                 final ARDInstance instance;
-                instance = new ARDInstanceImpl(channel, instanceMap, subscriber, this.threadPool);
+                instance = new ARDInstanceImpl(channel, instanceMap, this.threadPool);
                 
                 return new ARDInstanceJoinStatus(instance);
             } else {

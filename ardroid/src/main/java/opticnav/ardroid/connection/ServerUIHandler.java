@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.location.LocationManager;
 import android.os.Handler;
 import android.util.Pair;
 import opticnav.ardd.ard.*;
 import opticnav.ardd.protocol.ConfCode;
+import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelUtil;
+import opticnav.ardroid.location.LocationMagic;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
@@ -248,6 +251,40 @@ public class ServerUIHandler {
         });
     }
 
+    public void joinInstance(final int instanceID) {
+        // runs in UI thread
+        final LocationManager mgr = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+
+        final LocationMagic locationMagic;
+        locationMagic = new LocationMagic(mgr);
+        locationMagic.setListener(new LocationMagic.Listener() {
+            @Override
+            public void responsivenessUpdate(boolean good) {
+
+            }
+
+            @Override
+            public void locationUpdate(final GeoCoordFine location) {
+                serverManager.joinInstance(instanceID, location, new ServerManager.JoinInstanceEvent() {
+                    @Override
+                    public void noInstance() {
+
+                    }
+
+                    @Override
+                    public void alreadyJoined() {
+
+                    }
+
+                    @Override
+                    public void joined() {
+
+                    }
+                });
+                locationMagic.close();
+            }
+        });
+    }
 
     private void tryConnectToLobby(final PassCode passCode, final ConnectEvents connectEvents) {
         // runs in background thread

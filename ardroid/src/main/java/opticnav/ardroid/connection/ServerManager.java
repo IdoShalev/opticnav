@@ -1,12 +1,12 @@
 package opticnav.ardroid.connection;
 
 import android.os.Handler;
-import opticnav.ardd.ard.ARDConnected;
-import opticnav.ardd.ard.ARDConnectionStatus;
-import opticnav.ardd.ard.ARDGatekeeper;
+import opticnav.ardd.ard.*;
 import opticnav.ardd.broker.ard.ARDBroker;
+import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.chan.Channel;
+import opticnav.ardroid.location.LocationMagic;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
@@ -30,6 +30,12 @@ class ServerManager {
         public void connected();
     }
 
+    public interface JoinInstanceEvent {
+        public void noInstance();
+        public void alreadyJoined();
+        public void joined();
+    }
+
     public interface DisconnectEvent {
         public void gateKeeperDisconnect();
         public void connectedDisconnect();
@@ -39,8 +45,10 @@ class ServerManager {
     private final ExecutorService threadPool;
     private final ServerCommandQueue gateKeeperCommandQueue;
     private final ServerCommandQueue connectedCommandQueue;
+    private final ServerCommandQueue instanceCommandQueue;
     private ARDGatekeeper gateKeeper;
     private ARDConnected connected;
+    private ARDInstance instance;
 
     public ServerManager(final Handler handler, final DisconnectEvent disconnectEvent) {
         this.threadPool = Executors.newCachedThreadPool();
@@ -76,12 +84,29 @@ class ServerManager {
                 }
             }
         });
+        this.instanceCommandQueue = new ServerCommandQueue(handler, new ServerCommandQueue.FinishedEvent() {
+            @Override
+            public void finished() {
+                if (instance != null) {
+                    IOUtils.closeQuietly(instance);
+                    instance = null;
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            disconnectEvent.instanceDisconnect();
+                        }
+                    });
+                }
+            }
+        });
 
         threadPool.submit(gateKeeperCommandQueue);
         threadPool.submit(connectedCommandQueue);
+        threadPool.submit(instanceCommandQueue);
     }
 
     public void closeConnections() {
+        this.instanceCommandQueue.finish();
         this.connectedCommandQueue.finish();
         this.gateKeeperCommandQueue.finish();
     }
@@ -125,6 +150,31 @@ class ServerManager {
         });
     }
 
+    public void joinInstance(final int instanceID, final GeoCoordFine location, final JoinInstanceEvent joinInstanceEvent) {
+        enqueueConnectedCommand(new ServerManager.CommandWithParam<ARDInstanceJoinStatus, ARDConnected>() {
+            @Override
+            public ARDInstanceJoinStatus background(ARDConnected connected) throws IOException {
+                return connected.joinInstance(instanceID, location);
+            }
+
+            @Override
+            public void ui(ARDInstanceJoinStatus status) {
+                switch (status.getStatus()) {
+                    case NOINSTANCE:
+                        joinInstanceEvent.noInstance();
+                        break;
+                    case ALREADYJOINED:
+                        joinInstanceEvent.alreadyJoined();
+                    case JOINED:
+                        instance = status.getInstance();
+                        // TODO - set subscriber
+                        joinInstanceEvent.joined();
+                        break;
+                }
+            }
+        });
+    }
+
     public <E> void enqueueGatekeeperCommand(final CommandWithParam<E, ARDGatekeeper> cmd) {
         gateKeeperCommandQueue.enqueue(new ServerCommandQueue.Command<E>() {
             @Override
@@ -146,6 +196,9 @@ class ServerManager {
         connectedCommandQueue.enqueue(new ServerCommandQueue.Command<E>() {
             @Override
             public E background() throws IOException {
+                if (connected == null) {
+                    throw new IOException("Not connected to connected");
+                }
                 return cmd.background(connected);
             }
 

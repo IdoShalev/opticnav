@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,6 +36,15 @@ public class LobbyActivity extends Activity {
                     noInstancesView.setVisibility(View.VISIBLE);
                 } else {
                     listView.setAdapter(new MySimpleArrayAdapter(LobbyActivity.this, instancesList));
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            listView.setEnabled(false);
+
+                            final InstanceInfo info = (InstanceInfo)adapterView.getItemAtPosition(i);
+                            Application.getInstance().getServerUIHandler().joinInstance(info.getId());
+                        }
+                    });
                 }
             }
         });

@@ -20,7 +20,14 @@ public class GeoCoordFine {
         this.lng = lng;
         this.lat = lat;
     }
-    
+
+    /**
+     * Creates a GeoCoordFine object using doubles
+     *
+     * @param lng Longitude - a double from -180 to +180
+     * @param lat Latitude - a double from -90 to +90
+     * @return
+     */
     public static GeoCoordFine fromDouble(double lng, double lat) {
         final int x = (int)Math.round((lng/180)*LNG_MAX);
         final int y = (int)Math.round((lat/90)*LAT_MAX);

@@ -101,15 +101,17 @@ public class ARDIntegrationDriver {
     
     private static void joinInstance(ARDConnected connected, int instanceID) throws Exception {
         final GeoCoordFine initialLocation = new GeoCoordFine(-10000, +10000);
-        final ARDInstanceSubscriber subscriber;
-        subscriber = new LogARDInstanceSubscriber();
         
         final ARDInstanceJoinStatus status;
-        status = connected.joinInstance(instanceID, initialLocation, subscriber);
+        status = connected.joinInstance(instanceID, initialLocation);
         
         System.out.println("Status: " + status.getStatus());
         if (status.getStatus() == ARDInstanceJoinStatus.Status.JOINED) {
             try (final ARDInstance instance = status.getInstance()) {
+                final ARDInstanceSubscriber subscriber;
+                subscriber = new LogARDInstanceSubscriber();
+                instance.setSubscriber(subscriber);
+                
                 // move in a circle across the dimensions of the map
                 final MapTransform transform = instance.getMap().getTransform();
                 
