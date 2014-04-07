@@ -25,7 +25,9 @@ public class Instance implements AutoCloseable {
     
     @Override
     public void close() throws IOException {
-        this.info.mapImage.delete();
+        if (this.info.mapImage != null) {
+            this.info.mapImage.delete();
+        }
     }
     
     public InstanceInfo getInfo() {
