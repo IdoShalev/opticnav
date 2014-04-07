@@ -7,7 +7,9 @@ import android.content.DialogInterface;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.util.Pair;
-import opticnav.ardd.ard.*;
+import opticnav.ardd.ard.ARDConnected;
+import opticnav.ardd.ard.ARDGatekeeper;
+import opticnav.ardd.ard.InstanceInfo;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PassCode;
@@ -71,6 +73,12 @@ public class ServerUIHandler {
     public interface ListInstancesEvent {
         /** The list of actively running instances is received. listInstances() runs on the Android UI thread. */
         public void listInstances(List<InstanceInfo> list);
+    }
+
+    public interface JoinInstanceEvent {
+        public void noInstance();
+        public void alreadyJoined();
+        public void joined();
     }
 
     private final Context context;
@@ -251,7 +259,7 @@ public class ServerUIHandler {
         });
     }
 
-    public void joinInstance(final int instanceID) {
+    public void joinInstance(final int instanceID, final JoinInstanceEvent joinInstanceEvent) {
         // runs in UI thread
         final LocationManager mgr = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 
@@ -260,7 +268,6 @@ public class ServerUIHandler {
         locationMagic.setListener(new LocationMagic.Listener() {
             @Override
             public void responsivenessUpdate(boolean good) {
-
             }
 
             @Override
@@ -268,17 +275,17 @@ public class ServerUIHandler {
                 serverManager.joinInstance(instanceID, location, new ServerManager.JoinInstanceEvent() {
                     @Override
                     public void noInstance() {
-
+                        joinInstanceEvent.noInstance();
                     }
 
                     @Override
                     public void alreadyJoined() {
-
+                        joinInstanceEvent.alreadyJoined();
                     }
 
                     @Override
                     public void joined() {
-
+                        joinInstanceEvent.joined();
                     }
                 });
                 locationMagic.close();

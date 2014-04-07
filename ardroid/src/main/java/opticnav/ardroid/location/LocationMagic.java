@@ -5,8 +5,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import opticnav.ardd.protocol.GeoCoordFine;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 public class LocationMagic {
+    private static XLogger LOG = XLoggerFactory.getXLogger(LocationMagic.class);
+
     public interface Listener {
         /**
          * Called when location updates become noticeably responsive or unresponsive.
@@ -47,18 +51,22 @@ public class LocationMagic {
 
             @Override
             public void onLocationChanged(Location location) {
+                LOG.debug(location.toString());
+
                 final GeoCoordFine geoCoord;
                 geoCoord = GeoCoordFine.fromDouble(location.getLongitude(), location.getLatitude());
                 listener.locationUpdate(geoCoord);
             }
         };
 
+        LOG.info("LocationMagic listener set");
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this.locationListener);
     }
 
     public void close() {
         if (this.locationListener != null) {
             this.locationManager.removeUpdates(this.locationListener);
+            LOG.info("LocationMagic closed");
         }
     }
 }
