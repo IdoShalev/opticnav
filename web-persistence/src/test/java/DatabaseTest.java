@@ -40,15 +40,13 @@ public class DatabaseTest {
         ds.setUser("root");
         ds.setPassword("password");
         ds.setServerName("localhost");
-        ds.setDatabaseName("OpticNavDB");
+        ds.setDatabaseName("testDB");
         
         ds2 = new MysqlDataSource();
         ds2.setUser("root");
         ds2.setPassword("password");
         ds2.setServerName("localhost");
-        ds2.setDatabaseName("OpticNavDB");
-        //TODO
-        //create the database
+        ds2.setDatabaseName("testDB");
         
         publicBroker = new WebAccountPublicDAO(ds);
         //resourceBroker = new ResourceBroker(path, ds);
@@ -71,7 +69,7 @@ public class DatabaseTest {
     @Test
     public void test() throws Exception{
         //User registration
-        /*
+        
         assertEquals(true, publicBroker.registerAccount("user1", "password"));
         assertEquals(true, publicBroker.registerAccount("user2", "password"));
         assertEquals(true, publicBroker.registerAccount("user3", "password"));
@@ -79,8 +77,8 @@ public class DatabaseTest {
         assertEquals(false, publicBroker.registerAccount("", ""));
         assertEquals(false, publicBroker.registerAccount("", "password"));
         assertEquals(false, publicBroker.registerAccount("user9", ""));
-        */
         
+        /*
         //username and password validation
         assertEquals(1, publicBroker.verify("user1", "password"));
         assertEquals(2, publicBroker.verify("user2", "password"));
@@ -97,16 +95,13 @@ public class DatabaseTest {
         assertEquals(3, publicBroker.findName("user3"));
         assertEquals(0, publicBroker.findName("stranger"));
         assertEquals(0, publicBroker.findName(""));
+        */
         
         accountBroker1 = new WebAccountDAO(ds2, 1);
         accountBroker2 = new WebAccountDAO(ds, 2);
         accountBroker3 = new WebAccountDAO(ds, 3);
         
-        assertEquals(1234, accountBroker1.getARD());
-        accountBroker1.removeARD();
-        assertEquals(0, accountBroker1.getARD());
-        
-        
+        /*
         //set the ard id in the account table
         accountBroker1.setARD(1234);
         accountBroker2.setARD(5678);
@@ -123,6 +118,7 @@ public class DatabaseTest {
         assertEquals(0, accountBroker1.getARD());
         assertEquals(0, accountBroker2.getARD());
         assertEquals(0, accountBroker3.getARD());
+        */
         
         //resource creation
         try (CallableStatement cs = conn.prepareCall("{? = call addResource(?)}")){
@@ -130,19 +126,23 @@ public class DatabaseTest {
             cs.registerOutParameter(1, Types.INTEGER);
             
             cs.execute();
+            conn.commit();
             assertEquals(1, cs.getInt(1));
-            
+                        
             cs.setString(2, "type2");
             cs.registerOutParameter(1, Types.INTEGER);
             
             cs.execute();
+            conn.commit();
             assertEquals(2, cs.getInt(1));            
+            
             
             cs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         
+        /*
         //getting the resource type
         try (CallableStatement cs = conn.prepareCall("{? = call getResourceType(?)}")){
             cs.setInt(2, 1);
@@ -161,6 +161,7 @@ public class DatabaseTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        */
         
         //creating maps
         assertEquals(1, accountBroker1.createMap("map1", 1));
@@ -169,7 +170,7 @@ public class DatabaseTest {
         assertEquals(4, accountBroker2.createMap("map4", 1));
         assertEquals(0, accountBroker3.createMap("map9", 99));
         assertEquals(0, accountBroker3.createMap("", 1));
-        
+        /*
         //void modifyMap(int mapid, ModifyMap map)
         ModifyMap mMap = new ModifyMap();
         for(int i = 1; i < 4; i++){
@@ -181,6 +182,7 @@ public class DatabaseTest {
         accountBroker1.modifyMap(1, mMap);
         accountBroker2.modifyMap(2, mMap);  //user does not own that map        
         
+        /*
         //GetMap getMap(int id)
         GetMap gMap = new GetMap("map1", 1);
         for(int i = 1; i < 4; i++){
@@ -194,13 +196,14 @@ public class DatabaseTest {
         assertEquals(1, dbMap.getImageResource());
         List<Marker> ml = dbMap.getMarkers();
         List<Anchor> al = dbMap.getAnchors();
-        assertEquals(100, ml.get(1).getLat());
-        assertEquals(100, al.get(1).getLat());
+        assertEquals(100, ml.get(0).getLat());
+        assertEquals(100, al.get(0).getLat());
         
         //List<MapsListEntry> getMapsList()
         List<MapsListEntry> mle = accountBroker1.getMapsList();
-        assertEquals("map1", mle.get(1).getName());
-        assertEquals("1", mle.get(1).getId());
+        assertEquals("map1", mle.get(0).getName());
+        assertEquals(1, mle.get(0).getId());
+        */
         
         //void deleteMap(int id)
         accountBroker1.deleteMap(1);
