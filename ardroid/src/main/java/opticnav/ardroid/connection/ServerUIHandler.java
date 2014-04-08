@@ -16,6 +16,7 @@ import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelUtil;
 import opticnav.ardroid.location.LocationMagic;
+import opticnav.ardroid.model.MapModel;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
@@ -381,5 +382,9 @@ public class ServerUIHandler {
             public void ui(Void result) {
             }
         });
+    }
+
+    public MapModel getMapModel() {
+        return this.serverManager.getMapModel();
     }
 }

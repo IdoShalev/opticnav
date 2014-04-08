@@ -1,5 +1,7 @@
 package opticnav.ardroid.connection;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import opticnav.ardd.ard.*;
 import opticnav.ardd.broker.ard.ARDBroker;
@@ -7,12 +9,14 @@ import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardroid.location.LocationMagic;
+import opticnav.ardroid.model.MapModel;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,7 +25,7 @@ class ServerManager {
 
     public interface CommandWithParam<E, P> {
         public E background(P param) throws IOException;
-        public void ui(E result);
+        public void ui(E result) throws Exception;
     }
 
     public interface ConnectedEvent {
@@ -51,6 +55,7 @@ class ServerManager {
     private ARDGatekeeper gateKeeper;
     private ARDConnected connected;
     private ARDInstance instance;
+    private MapModel mapModel;
 
     public ServerManager(final Handler handler, final DisconnectEvent disconnectEvent) {
         this.threadPool = Executors.newCachedThreadPool();
@@ -154,9 +159,15 @@ class ServerManager {
             @Override
             public void ui(ARDConnectionStatus.Status result) {
                 switch (result) {
-                    case NOPASSCODE: connectedEvent.noPassCode(); break;
-                    case ALREADYCONNECTED: connectedEvent.alreadyConnected(); break;
-                    case CONNECTED: connectedEvent.connected(); break;
+                    case NOPASSCODE:
+                        connectedEvent.noPassCode();
+                        break;
+                    case ALREADYCONNECTED:
+                        connectedEvent.alreadyConnected();
+                        break;
+                    case CONNECTED:
+                        connectedEvent.connected();
+                        break;
                 }
             }
         });
@@ -170,7 +181,7 @@ class ServerManager {
             }
 
             @Override
-            public void ui(ARDInstanceJoinStatus status) {
+            public void ui(ARDInstanceJoinStatus status) throws IOException {
                 switch (status.getStatus()) {
                     case NOINSTANCE:
                         joinInstanceEvent.noInstance();
@@ -178,13 +189,26 @@ class ServerManager {
                     case ALREADYJOINED:
                         joinInstanceEvent.alreadyJoined();
                     case JOINED:
-                        instance = status.getInstance();
-                        // TODO - set subscriber
+                        setInstance(status.getInstance());
+
                         joinInstanceEvent.joined();
                         break;
                 }
             }
         });
+    }
+
+    private void setInstance(ARDInstance instance) throws IOException {
+        this.instance = instance;
+        InputStream input = this.instance.getMap().getImageInputStream();
+        try {
+            Bitmap bitmap = BitmapFactory.decodeStream(input);
+            this.mapModel = new MapModel(bitmap);
+
+            instance.setSubscriber(new InstanceSubscriber(this.mapModel, instance.getMap().getTransform()));
+        } finally {
+            input.close();
+        }
     }
 
     public <E> void enqueueGatekeeperCommand(final CommandWithParam<E, ARDGatekeeper> cmd) {
@@ -198,7 +222,7 @@ class ServerManager {
             }
 
             @Override
-            public void ui(E result) {
+            public void ui(E result) throws Exception {
                 cmd.ui(result);
             }
         });
@@ -215,9 +239,13 @@ class ServerManager {
             }
 
             @Override
-            public void ui(E result) {
+            public void ui(E result) throws Exception {
                 cmd.ui(result);
             }
         });
+    }
+
+    public MapModel getMapModel() {
+        return mapModel;
     }
 }

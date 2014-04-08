@@ -2,41 +2,31 @@ package opticnav.ardroid.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
 import opticnav.ardroid.model.*;
 import opticnav.ardroid.ui.marker.MarkerState;
 
-import java.io.IOException;
-
 public class MapActivity extends Activity {
+    private MapModel mapModel;
     private MapView mapView;
     private Thread timerThread;
-    private Thread mapModelUpdateThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         this.mapView = (MapView)findViewById(R.id.map);
 
-        try {
-            MapPRSimulation mapSimulation = new MapPRSimulation(this);
-            MapModel mapModel = mapSimulation.getModel();
-
-            mapModel.setObserver(new MapModelObserverAsync(this, mapView));
-            this.mapView.setModel(mapModel);
-
-            mapModelUpdateThread = new Thread(mapSimulation);
-            mapModelUpdateThread.start();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.mapModel = Application.getInstance().getServerUIHandler().getMapModel();
+        this.mapModel.setObserver(new MapModelObserverAsync(this, mapView));
+        this.mapView.setModel(mapModel);
     }
 
     @Override
     protected void onDestroy() {
+        mapModel.unsetObserver();
         super.onDestroy();
-        mapModelUpdateThread.interrupt();
     }
 
     @Override

@@ -19,11 +19,6 @@
             <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="Detect a nearby server"
-                    android:id="@+id/detectServer" android:layout_gravity="center_vertical"/>
-            <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
                     android:text="Configure server"
                     android:onClick="configureServer"
                     android:id="@+id/configureServer" android:layout_gravity="center_vertical"/>

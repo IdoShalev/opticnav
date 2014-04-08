@@ -36,15 +36,6 @@ public class WelcomeActivity extends Activity {
         } catch (IOException e) {
             LOG.catching(e);
         }
-
-        Button detectServer = (Button)findViewById(R.id.detectServer);
-        detectServer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(WelcomeActivity.this, MapActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     // onClick

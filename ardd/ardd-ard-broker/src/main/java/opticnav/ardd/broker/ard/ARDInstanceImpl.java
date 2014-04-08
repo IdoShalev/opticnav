@@ -38,7 +38,7 @@ public class ARDInstanceImpl implements ARDInstance {
 
     @Override
     public void close() throws IOException {
-        if (this.subscriberResult != null) {
+        if (this.subscriberResult == null) {
             throw new IllegalStateException("A subscriber was never set! This could (or did) cause serious problems!");
         }
         

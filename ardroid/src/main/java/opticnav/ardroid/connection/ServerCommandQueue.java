@@ -17,7 +17,7 @@ public final class ServerCommandQueue implements Runnable {
 
     public interface Command<E> {
         public abstract E background() throws IOException;
-        public void ui(E result);
+        public void ui(E result) throws Exception;
     }
 
     public interface FinishedEvent {
@@ -44,7 +44,12 @@ public final class ServerCommandQueue implements Runnable {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        command.ui(result);
+                        try {
+                            command.ui(result);
+                        } catch (Exception e) {
+                            // this is fatal. Make the application crash with it.
+                            throw new RuntimeException(e);
+                        }
                     }
                 });
             }
