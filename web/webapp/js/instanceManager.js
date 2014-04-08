@@ -1,8 +1,14 @@
+/**
+ * Handles the functionality in the Instance Manager.
+ * 
+ * @author Danny, Ido
+ */
 var usersList = [];
 var selectedMapId;
 
 var slided = false;
 
+//Create a sliding effect when starting an instance or stopping one
 var sectionsSlider = {
 	init: function() {
 		var wrapper = $("#instance-wrapper");
@@ -47,7 +53,7 @@ $(function(){
 	var startInstanceMessagable = createElemMessagable("#start-instance-message", "#start-instance-loader");
 	var stopInstanceMessagable = createElemMessagable("#instance-info-message", "#stop-instance-loader");
 	var mapSelection = $("#mapSelection");
-	
+	//Retrieve and print the instance information
 	function getCurrentInstances() {
 		$.ajax({
 			type : "GET",
@@ -99,6 +105,7 @@ $(function(){
     		})
     	});
     })
+    //Start an instance if map is defined
     $("#instaB").click(function() {
     	var invited = $("inst-selected-users");
     	var invitedList = [];
@@ -122,7 +129,7 @@ $(function(){
 			});
 		}
     });
-
+    //Load the list of maps to the website interface
 	loadMapsListAJAX(startInstanceMessagable, function(maps) {
 		for (var i = 0; i < maps.length; i++) {
 			var map = maps[i];
@@ -150,6 +157,7 @@ $(function(){
 		instanceInvite();
 	});
 	
+	//Gets a name from the user and, if valid, add the name of the account to a list
 	function instanceInvite(){
 		var username = $("#invite-to-inst").val();
 		if (username === "") {
@@ -180,7 +188,7 @@ $(function(){
 			});
 		}
 	}
-	
+	//Create a list of users into the invited user list
 	function createList(usersList) {
 		var selectedUsers = $("#inst-select-users");
 		selectedUsers.empty();
@@ -198,7 +206,7 @@ $(function(){
 			selectedUsers.append($li);	
 		}
 	}
-	
+	//Add an id to the delete button
 	function removeFromList(id, usersList) {
 		for (var i = 0; i < usersList.length; i++) {
 			if (id === usersList[i].id) {
@@ -209,15 +217,16 @@ $(function(){
 	}
 	
 	var mapList = $("#map-list");
-	    
-    
+	
     mapList.hide();
     mapList.empty();
-
+    //Load the list of maps that the user might have
     loadMapsListAJAX($("#MapMessage"), function(maps) {
         function addEntry(name, id) {
-            /* Append a <entry> surrounded by an <a>
-             * Example output: <a href="javascript:loadMap(1)"><entry>Map 1</entry></a> */
+            /*
+			 * Append a <entry> surrounded by an <a> Example output: <a
+			 * href="javascript:loadMap(1)"><entry>Map 1</entry></a>
+			 */
         	var entry = $('<entry>', {"mapID": id});
         	entry.text(name);
         	entry.click(function() {
@@ -233,17 +242,21 @@ $(function(){
 
 		mapList.fadeIn();
     });
+    //Slides the screen to the instance controller to start an instance
     function useInstanceController() {
     	sectionsSlider.setIndex(0);
     	$("#stop-instance").attr("disabled", true);
     	$("#instaB").attr("disabled", false);
     }
+    //Slides the screen to the information section when an instance is started
     function useInstanceInfo() {
     	sectionsSlider.setIndex(1);
     	$("#instaB").attr("disabled", true);
     	$("#stop-instance").attr("disabled", false);
     }
 });
+//Saves the current selected map's Id into a global variable
+//This is used to make sure the instance starts with the selected map
 function selectMap(id) {
 	// Unselect all other entries
 	$("entry").removeClass("selected");
