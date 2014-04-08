@@ -1,3 +1,6 @@
+/**
+ * Handles the passing of registerARD code generated from the ARDDaemon, to the
+ */
 $(function() {
 	var messagable = createElemMessagable("#message", "#message-loader");
 	

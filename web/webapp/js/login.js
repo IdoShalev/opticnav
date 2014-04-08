@@ -1,3 +1,6 @@
+/**
+ * Java Script for index.jsp handles login verification and the slideshow display
+ */
 $(function() {
 	var messagable = createElemMessagable("#message", "#message-loader");
 	
@@ -9,7 +12,8 @@ $(function() {
 		
 		object.username = username;
 		object.password = password;
-
+		
+		//Request login verification
 		$.ajax({
 		 type: "POST",
 		 url: ctx+"/api/account/login",
@@ -24,6 +28,7 @@ $(function() {
 	});
 });
 	
+//http://snook.ca/archives/javascript/simplest-jquery-slideshow
 $(document).ready(function() {
 	$('#slideShow div:gt(0)').hide();
 	setInterval(function(){

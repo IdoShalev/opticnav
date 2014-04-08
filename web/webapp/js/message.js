@@ -1,3 +1,11 @@
+/**
+ * Displays JSON messages responses from REST Controllers and displays it on
+ * our Web Pages
+ * @param elem
+ * @param elemLoader
+ * @returns {___anonymous1079_1197}
+ */
+
 function createElemMessagable(elem, elemLoader) {
 	var jQueryElem;
 	var jQueryElemLoader;
