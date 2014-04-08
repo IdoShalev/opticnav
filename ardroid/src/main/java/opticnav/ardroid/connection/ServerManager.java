@@ -43,17 +43,27 @@ class ServerManager {
     }
 
     private final ExecutorService threadPool;
-    private final ServerCommandQueue gateKeeperCommandQueue;
-    private final ServerCommandQueue connectedCommandQueue;
-    private final ServerCommandQueue instanceCommandQueue;
+    private final Handler handler;
+    private final DisconnectEvent disconnectEvent;
+    private ServerCommandQueue gateKeeperCommandQueue;
+    private ServerCommandQueue connectedCommandQueue;
+    private ServerCommandQueue instanceCommandQueue;
     private ARDGatekeeper gateKeeper;
     private ARDConnected connected;
     private ARDInstance instance;
 
     public ServerManager(final Handler handler, final DisconnectEvent disconnectEvent) {
         this.threadPool = Executors.newCachedThreadPool();
+        this.handler = handler;
+        this.disconnectEvent = disconnectEvent;
+        init();
+    }
+
+    private void init() {
+        // yeah, it's bad that this is a method to be recalled. but honestly, Android concurrency BLOWS.
         this.gateKeeper = null;
         this.connected  = null;
+        this.instance   = null;
         this.gateKeeperCommandQueue = new ServerCommandQueue(handler, new ServerCommandQueue.FinishedEvent() {
             @Override
             public void finished() {
@@ -109,6 +119,8 @@ class ServerManager {
         this.instanceCommandQueue.finish();
         this.connectedCommandQueue.finish();
         this.gateKeeperCommandQueue.finish();
+
+        init();
     }
 
     public void connectToServer(final Channel channel) {
