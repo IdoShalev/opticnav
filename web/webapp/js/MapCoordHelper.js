@@ -43,6 +43,36 @@ var MapCoordHelper = function() {
     function longitudeNumberToRepr(num) {
         return gpsNotationNumberToRepr(num, 180, 'E', 'W');
     }
+    
+    function isAnchorValid(a) {
+		return (a !== null && a.gps !== null);
+    }
+    
+    function _getAbridgedAnchorsList(anchors) {
+    	var anchor_idx = 0;
+    	
+    	// returns a valid anchor, or null if there are no more anchors
+    	function getNextAnchor() {
+    		while (anchor_idx < anchors.length) {
+    			var a = anchors[anchor_idx++];
+    			if (isAnchorValid(a)) {
+    				return a;
+    			}
+    		}
+    		return null;
+    	}
+    	
+    	var anchor0 = getNextAnchor();
+    	var anchor1 = getNextAnchor();
+    	var anchor2 = getNextAnchor();
+    	
+    	// oh god why...
+    	if (anchor0 === null || anchor1 === null || anchor2 === null) {
+    		return [];
+    	}
+    	
+    	return [anchor0, anchor1, anchor2];
+    }
 
     return {
         // Functions to convert GPS representations to numbers and vice-versa
@@ -65,48 +95,26 @@ var MapCoordHelper = function() {
             ]
         */
         getImageLocalGPSTransform: function(anchors) {
-        	var anchor_idx = 0;
-        	
-        	// returns a GPS coordinate, or null if there are no more anchors
-        	function getNextAnchor() {
-        		var anchor = null;
-        		while (anchor_idx < anchors.length && anchor === null) {
-        			var a = anchors[anchor_idx++];
-        			if (a !== null || a.gps !== null) {
-        				anchor = a;
-        			}
-        		}
-        		return anchor;
-        	}
-        	
-        	var anchor0 = getNextAnchor();
-        	var anchor1 = getNextAnchor();
-        	var anchor2 = getNextAnchor();
-        	
-        	// oh god why...
-        	if (anchor0 === null || anchor1 === null || anchor2 === null) {
-        		return null;
-        	}
-        	
-        	if (anchor0.gps === null || anchor1.gps === null || anchor2.gps === null) {
+        	var a = _getAbridgedAnchorsList(anchors);
+        	if (a.length < 3) {
         		return null;
         	}
         	
             // GPS coordinates
-            var gx0 = anchor0.gps.lng;
-            var gy0 = anchor0.gps.lat;
-            var gx1 = anchor1.gps.lng;
-            var gy1 = anchor1.gps.lat;
-            var gx2 = anchor2.gps.lng;
-            var gy2 = anchor2.gps.lat;
+            var gx0 = a[0].gps.lng;
+            var gy0 = a[0].gps.lat;
+            var gx1 = a[1].gps.lng;
+            var gy1 = a[1].gps.lat;
+            var gx2 = a[2].gps.lng;
+            var gy2 = a[2].gps.lat;
             
             // Image-local coordinates
-            var px0 = anchor0.local.x;
-            var py0 = anchor0.local.y;
-            var px1 = anchor1.local.x
-            var py1 = anchor1.local.y;
-            var px2 = anchor2.local.x;
-            var py2 = anchor2.local.y;
+            var px0 = a[0].local.x;
+            var py0 = a[0].local.y;
+            var px1 = a[1].local.x
+            var py1 = a[1].local.y;
+            var px2 = a[2].local.x;
+            var py2 = a[2].local.y;
             
             // Some very complicated formulas churned out by wxMaxima.
             /*
@@ -145,6 +153,15 @@ gy2 = m10*px2 + m11*py2 + m12
                             y: Math.round(y)};
                 }
             }
+        },
+        
+        isAnchorsListValid: function(anchors) {
+        	var a = _getAbridgedAnchorsList(anchors);
+        	return a.length >= 3;
+        },
+
+        getAbridgedAnchorsList: function(anchors) {
+        	return _getAbridgedAnchorsList(anchors);
         }
     };
 }();

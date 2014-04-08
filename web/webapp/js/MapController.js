@@ -334,15 +334,15 @@ var MapController = function() {
         toggleAnchorMode: function() {
         	var list = currentMap.getAnchorList();
         	
-        	if(list.length < 3){
+        	if(MapCoordHelper.isAnchorsListValid(list)){
+       		    if (currentMap !== null) {
+                    setAnchorMode.call(this, !anchorMode);
+                }
+        	}else{
         		$("#modal-backdrop").fadeIn();
     	        $("#alert-message").text("You can't place markers with less" +
     	        		" than three anchors");
             	$("#alert-popup").fadeIn();
-        	}else{
-        		 if (currentMap !== null) {
-                     setAnchorMode.call(this, !anchorMode);
-                 }
         	}
         },
         

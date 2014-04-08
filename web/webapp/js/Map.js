@@ -38,6 +38,7 @@ var Map = function(mapPersistence, complete, errorElem) {
         },
         // Saves the Map anchors and markers using the PUT /map controller
         save: function(onComplete) {
+        	anchors = MapCoordHelper.getAbridgedAnchorsList(anchors);
         	mapPersistence.save(markers, anchors, function(ok, message) {
         		if (ok) {
         			dirty = false;
