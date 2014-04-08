@@ -123,7 +123,6 @@ public class Application extends android.app.Application {
         public void registered(PassCode passCode) {
             Toast.makeText(context, "Registered!", Toast.LENGTH_LONG).show();
             setPassCode(passCode);
-            authenticate();
         }
 
         @Override

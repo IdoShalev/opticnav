@@ -351,6 +351,7 @@ public class ServerUIHandler {
                                 connectEvents.registered(passCode);
                             }
                         });
+                        tryConnectToLobby(passCode, connectEvents);
                     }
 
                     @Override
