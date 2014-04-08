@@ -1,5 +1,8 @@
 /**
- * Handles the passing of registerARD code generated from the ARDDaemon, to the
+ * Links the code that is displayed on the ARD to a USER account
+ * Also handles the unlinking of the ARD from the User account
+ * 
+ * @Authors Jacky Huynh, Danny Spencer, Ido Shalev
  */
 $(function() {
 	var messagable = createElemMessagable("#message", "#message-loader");

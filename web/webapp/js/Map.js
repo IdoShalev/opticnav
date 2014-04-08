@@ -1,8 +1,10 @@
-/* 
+/**
  * The Map model class contains all data needed to store and show a map.
  * Whenever a new Map is needed, the old object is trashed by the controller
  * and a new one is constructed. This avoids fragile resetting of variables.
  * This contains absolutely NO view logic.
+ * 
+ * @Authors Jacky Huynh, Danny Spencer
  */
 var Map = function(mapPersistence, complete, errorElem) {
     // Constructors, setting "private attributes and methods"

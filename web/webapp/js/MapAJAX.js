@@ -1,3 +1,8 @@
+/**
+ * AJAX request for the Map Manager, handles fetching the resources for saved maps.
+ * 
+ * @author Danny Spencer
+ */
 var MapAJAX = function(id) {
 	return {
 		load : function(map, loader, messagable, onComplete) {
@@ -7,36 +12,7 @@ var MapAJAX = function(id) {
 				contentType : "application/json; charset=utf-8",
 				complete : ajaxMessageClosureOnError(messagable, function(json) {
 					loader.loadMarkers(json.marker);
-					// loader.loadAnchors(json.anchor);
-					var anchors = [ {
-						"gps" : {
-							"lng" : -41072424,
-							"lat" : 18383378
-						},
-						"local" : {
-							"x" : 463,
-							"y" : 346
-						}
-					}, {
-						"gps" : {
-							"lng" : -41071669,
-							"lat" : 18383259
-						},
-						"local" : {
-							"x" : 714,
-							"y" : 409
-						}
-					}, {
-						"gps" : {
-							"lng" : -41071005,
-							"lat" : 18383656
-						},
-						"local" : {
-							"x" : 937,
-							"y" : 200
-						}
-					} ];
-					loader.loadAnchors(anchors);
+					loader.loadAnchors(json.anchor);					
 
 					img = new Image();
 					img.src = ctx + "/api/resource/" + json.imageResource;

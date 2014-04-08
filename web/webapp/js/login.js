@@ -1,5 +1,7 @@
 /**
  * Java Script for index.jsp handles login verification and the slideshow display
+ * 
+ * @author Jacky Huynh, Danny Spencer
  */
 $(function() {
 	var messagable = createElemMessagable("#message", "#message-loader");

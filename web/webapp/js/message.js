@@ -1,6 +1,9 @@
 /**
  * Displays JSON messages responses from REST Controllers and displays it on
  * our Web Pages
+ * 
+ * @Authors Jacky Huynh, Danny Spencer
+ * 
  * @param elem
  * @param elemLoader
  * @returns {___anonymous1079_1197}

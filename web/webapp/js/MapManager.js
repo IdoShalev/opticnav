@@ -1,3 +1,8 @@
+/**
+ * Manages the UI elements of the map, Map list, buttons, popups.
+ * 
+ * @author Jacky Huynh, Danny Spencer
+ */
 function loadMapsList() {
 	//var messagable = createElemMessagable("#MapMessage");
     var mapList = $("#map-list");

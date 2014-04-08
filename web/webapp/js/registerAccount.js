@@ -1,3 +1,8 @@
+/**
+ * Handles the Registering of a new USER account, does basic form checks
+ * 
+ * @author Jacky Huynh, Danny Spencer
+ */
 $(function() {
 	var messagable = createElemMessagable("#message", "#message-loader");
 	$("#register-account").submit(function(event) {

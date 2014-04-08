@@ -1,6 +1,8 @@
-/*
+/**
  * The MapController class drives the view (HTML elements).
  * It handles all button clicks, marker clicks, updating the elements, etc.
+ * 
+ * @author Jacky Huynh, Danny Spencer
  */
 
 var persistenceMessageable;
