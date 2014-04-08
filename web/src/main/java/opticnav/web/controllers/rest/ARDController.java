@@ -82,9 +82,12 @@ public class ARDController extends Controller {
     @ResponseBody
     public Message unregisterARD() throws Exception {
         try (WebAccountDAO dao = new WebAccountDAO(dbDataSource, userSession.getUser().getId())) {
-            dao.removeARD();
+            if (dao.removeARD()) {
+                return ok("ard.unregistered");
+            } else {
+                throw new NotFound("ard.unregister.doesnotexist");
+            }
         }
         
-        return ok("ard.unregistered");
     }
 }
