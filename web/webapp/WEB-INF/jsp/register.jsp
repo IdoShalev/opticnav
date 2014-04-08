@@ -5,10 +5,10 @@
 		<h3>Get Started</h3>
 		<form id="register-account">
 			<input type="text" id="username" placeholder="Username"
-				class="registerPage"><input type="password"
-				id="password" placeholder="Password" class="registerPage">
-			<input type="password" id="confirmPassword"
-				placeholder="Confirm Password" class="registerPage">
+				class="registerPage"><input type="password" id="password"
+				placeholder="Password" class="registerPage"> <input
+				type="password" id="confirmPassword" placeholder="Confirm Password"
+				class="registerPage">
 			<button type="submit">
 				Sign Up
 				<div id="message-loader" class="loader-adjacent"></div>

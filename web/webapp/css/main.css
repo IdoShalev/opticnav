@@ -1,4 +1,5 @@
 @import "header.css";
+
 @import "buttons.css";
 
 body {
@@ -10,8 +11,8 @@ body {
 header {
 	margin: 0;
 	padding-top: 1em;
-	background: rgba(255,255,255,0.4);
-    background-color: rgba(0, 0, 0, 0.3);
+	background: rgba(255, 255, 255, 0.4);
+	background-color: rgba(0, 0, 0, 0.3);
 	box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
 	position: relative;
 	z-index: 10;
@@ -59,58 +60,91 @@ header {
 }
 
 /* Loader animation, courtesy of https://github.com/padolsey/Sonic */
-@-webkit-keyframes loaderSprite {
-    from { background-position: 0px; }
-    to { background-position: -510px; }
+@
+-webkit-keyframes loaderSprite {from { background-position:0px;
+	
 }
 
-@-moz-keyframes loaderSprite {
-    from { background-position: 0px; }
-    to { background-position: -510px; }
+to {
+	background-position: -510px;
 }
 
-@keyframes loaderSprite {
-    from { background-position: 0px; }
-    to { background-position: -510px; }
+}
+@
+-moz-keyframes loaderSprite {from { background-position:0px;
+	
 }
 
-.loader, .loader-adjacent {
+to {
+	background-position: -510px;
+}
+
+}
+@
+keyframes loaderSprite {from { background-position:0px;
+	
+}
+
+to {
+	background-position: -510px;
+}
+
+}
+.loader,.loader-adjacent {
 	display: none;
-    width: 30px;
-    height: 30px;
-    background-image: url("../css/images/loader.png");
-    -webkit-animation: loaderSprite 0.5666666666666667s steps(17, end) infinite;
-    -moz-animation: loaderSprite 0.5666666666666667s steps(17, end) infinite;
-    animation: loaderSprite 0.5666666666666667s steps(17, end) infinite;
+	width: 30px;
+	height: 30px;
+	background-image: url("../css/images/loader.png");
+	-webkit-animation: loaderSprite 0.5666666666666667s steps(17, end)
+		infinite;
+	-moz-animation: loaderSprite 0.5666666666666667s steps(17, end) infinite;
+	animation: loaderSprite 0.5666666666666667s steps(17, end) infinite;
 }
 
 .loader-adjacent {
 	position: absolute;
 	top: 0;
-	right: -40px; 
+	right: -40px;
 }
 
-@-webkit-keyframes loaderSpriteLarge {
-    from { background-position: 0px; }
-    to { background-position: -1700px; }
+@
+-webkit-keyframes loaderSpriteLarge {from { background-position:0px;
+	
 }
 
-@-moz-keyframes loaderSpriteLarge {
-    from { background-position: 0px; }
-    to { background-position: -1700px; }
+to {
+	background-position: -1700px;
 }
 
-@keyframes loaderSpriteLarge {
-    from { background-position: 0px; }
-    to { background-position: -1700px; }
+}
+@
+-moz-keyframes loaderSpriteLarge {from { background-position:0px;
+	
 }
 
+to {
+	background-position: -1700px;
+}
+
+}
+@
+keyframes loaderSpriteLarge {from { background-position:0px;
+	
+}
+
+to {
+	background-position: -1700px;
+}
+
+}
 .loader-large {
-    display: none;
-    width: 100px;
-    height: 100px;
-    background-image: url("../css/images/loader-large.png");
-    -webkit-animation: loaderSpriteLarge 0.5666666666666667s steps(17, end) infinite;
-    -moz-animation: loaderSpriteLarge 0.5666666666666667s steps(17, end) infinite;
-    animation: loaderSpriteLarge 0.5666666666666667s steps(17, end) infinite;
+	display: none;
+	width: 100px;
+	height: 100px;
+	background-image: url("../css/images/loader-large.png");
+	-webkit-animation: loaderSpriteLarge 0.5666666666666667s steps(17, end)
+		infinite;
+	-moz-animation: loaderSpriteLarge 0.5666666666666667s steps(17, end)
+		infinite;
+	animation: loaderSpriteLarge 0.5666666666666667s steps(17, end) infinite;
 }

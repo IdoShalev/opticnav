@@ -3,14 +3,16 @@
 	overflow: hidden;
 	display: inline-block;
 	position: relative;
-    padding:10px;
+	padding: 10px;
 }
+
 #supportPage {
 	position: relative;
 	overflow: hidden;
-	float:left;
+	float: left;
 }
+
 #support {
 	margin: 0px auto;
-    width: 100%;
+	width: 100%;
 }
