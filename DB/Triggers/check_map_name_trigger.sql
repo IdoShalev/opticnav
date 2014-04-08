@@ -11,6 +11,12 @@ CREATE TRIGGER check_map_name_trigger BEFORE INSERT ON `MAP`
         SET msg = ('Map name is an empty String');
         SIGNAL sqlstate '45000' SET message_text = msg;
      END IF;
+
+     IF (SELECT EXISTS(SELECT 1 FROM RESOURCE WHERE resource_id = NEW.resource_id) = 0)
+     THEN
+        SET msg = ('Map resource does not exist');
+        SIGNAL sqlstate '45000' SET message_text = msg;
+     END IF;
     END//
 
 DELIMITER ;

@@ -13,6 +13,11 @@ CREATE FUNCTION createMap
 RETURNS INT
 DETERMINISTIC
 BEGIN    
+    DECLARE duplicate_user CONDITION FOR SQLSTATE '45000';
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        RETURN 0;
+    END;
     INSERT INTO MAP
     (name, resource_id, web_account_id)
     VALUES
