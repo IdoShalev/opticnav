@@ -1,27 +1,23 @@
 package opticnav.ardroid.ui;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.PictureDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import com.caverock.androidsvg.SVG;
-import com.caverock.androidsvg.SVGParseException;
+import com.google.inject.Inject;
 import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
+import opticnav.ardroid.connection.ConnectToServerSingleton;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 
-import java.io.IOException;
-
 @ContentView(R.layout.activity_welcome)
 public class WelcomeActivity extends RoboActivity {
     private static final XLogger LOG = XLoggerFactory.getXLogger(WelcomeActivity.class);
+
+    @Inject
+    private ConnectToServerSingleton connectToServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +32,7 @@ public class WelcomeActivity extends RoboActivity {
 
     // onClick
     public void testingMode(View view) {
-        Application.getInstance().connectWithADBForward();
+        connectToServer.connectWithADBForward();
     }
 
     @Override

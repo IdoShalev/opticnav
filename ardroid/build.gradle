@@ -19,8 +19,7 @@ dependencies {
     compile 'com.github.tony19:logback-android-core:1.1.1-2'
     compile 'com.github.tony19:logback-android-classic:1.1.1-2'
 
-    // render SVG graphics with ease!
-    compile 'com.caverock:androidsvg:1.2.1'
+    compile "com.android.support:support-v4:19.0.1"
 
     // Dependency injection
     compile 'org.roboguice:roboguice:2.0'

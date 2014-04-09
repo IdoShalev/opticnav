@@ -59,11 +59,6 @@ public class Application extends android.app.Application {
         return context;
     }
 
-    private static final int ADB_PORT = 6666;
-    private static final String PREFS_SERVERHOST = "serverHost";
-    private static final String PREFS_SERVERPORT = "serverPort";
-    private static final String PREFS_PASSCODE = "passCode";
-
     public final Lifecycle<WelcomeActivity> welcome = new Lifecycle<WelcomeActivity>();
     public final Lifecycle<ServerConfigActivity> serverConfig = new Lifecycle<ServerConfigActivity>();
     public final Lifecycle<MapActivity> map = new Lifecycle<MapActivity>();
@@ -75,7 +70,6 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         LOG.info("Application created");
-        this.prefs = getSharedPreferences("OpticNav", 0);
         this.context = this;
         this.serverUIHandler = new ServerUIHandler(this, new ServerUIHandler.OnDisconnect() {
             @Override
@@ -90,89 +84,6 @@ public class Application extends android.app.Application {
 
     public ServerUIHandler getServerUIHandler() {
         return this.serverUIHandler;
-    }
-
-    private class ConnectEvents implements ServerUIHandler.ConnectEvents {
-        @Override
-        public void connectionError(Exception e) {
-            LOG.catching(e);
-            Toast.makeText(context, "Connection error\nReason: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        public void connectionCancelled() {
-            Toast.makeText(context, "Connection cancelled", Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        public void authenticate() {
-            Intent intent = new Intent(context, InstancesActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-        }
-
-        @Override
-        public void confCode(ConfCode confCode, ARDGatekeeper.Cancellation cancellation) {
-            Intent intent = new Intent(context, ConfCodeActivity.class);
-            intent.putExtra("confcode", confCode.getString());
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-        }
-
-        @Override
-        public void registered(PassCode passCode) {
-            Toast.makeText(context, "Registered!", Toast.LENGTH_LONG).show();
-            setPassCode(passCode);
-        }
-
-        @Override
-        public void couldNotRegister() {
-
-        }
-
-        @Override
-        public void confCodeCancelled() {
-
-        }
-    }
-
-    public void connectWithADBForward() {
-        this.serverUIHandler.connectWithADBForward(ADB_PORT, getPassCode(), new ConnectEvents());
-    }
-
-    public void connectToServer(final String host, final int port) {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(PREFS_SERVERHOST, host);
-        editor.putInt(PREFS_SERVERPORT, port);
-        editor.commit();
-
-        this.serverUIHandler.connect(host, port, getPassCode(), new ConnectEvents());
-    }
-
-    public String getPreferencesServerHost() {
-        return prefs.getString(PREFS_SERVERHOST, "");
-    }
-
-    public int getPreferencesServerPort() {
-        return prefs.getInt(PREFS_SERVERPORT, Protocol.DEFAULT_ARD_PORT);
-    }
-
-    private PassCode getPassCode() {
-        final String passCodeString = prefs.getString(PREFS_PASSCODE, null);
-        boolean isValid = passCodeString != null && PassCode.isStringCodeValid(passCodeString);
-        if (isValid) {
-            return new PassCode(passCodeString);
-        } else {
-            return null;
-        }
-    }
-
-    private void setPassCode(PassCode passCode) {
-        LOG.info("Setting passCode: " + passCode.getString());
-
-        final SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(PREFS_PASSCODE, passCode.getString());
-        editor.commit();
     }
 
     private void createConnectionNotification() {

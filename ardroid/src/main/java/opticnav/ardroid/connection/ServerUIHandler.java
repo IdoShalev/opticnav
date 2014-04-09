@@ -144,44 +144,49 @@ public class ServerUIHandler {
         }).start();
     }
 
-    public void connect(String host, int port, final PassCode passCode,
+    public void connect(final String host, final int port, final PassCode passCode,
                                                  final ConnectEvents connectEvents) {
         // if a passcode is stored and connection works, go to the Lobby activity
         // if not, go to the RegisterARD activity to request a passcode
 
-        final SocketAddress addr = new InetSocketAddress(host, port);
-        final Handler handler = new Handler(context.getMainLooper());
-
-        cancellableSocket.set(CancellableSocket.connect(addr, CONNECTION_TIMEOUT, new CancellableSocket.ConnectionEvent() {
+        new Thread(new Runnable() {
             @Override
-            public void cancelled() {
-                handler.post(new Runnable() {
+            public void run() {
+                final SocketAddress addr = new InetSocketAddress(host, port);
+                final Handler handler = new Handler(context.getMainLooper());
+
+                cancellableSocket.set(CancellableSocket.connect(addr, CONNECTION_TIMEOUT, new CancellableSocket.ConnectionEvent() {
                     @Override
-                    public void run() {
-                        connectEvents.connectionCancelled();
+                    public void cancelled() {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                connectEvents.connectionCancelled();
+                            }
+                        });
                     }
-                });
-            }
 
-            @Override
-            public void error(final IOException e) {
-                handler.post(new Runnable() {
                     @Override
-                    public void run() {
-                        connectEvents.connectionError(e);
+                    public void error(final IOException e) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                connectEvents.connectionError(e);
+                            }
+                        });
                     }
-                });
-            }
 
-            @Override
-            public void connected(Socket socket) {
-                try {
-                    connectWithSocket(socket, passCode, connectEvents);
-                } catch (IOException e) {
-                    error(e);
-                }
+                    @Override
+                    public void connected(Socket socket) {
+                        try {
+                            connectWithSocket(socket, passCode, connectEvents);
+                        } catch (IOException e) {
+                            error(e);
+                        }
+                    }
+                }));
             }
-        }));
+        }).start();
     }
 
     private void connectWithSocket(Socket socket, final PassCode passCode, final ConnectEvents connectEvents)
