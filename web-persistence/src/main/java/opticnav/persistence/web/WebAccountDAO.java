@@ -17,10 +17,26 @@ import opticnav.persistence.web.map.MapsListEntry;
 import opticnav.persistence.web.map.Marker;
 import opticnav.persistence.web.map.ModifyMap;
 
+/**
+ * Handles all requests to the database that are bound to an account
+ * such as map management and ARD binding
+ * 
+ * @author Danny Spencer, Kay Bernhardt
+ */
 public class WebAccountDAO implements AutoCloseable {
     private java.sql.Connection conn;
     private int accountID;
 
+    /**
+     * Constructor
+     * sets the account ID that identifies the current user
+     * and establishes a connection to the database
+     * 
+     * @param dataSource The parameters that are needed to connect to the database
+     * @param accountID The ID that identifies the current user
+     * @throws SQLException Thrown if there was a problem with the sql connection
+     * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
+     */
     public WebAccountDAO(DataSource dataSource, int accountID)
             throws SQLException, WebAccountDAOException {
         this.conn = DBUtil.getConnectionFromDataSource(dataSource);
@@ -28,6 +44,11 @@ public class WebAccountDAO implements AutoCloseable {
         validateUserID();
     }
     
+    /**
+     * Checks if the user for this broker exists
+     * 
+     * @throws WebAccountDAOException Thrown if there was a problem with connecting to or validating the DAO
+     */
     private void validateUserID() throws WebAccountDAOException {
         try (CallableStatement cs = conn.prepareCall("{? = call validateUserID(?)}")) {
             cs.registerOutParameter(1, Types.BOOLEAN);
@@ -41,7 +62,7 @@ public class WebAccountDAO implements AutoCloseable {
             throw new WebAccountDAOException(e);
         }
     }
-
+    
     @Override
     public void close() throws WebAccountDAOException {
         try {

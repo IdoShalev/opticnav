@@ -18,12 +18,27 @@ import opticnav.persistence.web.exceptions.WebResourceDAOExcpetion;
 
 import org.apache.commons.io.IOUtils;
 
+/**
+ * Handles Resource creation and management
+ * 
+ * @author Danny Spencer, Kay Bernhardt
+ */
 public class WebResourceDAO implements AutoCloseable {
     private static final int GROUP_SIZE = 100;
     
     private String resourcePath;
     private Connection conn;
     
+    /**
+     * Constructor
+     * Establishes a connection to the database
+     * Sets the resource path
+     * 
+     * @param resourcePath The path to the resource on the file system
+     * @param dataSource The parameters that are needed to connect to the database
+     * @throws IOException
+     * @throws SQLException
+     */
     public WebResourceDAO(String resourcePath, DataSource dataSource)
             throws IOException, SQLException {
         File path = new File(resourcePath).getCanonicalFile();
@@ -47,6 +62,14 @@ public class WebResourceDAO implements AutoCloseable {
         }
     }
 
+    /**
+     * Converts the mimeType from String to MimeType and creates the resource
+     * 
+     * @param mimeType The type or the resource (jpeg/png/txt)
+     * @param input The input stream containing the resource data
+     * @return The resource ID
+     * @throws WebResourceDAOExcpetion Thrown if there was a problem with connecting to or validating the DAO
+     */
     public int createResource(String mimeType, InputStream input)
             throws WebResourceDAOExcpetion {
         try {
@@ -56,6 +79,14 @@ public class WebResourceDAO implements AutoCloseable {
         }
     }
 
+    /**
+     * Creates the resource on the file system and the database
+     * 
+     * @param mimeType The type or the resource (jpeg/png/txt)
+     * @param input The input stream containing the resource data
+     * @return The resource ID
+     * @throws WebResourceDAOExcpetion Thrown if there was a problem with connecting to or validating the DAO
+     */
     public int createResource(MimeType mimeType, InputStream input)
             throws WebResourceDAOExcpetion {
         try (CallableStatement cs = conn.prepareCall("{? = call addResource(?)}")){
@@ -89,7 +120,7 @@ public class WebResourceDAO implements AutoCloseable {
      * 
      * @param id The ID of the resource
      * @return A Resource object, or null if not found
-     * @throws WebResourceDAOExcpetion
+     * @throws WebResourceDAOExcpetion Thrown if there was a problem with connecting to or validating the DAO
      */
     public Resource getResource(int id)
             throws WebResourceDAOExcpetion {
@@ -117,6 +148,12 @@ public class WebResourceDAO implements AutoCloseable {
         }
     }
     
+    /**
+     * Get a resource file from the file system 
+     * 
+     * @param id The ID o f the resource
+     * @return The requested resource
+     */
     private File getFileFromResourceID(int id) {
         int group = id / GROUP_SIZE;
         int member = id % GROUP_SIZE;

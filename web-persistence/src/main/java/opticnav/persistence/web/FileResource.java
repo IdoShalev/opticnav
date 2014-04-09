@@ -7,9 +7,21 @@ import java.io.InputStream;
 
 import javax.activation.MimeType;
 
+/**
+ * Holds a resource file and its mime type
+ * 
+ * @author Danny Spencer
+ */
 public class FileResource extends Resource {
     private File file;
 
+    /**
+     * Constructor
+     * sets the mimeType and the resource file
+     * 
+     * @param mimeType The mimeType of the resource
+     * @param file The resource file
+     */
     public FileResource(MimeType mimeType, File file) {
         super(mimeType);
         this.file = file;
