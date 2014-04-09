@@ -1,18 +1,13 @@
 package opticnav.ardroid.ui;
 
-import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import com.google.inject.Inject;
 import opticnav.ardd.protocol.Protocol;
 import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
-import opticnav.ardroid.connection.CancellableSocket;
 import opticnav.ardroid.connection.ServerUIHandler;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
@@ -36,14 +31,6 @@ public class ServerConfigActivity extends RoboActivity {
 
         if (savedInstanceBundle == null) {
             String host = app.getPreferencesServerHost();
-            int port = app.getPreferencesServerPort();
-            String portString;
-
-            if (port == Protocol.DEFAULT_ARD_PORT) {
-                portString = "";
-            } else {
-                portString = Integer.toString(port);
-            }
 
             configureServerHost.setText(host);
         }
@@ -68,17 +55,6 @@ public class ServerConfigActivity extends RoboActivity {
         outState.putBoolean("connecting", this.connecting);
     }
 
-    @Override
-    public void onBackPressed() {
-        Application.getInstance().getServerUIHandler()
-                .tryCancelConnection(this, new ServerUIHandler.ConnectionCancelEvent() {
-            @Override
-            public void cancel() {
-                ServerConfigActivity.this.finish();
-            }
-        });
-    }
-
     // onClick
     public void connect(View view) {
         setConnecting(true);
@@ -90,8 +66,13 @@ public class ServerConfigActivity extends RoboActivity {
 
     public void setConnecting(boolean connecting) {
         this.connecting = connecting;
-        configureServerHost.setEnabled(!connecting);
-        findViewById(R.id.configureServerConnect).setEnabled(!connecting);
-        findViewById(R.id.configureServerProgressBar).setVisibility(connecting ? View.VISIBLE : View.INVISIBLE);
+        if (connecting) {
+            ProgressDialog.show(this, "", "Connecting to server...", true, true, new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    Application.getInstance().getServerUIHandler().cancelConnection();
+                }
+            });
+        }
     }
 }

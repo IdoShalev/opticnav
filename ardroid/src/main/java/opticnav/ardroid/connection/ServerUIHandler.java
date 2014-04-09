@@ -62,10 +62,6 @@ public class ServerUIHandler {
         public void confCodeCancelled();
     }
 
-    public interface  ConnectionCancelEvent {
-        public void cancel();
-    }
-
     public interface OnDisconnect {
         /** The server is disconnected. onDisconnect() runs on the Android UI thread. */
         public void onDisconnect();
@@ -203,31 +199,16 @@ public class ServerUIHandler {
         }
     }
 
-    public void tryCancelConnection(final Activity source, final ConnectionCancelEvent event) {
+    public void cancelConnection() {
         if (this.cancellableSocket.isPresent()) {
-            new AlertDialog.Builder(source)
-                    .setMessage("The app is still trying to connect to a server. Do you really want to cancel?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            final Pair<Boolean, CancellableSocket.Cancellable> cancellable;
-                            cancellable = ServerUIHandler.this.cancellableSocket.getIfPresent();
+            final Pair<Boolean, CancellableSocket.Cancellable> cancellable;
+            cancellable = ServerUIHandler.this.cancellableSocket.getIfPresent();
 
-                            // If a Cancellable is found, cancel it
-                            if (cancellable.first) {
-                                ServerUIHandler.this.cancellableSocket.empty();
-                                cancellable.second.cancel();
-                            }
-
-                            // Send a cancel event to the UI
-                            event.cancel();
-                        }
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
-        } else {
-            // nope, didn't even try to connect
-            event.cancel();
+            // If a Cancellable is found, cancel it
+            if (cancellable.first) {
+                ServerUIHandler.this.cancellableSocket.empty();
+                cancellable.second.cancel();
+            }
         }
     }
 
