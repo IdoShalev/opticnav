@@ -8,6 +8,7 @@ import org.apache.commons.math3.util.Pair;
 
 import opticnav.ardd.ARDConnection;
 import opticnav.ardd.ARDListsManager;
+import opticnav.ardd.BlockingValue;
 import opticnav.ardd.InstancesList;
 import opticnav.ardd.clients.ClientCommandDispatcher;
 import opticnav.ardd.instance.Entity;
@@ -18,6 +19,12 @@ import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelMultiplexer;
 import opticnav.ardd.protocol.consts.ARDdARDProtocol;
 
+/**
+ * For a given ARD connection, manages all channels of the connection. 
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class ARDChannelsManager implements Callable<Void> {
     private final ExecutorService threadPool;
     private final Channel channel;
@@ -62,7 +69,7 @@ public class ARDChannelsManager implements Callable<Void> {
         threadPool.submit(this.connectedCommandDispatcher);
     }
     
-    public Pair<Integer, EntitySubscriber> startInstanceConnection(Instance instance, Future<Entity> entity) {
+    public Pair<Integer, EntitySubscriber> startInstanceConnection(Instance instance, BlockingValue<Entity> entity) {
         // TODO - proper channel ID
         final int channelID = 55;
         

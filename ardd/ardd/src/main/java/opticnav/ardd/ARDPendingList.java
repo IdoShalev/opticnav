@@ -12,6 +12,15 @@ import org.apache.commons.math3.util.Pair;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
+/**
+ * The ARDPendingList class contains a list of all devices being pended for registration.
+ * 
+ * All devices in this list were sent a confirmation code, which is intended to later be inputted by a user of the
+ * system to take the device out of this list and into ARDPersistedList.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class ARDPendingList {
     private static final XLogger logger = XLoggerFactory.getXLogger(ARDPendingList.class);
     

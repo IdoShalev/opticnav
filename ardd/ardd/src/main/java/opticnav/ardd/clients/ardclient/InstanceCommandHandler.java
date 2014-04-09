@@ -2,15 +2,14 @@ package opticnav.ardd.clients.ardclient;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.ARDConnection;
+import opticnav.ardd.BlockingValue;
 import opticnav.ardd.clients.AnnotatedCommandHandler;
 import opticnav.ardd.instance.Entity;
-import opticnav.ardd.instance.Instance;
 import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
@@ -21,9 +20,9 @@ public class InstanceCommandHandler extends AnnotatedCommandHandler {
             .getXLogger(InstanceCommandHandler.class);
     
     private final ARDConnection connection;
-    private final Future<Entity> entity;
+    private final BlockingValue<Entity> entity;
 
-    public InstanceCommandHandler(ARDConnection connection, Future<Entity> entity) {
+    public InstanceCommandHandler(ARDConnection connection, BlockingValue<Entity> entity) {
         super(InstanceCommandHandler.class);
         this.connection = connection;
         this.entity = entity;
@@ -33,7 +32,7 @@ public class InstanceCommandHandler extends AnnotatedCommandHandler {
     public void close() throws IOException {
         try {
             entity.get().close();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException e) {
             throw new IOException(e);
         }
     }   

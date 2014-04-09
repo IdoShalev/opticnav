@@ -8,6 +8,16 @@ import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.protocol.PassCode;
 
+/**
+ * The ARDConnectedList class contains a list of all currently connected devices.
+ * When a device is authenticated, it gets added to this list.
+ * When a device is disconnected, it gets removed from this list.
+ * 
+ * This class is thread-safe.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class ARDConnectedList {
     private static final XLogger LOG = XLoggerFactory
             .getXLogger(ARDConnectedList.class);
@@ -48,11 +58,24 @@ public class ARDConnectedList {
         }
     }
     
-    public synchronized void removeConnectedByID(int ardID) {
+    /**
+     * @param ardID The ARD ID of the device to be removed.
+     * @throws IllegalArgumentException Thrown if the device to be removed wasn't in the list.
+     */
+    public synchronized void removeConnectedByID(int ardID) throws IllegalArgumentException {
+        if (this.list.remove(ardID) == null) {
+            throw new IllegalArgumentException("Device doesn't exist: " + ardID);
+        }
+        
         LOG.debug("Removed ARDConnected by id: " + ardID);
-        this.list.remove(ardID);
     }
     
+    /**
+     * Get the ARDConnection object associated with the device ID
+     * 
+     * @param ardID The ID of the device to be retrieved.
+     * @return A valid ARDConnection object
+     */
     public synchronized ARDConnection getConnectedByID(int ardID) {
         return this.list.get(ardID);
     }

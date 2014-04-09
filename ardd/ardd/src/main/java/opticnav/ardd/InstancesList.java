@@ -7,12 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.collections4.map.MultiValueMap;
 
@@ -23,6 +17,14 @@ import opticnav.ardd.instance.InstanceInfo;
 import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.InstanceDeploymentInfo;
 
+/**
+ * The InstancesList class contains a list of all active instances.
+ * Once an instance is started by AdminClient, it is added here.
+ * Once an instance is stopped by AdminClient, or if there is an error while running it, it is removed here.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class InstancesList {
     /** One owner to many instances */
     private final MultiValueMap<Long, Integer> owner_instance;
@@ -102,7 +104,7 @@ public class InstancesList {
             callbacks.noInstanceFound();
         } else {
             final EntitySubscriber subscriber;
-            final SettableFuture<Entity> entityFuture = new SettableFuture<>();
+            final BlockingValue<Entity> entityFuture = new BlockingValue<>();
             subscriber = callbacks.joining(instance, entityFuture);
             final Entity entity = instance.createEntity(ardID, initialLocation, subscriber);
             entityFuture.set(entity);
@@ -134,7 +136,7 @@ public class InstancesList {
     }
     
     public interface JoinInstanceCallbacks {
-        public EntitySubscriber joining(Instance instance, Future<Entity> entity) throws Exception;
+        public EntitySubscriber joining(Instance instance, BlockingValue<Entity> entity) throws Exception;
         public void noInstanceFound() throws Exception;
     }
 }

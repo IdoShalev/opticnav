@@ -12,6 +12,12 @@ import opticnav.ardd.net.AdminListener;
 import opticnav.ardd.persistence.FilePersistence;
 import opticnav.ardd.persistence.Persistence;
 
+/**
+ * The main entry point to the daemon application
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class DaemonDriver {
     static final XLogger logger = XLoggerFactory.getXLogger(DaemonDriver.class);
     

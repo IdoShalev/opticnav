@@ -24,6 +24,12 @@ import opticnav.ardd.protocol.TemporaryResourceUtil.TemporaryResourceBuilder;
 import opticnav.ardd.protocol.consts.ARDdAdminProtocol;
 import opticnav.ardd.protocol.consts.ARDdAdminProtocol.Commands;
 
+/**
+ * Handles all commands coming in from the AdminClient channel.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class AdminClientCommandHandler extends AnnotatedCommandHandler {
     private static final XLogger LOG = XLoggerFactory
             .getXLogger(AdminClientCommandHandler.class);

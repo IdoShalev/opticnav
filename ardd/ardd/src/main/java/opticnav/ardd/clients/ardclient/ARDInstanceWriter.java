@@ -10,6 +10,12 @@ import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.Instance.SubscriberCommands;
 
+/**
+ * Serializes subscriber events over an Output stream. This is used to write marker changes over the network.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class ARDInstanceWriter implements EntitySubscriber, AutoCloseable {
     private final PrimitiveWriter output;
     private final ExecutorService executor;

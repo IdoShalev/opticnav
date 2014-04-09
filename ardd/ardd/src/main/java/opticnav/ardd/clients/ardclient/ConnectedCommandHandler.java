@@ -3,12 +3,12 @@ package opticnav.ardd.clients.ardclient;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-import java.util.concurrent.Future;
 
 import org.apache.commons.math3.util.Pair;
 
 import opticnav.ardd.ARDConnection;
 import opticnav.ardd.InstancesList;
+import opticnav.ardd.BlockingValue;
 import opticnav.ardd.clients.AnnotatedCommandHandler;
 import opticnav.ardd.instance.Entity;
 import opticnav.ardd.instance.EntitySubscriber;
@@ -83,7 +83,7 @@ public class ConnectedCommandHandler extends AnnotatedCommandHandler {
         instances.joinInstance(instanceID, connection.getARDID(),
                 initialLocation, new InstancesList.JoinInstanceCallbacks() {
             @Override
-            public EntitySubscriber joining(Instance instance, Future<Entity> entity) throws IOException {
+            public EntitySubscriber joining(Instance instance, BlockingValue<Entity> entity) throws IOException {
                 final InstanceInfo info = instance.getInfo();
                 final Pair<Integer, EntitySubscriber> p = ardChannelsManager.startInstanceConnection(instance, entity);
                 final int instanceChannelID = p.getFirst();

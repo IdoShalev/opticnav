@@ -10,6 +10,14 @@ import org.slf4j.ext.XLoggerFactory;
 import opticnav.ardd.persistence.Persistence;
 import opticnav.ardd.protocol.PassCode;
 
+/**
+ * The ARDPersistedList class contains a list of all persisted devices.
+ * All devices on the list have likely gone through an earlier registration phase
+ * (though not necessarily if the device passCodes have been hard-coded in the ard-lists file).
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class ARDPersistedList {
     private static final XLogger logger = XLoggerFactory.getXLogger(ARDPersistedList.class);
 
