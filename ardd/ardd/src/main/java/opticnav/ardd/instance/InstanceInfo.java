@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.InstanceDeploymentInfo.ARDIdentifier;
 import opticnav.ardd.protocol.TemporaryResourceUtil.TemporaryResource;
 
@@ -79,38 +80,30 @@ public class InstanceInfo {
 
     public static class StaticMarker {
         private final String name;
-        private final int lng;
-        private final int lat;
+        private final GeoCoordFine geoCoord;
     
-        public StaticMarker(String name, int lng, int lat) {
+        public StaticMarker(String name, GeoCoordFine geoCoord) {
             this.name = name;
-            this.lng = lng;
-            this.lat = lat;
+            this.geoCoord = geoCoord;
         }
     
         public String getName() { return name; }
     
-        public int getLng() { return lng; }
-    
-        public int getLat() { return lat; }
+        public GeoCoordFine getGeoCoord() { return geoCoord; }
     }
 
     public static class Anchor {
-        private final int lng;
-        private final int lat;
+        private final GeoCoordFine geoCoord;
         private final int localX;
         private final int localY;
 
-        public Anchor(int lng, int lat, int localX, int localY) {
-            this.lng = lng;
-            this.lat = lat;
+        public Anchor(GeoCoordFine geoCoord, int localX, int localY) {
+            this.geoCoord = geoCoord;
             this.localX = localX;
             this.localY = localY;
         }
 
-        public int getLng() { return lng; }
-
-        public int getLat() { return lat; }
+        public GeoCoordFine getGeoCoord() { return geoCoord; }
 
         public int getLocalX() { return localX; }
 

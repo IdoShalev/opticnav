@@ -14,6 +14,7 @@ import opticnav.ardd.clients.AnnotatedCommandHandler;
 import opticnav.ardd.instance.Instance;
 import opticnav.ardd.instance.InstanceInfo;
 import opticnav.ardd.protocol.ConfCode;
+import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.InstanceDeploymentInfo;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
@@ -100,7 +101,8 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
                 final int lat = in.readSInt32();
                 final int localX = in.readSInt32();
                 final int localY = in.readSInt32();
-                mapAnchors[i] = new InstanceInfo.Anchor(lng, lat, localX, localY);
+                final GeoCoordFine geoCoord = new GeoCoordFine(lng, lat);
+                mapAnchors[i] = new InstanceInfo.Anchor(geoCoord, localX, localY);
             }
         } else {
             mapImage = null;
@@ -116,7 +118,8 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
             final String markerName = in.readString();
             final int lng = in.readSInt32();
             final int lat = in.readSInt32();
-            staticMarkers.add(new InstanceInfo.StaticMarker(markerName, lng, lat));
+            final GeoCoordFine geoCoord = new GeoCoordFine(lng, lat);
+            staticMarkers.add(new InstanceInfo.StaticMarker(markerName, geoCoord));
         }
         
         // Invited ARDs

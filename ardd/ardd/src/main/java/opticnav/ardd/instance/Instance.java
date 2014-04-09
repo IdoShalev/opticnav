@@ -22,6 +22,10 @@ public class Instance implements AutoCloseable {
         this.info = info;
         this.entities = new HashMap<>();
         this.nextMarkerID = 0;
+        for (InstanceInfo.StaticMarker marker: info.staticMarkers) {
+            entities.put(nextMarkerID, new Entity(nextMarkerID, marker.getName(), marker.getGeoCoord()));
+            nextMarkerID++;
+        }
     }
     
     @Override
@@ -37,8 +41,10 @@ public class Instance implements AutoCloseable {
     
     public synchronized Entity createEntity(final int ardID, GeoCoordFine geoCoord, EntitySubscriber subscriber) {
         final int markerID = nextMarkerID++;
+        final String name = info.getARD(ardID).getName();
+        
         final Entity entity;
-        entity = new Entity(markerID, subscriber, new Closeable() {
+        entity = new Entity(markerID, name, geoCoord, subscriber, new Closeable() {
             @Override
             public void close() throws IOException {
                 removeEntity(ardID);
@@ -46,15 +52,20 @@ public class Instance implements AutoCloseable {
         });
         
         // Add all existing entries as subscribers to the new entry
+        // Broadcast all existing entries to the subscriber
         // Additionally, add the new subscriber to all existing entries
         for (Entity e: this.entities.values()) {
-            final String name = info.getARD(ardID).getName();
-            
             entity.addSubscriber(e.getEntitySubscriber());
             e.addSubscriber(subscriber);
-            e.getEntitySubscriber().newMarker(markerID, name, geoCoord);
+            if (e.getEntitySubscriber() != null) {
+                e.getEntitySubscriber().newMarker(markerID, name, geoCoord);
+            }
+            subscriber.newMarker(e.getMarkerID(), e.getName(), e.getGeoCoord());
         }
+            
         this.entities.put(ardID, entity);
+        
+        
         return entity;
     }
     

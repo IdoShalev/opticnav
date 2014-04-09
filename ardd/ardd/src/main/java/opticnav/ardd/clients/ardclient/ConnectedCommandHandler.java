@@ -67,8 +67,8 @@ public class ConnectedCommandHandler extends AnnotatedCommandHandler {
     private static void writeAnchor(PrimitiveWriter out, InstanceInfo.Anchor anchor) throws IOException {
         out.writeUInt31(anchor.getLocalX());
         out.writeUInt31(anchor.getLocalY());
-        out.writeSInt32(anchor.getLng());
-        out.writeSInt32(anchor.getLat());
+        out.writeSInt32(anchor.getGeoCoord().getLongitudeInt());
+        out.writeSInt32(anchor.getGeoCoord().getLatitudeInt());
     }
     
     @Command(Commands.JOIN_INSTANCE)
