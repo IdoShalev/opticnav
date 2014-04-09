@@ -341,7 +341,7 @@ var MapController = function() {
         	}else{
         		$("#modal-backdrop").fadeIn();
     	        $("#alert-message").text("You can't place markers with less" +
-    	        		" than three anchors");
+    	        		" than three complete anchors");
             	$("#alert-popup").fadeIn();
         	}
         },
