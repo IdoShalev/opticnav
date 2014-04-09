@@ -1,22 +1,27 @@
 package opticnav.ardroid.ui;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.TextView;
 import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
+import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
+import roboguice.inject.InjectExtra;
+import roboguice.inject.InjectView;
 
-public class ConfCodeActivity extends Activity {
+@ContentView(R.layout.activity_confcode)
+public class ConfCodeActivity extends RoboActivity {
+    @InjectView(R.id.confcode)
+    private TextView confCodeView;
+
+    @InjectExtra("confcode")
+    private String confCode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = getIntent().getExtras();
 
-        setContentView(R.layout.activity_registerard);
-        TextView confCodeView = (TextView)findViewById(R.id.confcode);
-        confCodeView.setText(bundle.getString("confcode"));
+        confCodeView.setText(confCode);
     }
 
     @Override

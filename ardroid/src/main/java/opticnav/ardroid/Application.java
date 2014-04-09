@@ -106,7 +106,7 @@ public class Application extends android.app.Application {
 
         @Override
         public void authenticate() {
-            Intent intent = new Intent(context, LobbyActivity.class);
+            Intent intent = new Intent(context, InstancesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }

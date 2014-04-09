@@ -8,21 +8,31 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import com.google.inject.Inject;
 import opticnav.ardd.protocol.Protocol;
 import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
 import opticnav.ardroid.connection.CancellableSocket;
 import opticnav.ardroid.connection.ServerUIHandler;
+import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
+import roboguice.inject.InjectView;
 
-public class ServerConfigActivity extends Activity {
+@ContentView(R.layout.activity_serverconfig)
+public class ServerConfigActivity extends RoboActivity {
     private boolean connecting;
+
+    @InjectView(R.id.configureServerHost)
+    private EditText configureServerHost;
+
+    @InjectView(R.id.configureServerPort)
+    private EditText configureServerPort;
 
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
         final Application app = Application.getInstance();
 
-        setContentView(R.layout.activity_serverconfig);
         this.connecting = false;
 
         app.serverConfig.onCreate(this);
@@ -38,10 +48,11 @@ public class ServerConfigActivity extends Activity {
                 portString = Integer.toString(port);
             }
 
-            ((EditText)findViewById(R.id.configureServerHost)).setText(host);
-            ((EditText)findViewById(R.id.configureServerPort)).setText(portString);
+            configureServerHost.setText(host);
+            configureServerPort.setText(portString);
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -76,8 +87,8 @@ public class ServerConfigActivity extends Activity {
     public void connect(View view) {
         setConnecting(true);
 
-        String host = ((EditText)findViewById(R.id.configureServerHost)).getText().toString();
-        String portText = ((EditText)findViewById(R.id.configureServerPort)).getText().toString();
+        String host = configureServerHost.getText().toString();
+        String portText = configureServerPort.getText().toString();
         int port;
         if (portText.isEmpty()) {
             port = Protocol.DEFAULT_ARD_PORT;
@@ -90,8 +101,8 @@ public class ServerConfigActivity extends Activity {
 
     public void setConnecting(boolean connecting) {
         this.connecting = connecting;
-        findViewById(R.id.configureServerHost).setEnabled(!connecting);
-        findViewById(R.id.configureServerPort).setEnabled(!connecting);
+        configureServerHost.setEnabled(!connecting);
+        configureServerPort.setEnabled(!connecting);
         findViewById(R.id.configureServerConnect).setEnabled(!connecting);
         findViewById(R.id.configureServerProgressBar).setVisibility(connecting ? View.VISIBLE : View.INVISIBLE);
     }

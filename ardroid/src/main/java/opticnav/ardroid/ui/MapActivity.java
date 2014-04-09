@@ -1,22 +1,26 @@
 package opticnav.ardroid.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
-import opticnav.ardroid.model.*;
+import opticnav.ardroid.model.MapModel;
+import opticnav.ardroid.model.MapModelObserverAsync;
 import opticnav.ardroid.ui.marker.MarkerState;
+import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
+import roboguice.inject.InjectView;
 
-public class MapActivity extends Activity {
+@ContentView(R.layout.activity_map)
+public class MapActivity extends RoboActivity {
     private MapModel mapModel;
-    private MapView mapView;
     private Thread timerThread;
+
+    @InjectView(R.id.map)
+    private MapView mapView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
-        this.mapView = (MapView)findViewById(R.id.map);
 
         this.mapModel = Application.getInstance().getServerUIHandler().getMapModel();
         this.mapModel.setObserver(new MapModelObserverAsync(this, mapView));

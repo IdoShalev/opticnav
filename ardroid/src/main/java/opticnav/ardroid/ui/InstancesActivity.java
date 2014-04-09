@@ -1,9 +1,7 @@
 package opticnav.ardroid.ui;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,44 +14,28 @@ import opticnav.ardroid.R;
 import opticnav.ardroid.connection.ServerUIHandler;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
+import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
+import roboguice.inject.InjectView;
 
 import java.util.List;
 
-public class LobbyActivity extends Activity {
-    private static XLogger LOG = XLoggerFactory.getXLogger(LobbyActivity.class);
+@ContentView(R.layout.activity_instances)
+public class InstancesActivity extends RoboActivity {
+    private static XLogger LOG = XLoggerFactory.getXLogger(InstancesActivity.class);
 
-    private void joinInstance(int id) {
-        final Context context = this;
+    @InjectView(R.id.instances_listview)
+    private ListView listView;
 
-        final ProgressDialog dialog = ProgressDialog.show(this, "", "Waiting for location...", true);
+    @InjectView(R.id.instances_loading)
+    private View loadingView;
 
-        Application.getInstance().getServerUIHandler().joinInstance(id, new ServerUIHandler.JoinInstanceEvent() {
-            @Override
-            public void noInstance() {
-                Toast.makeText(context, "That instance doesn't exist", Toast.LENGTH_LONG);
-            }
-
-            @Override
-            public void alreadyJoined() {
-                Toast.makeText(context, "You have already joined this instance", Toast.LENGTH_LONG);
-            }
-
-            @Override
-            public void joined() {
-                Intent intent = new Intent(context, MapActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+    @InjectView(R.id.instance_none)
+    private View noInstancesView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lobby);
-
-        final ListView listView = (ListView) findViewById(R.id.instances_listview);
-        final View loadingView = findViewById(R.id.instances_loading);
-        final View noInstancesView = findViewById(R.id.instance_none);
 
         Application.getInstance().getServerUIHandler().listInstances(new ServerUIHandler.ListInstancesEvent() {
             @Override
@@ -62,7 +44,7 @@ public class LobbyActivity extends Activity {
                 if (instancesList.isEmpty()) {
                     noInstancesView.setVisibility(View.VISIBLE);
                 } else {
-                    listView.setAdapter(new MySimpleArrayAdapter(LobbyActivity.this, instancesList));
+                    listView.setAdapter(new MySimpleArrayAdapter(InstancesActivity.this, instancesList));
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -109,6 +91,30 @@ public class LobbyActivity extends Activity {
                 return String.format("%d hours ago", hours);
             }
         }
+    }
+
+    private void joinInstance(int id) {
+        final Context context = this;
+
+        final ProgressDialog dialog = ProgressDialog.show(this, "", "Waiting for location...", true);
+
+        Application.getInstance().getServerUIHandler().joinInstance(id, new ServerUIHandler.JoinInstanceEvent() {
+            @Override
+            public void noInstance() {
+                Toast.makeText(context, "That instance doesn't exist", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void alreadyJoined() {
+                Toast.makeText(context, "You have already joined this instance", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void joined() {
+                Intent intent = new Intent(context, MapActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private class MySimpleArrayAdapter extends ArrayAdapter<InstanceInfo> {

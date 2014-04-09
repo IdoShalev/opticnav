@@ -21,6 +21,9 @@ dependencies {
 
     // render SVG graphics with ease!
     compile 'com.caverock:androidsvg:1.2.1'
+
+    // Dependency injection
+    compile 'org.roboguice:roboguice:2.0'
 }
 
 android {

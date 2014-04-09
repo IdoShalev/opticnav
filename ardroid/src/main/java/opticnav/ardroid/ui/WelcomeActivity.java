@@ -14,16 +14,18 @@ import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
+import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
 
 import java.io.IOException;
 
-public class WelcomeActivity extends Activity {
+@ContentView(R.layout.activity_welcome)
+public class WelcomeActivity extends RoboActivity {
     private static final XLogger LOG = XLoggerFactory.getXLogger(WelcomeActivity.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
 
         try {
             final SVG svg = SVG.getFromAsset(getAssets(), "opticnavlogo.svg");
