@@ -25,9 +25,6 @@ public class ServerConfigActivity extends RoboActivity {
     @InjectView(R.id.configureServerHost)
     private EditText configureServerHost;
 
-    @InjectView(R.id.configureServerPort)
-    private EditText configureServerPort;
-
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
@@ -49,7 +46,6 @@ public class ServerConfigActivity extends RoboActivity {
             }
 
             configureServerHost.setText(host);
-            configureServerPort.setText(portString);
         }
     }
 
@@ -88,21 +84,13 @@ public class ServerConfigActivity extends RoboActivity {
         setConnecting(true);
 
         String host = configureServerHost.getText().toString();
-        String portText = configureServerPort.getText().toString();
-        int port;
-        if (portText.isEmpty()) {
-            port = Protocol.DEFAULT_ARD_PORT;
-        } else {
-            port = Integer.parseInt(portText);
-        }
 
-        Application.getInstance().connectToServer(host, port);
+        Application.getInstance().connectToServer(host, Protocol.DEFAULT_ARD_PORT);
     }
 
     public void setConnecting(boolean connecting) {
         this.connecting = connecting;
         configureServerHost.setEnabled(!connecting);
-        configureServerPort.setEnabled(!connecting);
         findViewById(R.id.configureServerConnect).setEnabled(!connecting);
         findViewById(R.id.configureServerProgressBar).setVisibility(connecting ? View.VISIBLE : View.INVISIBLE);
     }

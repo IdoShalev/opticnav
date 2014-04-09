@@ -12,22 +12,27 @@
             android:id="@+id/opticNavLogo"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
+            android:src="@drawable/opticnavlogo"
         />
-    <ScrollView android:layout_width="match_parent" android:layout_height="fill_parent">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="fill_parent"
-                      android:orientation="vertical">
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:layout_gravity="center"
+                      style="@style/WelcomePanel">
             <Button
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Configure server"
+                    android:text="Connect to server"
                     android:onClick="configureServer"
-                    android:id="@+id/configureServer" android:layout_gravity="center_vertical"/>
+                    style="@style/WelcomeButton"
+                    android:id="@+id/configureServer" android:layout_gravity="center_horizontal"/>
             <Button
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Testing mode"
                     android:onClick="testingMode"
-                    android:id="@+id/testingMode" android:layout_gravity="center_vertical"/>
+                    style="@style/WelcomeButton"
+                    android:id="@+id/testingMode" android:layout_gravity="center_horizontal"/>
         </LinearLayout>
-    </ScrollView>
+    </FrameLayout>
 </LinearLayout>

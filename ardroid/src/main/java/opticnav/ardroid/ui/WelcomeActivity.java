@@ -26,18 +26,6 @@ public class WelcomeActivity extends RoboActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        try {
-            final SVG svg = SVG.getFromAsset(getAssets(), "opticnavlogo.svg");
-            final Drawable drawable = new PictureDrawable(svg.renderToPicture());
-            final ImageView opticNavLogo = (ImageView)findViewById(R.id.opticNavLogo);
-            opticNavLogo.setImageDrawable(drawable);
-            opticNavLogo.invalidate();
-        } catch (SVGParseException e) {
-            LOG.catching(e);
-        } catch (IOException e) {
-            LOG.catching(e);
-        }
     }
 
     // onClick

@@ -8,23 +8,27 @@
     android:paddingTop="@dimen/activity_vertical_margin"
         android:orientation="vertical">
 
-    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:text="To experience OpticNav, you need to connect to a server running the software."
+            style="@style/TextHint" />
+
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+    <LinearLayout android:layout_width="300dip" android:layout_height="wrap_content"
+            android:orientation="vertical" android:layout_gravity="center"
+            style="@style/WelcomePanel">
     <EditText android:layout_width="fill_parent" android:layout_height="wrap_content"
               android:id="@+id/configureServerHost"
               android:inputType="textVisiblePassword"
               android:singleLine="true"
               android:hint="Host name or IP address"/>
-    <EditText android:layout_width="fill_parent" android:layout_height="wrap_content"
-              android:id="@+id/configureServerPort"
-              android:inputType="number"
-              android:maxLength="5"
-              android:hint="Port - default is 4444"/>
     <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:id="@+id/configureServerConnect"
             android:onClick="connect"
+            android:layout_gravity="center_horizontal"
+            style="@style/RoundButton"
             android:text="Connect"/>
     </LinearLayout>
+    </FrameLayout>
     <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

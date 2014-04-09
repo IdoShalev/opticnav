@@ -16,9 +16,37 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="WelcomePanel">
+        <item name="android:padding">16dip</item>
+        <item name="android:background">@drawable/welcome_panel</item>
+    </style>
+
+    <style name="RoundButton">
+        <item name="android:paddingLeft">16dip</item>
+        <item name="android:paddingRight">16dip</item>
+        <item name="android:height">32dip</item>
+
+        <item name="android:background">@drawable/roundbutton_background</item>
+    </style>
+
+    <style name="WelcomeButton">
+        <item name="android:width">192dip</item>
+        <item name="android:height">96dip</item>
+        <item name="android:layout_margin">8dip</item>
+
+        <item name="android:background">@drawable/roundbutton_background</item>
+    </style>
+
     <style name="ConfCode">
+        <item name="android:background">@drawable/welcome_panel</item>
+        <item name="android:padding">16dip</item>
         <item name="android:textSize">40sp</item>
         <item name="android:textColor">@color/ConfCode</item>
         <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextHint">
+        <item name="android:background">@drawable/texthint</item>
+        <item name="android:padding">14dip</item>
+        <item name="android:textSize">@dimen/texthint_size</item>
     </style>
 </resources>
