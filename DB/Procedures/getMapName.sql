@@ -1,6 +1,7 @@
 /* *********************************************************************
-**	Description:    Returns the name of a map
-**
+**	Description:    Gets the name of the specified map
+**  Parameter:      p_map_id - The map_id
+**                  p_acc_id - The account_id
 **  Returns:        The name
 ********************************************************************* */
 

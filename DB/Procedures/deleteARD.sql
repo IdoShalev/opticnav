@@ -1,5 +1,7 @@
 /* *********************************************************************
-**	Description:	Removes an ARD_ID from the specified WEB_ACCOUNT
+**	Description:	Sets the ard_id of the specified WEB_ACCOUNT row to NULL
+**  Parameter:      p_acc_id - The account ID of the ard_id to be set to NULL
+**  Returns:        True if the ard_id was set to NULL, false otherwise
 ********************************************************************* */
 
 

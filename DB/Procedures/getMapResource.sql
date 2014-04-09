@@ -1,7 +1,7 @@
 /* *********************************************************************
-**	Description:    Gets the resource ID of the specified MAP
-**
-**  Returns:        The resource ID
+**	Description:    Gets the resource_id of the specified MAP
+**  Parameter:      p_map_id - The map_id
+**  Returns:        The resource_id
 ********************************************************************* */
 
 DROP FUNCTION IF EXISTS getMapResource;

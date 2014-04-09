@@ -1,5 +1,7 @@
 /* *********************************************************************
-**	Description:	Sets an ARD ID to te specified WEB_ACCOUNT
+**	Description:	Sets an ARD ID to the specified WEB_ACCOUNT
+**  Parameter:      p_acc_id - The account id
+**                  p_ard_id - The ard ID
 ********************************************************************* */
 
 

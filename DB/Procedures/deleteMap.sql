@@ -1,5 +1,8 @@
 /* *********************************************************************
-**	Description:	Deletes a map from the MAP table
+**	Description:	Deletes a row from the MAP table
+**  Parameter:      p_map_id - The map_id of the map to be deleted
+**                  p_acc_id - The account ID of the account that the map belongs to
+**  Returns:        True if the map was deleted, false otherwise
 ********************************************************************* */
 
 

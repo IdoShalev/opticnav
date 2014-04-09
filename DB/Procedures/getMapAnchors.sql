@@ -1,5 +1,8 @@
 /* *********************************************************************
-**	Description:	
+**	Description:	Get all rows from the ANCHOR table ehere the map id 
+**                  is the one specified
+**  Parameter:      p_map_id - The map ID
+**  Returns:        A resultset containing anchor data
 ********************************************************************* */
 
 

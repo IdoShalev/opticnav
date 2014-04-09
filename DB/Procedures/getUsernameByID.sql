@@ -1,7 +1,7 @@
 /* *********************************************************************
-**	Description:
-**
-**  Returns:
+**	Description:    Gets the username of the account specified
+**  Parameter:      p_acc_id - The account ID
+**  Returns:        The username
 ********************************************************************* */
 
 DROP FUNCTION IF EXISTS getUsernameByID;

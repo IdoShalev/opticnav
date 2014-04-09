@@ -2,7 +2,8 @@
 **	Description:	Will add a new row to the ACCOUNT table conating
 **                  the provided account name and the provided password 
 **                  in binary form
-**
+**  Parameter:      p_accountName - the username
+**                  p_password - the password
 **  Returns:        True if the WEB_ACCOUNT was created without error
 **                  False if the username or password where empty strings
 ********************************************************************* */

@@ -1,5 +1,9 @@
 /* *********************************************************************
-**	Description:    Removes the specified marker from the database
+**	Description:    Deletes all rows from the MARKER table where the map_id 
+**                  is the one specified
+**  Parameter:      p_map_id - The map_id of the maker to be deleted
+**                  p_acc_id - The account ID that owns the markers map
+**  Returns:        True if the marker was deleted, false otherwise
 ********************************************************************* */
 
 

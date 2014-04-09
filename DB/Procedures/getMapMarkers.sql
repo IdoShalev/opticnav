@@ -1,7 +1,8 @@
 /* *********************************************************************
-**	Description:	
-**
-**  Returns:
+**	Description:	Gets all rows from the MARKER table where the map_id
+**                  is the one specified
+**  Parameter:      p_map_id - The map ID
+**  Returns:        A result set with all marker data
 ********************************************************************* */
 
 

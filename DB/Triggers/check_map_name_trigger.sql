@@ -1,3 +1,11 @@
+/* *********************************************************************
+**	Description:	This trigger checks the map name and the map resource
+**                  before inserting the data into the MAP table
+**                  It checks if the map name is an empty string and
+**                  if the map resource id exists
+**  Throws:         error 45000 with an appropriate message
+********************************************************************* */
+
 DROP TRIGGER IF EXISTS check_map_name_trigger;
 
 DELIMITER //

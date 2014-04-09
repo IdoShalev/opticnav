@@ -1,5 +1,6 @@
 /* *********************************************************************
-**	Description:	
+**	Description:	Gets a list of all users and the ard_ids bound to them
+**  Returns:        A result set containing usernames and the ard_ids bound to them
 ********************************************************************* */
 
 

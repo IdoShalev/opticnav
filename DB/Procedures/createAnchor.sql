@@ -1,5 +1,10 @@
 /* *********************************************************************
-**	Description:	
+**	Description:	Inserts a new row into the ANCHOR table
+**  Parameter:      p_map_id  - the ID of the map this anchor belongs to
+**                  p_local_x - the anchor's x coordinate
+**                  p_local_y - the anchor's y coordinate
+**                  p_lat - the anchor's latitude
+**                  p_lng - the anchor's longitude
 ********************************************************************* */
 
 

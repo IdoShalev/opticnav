@@ -1,6 +1,6 @@
 /* *********************************************************************
 **	Description:    Gets the resource type of the specified RESOURCE
-**
+**  Parameter:      p_res_id - The resource ID
 **  Returns:        The resource type
 ********************************************************************* */
 

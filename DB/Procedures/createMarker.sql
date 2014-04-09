@@ -1,5 +1,10 @@
 /* *********************************************************************
-**	Description:    Stores a marker in the database
+**	Description:    Inserts a new row into the MARKER table
+**  Parameter:      p_name - The name of the marker
+**                  p_map_id - The ID of the map the marker belongs to
+**                  p_res_id - The marker's resource ID
+**                  p_lat - The markers latitude
+**                  p_long - The markers longitude
 ********************************************************************* */
 
 DROP PROCEDURE IF EXISTS createMarker;

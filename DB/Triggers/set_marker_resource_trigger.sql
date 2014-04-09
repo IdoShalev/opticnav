@@ -1,3 +1,8 @@
+/* *********************************************************************
+**	Description:	This trigger sets the marker resource to NULL if the
+**                  before inserting into the MARKER table
+********************************************************************* */
+
 DROP TRIGGER IF EXISTS set_marker_resource_trigger;
 
 DELIMITER //

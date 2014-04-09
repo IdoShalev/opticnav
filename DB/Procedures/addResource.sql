@@ -1,6 +1,6 @@
 /* *********************************************************************
-**	Description:    Stores the mime type and the id of a Resource
-**
+**	Description:    Inserts an new row into the RESOURCE table
+**  Parameter:      p_type - the mime type of the resource
 **  Returns:        The ID of the Resource
 **********************************************************************/
 

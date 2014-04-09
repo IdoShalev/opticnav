@@ -1,7 +1,8 @@
 /* *********************************************************************
 **	Description:	Will check if the provided account name and password
 **                  match a row in the database.
-**
+**  Parameter:      p_accountName - The username
+**                  p_password - The password
 **  Returns:        0 if no match is found
 **                  The account ID if a match is found
 ********************************************************************* */

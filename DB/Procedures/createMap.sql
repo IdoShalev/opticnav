@@ -1,6 +1,8 @@
 /* *********************************************************************
-**	Description:    Creates a Map
-**
+**	Description:    Inserts a new row into the MAP table
+**  Parameter:      p_map_name - The map name
+**                  p_res_id - The map's resource ID
+**                  p_acc_id - The ID of the account the map belongs to
 **  Returns:        The map ID
 ********************************************************************* */
 

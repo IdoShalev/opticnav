@@ -1,7 +1,8 @@
 /* *********************************************************************
-**	Description:
-**
-**  Returns:
+**	Description:    Checks of the specified account_id exsistes in the
+**                  WEB_ACCOUNT table
+**  Parameter:      p_acc_id - The account ID
+**  Returns:        True if the ID exists, false otherwise
 ********************************************************************* */
 
 DROP FUNCTION IF EXISTS validateUserID;

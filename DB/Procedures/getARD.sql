@@ -1,6 +1,6 @@
 /* *********************************************************************
-**	Description:    Returns the ARD ID for the specified WEB_ACCOUNT
-**
+**	Description:    Gets the ard_id for the specified row in the WEB_ACCOUNT table
+**  Parameter:      p_acc_id - The account id
 **  Returns:        The ARD ID
 ********************************************************************* */
 
