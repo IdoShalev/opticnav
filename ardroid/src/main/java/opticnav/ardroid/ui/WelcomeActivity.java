@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import com.google.inject.Inject;
-import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
 import opticnav.ardroid.connection.ConnectToServerSingleton;
 import org.slf4j.ext.XLogger;

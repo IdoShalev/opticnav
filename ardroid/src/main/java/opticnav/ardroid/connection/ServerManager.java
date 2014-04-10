@@ -5,16 +5,13 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import opticnav.ardd.ard.*;
 import opticnav.ardd.broker.ard.ARDGatekeeperBroker;
-import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.chan.Channel;
-import opticnav.ardroid.location.LocationMagic;
 import opticnav.ardroid.model.MapModel;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.ExecutorService;

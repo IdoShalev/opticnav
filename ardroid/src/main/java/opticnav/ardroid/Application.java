@@ -7,13 +7,10 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.widget.Toast;
-import opticnav.ardd.ard.ARDGatekeeper;
-import opticnav.ardd.protocol.ConfCode;
-import opticnav.ardd.protocol.PassCode;
-import opticnav.ardd.protocol.Protocol;
 import opticnav.ardroid.connection.ServerUIHandler;
-import opticnav.ardroid.ui.*;
+import opticnav.ardroid.ui.MapActivity;
+import opticnav.ardroid.ui.ServerConfigActivity;
+import opticnav.ardroid.ui.WelcomeActivity;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 

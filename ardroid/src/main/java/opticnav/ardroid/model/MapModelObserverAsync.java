@@ -1,7 +1,6 @@
 package opticnav.ardroid.model;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 
 public class MapModelObserverAsync implements MapModelObserver {
     private final Activity activity;
