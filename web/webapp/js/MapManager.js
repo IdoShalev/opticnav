@@ -130,6 +130,7 @@ $(function() {
         marker.info.name = marker_name;
         marker.gps = MapCoordHelper.gpsReprToNumbers({"lng": lng, "lat": lat});
         popup.hide();
+        MapController.recalculatePositions();
     });
     
     $("#marker-delete").click(function(){
