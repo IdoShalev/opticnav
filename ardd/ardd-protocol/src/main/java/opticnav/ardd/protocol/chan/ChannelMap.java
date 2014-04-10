@@ -40,14 +40,13 @@ class ChannelMap {
      * @return The removed multiplexee
      * @throws IOException Thrown when there's a problem closing the channel
      */
-    public synchronized ChannelMultiplexee remove(int channelID)
+    public synchronized void remove(int channelID)
             throws IOException {
         LOG.debug("Remove channel multiplexee: " + channelID);
         ChannelMultiplexee cm = this.channelMap.remove(channelID);
-        if (cm == null) {
-            throw new NullPointerException("Channel multiplexee must exist: " + channelID);
+        if (cm != null) {
+            cm.close();
         }
-        return cm;
     }
     
     /**

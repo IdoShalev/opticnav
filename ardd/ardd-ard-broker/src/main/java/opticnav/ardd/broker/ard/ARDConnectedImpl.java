@@ -132,7 +132,7 @@ class ARDConnectedImpl implements ARDConnected {
                 input.readUInt8();
                 
                 final ARDInstance instance;
-                instance = new ARDInstanceImpl(instanceChannel, instanceMap, this.threadPool);
+                instance = new ARDInstanceImpl(instanceChannel, instanceMap);
                 return new ARDInstanceJoinStatus(instance);
             } else {
                 throw new IllegalStateException("Unexpected response code: " + response);

@@ -187,7 +187,7 @@ public class ChannelMultiplexer {
                     // receive an end-of-file control code
                     int channelID = input.readUInt8();
                     LOG.debug("Receive EOF: " + channelID);
-                    ChannelMultiplexee c = channelMap.remove(channelID);
+                    channelMap.remove(channelID);
                 } else {
                     throw new IllegalStateException("Invalid control code: " + control);
                 }

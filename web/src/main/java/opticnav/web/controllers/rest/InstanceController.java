@@ -138,7 +138,7 @@ public class InstanceController extends Controller {
             mapMarkers = new ArrayList<>(map.getMarkers().size());
             for (Marker marker: map.getMarkers()) {
                 final InstanceDeployment.Marker instMarker;
-                instMarker = new InstanceDeployment.Marker(marker.getName(), marker.getLng(), marker.getLat());
+                instMarker = new InstanceDeployment.Marker(marker.getName(), marker.getLng()*32, marker.getLat()*32);
                 mapMarkers.add(instMarker);
             }
 

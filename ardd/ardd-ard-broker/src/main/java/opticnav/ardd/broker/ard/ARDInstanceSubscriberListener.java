@@ -1,7 +1,9 @@
 package opticnav.ardd.broker.ard;
 
 import java.io.EOFException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.util.concurrent.Callable;
 
 import opticnav.ardd.ard.ARDInstanceSubscriber;
@@ -19,7 +21,7 @@ public class ARDInstanceSubscriberListener implements Callable<Void> {
     }
     
     @Override
-    public Void call() throws Exception {
+    public Void call() throws IOException {
         try {
         while (!Thread.currentThread().isInterrupted()) {
             final int commandCode = this.input.readUInt8();
@@ -46,7 +48,7 @@ public class ARDInstanceSubscriberListener implements Callable<Void> {
                 throw new IllegalStateException();
             }
         }
-        } catch (EOFException e) {
+        } catch (EOFException|InterruptedIOException e) {
             // Ignore EOF
         }
         return null;

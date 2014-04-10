@@ -2,9 +2,6 @@ package opticnav.ardd.broker.ard;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
@@ -25,39 +22,47 @@ public class ARDInstanceImpl implements ARDInstance {
     
     private final InputStream input;
     private final PrimitiveWriter output;
-    private final ExecutorService threadPool;
     private final InstanceMap instanceMap;
-    private Future<Void> subscriberResult;
+    private Thread subscriberThread;
 
-    public ARDInstanceImpl(Channel channel, InstanceMap instanceMap, ExecutorService threadPool) {
+    public ARDInstanceImpl(Channel channel, InstanceMap instanceMap) {
         this.input = channel.getInputStream();
         this.output = PrimitiveUtil.writer(channel);
-        this.threadPool = threadPool;
         this.instanceMap = instanceMap;
     }
 
     @Override
     public void close() throws IOException {
-        if (this.subscriberResult == null) {
+        if (this.subscriberThread == null) {
             throw new IllegalStateException("A subscriber was never set! This could (or did) cause serious problems!");
         }
         
         try {
             this.output.close();
-            this.subscriberResult.get();
+            this.subscriberThread.interrupt();
+            this.subscriberThread.join();
         } catch (InterruptedException e) {
-        } catch (ExecutionException e) {
             LOG.catching(e);
         }
     }
     
     @Override
-    public void setSubscriber(ARDInstanceSubscriber subscriber) {
-        if (this.subscriberResult != null) {
+    public void setSubscriber(final ARDInstanceSubscriber subscriber) {
+        if (this.subscriberThread != null) {
             throw new IllegalStateException("A subscriber was already set!");
         }
         
-        this.subscriberResult = threadPool.submit(new ARDInstanceSubscriberListener(input, subscriber));
+        this.subscriberThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    new ARDInstanceSubscriberListener(input, subscriber).call();
+                } catch (IOException e) {
+                    LOG.catching(e);
+                }
+            }
+        });
+        this.subscriberThread.start();
     }
 
     @Override
