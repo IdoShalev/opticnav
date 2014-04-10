@@ -248,34 +248,20 @@ public class ServerUIHandler {
 
     public void joinInstance(final int instanceID, final JoinInstanceEvent joinInstanceEvent) {
         // runs in UI thread
-        final LocationManager mgr = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-
-        final LocationMagic locationMagic;
-        locationMagic = new LocationMagic(mgr);
-        locationMagic.setListener(new LocationMagic.Listener() {
+        serverManager.joinInstance(instanceID, new ServerManager.JoinInstanceEvent() {
             @Override
-            public void responsivenessUpdate(boolean good) {
+            public void noInstance() {
+                joinInstanceEvent.noInstance();
             }
 
             @Override
-            public void locationUpdate(final GeoCoordFine location) {
-                serverManager.joinInstance(instanceID, location, new ServerManager.JoinInstanceEvent() {
-                    @Override
-                    public void noInstance() {
-                        joinInstanceEvent.noInstance();
-                    }
+            public void alreadyJoined() {
+                joinInstanceEvent.alreadyJoined();
+            }
 
-                    @Override
-                    public void alreadyJoined() {
-                        joinInstanceEvent.alreadyJoined();
-                    }
-
-                    @Override
-                    public void joined() {
-                        joinInstanceEvent.joined();
-                    }
-                });
-                locationMagic.close();
+            @Override
+            public void joined() {
+                joinInstanceEvent.joined();
             }
         });
     }

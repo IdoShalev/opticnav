@@ -186,13 +186,11 @@ public class ChannelMultiplexer {
                     int channelID = input.readUInt8();
                     LOG.debug("Receive EOF: " + channelID);
                     ChannelMultiplexee c = channelMap.remove(channelID);
-                    if (c == null) { 
-                        throw new IllegalStateException("Channel to EOF doesn't exist: " + channelID);
-                    }
                 } else {
                     throw new IllegalStateException("Invalid control code: " + control);
                 }
             }
+            LOG.debug("Channel map empty, about to close Multiplexer...");
         }
     }
 }

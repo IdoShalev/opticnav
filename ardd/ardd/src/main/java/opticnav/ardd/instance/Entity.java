@@ -31,10 +31,10 @@ public class Entity implements AutoCloseable {
         LOG.debug("Created static entity (marker ID "+markerID+")");
     }
     
-    public Entity(int markerID, String name, GeoCoordFine geoCoord, EntitySubscriber subscriber, Closeable removeEntity) {
+    public Entity(int markerID, String name, EntitySubscriber subscriber, Closeable removeEntity) {
         this.markerID = markerID;
         this.name = name;
-        this.geoCoord = geoCoord;
+        this.geoCoord = null;
         this.subscriber = subscriber;
         this.subscribers = new HashSet<>();
         this.removeEntity = removeEntity;

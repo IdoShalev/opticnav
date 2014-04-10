@@ -47,8 +47,10 @@ public class ARDBroker implements ARDGatekeeper {
             // wait for the listener task to complete
             LOG.debug("Closing listener...");
             // TODO - graceful shutdown so that this doesn't block...
+            gatekeeperChannel.getOutputStream().close();
             this.listenerResult.get();
             LOG.debug("Listener closed");
+            this.threadPool.shutdown();
         } catch (InterruptedException e) {
             throw new IOException(e);
         } catch (ExecutionException e) {

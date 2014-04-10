@@ -96,8 +96,6 @@ public class InstancesActivity extends RoboActivity {
     private void joinInstance(int id) {
         final Context context = this;
 
-        final ProgressDialog dialog = ProgressDialog.show(this, "", "Waiting for location...", true);
-
         Application.getInstance().getServerUIHandler().joinInstance(id, new ServerUIHandler.JoinInstanceEvent() {
             @Override
             public void noInstance() {

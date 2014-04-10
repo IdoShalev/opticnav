@@ -100,10 +100,8 @@ public class ARDIntegrationDriver {
     }
     
     private static void joinInstance(ARDConnected connected, int instanceID) throws Exception {
-        final GeoCoordFine initialLocation = new GeoCoordFine(-10000, +10000);
-        
         final ARDInstanceJoinStatus status;
-        status = connected.joinInstance(instanceID, initialLocation);
+        status = connected.joinInstance(instanceID);
         
         System.out.println("Status: " + status.getStatus());
         if (status.getStatus() == ARDInstanceJoinStatus.Status.JOINED) {

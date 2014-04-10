@@ -96,7 +96,7 @@ public class InstancesList {
      * @param callbacks
      * @throws Exception XXX Any exception thrown by any method in JoinInstanceCallbacks. It's nasty, we know...
      */
-    public synchronized void joinInstance(int instanceID, final int ardID, final GeoCoordFine initialLocation,
+    public synchronized void joinInstance(int instanceID, final int ardID,
             final JoinInstanceCallbacks callbacks)
             throws Exception {
         final Instance instance = instances.get(instanceID);
@@ -106,7 +106,7 @@ public class InstancesList {
             final EntitySubscriber subscriber;
             final BlockingValue<Entity> entityFuture = new BlockingValue<>();
             subscriber = callbacks.joining(instance, entityFuture);
-            final Entity entity = instance.createEntity(ardID, initialLocation, subscriber);
+            final Entity entity = instance.createEntity(ardID, subscriber);
             entityFuture.set(entity);
         }
     }

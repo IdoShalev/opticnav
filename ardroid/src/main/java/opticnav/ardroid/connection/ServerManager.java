@@ -173,11 +173,11 @@ class ServerManager {
         });
     }
 
-    public void joinInstance(final int instanceID, final GeoCoordFine location, final JoinInstanceEvent joinInstanceEvent) {
+    public void joinInstance(final int instanceID, final JoinInstanceEvent joinInstanceEvent) {
         enqueueConnectedCommand(new ServerManager.CommandWithParam<ARDInstanceJoinStatus, ARDConnected>() {
             @Override
             public ARDInstanceJoinStatus background(ARDConnected connected) throws IOException {
-                return connected.joinInstance(instanceID, location);
+                return connected.joinInstance(instanceID);
             }
 
             @Override

@@ -39,12 +39,12 @@ public class Instance implements AutoCloseable {
         return this.info;
     }
     
-    public synchronized Entity createEntity(final int ardID, GeoCoordFine geoCoord, EntitySubscriber subscriber) {
+    public synchronized Entity createEntity(final int ardID, EntitySubscriber subscriber) {
         final int markerID = nextMarkerID++;
         final String name = info.getARD(ardID).getName();
         
         final Entity entity;
-        entity = new Entity(markerID, name, geoCoord, subscriber, new Closeable() {
+        entity = new Entity(markerID, name, subscriber, new Closeable() {
             @Override
             public void close() throws IOException {
                 removeEntity(ardID);
@@ -57,14 +57,10 @@ public class Instance implements AutoCloseable {
         for (Entity e: this.entities.values()) {
             entity.addSubscriber(e.getEntitySubscriber());
             e.addSubscriber(subscriber);
-            if (e.getEntitySubscriber() != null) {
-                e.getEntitySubscriber().newMarker(markerID, name, geoCoord);
-            }
             subscriber.newMarker(e.getMarkerID(), e.getName(), e.getGeoCoord());
         }
             
         this.entities.put(ardID, entity);
-        
         
         return entity;
     }

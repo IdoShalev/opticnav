@@ -4,7 +4,6 @@ import opticnav.ardd.ard.ARDConnectedException;
 import opticnav.ardd.ard.ARDConnected;
 import opticnav.ardd.ard.ARDInstance;
 import opticnav.ardd.ard.ARDInstanceJoinStatus;
-import opticnav.ardd.ard.ARDInstanceSubscriber;
 import opticnav.ardd.ard.InstanceInfo;
 import opticnav.ardd.ard.InstanceMap;
 import opticnav.ardd.ard.MapTransform;
@@ -75,12 +74,10 @@ class ARDConnectedImpl implements ARDConnected {
     }
 
     @Override
-    public ARDInstanceJoinStatus joinInstance(int instanceID, GeoCoordFine initialLocation) throws ARDConnectedException {
+    public ARDInstanceJoinStatus joinInstance(int instanceID) throws ARDConnectedException {
         try {
             output.writeUInt8(Commands.JOIN_INSTANCE);
             output.writeUInt31(instanceID);
-            output.writeSInt32(initialLocation.getLongitudeInt());
-            output.writeSInt32(initialLocation.getLatitudeInt());
             output.flush();
             
             final int response = input.readUInt8();

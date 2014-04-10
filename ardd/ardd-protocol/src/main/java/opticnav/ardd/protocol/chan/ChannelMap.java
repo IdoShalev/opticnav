@@ -40,7 +40,9 @@ class ChannelMap {
             throws IOException {
         LOG.debug("Remove channel multiplexee: " + channelID);
         ChannelMultiplexee cm = this.channelMap.remove(channelID);
-        cm.close();
+        if (cm != null) {
+            cm.close();
+        }
         return cm;
     }
     

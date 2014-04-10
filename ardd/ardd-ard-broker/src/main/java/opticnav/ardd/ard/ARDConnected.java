@@ -14,7 +14,7 @@ public interface ARDConnected extends Closeable {
      * @throws ARDConnectedException
      */
     public List<InstanceInfo> listInstances() throws ARDConnectedException;
-    public ARDInstanceJoinStatus joinInstance(int instanceID, GeoCoordFine initialLocation)
+    public ARDInstanceJoinStatus joinInstance(int instanceID)
             throws ARDConnectedException;
     
     public void close() throws IOException;

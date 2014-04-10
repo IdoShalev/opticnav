@@ -75,13 +75,8 @@ public class ConnectedCommandHandler extends AnnotatedCommandHandler {
     public void joinInstance(PrimitiveReader in, final PrimitiveWriter out) throws Exception {
         final int instanceID = in.readUInt31();
         
-        final int lng = in.readSInt32();
-        final int lat = in.readSInt32();
-        
-        final GeoCoordFine initialLocation = new GeoCoordFine(lng, lat);
-        
         instances.joinInstance(instanceID, connection.getARDID(),
-                initialLocation, new InstancesList.JoinInstanceCallbacks() {
+                new InstancesList.JoinInstanceCallbacks() {
             @Override
             public EntitySubscriber joining(Instance instance, BlockingValue<Entity> entity) throws IOException {
                 final InstanceInfo info = instance.getInfo();
