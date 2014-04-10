@@ -65,11 +65,19 @@ public class Entity implements AutoCloseable {
     }
     
     public synchronized void move(GeoCoordFine geoCoord) {
-        this.geoCoord = geoCoord;
         LOG.trace("Move marker "+markerID+": " + geoCoord);
-        for (EntitySubscriber s: subscribers) {
-            s.moveMarker(markerID, geoCoord);
+        if (this.geoCoord == null) {
+            // new marker
+            for (EntitySubscriber s: subscribers) {
+                s.newMarker(markerID, this.name, geoCoord);
+            }
+        } else {
+            // move marker
+            for (EntitySubscriber s: subscribers) {
+                s.moveMarker(markerID, geoCoord);
+            }
         }
+        this.geoCoord = geoCoord;
     }
     
     public synchronized void addSubscriber(EntitySubscriber subscriber) {
