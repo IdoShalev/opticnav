@@ -59,6 +59,8 @@ public class ARDConnectedList {
     }
     
     /**
+     * Remove the ARD identified by the ARD ID from the connected list
+     * 
      * @param ardID The ARD ID of the device to be removed.
      * @throws IllegalArgumentException Thrown if the device to be removed wasn't in the list.
      */

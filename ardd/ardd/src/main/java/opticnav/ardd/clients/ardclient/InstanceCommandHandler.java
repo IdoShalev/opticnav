@@ -15,6 +15,12 @@ import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.Instance.Commands;
 
+/**
+ * Handles all commands coming in from the ARDClient "Instance" channel.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class InstanceCommandHandler extends AnnotatedCommandHandler {
     private static final XLogger LOG = XLoggerFactory
             .getXLogger(InstanceCommandHandler.class);

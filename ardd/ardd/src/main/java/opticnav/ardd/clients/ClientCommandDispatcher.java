@@ -16,14 +16,33 @@ import opticnav.ardd.protocol.chan.Channel;
 /**
  * ClientCommandDispatcher reads incoming commands from a provided Channel and dispatches
  * command requests to a CommandHandler.
+ * 
+ * @author Danny Spencer
  */
 public final class ClientCommandDispatcher implements Callable<Void> {
     private static final XLogger logger = XLoggerFactory.getXLogger(ClientCommandDispatcher.class);
     
+    /**
+     * The CommandHandler interface receives a command identified by an integer value.
+     * The implementation performs whatever reads/writes are necessary to the provided streams, given the command.
+     * 
+     * @author Danny Spencer
+     *
+     */
     public interface CommandHandler extends Closeable {
+        /**
+         * Receives a command code and streams needed to perform a command.
+         * 
+         * @param code The command code
+         * @param in Input stream for reading
+         * @param out Output stream for writing
+         * @throws IOException Thrown when there's a problem reading from/writing to the streams
+         * @throws InterruptedException Thrown if the thread is interrupted
+         */
         public void command(int code, PrimitiveReader in, PrimitiveWriter out)
                 throws IOException, InterruptedException;
         
+        @Override
         public void close() throws IOException;
     }
     

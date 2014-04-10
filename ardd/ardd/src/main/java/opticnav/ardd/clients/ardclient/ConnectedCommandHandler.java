@@ -20,7 +20,12 @@ import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import static opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.*;
-
+/**
+ * Handles all commands coming in from the ARDClient "Connected" channel.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class ConnectedCommandHandler extends AnnotatedCommandHandler {
     private static final XLogger LOG = XLoggerFactory
             .getXLogger(ConnectedCommandHandler.class);

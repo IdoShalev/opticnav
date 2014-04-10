@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import opticnav.ardd.protocol.GeoCoordFine;
-import opticnav.ardd.protocol.InstanceDeploymentInfo.ARDIdentifier;
 import opticnav.ardd.protocol.TemporaryResourceUtil.TemporaryResource;
 
 /**
@@ -22,6 +21,8 @@ public class InstanceInfo {
     public final List<InstanceInfo.ARDIdentifier> invitedARDs;
 
     /**
+     * Construct an InstanceInfo object.
+     * 
      * @param startTime The start time. This is passed as a parameter so that the constructor remains deterministic.
      * @param name The name of the instance
      * @param mapImage The resource representing the map image. Can be null if no map image is needed.

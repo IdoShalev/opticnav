@@ -1,7 +1,7 @@
 package opticnav.ardd;
 
 /**
- * An ARDConnection is a handle to a connected device.
+ * An ARDConnection is a handle to a connected device. This is referenced by {@link ARDConnectedList}.
  * 
  * @author Danny Spencer
  * 

@@ -26,6 +26,32 @@ import opticnav.ardd.protocol.InstanceDeploymentInfo;
  *
  */
 public class InstancesList {
+    /**
+     * The callbacks in this class are called when either an instance is being joined to,
+     * or an instance couldn't be joined.
+     * 
+     * @author Danny Spencer
+     *
+     */
+    public interface JoinInstanceCallbacks {
+        /**
+         * The instance is being joined to. The implementation needs to provide a subscriber object so that marker
+         * updates are sent to it.
+         * 
+         * @param instance The instance being joined to
+         * @param entity Refers to an Entity object to be constructed shortly after this method is finished.
+         * @return The new entity subscriber
+         * @throws Exception
+         */
+        public EntitySubscriber joining(Instance instance, BlockingValue<Entity> entity) throws Exception;
+        /**
+         * Called when the instance to be joined couldn't be found.
+         * 
+         * @throws Exception
+         */
+        public void noInstanceFound() throws Exception;
+    }
+
     /** One owner to many instances */
     private final MultiValueMap<Long, Integer> owner_instance;
     private final Map<Integer, Instance> instances;
@@ -90,10 +116,11 @@ public class InstancesList {
     }
 
     /**
+     * Attempt to join an ARD to an instance by adding an {@link Entry} representing the device to the instance.
      * 
-     * @param instanceID
-     * @param ardID
-     * @param callbacks
+     * @param instanceID The ID of the instance to join
+     * @param ardID The ID of the device to add to the instance
+     * @param callbacks The implementation of callbacks to call when joining succeeds or fails
      * @throws Exception XXX Any exception thrown by any method in JoinInstanceCallbacks. It's nasty, we know...
      */
     public synchronized void joinInstance(int instanceID, final int ardID,
@@ -133,10 +160,5 @@ public class InstancesList {
         } else {
             return false;
         }
-    }
-    
-    public interface JoinInstanceCallbacks {
-        public EntitySubscriber joining(Instance instance, BlockingValue<Entity> entity) throws Exception;
-        public void noInstanceFound() throws Exception;
     }
 }

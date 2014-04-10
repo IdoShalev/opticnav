@@ -59,7 +59,7 @@ public class Instance implements AutoCloseable {
                 entity.addSubscriber(e.getEntitySubscriber());
             }
             e.addSubscriber(subscriber);
-            subscriber.newMarker(e.getMarkerID(), e.getName(), e.getGeoCoord());
+            subscriber.newMarker(e.getEntityID(), e.getName(), e.getGeoCoord());
         }
             
         this.entities.put(ardID, entity);

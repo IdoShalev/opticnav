@@ -16,6 +16,12 @@ import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import static opticnav.ardd.protocol.consts.ARDdARDProtocol.*;
 
+/**
+ * Handles all commands coming in from the ARDClient "Gatekeeper" channel.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class GatekeeperCommandHandler extends AnnotatedCommandHandler {
     private ARDListsManager ardListsManager;
     private ARDChannelsManager ardChannelsManager;

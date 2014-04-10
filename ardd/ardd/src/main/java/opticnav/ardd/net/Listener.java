@@ -16,6 +16,14 @@ import org.slf4j.ext.XLoggerFactory;
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelUtil;
 
+/**
+ * A generic Listener class that opens a listing TCP port and accepts incoming socket connections.
+ * When a connection is accepted, the socket's {@link opticnav.ardd.protocol.chan.Channel Channel} is delegated to a
+ * spawner, whose implementation initializes a service using the {@link opticnav.ardd.protocol.chan.Channel Channel}.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public final class Listener implements Callable<Void> {
     private static final XLogger logger = XLoggerFactory.getXLogger(Listener.class);
     

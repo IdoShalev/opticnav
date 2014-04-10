@@ -10,50 +10,66 @@ import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.protocol.GeoCoordFine;
 
+/**
+ * An Entity (not an ARD) represents a physical object containing a name and a location in an instance.
+ * Entities can be moved moved and notify subscribers of the entity of the event.
+ * 
+ * An Entity may represent an ARD or map marker (as it currently does), but not necessarily.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class Entity implements AutoCloseable {
     private static final XLogger LOG = XLoggerFactory.getXLogger(Entity.class);
     
-    private final int markerID;
+    private final int entityID;
     private final String name;
     private final EntitySubscriber subscriber;
     private final Set<EntitySubscriber> subscribers;
     private final Closeable removeEntity;
     private GeoCoordFine geoCoord;
     
-    public Entity(int markerID, String name, GeoCoordFine geoCoord) {
-        this.markerID = markerID;
+    /**
+     * Construct an entity that's static and doesn't move.
+     * 
+     * @param entityID A unique ID identifying the entity
+     * @param name
+     * @param geoCoord
+     */
+    public Entity(int entityID, String name, GeoCoordFine geoCoord) {
+        this.entityID = entityID;
         this.name = name;
         this.geoCoord = geoCoord;
         this.subscriber = null;
         this.subscribers = new HashSet<>();
         this.removeEntity = null;
         
-        LOG.debug("Created static entity (marker ID "+markerID+")");
+        LOG.debug("Created static entity (entity ID "+entityID+")");
     }
     
-    public Entity(int markerID, String name, EntitySubscriber subscriber, Closeable removeEntity) {
-        this.markerID = markerID;
+    public Entity(int entityID, String name, EntitySubscriber subscriber, Closeable removeEntity) {
+        this.entityID = entityID;
         this.name = name;
         this.geoCoord = null;
         this.subscriber = subscriber;
         this.subscribers = new HashSet<>();
         this.removeEntity = removeEntity;
-        LOG.debug("Created entity (marker ID "+markerID+")");
+        LOG.debug("Created entity (entity ID "+entityID+")");
     }
     
     public void close() {
-        LOG.debug("Closing entity (marker ID "+markerID+")...");
+        LOG.debug("Closing entity (entity ID "+entityID+")...");
         for (EntitySubscriber s: subscribers) {
-            s.removeMarker(markerID);
+            s.removeMarker(entityID);
         }
         if (removeEntity != null) {
             IOUtils.closeQuietly(removeEntity);
-            LOG.debug("Closed entity (marker ID "+markerID+")");
+            LOG.debug("Closed entity (entity ID "+entityID+")");
         }
     }
 
-    public int getMarkerID() {
-        return this.markerID;
+    public int getEntityID() {
+        return this.entityID;
     }
 
     public String getName() {
@@ -65,16 +81,16 @@ public class Entity implements AutoCloseable {
     }
     
     public synchronized void move(GeoCoordFine geoCoord) {
-        LOG.trace("Move marker "+markerID+": " + geoCoord);
+        LOG.trace("Move entity "+entityID+": " + geoCoord);
         if (this.geoCoord == null) {
             // new marker
             for (EntitySubscriber s: subscribers) {
-                s.newMarker(markerID, this.name, geoCoord);
+                s.newMarker(entityID, this.name, geoCoord);
             }
         } else {
             // move marker
             for (EntitySubscriber s: subscribers) {
-                s.moveMarker(markerID, geoCoord);
+                s.moveMarker(entityID, geoCoord);
             }
         }
         this.geoCoord = geoCoord;

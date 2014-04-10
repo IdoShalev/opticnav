@@ -13,13 +13,26 @@ import opticnav.ardd.protocol.PrimitiveWriter;
 
 /**
  * AnnotatedCommandHandler makes implementing commands MUCH nicer. Each command is a method annotated
- * with the @Command annotation.
+ * with the {@link AnnotatedCommandHandler.Command @Command} annotation.
  * 
  * This is essentially an cleaner alternative to implementing long if/else chains.
+ * 
+ * @author Danny Spencer
+ *
  */
 public abstract class AnnotatedCommandHandler implements ClientCommandDispatcher.CommandHandler {
+    /**
+     * Any method annotated by @Command will be run by {@link AnnotatedCommandHandler#command} when a command identified by the integer value provided is
+     * read.
+     * 
+     * @author Danny Spencer
+     *
+     */
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Command {
+        /**
+         * @return The command code
+         */
         int value();
     }
     
