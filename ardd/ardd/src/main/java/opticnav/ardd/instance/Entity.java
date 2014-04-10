@@ -73,6 +73,9 @@ public class Entity implements AutoCloseable {
     }
     
     public synchronized void addSubscriber(EntitySubscriber subscriber) {
+        if (subscriber == null) {
+            throw new NullPointerException("Subscriber cannot be null");
+        }
         this.subscribers.add(subscriber);
     }
     

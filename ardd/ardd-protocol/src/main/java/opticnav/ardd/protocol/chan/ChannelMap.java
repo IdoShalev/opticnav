@@ -22,6 +22,10 @@ class ChannelMap {
     
     public synchronized ChannelMultiplexee put(int channelID,
             ChannelMultiplexee cm) {
+        if (cm == null) {
+            throw new NullPointerException("Channel multiplexee cannot be null: " + channelID);
+        }
+        LOG.debug("Add channel multiplexee: " + channelID);
         return this.channelMap.put(channelID, cm);
     }
     
@@ -40,8 +44,8 @@ class ChannelMap {
             throws IOException {
         LOG.debug("Remove channel multiplexee: " + channelID);
         ChannelMultiplexee cm = this.channelMap.remove(channelID);
-        if (cm != null) {
-            cm.close();
+        if (cm == null) {
+            throw new NullPointerException("Channel multiplexee must exist: " + channelID);
         }
         return cm;
     }

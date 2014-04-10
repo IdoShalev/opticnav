@@ -148,6 +148,8 @@ public class ChannelMultiplexer {
             } catch (EOFException e) {
                 // ignore - EOF is expected
                 LOG.debug("Multiplexer EOF");
+            } catch (Exception e) {
+                LOG.catching(e);
             } finally {
                 LOG.debug("Multiplexer Channel finished");
                 // All channels needs to be closed

@@ -49,9 +49,11 @@ public final class Listener implements Callable<Void> {
             }
         } catch (InterruptedException e) {
             // Thread has been interrupted - let it fall through to the end
+        } catch (Exception e) {
+            logger.catching(e);
+        } finally {
+            IOUtils.closeQuietly(this.socket);
         }
-        
-        IOUtils.closeQuietly(this.socket);
         return null;
     }
 

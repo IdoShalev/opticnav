@@ -52,7 +52,7 @@ public final class ClientCommandDispatcher implements Callable<Void> {
             }
         } catch (EOFException e) {
             // The stream has ended. Quietly catch.
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.catching(e);
         } finally {
             // in all cases, close the stream

@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.Map;
 
 import org.apache.commons.math3.util.Pair;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.ARDConnection;
 import opticnav.ardd.InstancesList;
@@ -20,6 +22,9 @@ import opticnav.ardd.protocol.PrimitiveWriter;
 import static opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.*;
 
 public class ConnectedCommandHandler extends AnnotatedCommandHandler {
+    private static final XLogger LOG = XLoggerFactory
+            .getXLogger(ConnectedCommandHandler.class);
+    
     private final ARDChannelsManager ardChannelsManager;
     private final InstancesList instances;
     private final ARDConnection connection;
@@ -95,6 +100,7 @@ public class ConnectedCommandHandler extends AnnotatedCommandHandler {
                     
                     out.writeString(mapImageType);
                     out.writeUInt31(mapImageSize);
+                    LOG.debug("Map image size: " + mapImageSize);
                     out.writeFixedBlobFromInputStream(mapImageSize, mapImageInput);
 
                     writeAnchor(out, info.mapAnchors[0]);

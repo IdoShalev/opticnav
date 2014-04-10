@@ -55,7 +55,9 @@ public class Instance implements AutoCloseable {
         // Broadcast all existing entries to the subscriber
         // Additionally, add the new subscriber to all existing entries
         for (Entity e: this.entities.values()) {
-            entity.addSubscriber(e.getEntitySubscriber());
+            if (e.getEntitySubscriber() != null) {
+                entity.addSubscriber(e.getEntitySubscriber());
+            }
             e.addSubscriber(subscriber);
             subscriber.newMarker(e.getMarkerID(), e.getName(), e.getGeoCoord());
         }

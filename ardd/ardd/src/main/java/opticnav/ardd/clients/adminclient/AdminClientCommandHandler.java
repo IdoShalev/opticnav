@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
@@ -36,15 +37,17 @@ public class AdminClientCommandHandler extends AnnotatedCommandHandler {
             .getXLogger(AdminClientCommandHandler.class);
     
     private ARDListsManager ardListsManager;
+    private ExecutorService threadPool;
 
-    public AdminClientCommandHandler(ARDListsManager ardListsManager) {
+    public AdminClientCommandHandler(ARDListsManager ardListsManager, ExecutorService threadPool) {
         super(AdminClientCommandHandler.class);
         this.ardListsManager = ardListsManager;
+        this.threadPool = threadPool;
     }
 
     @Override
     public void close() throws IOException {
-        // do nothing
+        threadPool.shutdown();
     }
     
     @Command(Commands.REGARD)

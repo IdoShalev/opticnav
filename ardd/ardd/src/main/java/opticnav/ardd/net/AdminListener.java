@@ -14,7 +14,7 @@ public class AdminListener implements Runnable {
         @Override
         public Callable<Void> create(Channel channel, ExecutorService threadPool) {
             return new ClientCommandDispatcher(channel,
-                    new AdminClientCommandHandler(ardListsManager));
+                    new AdminClientCommandHandler(ardListsManager, threadPool));
         }
     }
 

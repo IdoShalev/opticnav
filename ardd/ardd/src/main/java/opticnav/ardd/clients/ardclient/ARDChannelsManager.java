@@ -5,6 +5,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import org.apache.commons.math3.util.Pair;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.ARDConnection;
 import opticnav.ardd.ARDListsManager;
@@ -26,6 +28,9 @@ import opticnav.ardd.protocol.consts.ARDdARDProtocol;
  *
  */
 public class ARDChannelsManager implements Callable<Void> {
+    private static final XLogger LOG = XLoggerFactory
+            .getXLogger(ARDChannelsManager.class);
+    
     private final ExecutorService threadPool;
     private final Channel channel;
     private final ChannelMultiplexer mpxr;
@@ -85,7 +90,7 @@ public class ARDChannelsManager implements Callable<Void> {
     }
 
     @Override
-    public Void call() throws Exception {
+    public Void call() {
 
         Future<Void> gk = this.threadPool.submit(this.gatekeeperConn);
         Future<Void> listenerResult = this.threadPool.submit(listener);
@@ -93,6 +98,8 @@ public class ARDChannelsManager implements Callable<Void> {
         try {        
             listenerResult.get();
             gk.get();
+        } catch (Exception e) {
+            LOG.catching(e);
         } finally {
             // In all cases, any connected should be closed
             if (this.connection != null) {

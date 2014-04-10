@@ -23,17 +23,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
+
 class ARDConnectedImpl implements ARDConnected {
+    private static final XLogger LOG = XLoggerFactory
+            .getXLogger(ARDConnectedImpl.class);
+    
     private final PrimitiveReader input;
     private final PrimitiveWriter output;
     private final ChannelMultiplexer mpxr;
     private final ExecutorService threadPool;
+    private final Channel instanceChannel;
 
     public ARDConnectedImpl(Channel connectedChannel, ChannelMultiplexer mpxr, ExecutorService threadPool) {
         this.input  = PrimitiveUtil.reader(connectedChannel);
         this.output = PrimitiveUtil.writer(connectedChannel);
         this.mpxr = mpxr;
         this.threadPool = threadPool;
+        // TODO - yuck
+        this.instanceChannel = mpxr.createChannel(55);
     }
     
     @Override
@@ -100,6 +109,8 @@ class ARDConnectedImpl implements ARDConnected {
 
                     final TemporaryResourceBuilder builder;
                     builder = TemporaryResourceUtil.createTemporaryResourceBuilder(mapImageType);
+
+                    LOG.debug("Map image size: " + mapImageSize);
                     input.readFixedBlobToOutputStream(mapImageSize, builder.getOutputStream());
                     final TemporaryResource mapImageResource = builder.build();
                     
@@ -108,6 +119,8 @@ class ARDConnectedImpl implements ARDConnected {
                     a2 = readAnchor();
                     a3 = readAnchor();
                     
+                    LOG.debug("Read anchors");
+                    
                     final MapTransform mapTransform = new MapTransform(a1, a2, a3);
                     
                     instanceMap = new InstanceMap(mapTransform, mapImageResource);
@@ -115,12 +128,11 @@ class ARDConnectedImpl implements ARDConnected {
                     instanceMap = null;
                 }
                 
-                final int instanceChannelID = input.readUInt8();
-                final Channel channel = this.mpxr.createChannel(instanceChannelID);
+                // discarded at the last minute
+                input.readUInt8();
                 
                 final ARDInstance instance;
-                instance = new ARDInstanceImpl(channel, instanceMap, this.threadPool);
-                
+                instance = new ARDInstanceImpl(instanceChannel, instanceMap, this.threadPool);
                 return new ARDInstanceJoinStatus(instance);
             } else {
                 throw new IllegalStateException("Unexpected response code: " + response);
