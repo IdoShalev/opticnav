@@ -2,6 +2,9 @@
 	<div id="downloadPage">
 		<div id="text">
 			<h2>Download the OpticNav Application</h2>
+
+			<t:link href="/downloads/opticnav.apk"><div class="download-button">Download the Android app</div></t:link>
+
 			<p>OpticNav application is a free to use software.</p>
 
 			<p>Follow these steps to install the application on your device.</p>
@@ -14,8 +17,6 @@
 			<p>the use of GPS, and storage space on your device.</p>
 			<p>The application may also use data when not connected</p>
 			<p>to a wi-fi hotspot.</p>
-
-			Download <a href="#">Here</a>
 		</div>
 	</div>
 </t:page>
