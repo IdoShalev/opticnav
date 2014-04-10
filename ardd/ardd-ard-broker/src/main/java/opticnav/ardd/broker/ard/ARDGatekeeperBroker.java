@@ -22,16 +22,16 @@ import opticnav.ardd.protocol.chan.ChannelMultiplexer;
 import opticnav.ardd.protocol.chan.ChannelMultiplexer.Listener;
 import static opticnav.ardd.protocol.consts.ARDdARDProtocol.*;
 
-public class ARDBroker implements ARDGatekeeper {
+public class ARDGatekeeperBroker implements ARDGatekeeper {
     private static final XLogger LOG = XLoggerFactory
-            .getXLogger(ARDBroker.class);
+            .getXLogger(ARDGatekeeperBroker.class);
     
     final private ChannelMultiplexer mpxr;
     final private ExecutorService threadPool;
     final private Future<Void> listenerResult;
     final private Channel gatekeeperChannel;
     
-    public ARDBroker(Channel channel, ExecutorService threadPool) {
+    public ARDGatekeeperBroker(Channel channel, ExecutorService threadPool) {
         this.mpxr = new ChannelMultiplexer(channel);
         this.threadPool = threadPool;
         

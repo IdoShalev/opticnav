@@ -4,20 +4,10 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.List;
-
 import opticnav.persistence.web.WebAccountDAO;
 import opticnav.persistence.web.DBUtil;
 import opticnav.persistence.web.WebAccountPublicDAO;
 import opticnav.persistence.web.WebResourceDAO;
-import opticnav.persistence.web.exceptions.WebAccountDAOException;
-import opticnav.persistence.web.exceptions.WebAccountPublicDAOException;
-import opticnav.persistence.web.map.Anchor;
-import opticnav.persistence.web.map.GetMap;
-import opticnav.persistence.web.map.MapsListEntry;
-import opticnav.persistence.web.map.Marker;
-import opticnav.persistence.web.map.ModifyMap;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

@@ -14,7 +14,6 @@ import opticnav.ardd.instance.Entity;
 import opticnav.ardd.instance.EntitySubscriber;
 import opticnav.ardd.instance.Instance;
 import opticnav.ardd.instance.InstanceInfo;
-import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.InstanceDeploymentInfo;
 
 /**

@@ -32,15 +32,11 @@ class ARDConnectedImpl implements ARDConnected {
     
     private final PrimitiveReader input;
     private final PrimitiveWriter output;
-    private final ChannelMultiplexer mpxr;
-    private final ExecutorService threadPool;
     private final Channel instanceChannel;
 
     public ARDConnectedImpl(Channel connectedChannel, ChannelMultiplexer mpxr, ExecutorService threadPool) {
         this.input  = PrimitiveUtil.reader(connectedChannel);
         this.output = PrimitiveUtil.writer(connectedChannel);
-        this.mpxr = mpxr;
-        this.threadPool = threadPool;
         // TODO - yuck
         this.instanceChannel = mpxr.createChannel(55);
     }

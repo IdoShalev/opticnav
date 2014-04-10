@@ -6,8 +6,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import opticnav.ardd.protocol.GeoCoordFine;
-
 /**
  * The Instance class represents an _active_ instance (the amalgamation of a map and its static/dynamic markers)
  *

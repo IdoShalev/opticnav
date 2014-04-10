@@ -4,8 +4,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
 
-import opticnav.ardd.protocol.GeoCoordFine;
-
 public interface ARDConnected extends Closeable {
     /**
      * Queries the server for a list of instances the device can connect to.

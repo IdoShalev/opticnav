@@ -16,7 +16,7 @@ import opticnav.ardd.protocol.PrimitiveWriter;
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.Instance.Commands;
 
-public class ARDInstanceImpl implements ARDInstance {
+class ARDInstanceImpl implements ARDInstance {
     private static final XLogger LOG = XLoggerFactory
             .getXLogger(ARDInstanceImpl.class);
     

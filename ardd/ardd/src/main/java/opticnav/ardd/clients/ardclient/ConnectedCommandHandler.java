@@ -1,6 +1,7 @@
 package opticnav.ardd.clients.ardclient;
 
 import java.io.IOException;
+
 import java.io.InputStream;
 import java.util.Map;
 
@@ -16,10 +17,10 @@ import opticnav.ardd.instance.Entity;
 import opticnav.ardd.instance.EntitySubscriber;
 import opticnav.ardd.instance.Instance;
 import opticnav.ardd.instance.InstanceInfo;
-import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.PrimitiveWriter;
 import static opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.*;
+
 /**
  * Handles all commands coming in from the ARDClient "Connected" channel.
  * 

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import opticnav.ardd.admin.ARDdAdmin;
-import opticnav.ardd.broker.admin.ARDdAdminBroker;
+import opticnav.ardd.admin.ARDdAdminBroker;
 import opticnav.ardd.protocol.Protocol;
 import opticnav.ardd.protocol.consts.ARDdAdminProtocol.Commands;
 import opticnav.ardd.protocol.chan.ChannelUtil;

@@ -56,7 +56,7 @@ public class GatekeeperCommandHandler extends AnnotatedCommandHandler {
         // blocks until result (ARD registered or otherwise)
 
         // TODO - proper response and ARD id
-        int ardID = codesWait.getSecond().get();
+        codesWait.getSecond().get();
         int response = ReqCodes.REGISTERED;
         out.writeUInt8(response);
         out.writeFixedBlob(passCode.getByteArray());

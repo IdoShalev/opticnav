@@ -11,7 +11,7 @@ import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PrimitiveReader;
 import opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.Instance.SubscriberCommands;
 
-public class ARDInstanceSubscriberListener implements Callable<Void> {
+class ARDInstanceSubscriberListener implements Callable<Void> {
     private final PrimitiveReader input;
     private final ARDInstanceSubscriber subscriber;
 

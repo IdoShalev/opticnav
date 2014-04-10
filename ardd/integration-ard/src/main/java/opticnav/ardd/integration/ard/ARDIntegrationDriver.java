@@ -13,7 +13,7 @@ import opticnav.ardd.ard.ARDInstanceJoinStatus;
 import opticnav.ardd.ard.ARDInstanceSubscriber;
 import opticnav.ardd.ard.InstanceInfo;
 import opticnav.ardd.ard.MapTransform;
-import opticnav.ardd.broker.ard.ARDBroker;
+import opticnav.ardd.broker.ard.ARDGatekeeperBroker;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PassCode;
@@ -26,18 +26,12 @@ public class ARDIntegrationDriver {
         throw new Error("Unexpected outcome");
     }
     
-    private static void makeAssertion(boolean expected, boolean actual) {
-        if (expected != actual) {
-            throw new AssertionError("Assertion failed");
-        }
-    }
-    
     public static void main(String[] args) throws Exception {
         final Socket socket = new Socket("localhost", Protocol.DEFAULT_ARD_PORT);
         final Channel channel = ChannelUtil.fromSocket(socket);
 
         try (Scanner in = new Scanner(System.in)) {
-            try (final ARDBroker broker = new ARDBroker(channel, Executors.newCachedThreadPool())) {
+            try (final ARDGatekeeperBroker broker = new ARDGatekeeperBroker(channel, Executors.newCachedThreadPool())) {
                 final boolean passCodeProvided;
                 final String passCodeString;
                 
@@ -56,7 +50,7 @@ public class ARDIntegrationDriver {
         }
     }
     
-    private static void brokerConnect(Scanner in, ARDBroker broker, PassCode passCode) throws Exception {
+    private static void brokerConnect(Scanner in, ARDGatekeeperBroker broker, PassCode passCode) throws Exception {
         final ARDConnectionStatus status = broker.connect(passCode);
         
         System.out.println("Status: " + status.getStatus());
@@ -129,7 +123,7 @@ public class ARDIntegrationDriver {
         }
     }
     
-    private static void requestPassCode(ARDBroker broker) throws Exception {
+    private static void requestPassCode(ARDGatekeeperBroker broker) throws Exception {
         broker.requestPassConfCodes(new ARDGatekeeper.RequestPassConfCodesCallback() {
             @Override
             public void registered(PassCode passCode) {

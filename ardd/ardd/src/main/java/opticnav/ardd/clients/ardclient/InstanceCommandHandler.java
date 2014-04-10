@@ -1,10 +1,6 @@
 package opticnav.ardd.clients.ardclient;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-
-import org.slf4j.ext.XLogger;
-import org.slf4j.ext.XLoggerFactory;
 
 import opticnav.ardd.ARDConnection;
 import opticnav.ardd.BlockingValue;
@@ -22,15 +18,10 @@ import opticnav.ardd.protocol.consts.ARDdARDProtocol.Connected.Instance.Commands
  *
  */
 public class InstanceCommandHandler extends AnnotatedCommandHandler {
-    private static final XLogger LOG = XLoggerFactory
-            .getXLogger(InstanceCommandHandler.class);
-    
-    private final ARDConnection connection;
     private final BlockingValue<Entity> entity;
 
     public InstanceCommandHandler(ARDConnection connection, BlockingValue<Entity> entity) {
         super(InstanceCommandHandler.class);
-        this.connection = connection;
         this.entity = entity;
     }
 

@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import opticnav.ardd.ard.*;
-import opticnav.ardd.broker.ard.ARDBroker;
+import opticnav.ardd.broker.ard.ARDGatekeeperBroker;
 import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.PassCode;
 import opticnav.ardd.protocol.chan.Channel;
@@ -132,7 +132,7 @@ class ServerManager {
         gateKeeperCommandQueue.enqueue(new ServerCommandQueue.Command<Void>() {
             @Override
             public Void background() throws IOException {
-                gateKeeper = new ARDBroker(channel, threadPool);
+                gateKeeper = new ARDGatekeeperBroker(channel, threadPool);
                 return null;
             }
 

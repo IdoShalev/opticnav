@@ -16,7 +16,6 @@ import opticnav.ardd.clients.ClientCommandDispatcher;
 import opticnav.ardd.instance.Entity;
 import opticnav.ardd.instance.EntitySubscriber;
 import opticnav.ardd.instance.Instance;
-import opticnav.ardd.protocol.GeoCoordFine;
 import opticnav.ardd.protocol.chan.Channel;
 import opticnav.ardd.protocol.chan.ChannelMultiplexer;
 import opticnav.ardd.protocol.consts.ARDdARDProtocol;
