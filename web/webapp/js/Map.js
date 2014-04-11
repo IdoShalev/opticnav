@@ -10,7 +10,6 @@ var Map = function(mapPersistence, complete, errorElem) {
     // Constructors, setting "private attributes and methods"
     var markers = [];
     var anchors = [];
-    var mapTransform;
     var img;
     var dirty = false;
     
@@ -21,7 +20,6 @@ var Map = function(mapPersistence, complete, errorElem) {
     	},
     	loadAnchors: function(a) {
     		anchors = a;
-			mapTransform = MapCoordHelper.getImageLocalGPSTransform(anchors);
     	},
     	loadImage: function(i) {
     		img = i;
@@ -38,9 +36,7 @@ var Map = function(mapPersistence, complete, errorElem) {
         },
         // Saves the Map anchors and markers using the PUT /map controller
         save: function(onComplete) {
-        	anchors = MapCoordHelper.getAbridgedAnchorsList(anchors);
-            mapTransform = MapCoordHelper.getImageLocalGPSTransform(anchors);
-        	mapPersistence.save(markers, anchors, function(ok, message) {
+        	mapPersistence.save(markers, MapCoordHelper.getAbridgedAnchorsList(anchors), function(ok, message) {
         		if (ok) {
         			dirty = false;
         		}
@@ -69,14 +65,12 @@ var Map = function(mapPersistence, complete, errorElem) {
         },
         addAnchor: function(gps, local) {
             anchors.push({gps: gps, local: local});
-            mapTransform = MapCoordHelper.getImageLocalGPSTransform(anchors);
             dirty = true;
         },
         removeAnchor: function(anchor) {
             var idx = anchors.indexOf(anchor);
             if (idx >= 0) {
                 anchors.splice(idx, 1);
-                mapTransform = MapCoordHelper.getImageLocalGPSTransform(anchors);
             } else {
                 throw new Error("Tried to remove anchor, but it doesn't exist");
             }
@@ -91,10 +85,13 @@ var Map = function(mapPersistence, complete, errorElem) {
             return anchors;
         },
         getMapTransform: function() {
-            return mapTransform;
+        	return MapCoordHelper.getImageLocalGPSTransform(anchors);
         },
         hasUnsavedChanges: function() {
             return dirty;
+        },
+        makeDirty: function() {
+        	dirty = true;
         }
     };
     

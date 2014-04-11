@@ -33,8 +33,8 @@
 				<div id="map-popups">
 					<div id="anchor-popup">
 						<button class="remove" id="anchor-delete">Delete</button>
-						<input type="text" id="anchor-lat" placeholder="Latitude" /> <input
-							type="text" id="anchor-lng" placeholder="Longitude" />
+						<input type="text" id="anchor-lat" placeholder="Latitude (x x x.xx N/S)" /> <input
+							type="text" id="anchor-lng" placeholder="Longitude (x x x.xx E/W)" />
 						<button id="anchor-save">Save</button>
 						<button class="remove" id="anchor-cancel">Cancel</button>
 					</div>
@@ -42,8 +42,8 @@
 					<div id="marker-popup">
 						<button class="remove" id="marker-delete">Delete</button>
 						<input type="text" id="marker-name" placeholder="Marker name" /><br />
-						<input type="text" id="marker-lat" placeholder="Latitude" /> <input
-							type="text" id="marker-lng" placeholder="Longitude" />
+						<input type="text" id="marker-lat" placeholder="Latitude (x x x.xx N/S)" /> <input
+							type="text" id="marker-lng" placeholder="Longitude (x x x.xx E/W)" />
 						<button id="marker-save">Save</button>
 						<button class="remove" id="marker-cancel">Cancel</button>
 					</div>

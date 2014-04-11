@@ -1,15 +1,28 @@
 var MapCoordHelper = function() {
     function gpsNotationReprToNumber(repr, degreeLimit, pos, neg) {
             // split by whitespaces
-            var arr = repr.split(/[ ,]+/);
+            var arr = repr.trim().split(/[ ,]+/);
+            if (arr.length != 3) {
+            	return null;
+            }
+            
             var degrees = parseInt(arr[0]);
             var minutes = parseInt(arr[1]);
             var seconds = parseFloat(arr[2]);
-            var dir = arr[3];
+            var dir = arr[3].toUpperCase();
+            
+            // check if the arguments are the intended numbers
+            if (degrees != arr[0] || minutes != arr[1] || seconds != arr[2]) {
+            	return null;
+            }
             
             var centiseconds = Math.round(seconds*100);
             
-            var positive = dir.toUpperCase() == pos;
+            if (dir != pos && dir != neg) {
+            	return null;
+            }
+            
+            var positive = dir == pos;
             
             return ((degrees*60 + minutes)*60*100 + centiseconds) * (positive?1:-1);
     }

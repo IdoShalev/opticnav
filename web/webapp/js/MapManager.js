@@ -84,6 +84,36 @@ $(function() {
     $("#anchor-popup").hide();
     
     $("#anchor-save").click(function() {
+    	anchor_save();
+    });
+    
+	$("#anchor-lng, #anchor-lat").keyup(function(e){
+	    if(e.keyCode == 13) {
+	    	anchor_save();
+	    }
+	});
+    
+    $("#anchor-cancel").click(function() {
+    	var popup = $("#anchor-popup");
+        popup.hide();
+    });
+    
+    $("#marker-cancel").click(function(){
+    	var popup = $("#marker-popup");
+    	popup.hide();
+    });
+    
+    $("#marker-save").click(function(){
+    	marker_save();
+    });
+    
+	$("#marker-lng, #marker-lat").keyup(function(e){
+	    if(e.keyCode == 13) {
+	    	marker_save();
+	    }
+	});
+    
+    function anchor_save() {
         var popup = $("#anchor-popup");
         var lng;
         var lat; 
@@ -104,21 +134,12 @@ $(function() {
         var anchor = anchor_elem.data("anchor");
         
         anchor.gps = MapCoordHelper.gpsReprToNumbers({"lng": lng, "lat": lat});
+        MapController.makeDirty();
         popup.hide();
         MapController.generateAnchors();
-    });
+    }
     
-    $("#anchor-cancel").click(function() {
-    	var popup = $("#anchor-popup");
-        popup.hide();
-    });
-    
-    $("#marker-cancel").click(function(){
-    	var popup = $("#marker-popup");
-    	popup.hide();
-    });
-    
-    $("#marker-save").click(function(){
+    function marker_save() {
     	var popup = $("#marker-popup");
         var marker_elem = popup.data("marker");
         var marker = marker_elem.data("marker");
@@ -129,9 +150,10 @@ $(function() {
         
         marker.info.name = marker_name;
         marker.gps = MapCoordHelper.gpsReprToNumbers({"lng": lng, "lat": lat});
+        MapController.makeDirty();
         popup.hide();
         MapController.recalculatePositions();
-    });
+    }
     
     $("#marker-delete").click(function(){
     	MapController.removeCurrentMarker();

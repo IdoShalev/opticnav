@@ -440,6 +440,10 @@ var MapController = function() {
         //Allows generation of anchors from different JS pages
         generateAnchors: function() {
         	generateAnchorElements.call(MapController);
+        },
+        
+        makeDirty: function() {
+        	currentMap.makeDirty();
         }
     };
 }();
