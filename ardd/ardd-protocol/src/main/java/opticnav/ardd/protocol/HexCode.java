@@ -2,6 +2,13 @@ package opticnav.ardd.protocol;
 
 import java.util.Arrays;
 
+/**
+ * A fixed-length code represented in hexadecimal.
+ * Converts a string of hexadecimal digits to a byte array, and vice-versa.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class HexCode {
     private byte[] code;
     

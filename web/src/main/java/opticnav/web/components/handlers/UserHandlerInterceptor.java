@@ -8,6 +8,12 @@ import opticnav.web.components.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+/**
+ * Intercepts the Spring servlet to provide a "user" attribute to the JSP views.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class UserHandlerInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private UserSession userSession;
@@ -18,7 +24,6 @@ public class UserHandlerInterceptor extends HandlerInterceptorAdapter {
             throws Exception {
         UserSession.User user = this.userSession.getUser();
         
-        System.out.println("USER: " + user);
         request.setAttribute("user", user);
         return true;
     }

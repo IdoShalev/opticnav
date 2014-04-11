@@ -2,7 +2,7 @@ genconst.py
 ===========
 2014 - Dan Spencer
 
-Generate constants for Java, JavaScript and more
+Generate constants for Java, MySQL, and more
 
 Scenario
 --------
@@ -10,10 +10,11 @@ A username has a maximum of 25 characters. A user tries to log in with a
 30-character username.
 
 There should be length constraints in three places:
-    * The database (ie. MySQL)
-    * The server's login controller (ie. Java EE servlet, Spring controller)
-    * The JavaScript source handling the AJAX request to the controller
-    * The HTML input element(s)
+
+* The database (ie. MySQL)
+* The server's login controller (ie. Java EE servlet, Spring controller)
+* The JavaScript source handling the AJAX request to the controller
+* The HTML input element(s)
 
 How does the programmer guarantee that the constraint is the same in these
 domains? If the constant is changed, it should change _everywhere_!
@@ -23,6 +24,7 @@ Naïve approach
 Hardcode the constants everywhere
 
 Spring controller (Java):
+
     public class AccountPOJO {
         @Size(max=25)
         private String username;
@@ -30,12 +32,14 @@ Spring controller (Java):
     }
 
 MySQL:
+
     CREATE TABLE WEB_ACCOUNT(
         username VARCHAR(25) NOT NULL UNIQUE,
         ...
     );
 
 HTML:
+
     <input name="username" size="25">
 
 
@@ -94,15 +98,4 @@ statements, we have to resort to a macro preprocessor such as m4.
     define(Constants__WebAccount__USERNAME_MAXLENGTH,25)dnl
     define(Constants__Map__MAPNAME_MINLENGTH,5)dnl
     define(Constants.Map.MAPNAME_MAXLENGTH,50)dnl
-
-### JavaScript ###
-    var Constants = {
-        "WebAccount": {
-            "USERNAME_MAXLENGTH": 25
-        },
-        "Map": {
-            "MAPNAME_MINLENGTH": 5,
-            "MAPNAME_MAXLENGTH": 50
-        }
-    }
 

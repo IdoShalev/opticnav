@@ -8,7 +8,20 @@ import opticnav.ardd.admin.ARDdAdminBroker;
 import opticnav.ardd.admin.ARDdAdminException;
 import opticnav.ardd.protocol.chan.ChannelUtil;
 
+/**
+ * ARDdAdminPool serves {@link opticnav.ardd.admin.ARDdAdmin ARDdAdmin} objects to controllers that request them.
+ * It is intended to keep a cache of pooled connections, but it currently just makes connections on demand.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class ARDdAdminPool implements AutoCloseable {
+    /**
+     * Thrown if no connection to ardd could be made.
+     * 
+     * @author Danny Spencer
+     *
+     */
     public static class BrokerNotAvailableException extends ARDdAdminException {
         private static final long serialVersionUID = 1L;
         
@@ -25,6 +38,12 @@ public class ARDdAdminPool implements AutoCloseable {
         this.port = port;
     }
     
+    /**
+     * Get an ARDdAdmin connection
+     * 
+     * @return An ARDdAdmin connection
+     * @throws BrokerNotAvailableException Thrown if no connection to ardd could be made.
+     */
     public ARDdAdmin getAdminBroker()
             throws BrokerNotAvailableException {
         try {

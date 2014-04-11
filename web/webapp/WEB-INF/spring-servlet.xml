@@ -26,12 +26,6 @@
 	        <mvc:mapping path="/*"/>
 	        <bean class="opticnav.web.components.handlers.UserHandlerInterceptor" />
 	    </mvc:interceptor>
-        <mvc:interceptor>
-            <mvc:mapping path="/auth/*"/>
-            <bean class="opticnav.web.components.handlers.AuthHandlerInterceptor">
-                <constructor-arg type="String"><value>/</value></constructor-arg>
-            </bean>
-        </mvc:interceptor>
 	</mvc:interceptors>
    
    	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">

@@ -7,6 +7,13 @@ import java.util.Map;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
+/**
+ * The ChannelMap class lists all open channels by their ID and {@link ChannelMultiplexee} object.
+ * If a channel is open, it's listed here.
+ * 
+ * @author Danny Spencer
+ *
+ */
 class ChannelMap {
     private static final XLogger LOG = XLoggerFactory.getXLogger(ChannelMap.class);
     
@@ -16,10 +23,21 @@ class ChannelMap {
         this.channelMap = new HashMap<>();
     }
     
+    /**
+     * 
+     * @return True if there are no open channels, false if there is at least 1 open channel
+     */
     public synchronized boolean isEmpty() {
         return this.channelMap.isEmpty();
     }
     
+    /**
+     * Add a {@link ChannelMultiplexee} object and its associated ID to the list
+     * 
+     * @param channelID The channel ID
+     * @param cm The channel multiplexee object
+     * @return The same channel multiplexee object, as provided
+     */
     public synchronized ChannelMultiplexee put(int channelID,
             ChannelMultiplexee cm) {
         if (cm == null) {
@@ -29,6 +47,12 @@ class ChannelMap {
         return this.channelMap.put(channelID, cm);
     }
     
+    /**
+     * Get a channel multiplexee identified by a channel ID
+     * 
+     * @param channelID The channel ID of the channel multiplexee being requested
+     * @return A ChannelMultiplexee object
+     */
     public synchronized ChannelMultiplexee get(int channelID) {
         return this.channelMap.get(channelID);
     }

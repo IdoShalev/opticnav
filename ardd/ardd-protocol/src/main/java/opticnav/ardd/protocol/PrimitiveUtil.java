@@ -6,7 +6,6 @@ import java.io.OutputStream;
 
 import opticnav.ardd.protocol.chan.Channel;
 
-
 public class PrimitiveUtil {
     public static PrimitiveReader reader(InputStream input) {
         return new PrimitiveReader(input);

@@ -6,6 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * A very simple controller that maps URLs to views defined in /WEB-INF/jsp
+ * 
+ * @author Ido Shalev
+ *
+ */
 @Controller
 public class SimplePagesController {
     @Autowired
