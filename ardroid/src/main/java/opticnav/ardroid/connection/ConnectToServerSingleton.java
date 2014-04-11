@@ -14,6 +14,10 @@ import opticnav.ardroid.ui.InstancesActivity;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
+/**
+ * ConnectToServerSingleton is an dependency-injected singleton that manages any ongoing connection requests.
+ * This is needed to make the Android activities remember that connections are happening.
+ */
 @Singleton
 public class ConnectToServerSingleton {
     private static final XLogger LOG = XLoggerFactory.getXLogger(ConnectToServerSingleton.class);

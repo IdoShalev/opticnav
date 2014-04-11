@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The MapModel class represents data about the map being shown in {@link opticnav.ardroid.ui.MapView MapView}.
+ */
 public class MapModel {
     private final boolean hasMapImage;
     private final Bitmap bitmap;

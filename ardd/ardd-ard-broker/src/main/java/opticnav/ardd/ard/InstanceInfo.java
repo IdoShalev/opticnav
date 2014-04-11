@@ -1,5 +1,11 @@
 package opticnav.ardd.ard;
 
+/**
+ * Information about instances being queried from the {@link ARDConnected} broker.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public class InstanceInfo {
     private final int id;
     private final String name;

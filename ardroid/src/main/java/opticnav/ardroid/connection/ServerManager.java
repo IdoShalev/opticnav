@@ -17,6 +17,10 @@ import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * ServerManager manages connections and basic dispatching to the UI thread. This class never explicitly references
+ * any of the Android Activities or other UI elements.
+ */
 class ServerManager {
     private static final XLogger LOG = XLoggerFactory.getXLogger(ServerManager.class);
 

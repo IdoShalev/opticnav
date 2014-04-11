@@ -6,6 +6,12 @@ import java.io.IOException;
 import opticnav.ardd.protocol.ConfCode;
 import opticnav.ardd.protocol.PassCode;
 
+/**
+ * An ARD broker connection in the Gatekeeper state.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public interface ARDGatekeeper extends Closeable {
     public interface Cancellation {
         public void cancel();

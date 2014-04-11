@@ -7,6 +7,10 @@ import opticnav.ardroid.model.Coordinate;
 import opticnav.ardroid.model.MapModel;
 import opticnav.ardroid.model.Marker;
 
+/**
+ * InstanceSubscriber notifies the {@link opticnav.ardroid.model.MapModel MapModel} of changes received from the
+ * Instance broker.
+ */
 public class InstanceSubscriber implements ARDInstanceSubscriber {
     private final MapModel mapModel;
     private final MapTransform transform;

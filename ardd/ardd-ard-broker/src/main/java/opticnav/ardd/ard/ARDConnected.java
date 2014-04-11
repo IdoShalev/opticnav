@@ -12,6 +12,13 @@ public interface ARDConnected extends Closeable {
      * @throws ARDConnectedException
      */
     public List<InstanceInfo> listInstances() throws ARDConnectedException;
+    /**
+     * Attempt to join the instance specified by an ID.
+     * 
+     * @param instanceID The ID number identifying the instance
+     * @return A status object determining success or failure
+     * @throws ARDConnectedException
+     */
     public ARDInstanceJoinStatus joinInstance(int instanceID)
             throws ARDConnectedException;
     

@@ -9,6 +9,10 @@ import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
+/**
+ * ServerCommandQueue ensures that server commands are run in sequence. This is meant to prevent race conditions
+ * created by executing commands in multiple threads simultaneously.
+ */
 public final class ServerCommandQueue implements Runnable {
     private static final XLogger LOG = XLoggerFactory.getXLogger(ServerCommandQueue.class);
     private final Handler handler;

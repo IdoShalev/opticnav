@@ -2,6 +2,14 @@ package opticnav.ardd.ard;
 
 import opticnav.ardd.protocol.GeoCoordFine;
 
+/**
+ * The MapTransform object is responsible for converting geocoordinates to image-local coordinates, and vice-versa.
+ * 
+ * MapTransform is implemented as a 3x2 matrix transform.
+ * 
+ * @author Danny Spencer
+ *
+ */
 public final class MapTransform {
     public static final class Anchor {
         public final int localX, localY;
