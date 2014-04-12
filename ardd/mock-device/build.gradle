@@ -1,0 +1,15 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.7
+
+configurations {
+    compile.extendsFrom configurations.common
+}
+
+dependencies {
+    compile project(':ardd-ard-broker')
+    compile 'ch.qos.logback:logback-classic:1.1.1'
+}
+
+mainClassName = "opticnav.ardd.mockdevice.MockDeviceDriver"
