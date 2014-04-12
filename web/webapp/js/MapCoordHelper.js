@@ -2,7 +2,7 @@ var MapCoordHelper = function() {
     function gpsNotationReprToNumber(repr, degreeLimit, pos, neg) {
             // split by whitespaces
             var arr = repr.trim().split(/[ ,]+/);
-            if (arr.length != 3) {
+            if (arr.length != 4) {
             	return null;
             }
             
