@@ -64,8 +64,7 @@ header {
 }
 
 /* Loader animation, courtesy of https://github.com/padolsey/Sonic */
-@
--webkit-keyframes loaderSprite {from { background-position:0px;
+@-webkit-keyframes loaderSprite {from { background-position:0px;
 	
 }
 
@@ -74,8 +73,7 @@ to {
 }
 
 }
-@
--moz-keyframes loaderSprite {from { background-position:0px;
+@-moz-keyframes loaderSprite {from { background-position:0px;
 	
 }
 
@@ -84,8 +82,7 @@ to {
 }
 
 }
-@
-keyframes loaderSprite {from { background-position:0px;
+@keyframes loaderSprite {from { background-position:0px;
 	
 }
 
@@ -111,8 +108,7 @@ to {
 	right: -40px;
 }
 
-@
--webkit-keyframes loaderSpriteLarge {from { background-position:0px;
+@-webkit-keyframes loaderSpriteLarge {from { background-position:0px;
 	
 }
 
@@ -121,8 +117,7 @@ to {
 }
 
 }
-@
--moz-keyframes loaderSpriteLarge {from { background-position:0px;
+@-moz-keyframes loaderSpriteLarge {from { background-position:0px;
 	
 }
 
@@ -131,8 +126,7 @@ to {
 }
 
 }
-@
-keyframes loaderSpriteLarge {from { background-position:0px;
+@keyframes loaderSpriteLarge {from { background-position:0px;
 	
 }
 
