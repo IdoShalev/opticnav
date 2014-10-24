@@ -20,6 +20,13 @@ Building and installing the project
 -----------------------------------
 For instructions on building and installing, see INSTALL.md
 
+Docker images
+-------------
+See dockerfile/README.md for information on building
+
+<https://registry.hub.docker.com/u/nukep/opticnav-daemon/>
+
+<https://registry.hub.docker.com/u/nukep/opticnav-webapp/>
 
 Gradle projects
 ---------------
