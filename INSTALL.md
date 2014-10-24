@@ -1,6 +1,5 @@
 Developer dependencies
 ----------------------
-
 * Gradle 1.10
 * Android 4.4 SDK
 * (Optional) Docker
@@ -42,3 +41,17 @@ Building at last
 ----------------
 Building will be done through Gradle.
 
+```bash
+# OpticNav daemon
+gradle :ardd:distTar
+
+# Web application
+gradle :web:war
+
+# Android application
+gradle :ardroid:assembleDebug
+```
+
+Docker
+------
+See the README in `dockerfiles` for more info.
