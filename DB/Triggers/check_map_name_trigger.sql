@@ -13,7 +13,7 @@ DELIMITER //
 CREATE TRIGGER check_map_name_trigger BEFORE INSERT ON `MAP`
      FOR EACH ROW
      BEGIN
-     DECLARE msg varchar(255);
+     DECLARE msg VARCHAR(255);
      IF (NEW.name = '')
      THEN
         SET msg = ('Map name is an empty String');

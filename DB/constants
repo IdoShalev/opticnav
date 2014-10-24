@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-../constants/genconst/genconst.py ../constants/WebPersistence.txt Web m4 -

@@ -11,7 +11,7 @@ DROP FUNCTION IF EXISTS createMap;
 DELIMITER //
 
 CREATE FUNCTION createMap 
-(p_map_name VARCHAR(Web__MaxLength__MAP_NAME), p_res_id INT(4), p_acc_id INT(4))
+(p_map_name VARCHAR(255), p_res_id INT(4), p_acc_id INT(4))
 RETURNS INT
 DETERMINISTIC
 BEGIN    

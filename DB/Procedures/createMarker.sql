@@ -12,7 +12,7 @@ DROP PROCEDURE IF EXISTS createMarker;
 DELIMITER //
 
 CREATE PROCEDURE createMarker 
-(p_name VARCHAR(Web__MaxLength__MARKER_NAME),
+(p_name VARCHAR(255),
 p_map_id INT(4), p_res_id INT(4), p_lat INT(4), p_long INT(4))
 BEGIN
     INSERT INTO MARKER

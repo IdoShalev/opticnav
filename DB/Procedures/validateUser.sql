@@ -12,7 +12,7 @@ DROP FUNCTION IF EXISTS validateUser;
 DELIMITER //
 
 CREATE FUNCTION validateUser 
-(p_accountName VARCHAR(Web__MaxLength__USERNAME), p_password VARCHAR(Web__MaxLength__PASSWORD))
+(p_accountName VARCHAR(255), p_password VARCHAR(255))
 RETURNS INT
 READS SQL DATA
 BEGIN

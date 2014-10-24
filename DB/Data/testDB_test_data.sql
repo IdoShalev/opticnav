@@ -17,7 +17,7 @@ SELECT addResource('res3');
 SELECT addResource('res4');
 SELECT addResource('res5');
 
-/* creating maps (p_map_name VARCHAR(Web__MaxLength__MAP_NAME), p_res_id INT(4), p_acc_id INT(4)) */
+/* creating maps (p_map_name VARCHAR(255), p_res_id INT(4), p_acc_id INT(4)) */
 
 SELECT createMap('mapName1', 1, 1);
 SELECT createMap('mapName2', 2, 1);
@@ -26,7 +26,7 @@ SELECT createMap('mapName4', 4, 2);
 SELECT createMap('mapName5', 5, 2);
 
 
-/* creating some markers (p_name VARCHAR(Web__MaxLength__MARKER_NAME), p_map_id INT(4), p_res_id INT(4), p_lat INT(4), p_long INT(4)) */
+/* creating some markers (p_name VARCHAR(255), p_map_id INT(4), p_res_id INT(4), p_lat INT(4), p_long INT(4)) */
 
 CALL createMarker('marker1', 1, 0, 10, 10);
 CALL createMarker('marker2', 1, 0, 20, 20);

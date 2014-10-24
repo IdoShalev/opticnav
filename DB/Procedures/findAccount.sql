@@ -11,7 +11,7 @@ DROP FUNCTION IF EXISTS findAccount;
 DELIMITER //
 
 CREATE FUNCTION findAccount 
-(p_accountName VARCHAR(Web__MaxLength__USERNAME))
+(p_accountName VARCHAR(255))
 RETURNS INT
 READS SQL DATA
 BEGIN
