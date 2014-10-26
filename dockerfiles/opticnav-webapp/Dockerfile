@@ -26,6 +26,6 @@ ADD build/concat.sql /concat.sql
 EXPOSE 8080
 
 # Persistent data - map images
-VOLUME '/resources'
+VOLUME /resources
 
 CMD ["/start.sh"]
