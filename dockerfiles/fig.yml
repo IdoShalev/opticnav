@@ -1,0 +1,20 @@
+# An example development environment using fig
+
+web:
+    build: opticnav-webapp
+    ports:
+        - "8080:8080"
+    links:
+        - mysql
+        - daemon
+daemon:
+    build: opticnav-daemon
+    ports:
+        - "4444:4444"
+mysql:
+    image: mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: password
+        MYSQL_USER: opticnav
+        MYSQL_PASSWORD: password
+        MYSQL_DATABASE: opticnav
