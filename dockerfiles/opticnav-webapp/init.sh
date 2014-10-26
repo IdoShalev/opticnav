@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 mkdir -p /resources
 
@@ -13,23 +13,14 @@ if [ $? -ne 0 ]; then
     (mysql $MYSQL_PARAMS < concat.sql) || exit 1
 fi
 
-# Each colon (such as those in URLs) needs to be escaped. 
-# each property for create-system-properties is delimited by colons.
 export JDBC_URL=jdbc\\:mysql\\://$MYSQL_PORT_3306_TCP_ADDR\\:$MYSQL_PORT_3306_TCP_PORT/$MYSQL_ENV_MYSQL_DATABASE
 
-asadmin start-domain
-
-asadmin create-system-properties \
-opticnav.ardd.admin.host=$DAEMON_PORT_8888_TCP_ADDR:\
-opticnav.ardd.admin.port=$DAEMON_PORT_8888_TCP_PORT:\
-opticnav.jdbc.driverClassName=com.mysql.jdbc.Driver:\
-opticnav.jdbc.url=$JDBC_URL:\
-opticnav.jdbc.username=$MYSQL_ENV_MYSQL_USER:\
-opticnav.jdbc.password=$MYSQL_ENV_MYSQL_PASSWORD:\
-opticnav.resource.dir=/resources
-
-
-# Deploy web.war to Glassfish
-asadmin deploy --contextroot / /web.war
-
-asadmin stop-domain
+cat > /opticnav.properties << EOF
+-Dopticnav.ardd.admin.host=$DAEMON_PORT_8888_TCP_ADDR
+-Dopticnav.ardd.admin.port=$DAEMON_PORT_8888_TCP_PORT
+-Dopticnav.jdbc.driverClassName=com.mysql.jdbc.Driver
+-Dopticnav.jdbc.url=$JDBC_URL
+-Dopticnav.jdbc.username=$MYSQL_ENV_MYSQL_USER
+-Dopticnav.jdbc.password=$MYSQL_ENV_MYSQL_PASSWORD
+-Dopticnav.resource.dir=/resources
+EOF

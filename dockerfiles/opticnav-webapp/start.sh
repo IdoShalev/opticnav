@@ -1,8 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ ! -f /initialized ]; then
     /init.sh
     touch initialized
 fi
 
-exec asadmin start-domain -v -w
+cd /tomcat
+export CATALINA_OPTS="$(cat /opticnav.properties)"
+exec ./bin/catalina.sh run
