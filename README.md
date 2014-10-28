@@ -3,8 +3,7 @@ OpticNav
 ![Logo](img/logo.png)
 
 OpticNav is a proof-of-concept, multi-user augmented reality maps system.
-It showcases one of the many potential applications in the world of augmented
-reality.
+It is meant to showcase one of the many potential applications of augmented reality.
 It was worked on as part of the student Capstone project at SAIT Polytechnic.
 
 The client for this project was the
