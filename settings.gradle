@@ -11,13 +11,13 @@ include 'ardroid'
 include 'web-persistence'
 include 'web'
 
-project(":daemon").projectDir = file("ardd/daemon")
-project(":daemon-protocol").projectDir = file("ardd/daemon-protocol")
-project(":daemon-manager-client").projectDir = file("ardd/daemon-manager-client")
-project(":daemon-device-client").projectDir = file("ardd/daemon-device-client")
-project(":daemon-cli").projectDir = file("ardd/daemon-cli")
-project(":integration-ard").projectDir = file("ardd/integration-ard")
-project(":mock-device").projectDir = file("ardd/mock-device")
+project(":daemon").projectDir = file("daemon/daemon")
+project(":daemon-protocol").projectDir = file("daemon/daemon-protocol")
+project(":daemon-manager-client").projectDir = file("daemon/daemon-manager-client")
+project(":daemon-device-client").projectDir = file("daemon/daemon-device-client")
+project(":daemon-cli").projectDir = file("daemon/daemon-cli")
+project(":integration-ard").projectDir = file("daemon/integration-ard")
+project(":mock-device").projectDir = file("daemon/mock-device")
 
 project(":web-persistence").projectDir = file("web-persistence")
 
