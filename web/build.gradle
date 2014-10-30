@@ -1,6 +1,32 @@
 apply plugin: 'war'
+apply plugin: 'com.bmuschko.tomcat'
 
 sourceCompatibility = 1.7
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.0'
+    }
+}
+
+tomcat {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        def tomcatVersion = '7.0.56'
+        tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+                "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+        tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
+            exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+        }
+    }
+}
 
 configurations {
     compile.extendsFrom configurations.common
@@ -9,18 +35,15 @@ configurations {
 dependencies {
     compile project(':ardd-admin-broker')
     compile project(':web-persistence')
+
+    def SPRING_VERSION = '4.1.1.RELEASE'
     
     compile 'javax.validation:validation-api:1.1.0.Final'
-    compile 'org.springframework:spring-webmvc:4.0.2.RELEASE'
-    compile 'org.springframework:spring-jdbc:4.0.2.RELEASE'
+    compile "org.springframework:spring-webmvc:$SPRING_VERSION"
+    compile "org.springframework:spring-jdbc:$SPRING_VERSION"
     compile 'commons-fileupload:commons-fileupload:1.2.2'
     compile 'javax.servlet:jstl:1.2'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
     providedCompile 'javax.servlet:jsp-api:2.0'
 }
-
-webAppDirName = 'webapp'
-
-apply from: 'web-deploy.gradle'
-
