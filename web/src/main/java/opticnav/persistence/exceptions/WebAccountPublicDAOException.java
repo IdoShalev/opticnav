@@ -1,4 +1,4 @@
-package opticnav.persistence.web.exceptions;
+package opticnav.persistence.exceptions;
 
 /**
  * Exception that is thrown if a critical backend error occurs in the WebAccountPublicDAO class

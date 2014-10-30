@@ -15,7 +15,7 @@ import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
 /**
- * TODO: Alternative persistence method, perhaps don't accept entire maps for storage
+ * TODO: Alternative opticnav.persistence method, perhaps don't accept entire maps for storage
  * Right now, there isn't any protection against corrupt file-writes.
  * To illustrate the problem: if the program crashes in the middle of a file-write,
  * the original contents of that file will be lost.

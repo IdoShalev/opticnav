@@ -12,8 +12,8 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import opticnav.persistence.web.WebResourceDAO;
-import opticnav.persistence.web.exceptions.WebResourceDAOExcpetion;
+import opticnav.persistence.WebResourceDAO;
+import opticnav.persistence.exceptions.WebResourceDAOExcpetion;
 import opticnav.web.controllers.rest.Controller.MessageException;
 
 public class ResourceUploadUtil {

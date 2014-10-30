@@ -1,6 +1,6 @@
 package opticnav.web.controllers.rest.pojo.map;
 
-import opticnav.persistence.web.map.Anchor;
+import opticnav.persistence.map.Anchor;
 
 public class AnchorPOJO {
     public GPSPOJO gps;

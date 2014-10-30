@@ -8,7 +8,6 @@ include 'daemon-cli'
 include 'integration-ard'
 include 'mock-device'
 include 'ardroid'
-include 'web-persistence'
 include 'web'
 
 project(":daemon").projectDir = file("daemon/daemon")
@@ -18,6 +17,3 @@ project(":daemon-device-client").projectDir = file("daemon/daemon-device-client"
 project(":daemon-cli").projectDir = file("daemon/daemon-cli")
 project(":integration-ard").projectDir = file("daemon/integration-ard")
 project(":mock-device").projectDir = file("daemon/mock-device")
-
-project(":web-persistence").projectDir = file("web-persistence")
-

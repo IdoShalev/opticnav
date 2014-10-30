@@ -1,4 +1,4 @@
-package opticnav.persistence.web.map;
+package opticnav.persistence.map;
 
 /**
  * Holds the map name and ID

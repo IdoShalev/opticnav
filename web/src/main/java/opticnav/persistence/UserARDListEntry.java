@@ -1,4 +1,4 @@
-package opticnav.persistence.web;
+package opticnav.persistence;
 
 /**
  * Holds a username and the ARD ID that belongs to it

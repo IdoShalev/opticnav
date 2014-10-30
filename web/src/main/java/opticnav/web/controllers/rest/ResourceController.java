@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import opticnav.persistence.web.Resource;
-import opticnav.persistence.web.WebResourceDAO;
+import opticnav.persistence.Resource;
+import opticnav.persistence.WebResourceDAO;
 import opticnav.web.controllers.rest.pojo.Message;
 
 import org.apache.commons.io.IOUtils;

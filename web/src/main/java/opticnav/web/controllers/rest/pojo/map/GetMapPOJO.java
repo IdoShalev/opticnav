@@ -3,9 +3,9 @@ package opticnav.web.controllers.rest.pojo.map;
 import java.util.LinkedList;
 import java.util.List;
 
-import opticnav.persistence.web.map.Anchor;
-import opticnav.persistence.web.map.GetMap;
-import opticnav.persistence.web.map.Marker;
+import opticnav.persistence.map.Anchor;
+import opticnav.persistence.map.GetMap;
+import opticnav.persistence.map.Marker;
 
 public class GetMapPOJO {
     public String name;

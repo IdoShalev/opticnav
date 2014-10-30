@@ -4,9 +4,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
-import opticnav.persistence.web.WebAccountDAO;
-import opticnav.persistence.web.WebAccountPublicDAO;
-import opticnav.persistence.web.consts.WebPersistenceConsts;
+import opticnav.persistence.WebAccountDAO;
+import opticnav.persistence.WebAccountPublicDAO;
+import opticnav.persistence.consts.WebPersistenceConsts;
 import opticnav.web.components.UserSession;
 import opticnav.web.components.UserSession.User;
 import opticnav.web.controllers.rest.pojo.Message;

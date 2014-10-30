@@ -1,4 +1,4 @@
-package opticnav.persistence.web;
+package opticnav.persistence;
 
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
@@ -9,13 +9,13 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import opticnav.persistence.web.exceptions.WebAccountDAOException;
-import opticnav.persistence.web.exceptions.WebAccountPublicDAOException;
-import opticnav.persistence.web.map.Anchor;
-import opticnav.persistence.web.map.GetMap;
-import opticnav.persistence.web.map.MapsListEntry;
-import opticnav.persistence.web.map.Marker;
-import opticnav.persistence.web.map.ModifyMap;
+import opticnav.persistence.exceptions.WebAccountDAOException;
+import opticnav.persistence.exceptions.WebAccountPublicDAOException;
+import opticnav.persistence.map.Anchor;
+import opticnav.persistence.map.GetMap;
+import opticnav.persistence.map.MapsListEntry;
+import opticnav.persistence.map.Marker;
+import opticnav.persistence.map.ModifyMap;
 
 /**
  * Handles all requests to the database that are bound to an account

@@ -1,4 +1,4 @@
-package opticnav.persistence.web.map;
+package opticnav.persistence.map;
 
 /**
  * Class that represents one o the maps anchor points

@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import opticnav.daemon.manager.ARDdAdmin;
 import opticnav.daemon.protocol.ConfCode;
-import opticnav.persistence.web.WebAccountDAO;
+import opticnav.persistence.WebAccountDAO;
 import opticnav.web.arddbrokerpool.ARDdAdminPool;
 import opticnav.web.components.UserSession;
 import opticnav.web.controllers.rest.pojo.Message;

@@ -1,4 +1,4 @@
-package opticnav.persistence.web.map;
+package opticnav.persistence.map;
 
 /**
  * Class that represents a Marker on a map

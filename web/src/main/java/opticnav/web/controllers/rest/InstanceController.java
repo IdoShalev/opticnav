@@ -14,12 +14,12 @@ import opticnav.daemon.manager.InstanceDeployment;
 import opticnav.daemon.manager.InstanceDeploymentBuilder;
 import opticnav.daemon.protocol.GeoCoordFine;
 import opticnav.daemon.protocol.InstanceDeploymentInfo;
-import opticnav.persistence.web.WebAccountDAO;
-import opticnav.persistence.web.Resource;
-import opticnav.persistence.web.WebResourceDAO;
-import opticnav.persistence.web.map.Anchor;
-import opticnav.persistence.web.map.GetMap;
-import opticnav.persistence.web.map.Marker;
+import opticnav.persistence.WebAccountDAO;
+import opticnav.persistence.Resource;
+import opticnav.persistence.WebResourceDAO;
+import opticnav.persistence.map.Anchor;
+import opticnav.persistence.map.GetMap;
+import opticnav.persistence.map.Marker;
 import opticnav.web.arddbrokerpool.ARDdAdminPool;
 import opticnav.web.components.UserSession;
 

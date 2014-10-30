@@ -1,4 +1,4 @@
-package opticnav.persistence.web;
+package opticnav.persistence;
 
 import java.sql.Connection;
 import java.sql.SQLException;

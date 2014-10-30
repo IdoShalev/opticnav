@@ -1,4 +1,4 @@
-package opticnav.persistence.web;
+package opticnav.persistence;
 
 import java.io.File;
 import java.io.FileInputStream;

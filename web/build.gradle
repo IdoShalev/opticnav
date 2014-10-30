@@ -34,7 +34,6 @@ configurations {
 
 dependencies {
     compile project(':daemon-manager-client')
-    compile project(':web-persistence')
 
     def SPRING_VERSION = '4.1.1.RELEASE'
     
@@ -46,4 +45,8 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
     providedCompile 'javax.servlet:jsp-api:2.0'
+
+    // Persistence
+    compile 'mysql:mysql-connector-java:5.1.29'
+    compile 'commons-io:commons-io:2.4'
 }

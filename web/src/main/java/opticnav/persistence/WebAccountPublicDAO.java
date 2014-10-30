@@ -1,4 +1,4 @@
-package opticnav.persistence.web;
+package opticnav.persistence;
 
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import opticnav.persistence.web.exceptions.WebAccountPublicDAOException;
+import opticnav.persistence.exceptions.WebAccountPublicDAOException;
 
 /**
  * Handles account registration and verification

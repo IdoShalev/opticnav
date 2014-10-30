@@ -1,4 +1,4 @@
-package opticnav.persistence.web.map;
+package opticnav.persistence.map;
 
 import java.util.Collections;
 import java.util.LinkedList;

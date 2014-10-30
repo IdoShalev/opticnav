@@ -1,4 +1,4 @@
-package opticnav.persistence.web;
+package opticnav.persistence;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,7 +14,7 @@ import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
 import javax.sql.DataSource;
 
-import opticnav.persistence.web.exceptions.WebResourceDAOExcpetion;
+import opticnav.persistence.exceptions.WebResourceDAOExcpetion;
 
 import org.apache.commons.io.IOUtils;
 
