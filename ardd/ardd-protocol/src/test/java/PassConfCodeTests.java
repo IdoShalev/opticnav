@@ -1,7 +1,7 @@
 import static org.junit.Assert.*;
-import opticnav.ardd.protocol.ConfCode;
-import opticnav.ardd.protocol.PassCode;
-import opticnav.ardd.protocol.Protocol;
+import opticnav.daemon.protocol.ConfCode;
+import opticnav.daemon.protocol.PassCode;
+import opticnav.daemon.protocol.Protocol;
 
 import org.junit.Test;
 

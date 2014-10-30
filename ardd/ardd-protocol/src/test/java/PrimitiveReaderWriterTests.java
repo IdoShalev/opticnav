@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
-import opticnav.ardd.protocol.PrimitiveReader;
-import opticnav.ardd.protocol.PrimitiveWriter;
+import opticnav.daemon.protocol.PrimitiveReader;
+import opticnav.daemon.protocol.PrimitiveWriter;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,5 +1,5 @@
 import static org.junit.Assert.*;
-import opticnav.ardd.protocol.HexCode;
+import opticnav.daemon.protocol.HexCode;
 
 import org.junit.Test;
 

@@ -4,7 +4,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import opticnav.ardd.protocol.GeoCoordFine;
+import opticnav.daemon.protocol.GeoCoordFine;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 

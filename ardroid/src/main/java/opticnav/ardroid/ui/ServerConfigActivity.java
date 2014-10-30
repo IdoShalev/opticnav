@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import com.google.inject.Inject;
-import opticnav.ardd.protocol.Protocol;
+import opticnav.daemon.protocol.Protocol;
 import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
 import opticnav.ardroid.connection.ConnectToServerSingleton;

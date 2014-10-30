@@ -1,8 +1,8 @@
 package opticnav.ardroid.connection;
 
-import opticnav.ardd.ard.ARDInstanceSubscriber;
-import opticnav.ardd.ard.MapTransform;
-import opticnav.ardd.protocol.GeoCoordFine;
+import opticnav.daemon.ard.ARDInstanceSubscriber;
+import opticnav.daemon.ard.MapTransform;
+import opticnav.daemon.protocol.GeoCoordFine;
 import opticnav.ardroid.model.Coordinate;
 import opticnav.ardroid.model.MapModel;
 import opticnav.ardroid.model.Marker;

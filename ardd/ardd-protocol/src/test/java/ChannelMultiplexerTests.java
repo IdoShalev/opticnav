@@ -9,10 +9,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import opticnav.ardd.protocol.PrimitiveReader;
-import opticnav.ardd.protocol.PrimitiveWriter;
-import opticnav.ardd.protocol.chan.Channel;
-import opticnav.ardd.protocol.chan.ChannelMultiplexer;
+import opticnav.daemon.protocol.PrimitiveReader;
+import opticnav.daemon.protocol.PrimitiveWriter;
+import opticnav.daemon.protocol.chan.Channel;
+import opticnav.daemon.protocol.chan.ChannelMultiplexer;
 
 import org.junit.After;
 import org.junit.Before;
