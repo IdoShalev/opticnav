@@ -6,7 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.8.3'
+        classpath 'com.android.tools.build:gradle:0.13.3'
     }
 }
 
@@ -19,7 +19,7 @@ dependencies {
     compile 'com.github.tony19:logback-android-core:1.1.1-2'
     compile 'com.github.tony19:logback-android-classic:1.1.1-2'
 
-    compile "com.android.support:support-v4:19.0.1"
+    compile "com.android.support:support-v4:19.1.0"
 
     // Dependency injection
     compile 'org.roboguice:roboguice:2.0'
@@ -27,22 +27,11 @@ dependencies {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+    buildToolsVersion "19.1.0"
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
-    }
-}
-
-android.applicationVariants.all { variant ->
-    def name = variant.name
-    task "javadoc$name"(type: Javadoc) {
-        description = "Generates javadoc for build $name"
-        destinationDir = new File(destinationDir, variant.baseName)
-        source = files(variant.javaCompile.source)
-        classpath = files(android.plugin.runtimeJarList, variant.javaCompile.classpath)
-        exclude '**/R.html', '**/R.*.html'
     }
 }
