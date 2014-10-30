@@ -6,7 +6,6 @@ import javax.validation.constraints.Size;
 
 import opticnav.persistence.WebAccountDAO;
 import opticnav.persistence.WebAccountPublicDAO;
-import opticnav.persistence.consts.WebPersistenceConsts;
 import opticnav.web.components.UserSession;
 import opticnav.web.components.UserSession.User;
 import opticnav.web.controllers.rest.pojo.Message;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/account/**")
 public class AccountController extends Controller {
     public static final class QueryPOJO {
-        @Size(min=1, max=WebPersistenceConsts.MaxLength.USERNAME)
+        @Size(min=1)
         public String username;
         public int id;
         
@@ -33,7 +32,7 @@ public class AccountController extends Controller {
     }
     
     public static final class AccountPOJO {
-        @Size(min=1, max=WebPersistenceConsts.MaxLength.USERNAME)
+        @Size(min=1)
         public String username;
         public int id;
         
@@ -44,9 +43,9 @@ public class AccountController extends Controller {
     }
     
     public static final class UsernamePasswordPOJO {
-        @Size(min=1, max=WebPersistenceConsts.MaxLength.USERNAME)
+        @Size(min=1)
         public String username;
-        @Size(min=1, max=WebPersistenceConsts.MaxLength.PASSWORD)
+        @Size(min=1)
         public String password;
     }
     
@@ -101,7 +100,7 @@ public class AccountController extends Controller {
     @RequestMapping(value="/query/{username}", method=RequestMethod.GET)
     public QueryPOJO query(@PathVariable
             @Valid
-            @Size(min=1, max=WebPersistenceConsts.MaxLength.USERNAME)
+            @Size(min=1)
             String username) throws Exception {
         int id;
         String name;

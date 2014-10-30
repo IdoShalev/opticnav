@@ -9,7 +9,6 @@ import javax.validation.constraints.Size;
 
 import opticnav.persistence.WebAccountDAO;
 import opticnav.persistence.WebResourceDAO;
-import opticnav.persistence.consts.WebPersistenceConsts;
 import opticnav.persistence.map.Anchor;
 import opticnav.persistence.map.GetMap;
 import opticnav.persistence.map.MapsListEntry;
@@ -70,7 +69,7 @@ public class MapController extends Controller {
             headers="content-type=multipart/form-data")
     public CreateMapPOJO createMap(HttpServletRequest request, @RequestParam
             @Valid
-            @Size(min=1, max=WebPersistenceConsts.MaxLength.MAP_NAME)
+            @Size(min=1)
             String name)
             throws Exception {
         int imageResourceID, mapID;
