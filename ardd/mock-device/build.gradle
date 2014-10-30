@@ -8,8 +8,8 @@ configurations {
 }
 
 dependencies {
-    compile project(':ardd-ard-broker')
+    compile project(':daemon-device-client')
     compile 'ch.qos.logback:logback-classic:1.1.1'
 }
 
-mainClassName = "opticnav.ardd.mockdevice.MockDeviceDriver"
+mainClassName = "opticnav.daemon.mockdevice.MockDeviceDriver"

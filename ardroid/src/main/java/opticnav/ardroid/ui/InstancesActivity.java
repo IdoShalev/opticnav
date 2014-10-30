@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import opticnav.daemon.ard.InstanceInfo;
+import opticnav.daemon.device.InstanceInfo;
 import opticnav.ardroid.Application;
 import opticnav.ardroid.R;
 import opticnav.ardroid.connection.ServerUIHandler;

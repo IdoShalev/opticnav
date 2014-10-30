@@ -33,7 +33,7 @@ configurations {
 }
 
 dependencies {
-    compile project(':ardd-admin-broker')
+    compile project(':daemon-manager-client')
     compile project(':web-persistence')
 
     def SPRING_VERSION = '4.1.1.RELEASE'

@@ -4,7 +4,7 @@ import android.content.*;
 import android.support.v4.content.LocalBroadcastManager;
 import android.widget.Toast;
 import com.google.inject.Singleton;
-import opticnav.daemon.ard.ARDGatekeeper;
+import opticnav.daemon.device.ARDGatekeeper;
 import opticnav.daemon.protocol.ConfCode;
 import opticnav.daemon.protocol.PassCode;
 import opticnav.daemon.protocol.Protocol;

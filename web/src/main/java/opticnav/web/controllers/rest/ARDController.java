@@ -2,7 +2,7 @@ package opticnav.web.controllers.rest;
 
 import javax.servlet.http.HttpServletResponse;
 
-import opticnav.daemon.admin.ARDdAdmin;
+import opticnav.daemon.manager.ARDdAdmin;
 import opticnav.daemon.protocol.ConfCode;
 import opticnav.persistence.web.WebAccountDAO;
 import opticnav.web.arddbrokerpool.ARDdAdminPool;

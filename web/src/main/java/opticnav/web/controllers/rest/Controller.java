@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import opticnav.daemon.admin.ARDdAdminException;
+import opticnav.daemon.manager.ARDdAdminException;
 import opticnav.web.controllers.rest.pojo.LocaleMessage;
 import opticnav.web.controllers.rest.pojo.Message;
 

@@ -7,13 +7,13 @@ import java.util.List;
 
 import javax.activation.MimeType;
 
-import opticnav.daemon.admin.ARDdAdmin;
-import opticnav.daemon.admin.ARDdAdminBroker;
-import opticnav.daemon.admin.ARDdAdminStartInstanceStatus;
-import opticnav.daemon.admin.InstanceDeployment;
-import opticnav.daemon.admin.InstanceDeployment.Anchor;
-import opticnav.daemon.admin.InstanceDeployment.Marker;
-import opticnav.daemon.admin.InstanceDeploymentBuilder;
+import opticnav.daemon.manager.ARDdAdmin;
+import opticnav.daemon.manager.ARDdAdminBroker;
+import opticnav.daemon.manager.ARDdAdminStartInstanceStatus;
+import opticnav.daemon.manager.InstanceDeployment;
+import opticnav.daemon.manager.InstanceDeployment.Anchor;
+import opticnav.daemon.manager.InstanceDeployment.Marker;
+import opticnav.daemon.manager.InstanceDeploymentBuilder;
 import opticnav.daemon.protocol.GeoCoordFine;
 import opticnav.daemon.protocol.Protocol;
 import opticnav.daemon.protocol.chan.Channel;

@@ -3,13 +3,13 @@ package opticnav.web.arddbrokerpool;
 import java.io.IOException;
 import java.net.Socket;
 
-import opticnav.daemon.admin.ARDdAdmin;
-import opticnav.daemon.admin.ARDdAdminBroker;
-import opticnav.daemon.admin.ARDdAdminException;
+import opticnav.daemon.manager.ARDdAdmin;
+import opticnav.daemon.manager.ARDdAdminBroker;
+import opticnav.daemon.manager.ARDdAdminException;
 import opticnav.daemon.protocol.chan.ChannelUtil;
 
 /**
- * ARDdAdminPool serves {@link opticnav.daemon.admin.ARDdAdmin ARDdAdmin} objects to controllers that request them.
+ * ARDdAdminPool serves {@link opticnav.daemon.manager.ARDdAdmin ARDdAdmin} objects to controllers that request them.
  * It is intended to keep a cache of pooled connections, but it currently just makes connections on demand.
  * 
  * @author Danny Spencer

@@ -8,11 +8,11 @@ configurations {
 }
 
 dependencies {
-    compile project(':ardd-admin-broker')
-    compile project(':ardd-ard-broker')
+    compile project(':daemon-manager-client')
+    compile project(':daemon-device-client')
     compile 'ch.qos.logback:logback-classic:1.1.1'
     compile 'org.apache.commons:commons-collections4:4.0'
     compile 'org.apache.commons:commons-math3:3.2'
 }
 
-mainClassName = "opticnav.ardd.integration.ard.ARDIntegrationDriver"
+mainClassName = "opticnav.daemon.integration.ard.ARDIntegrationDriver"

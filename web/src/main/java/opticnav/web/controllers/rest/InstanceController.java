@@ -8,10 +8,10 @@ import javax.activation.MimeType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import opticnav.daemon.admin.ARDdAdmin;
-import opticnav.daemon.admin.ARDdAdminStartInstanceStatus;
-import opticnav.daemon.admin.InstanceDeployment;
-import opticnav.daemon.admin.InstanceDeploymentBuilder;
+import opticnav.daemon.manager.ARDdAdmin;
+import opticnav.daemon.manager.ARDdAdminStartInstanceStatus;
+import opticnav.daemon.manager.InstanceDeployment;
+import opticnav.daemon.manager.InstanceDeploymentBuilder;
 import opticnav.daemon.protocol.GeoCoordFine;
 import opticnav.daemon.protocol.InstanceDeploymentInfo;
 import opticnav.persistence.web.WebAccountDAO;
