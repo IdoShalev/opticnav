@@ -1,4 +1,4 @@
-package opticnav.ardd.terminal.shared;
+package shared;
 
 import java.io.PrintWriter;
 

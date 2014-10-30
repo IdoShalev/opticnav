@@ -11,8 +11,8 @@ import opticnav.ardd.admin.ARDdAdminBroker;
 import opticnav.ardd.protocol.Protocol;
 import opticnav.ardd.protocol.consts.ARDdAdminProtocol.Commands;
 import opticnav.ardd.protocol.chan.ChannelUtil;
-import opticnav.ardd.terminal.shared.Command;
-import opticnav.ardd.terminal.shared.TerminalDriver;
+import shared.Command;
+import shared.TerminalDriver;
 
 public class AdminTerminalDriver {
     public enum CommandsText {

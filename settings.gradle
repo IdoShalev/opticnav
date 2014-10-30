@@ -1,23 +1,21 @@
 rootProject.name='opticnav'
 // All subprojects to build
-include 'ardd'
+include 'daemon'
 include 'ardd-protocol'
 include 'ardd-admin-broker'
 include 'ardd-ard-broker'
-include 'ardd-terminal-shared'
-include 'ardd-terminal-admin'
+include 'daemon-cli'
 include 'integration-ard'
 include 'mock-device'
 include 'ardroid'
 include 'web-persistence'
 include 'web'
 
-project(":ardd").projectDir = file("ardd/ardd")
+project(":daemon").projectDir = file("ardd/daemon")
 project(":ardd-protocol").projectDir = file("ardd/ardd-protocol")
 project(":ardd-admin-broker").projectDir = file("ardd/ardd-admin-broker")
 project(":ardd-ard-broker").projectDir = file("ardd/ardd-ard-broker")
-project(":ardd-terminal-shared").projectDir = file("ardd/ardd-terminal-shared")
-project(":ardd-terminal-admin").projectDir = file("ardd/ardd-terminal-admin")
+project(":daemon-cli").projectDir = file("ardd/daemon-cli")
 project(":integration-ard").projectDir = file("ardd/integration-ard")
 project(":mock-device").projectDir = file("ardd/mock-device")
 

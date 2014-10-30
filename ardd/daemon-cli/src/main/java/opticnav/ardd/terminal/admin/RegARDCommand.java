@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import opticnav.ardd.admin.ARDdAdmin;
 import opticnav.ardd.admin.ARDdAdminException;
 import opticnav.ardd.protocol.ConfCode;
-import opticnav.ardd.terminal.shared.Command;
+import shared.Command;
 
 public class RegARDCommand implements Command<ARDdAdmin> {
     @Override
